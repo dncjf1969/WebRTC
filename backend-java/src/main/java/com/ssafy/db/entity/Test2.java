@@ -26,6 +26,7 @@ public class Test2 extends BaseEntity{
 	@JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
 	String email;
 	
+	
 }
 
 

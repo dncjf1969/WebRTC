@@ -25,3 +25,5 @@ public class UserLoginPostRes extends BaseResponseBody{
 		return res;
 	}
 }
+
+
