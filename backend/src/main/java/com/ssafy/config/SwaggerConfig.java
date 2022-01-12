@@ -22,6 +22,9 @@ import static com.google.common.collect.Lists.newArrayList;
 /**
  * API 문서 관련 swagger2 설정 정의.
  */
+
+//http://localhost:8080/swagger-ui/
+
 @Configuration
 @EnableSwagger2
 public class SwaggerConfig {
