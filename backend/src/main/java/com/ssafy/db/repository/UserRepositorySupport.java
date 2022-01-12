@@ -12,7 +12,7 @@ import org.springframework.stereotype.Repository;
 /**
  * 유저 모델 관련 디비 쿼리 생성을 위한 구현 정의.
  */
-@Repository 
+@Repository
 public class UserRepositorySupport {
     @Autowired
     private JPAQueryFactory jpaQueryFactory;
