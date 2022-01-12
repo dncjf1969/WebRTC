@@ -27,6 +27,7 @@ import static com.google.common.collect.Lists.newArrayList;
 //http://localhost:8080/swagger-ui/
 //http://localhost:8080/swagger-ui/
 //http://localhost:8080/swagger-ui/
+//http://localhost:8080/swagger-ui/
 
 @Configuration
 @EnableSwagger2
