@@ -6,6 +6,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.sql.Date;
+import java.sql.Time;
+
 import javax.persistence.Entity;
 
 /**
@@ -14,13 +17,10 @@ import javax.persistence.Entity;
 @Entity
 @Getter
 @Setter
-public class User extends BaseEntity{
-    String position;
-    String department;
-    String name;
-    String userId;
-
-    @JsonIgnore
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    String password;
+public class Prequestion  extends BaseEntity{
+	// 미팅방ID, 질문내용, 
+	Long meetingroomId;
+	String content;
+	
+	     
 }
