@@ -54,3 +54,145 @@
 ## 프로젝트 상세 설명
 
 // 개발 환경, 기술 스택, 시스템 구성도, ERD, 기능 상세 설명 등
+
+
+
+## 스토리보드
+
+![img](https://cdn.discordapp.com/attachments/923443070756864033/931356227009654824/1.png)
+
+## 플로우차트
+
+### 전체 흐름도
+
+![image-20220114104527789](README.assets/image-20220114104527789.png)
+
+
+
+### 회원가입
+
+![image-20220114104048964](README.assets/image-20220114104048964.png)
+
+### 로그인
+
+![image-20220114103709204](README.assets/image-20220114103709204.png)
+
+### 방 리스트
+
+![image-20220114104142083](README.assets/image-20220114104142083.png)
+
+
+
+
+
+### 직무/인성면접
+
+![image-20220114104231430](README.assets/image-20220114104231430.png)
+
+
+
+### PT면접
+
+![img](https://cdn.discordapp.com/attachments/923443070756864033/931360393228611635/unknown.png)
+
+### 
+
+### 토론면접
+
+![image-20220114104321316](README.assets/image-20220114104321316.png)
+
+
+
+### 마이페이지
+
+![image-20220114104406185](README.assets/image-20220114104406185.png)
+
+## 와이어프레임
+
+https://www.figma.com/file/JPwpYUmt2gza9dMagAyAJn/Wirefigma_%EA%B3%B5%ED%86%B5%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8?node-id=963%3A4546
+
+### 홈
+
+![image-20220114101004979](README.assets/image-20220114101004979.png)
+
+
+
+### 회원가입
+
+![image-20220114101045493](README.assets/image-20220114101045493.png)
+
+
+
+### 로그인 후 홈화면
+
+![image-20220114101059336](README.assets/image-20220114101059336.png)
+
+
+
+### 각 면접 대기방 리스트
+
+![image-20220114101115167](README.assets/image-20220114101115167.png)
+
+![image-20220114101119527](README.assets/image-20220114101119527.png)
+
+![image-20220114101122766](README.assets/image-20220114101122766.png)
+
+
+
+### 방 생성하기
+
+![image-20220114101134434](README.assets/image-20220114101134434.png)
+
+
+
+### 방 입장하기
+
+![image-20220114101153323](README.assets/image-20220114101153323.png)
+
+
+
+### 대기방 - 방장
+
+![image-20220114101211444](README.assets/image-20220114101211444.png)
+
+![image-20220114101214613](README.assets/image-20220114101214613.png)
+
+
+
+### 대기방 - 참여자
+
+![image-20220114101231785](README.assets/image-20220114101231785.png)
+
+![image-20220114101237041](README.assets/image-20220114101237041.png)
+
+
+
+### 면접화면 - 면접자
+
+![image-20220114101301603](README.assets/image-20220114101301603.png)
+
+![image-20220114101305395](README.assets/image-20220114101305395.png)
+
+
+
+### 면접화면 - 면접관
+
+![image-20220114101329668](README.assets/image-20220114101329668.png)
+
+![image-20220114101332622](README.assets/image-20220114101332622.png)
+
+
+
+### 면접 종료
+
+![img](https://cdn.discordapp.com/attachments/926106457135529984/931347494930104372/unknown.png)
+
+### 마이페이지
+
+![image-20220114103532827](README.assets/image-20220114103532827.png)
+
+
+
+## ERD
+
+![image-20220114104659775](README.assets/image-20220114104659775.png)
