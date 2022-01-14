@@ -1,7 +1,7 @@
 package com.ssafy.api.response;
 
 import com.ssafy.common.model.response.BaseResponseBody;
-import com.ssafy.db.entity.User;
+import com.ssafy.db.entity.Member;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -13,14 +13,14 @@ import lombok.Setter;
  */
 @Getter
 @Setter
-@ApiModel("UserResponse")
-public class UserRes{
+@ApiModel("MemberResponse")
+public class MemberRes{
 	@ApiModelProperty(name="User ID")
 	String userId;
 	
-	public static UserRes of(User user) {
-		UserRes res = new UserRes();
-		res.setUserId(user.getUserId());
+	public static MemberRes of(Member member) {
+		MemberRes res = new MemberRes();
+		res.setUserId(member.getId());
 		return res;
 	}
 }
