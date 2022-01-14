@@ -6,8 +6,8 @@
 
 | Application | Domain | Language | Framework |
 | ---- | ---- | ---- | ---- |
-| :white_check_mark: Desktop Web | :black_square_button: AI | :white_check_mark: JavaScript | :white_check_mark: Vue.js |
-| :white_check_mark: Mobile Web | :black_square_button: Big Data | :black_square_button: TypeScript | :black_square_button: React |
+| :white_check_mark: Desktop Web | :black_square_button: AI | :white_check_mark: JavaScript | :black_square_button: Vue.js         |
+| :white_check_mark: Mobile Web | :black_square_button: Big Data | :black_square_button: TypeScript | :white_check_mark: React |
 | :white_check_mark: Responsive Web | :black_square_button: Blockchain | :black_square_button: C/C++ | :black_square_button: Angular |
 | :black_square_button: Android App | :black_square_button: IoT | :black_square_button: C# | :black_square_button: Node.js |
 | :black_square_button: iOS App | :black_square_button: AR/VR/Metaverse | :black_square_button: Python | :black_square_button: Flask/Django |
@@ -18,12 +18,14 @@
 
 ## 프로젝트 소개
 
-* 프로젝트명: 그룹 비디오 컨퍼런스 서비스
-* 서비스 특징: 웹/모바일(웹 기술) 프로젝트를 위한 스켈레톤 프로젝트
+* 프로젝트명:  WISH(Want Interview Service in House)
+* 서비스 특징: 화상면접 스터디 플랫폼 
 * 주요 기능
-  - 회원 관리
-  - 화상 미팅룸
-  - 그룹 채팅
+  - 유형별 면접 시스템 제공
+  - 화상면접 평가 시스템 
+  - 기출 질문지 제공
+  - 면접 피드백 공유
+  - 면접 관리 시스템
 * 주요 기술
   - WebRTC
   - WebSocket
@@ -43,11 +45,11 @@
 <!-- 자유 양식 -->
 
 ## 팀 소개
-* 김ㅇㅇ: 팀장, 프론트엔드 개발
-* 이ㅇㅇ: 부팀장, 기획 및 와이어프레임 작성, 프론트엔드 개발
-* 박ㅇㅇ: 백엔드 개발 및 QA 담당
-* 홍ㅇㅇ: 백엔드 개발, Swagger API 문서 관리
-* 전ㅇㅇ: 코드 리뷰 및 인프라 담당, CI/CD, HTTPS, Docker 구성
+* 최소희: 팀장, 프론트엔드 개발, 와이어프레임 제작, Flow chart 제작
+* 조현아: 백엔드 팀장, 백엔드 개발, Flow chart 제작, ERD 설계
+* 이우철: 프론트엔드 개발, Flow chart 제작, 와이어프레임 제작 
+* 이정현: 백엔드 개발, Flow chart 제작, ERD 설계
+* 장영남: 프론트엔드 개발, Flow chart 제작, 와이어프레임 제작 
 
 <!-- 자유 양식 -->
 
