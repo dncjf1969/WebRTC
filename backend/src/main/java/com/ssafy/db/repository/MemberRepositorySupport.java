@@ -2,6 +2,7 @@ package com.ssafy.db.repository;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.ssafy.db.entity.Member;
+import com.ssafy.db.entity.QMember;
 
 import java.util.Optional;
 
@@ -15,12 +16,13 @@ import org.springframework.stereotype.Repository;
 public class MemberRepositorySupport {
     @Autowired
     private JPAQueryFactory jpaQueryFactory;
-//    QMember qMember = QMember.member;
-//
-//    public Optional<Member> findById(String id) {
-//    	Member member = jpaQueryFactory.select(qMember).from(qMember)
-//                .where(qMember.id.eq(id)).fetchOne();
-//        if(member == null) return Optional.empty();
-//        return Optional.ofNullable(user);
-//    }
+    QMember qMember = QMember.member;
+
+    public Optional<Member> findById(String id) {
+    	Member member = jpaQueryFactory.select(qMember).from(qMember)
+                .where(qMember.id.eq(id)).fetchOne();
+        if(member == null) return Optional.empty();
+        return Optional.ofNullable(member);
+    }
+    
 }

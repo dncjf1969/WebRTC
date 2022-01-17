@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ssafy.api.request.MemberRegisterPostReq;
+import com.ssafy.api.request.MemberTestReq;
 import com.ssafy.api.request.UserLoginPostReq;
 import com.ssafy.api.response.MemberRes;
 import com.ssafy.api.service.MemberService;
@@ -73,4 +74,24 @@ public class MemberController {
 		
 		return ResponseEntity.status(200).body(MemberRes.of(member));
 	}
+	
+	
+	//test
+	@PostMapping("/me2")
+	@ApiOperation(value = "로그인 테스트용", notes = "테스트용 입니다.") 
+    @ApiResponses({
+        @ApiResponse(code = 200, message = "성공"),
+        @ApiResponse(code = 401, message = "인증 실패"),
+        @ApiResponse(code = 404, message = "사용자 없음"),
+        @ApiResponse(code = 500, message = "서버 오류")
+    })
+	public ResponseEntity<MemberRes> postTest(
+			@RequestBody @ApiParam(value="로그인 정보 테스트용", required = true) MemberTestReq testInfo) {
+		
+		Member member = memberService.getMembertest2(testInfo);
+		
+		return ResponseEntity.status(200).body(MemberRes.of(member));
+	}
+	
+	
 }
