@@ -21,16 +21,22 @@ public class QFeedback extends EntityPathBase<Feedback> {
 
     public final QBaseEntity _super = new QBaseEntity(this);
 
+    public final StringPath comment = createString("comment");
+
+    public final DatePath<java.sql.Date> date = createDate("date", java.sql.Date.class);
+
     //inherited
     public final NumberPath<Long> id = _super.id;
 
-    public final StringPath meetingroomId = createString("meetingroomId");
-
     public final StringPath memberId = createString("memberId");
+
+    public final StringPath mettingName = createString("mettingName");
 
     public final StringPath question = createString("question");
 
     public final NumberPath<Float> rate = createNumber("rate", Float.class);
+
+    public final TimePath<java.sql.Time> time = createTime("time", java.sql.Time.class);
 
     public QFeedback(String variable) {
         super(Feedback.class, forVariable(variable));
