@@ -26,7 +26,7 @@ public class QPrequestion extends EntityPathBase<Prequestion> {
     //inherited
     public final NumberPath<Long> id = _super.id;
 
-    public final NumberPath<Long> meetingroomId = createNumber("meetingroomId", Long.class);
+    public final NumberPath<Long> waitingroomId = createNumber("waitingroomId", Long.class);
 
     public QPrequestion(String variable) {
         super(Prequestion.class, forVariable(variable));

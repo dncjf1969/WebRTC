@@ -27,10 +27,11 @@ public class WaitingRoom  extends BaseEntity{
 	String manager;
 	int count;
 	
-	//방 세팅
-	// 면접종류, 최대 인원 수(2~6), 방 비밀번호
+	// 방 세팅
+	// 면접종류, 최대 인원 수(2~6), 방 비밀번호, 면접 중 표시
 	String type;
 	int maxMember;
 	int password;
+	boolean ongoing;
      
 }
