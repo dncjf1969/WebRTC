@@ -65,12 +65,14 @@ configurations {
     args = ['install']
 }*/
 
+/*
 task webpack(type: NpmTask, dependsOn: 'npmInstall') {
     args = ['run','build']
 }
+*/
 
 // processResources is a Java task. Run the webpack bundling before this task using the 'build' task in the package.json
-processResources.dependsOn 'webpack'
+// processResources.dependsOn 'webpack'
 
 //set build time and inject value to application.properties
 def buildTime() {
@@ -184,6 +186,9 @@ dependencies {
     annotationProcessor("org.projectlombok:lombok:1.18.20")
 
     testCompile('org.springframework.boot:spring-boot-starter-test')
+    
+    implementation group: 'org.javassist', name: 'javassist', version: '3.15.0-GA'
+
 }
 
 test {

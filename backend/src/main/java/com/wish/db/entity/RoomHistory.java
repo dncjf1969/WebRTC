@@ -1,13 +1,7 @@
 package com.wish.db.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
-
 import lombok.Getter;
 import lombok.Setter;
-
-import java.sql.Date;
-import java.sql.Time;
 
 import javax.persistence.Entity;
 
@@ -17,7 +11,7 @@ import javax.persistence.Entity;
 @Entity
 @Getter
 @Setter
-public class RoomHistory {
+public class RoomHistory extends BaseEntity{
 	// N:M관계 사이에 생기는 테이블
 	// 미팅방 id, 참여멤버id, 역할
 	Long meetingroomId;
