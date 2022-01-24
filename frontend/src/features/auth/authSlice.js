@@ -56,10 +56,13 @@ export const checkNickname = createAsyncThunk(
   }
 );
 
-const signUpSlice = createSlice({
-  name: 'signUp', // 초기 state 값
+const authSlice = createSlice({
+  name: 'auth', // 초기 state 값
   initialState: { 
-    user: {},
+    user: {
+      nickname: '김싸피',
+      email: 'abc@naver.com',
+    },
   },
   reducers: {},
   // 조사 필요, return 값 찾아야함
@@ -78,7 +81,8 @@ const signUpSlice = createSlice({
 
 
 // export const { signup } = signUpSlice.actions;
-export default signUpSlice.reducer;
+// export const userSelector = (state) => state.user;
+export default authSlice.reducer;
 
 
 // slice의 기본적인 아이디어는 이렇다.

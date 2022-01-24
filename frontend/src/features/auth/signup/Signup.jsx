@@ -9,7 +9,7 @@ import { Button } from '@material-ui/core';
 import { ValidatorForm, TextValidator } from 'react-material-ui-form-validator';
 // $ npm i @material-ui/core/styles
 import { makeStyles } from '@material-ui/core/styles';
-import { signup, checkNickname, checkEmail } from './SignupSlice';
+import { signup, checkNickname, checkEmail } from '../authSlice';
 
 // style
 const Wrapper = styled.div`
@@ -69,7 +69,12 @@ function SignUp() {
   // submit when user click button
   function handleSubmit(event) {
     event.preventDefault();
-    dispatch(signup(nickname));
+    const data = {
+      email,
+      nickname,
+      password,
+    }
+    dispatch(signup(data));
   }
   // event.preventDefault() = 기본 클릭 동작 방지하기
   // '/signup' -> 비동기 호출 실시
@@ -91,7 +96,7 @@ function SignUp() {
   // validation (maxlength)
   useEffect(() => {
     ValidatorForm.addValidationRule('maxNumber', (value) => {
-      if (value.length > 10) {
+      if (value.length > 9) {
         return false;
       }
       return true;
@@ -104,11 +109,11 @@ function SignUp() {
     <Wrapper>
       <LoginContainer>
         <Title><h1>WISH</h1></Title>
-        <ValidatorForm onSubmit={handleSubmit}>
+        <ValidatorForm onSubmit={handleSubmit} className={classes.validatorForm}>
           <TextValidator
-            className={classes.validator}
             label="닉네임"
             onChange={handleNickname}
+            color="secondary"
             name="nickname"
             value={nickname}
             validators={['required']}
@@ -117,6 +122,10 @@ function SignUp() {
               shrink: true,
             }}
             helperText="최대 10글자입니다."
+            variant="outlined"
+            margin="normal"
+            size="small"
+            fullWidth
           />
           <Button onClick={() => dispatch(checkNickname(nickname))}>
             중복확인
@@ -126,15 +135,20 @@ function SignUp() {
             onChange={(e) => setEmail(e.target.value)}
             name="email"
             value={email}
+            color="success"
+            helperText="양식에 맞게 적어주세요"
             validators={['required', 'isEmail']}
             errorMessages={['정보를 입력해주세요', 'email is not valid']}
             InputLabelProps={{
               shrink: true,
             }}
             margin="normal"
+            variant="outlined"
+            size="small"
+            fullWidth
           />
           {/* button disabled 토글 필요 */}
-          <Button onClick={() => dispatch(checkEmail(email))}>인증하기</Button>
+          {/* <Button onClick={() => dispatch(checkEmail(email))}>인증하기</Button>
           <TextValidator
             label="인증번호"
             onChange={(e) => setConfirmNumber(e.target.value)}
@@ -145,7 +159,7 @@ function SignUp() {
             InputLabelProps={{
               shrink: true,
             }}
-          />
+          /> */}
           <TextValidator
             label="비밀번호"
             onChange={(e) => setPassword(e.target.value)}
@@ -157,6 +171,10 @@ function SignUp() {
             InputLabelProps={{
               shrink: true,
             }}
+            variant="outlined"
+            margin="normal"
+            size="small"
+            fullWidth
           />
           <TextValidator
             label="비밀번호 확인"
@@ -172,6 +190,10 @@ function SignUp() {
             InputLabelProps={{
               shrink: true,
             }}
+            variant="outlined"
+            margin="normal"
+            size="small"
+            fullWidth
           />
           <Button type="submit">Submit</Button>
         </ValidatorForm>
