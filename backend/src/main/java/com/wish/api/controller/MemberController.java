@@ -10,12 +10,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.wish.api.request.MemberLoginPostReq;
-import com.wish.api.request.MemberRegisterPostReq;
+import com.wish.api.request.MemberLoginReq;
+import com.wish.api.request.MemberRegisterReq;
 import com.wish.api.request.MemberTestReq;
-import com.wish.api.request.UserLoginPostReq;
-import com.wish.api.response.LoginPostRes;
-import com.wish.api.response.MemberLoginPostRes;
+import com.wish.api.response.MemberLoginRes;
 import com.wish.api.response.MemberRes;
 import com.wish.api.service.MemberService;
 import com.wish.common.auth.SsafyUserDetails;
@@ -48,7 +46,7 @@ public class MemberController {
         @ApiResponse(code = 500, message = "서버 오류")
     })
 	public ResponseEntity<? extends BaseResponseBody> register(
-			@RequestBody @ApiParam(value="회원가입 정보", required = true) MemberRegisterPostReq registerInfo) {
+			@RequestBody @ApiParam(value="회원가입 정보", required = true) MemberRegisterReq registerInfo) {
 		
 		//임의로 리턴된 User 인스턴스. 현재 코드는 회원 가입 성공 여부만 판단하기 때문에 굳이 Insert 된 유저 정보를 응답하지 않음.
 		Member member = memberService.createMember(registerInfo);
@@ -65,11 +63,11 @@ public class MemberController {
         @ApiResponse(code = 500, message = "서버 오류")
     })
 	public ResponseEntity<? extends BaseResponseBody> login(
-			@RequestBody @ApiParam(value="로그인 정보", required = true) MemberLoginPostReq loginInfo) {
+			@RequestBody @ApiParam(value="로그인 정보", required = true) MemberLoginReq loginInfo) {
 		
 		String userId = loginInfo.getId();
 		//임의로 리턴된 User 인스턴스. 현재 코드는 회원 가입 성공 여부만 판단하기 때문에 굳이 Insert 된 유저 정보를 응답하지 않음.
-		if(memberService.loginMember(loginInfo)) return ResponseEntity.ok(LoginPostRes.of(200, "Success", JwtTokenUtil.getToken(userId)));
+		if(memberService.loginMember(loginInfo)) return ResponseEntity.ok(MemberLoginRes.of(200, "Success", JwtTokenUtil.getToken(userId)));
 
 		//		return ResponseEntity.ok(MemberLoginPostRes.of(200, "Success", JwtTokenUtil.getToken(userId)));
 		else return ResponseEntity.status(401).body(BaseResponseBody.of(401, "Fail"));

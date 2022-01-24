@@ -4,8 +4,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.wish.api.request.MemberLoginPostReq;
-import com.wish.api.request.MemberRegisterPostReq;
+import com.wish.api.request.MemberLoginReq;
+import com.wish.api.request.MemberRegisterReq;
 import com.wish.api.request.MemberTestReq;
 import com.wish.db.entity.Member;
 import com.wish.db.repository.MemberRepository;
@@ -24,7 +24,7 @@ public class MemberServiceImpl implements MemberService {
 	PasswordEncoder passwordEncoder;
 
 	@Override
-	public Member createMember(MemberRegisterPostReq memberRegisterInfo) {
+	public Member createMember(MemberRegisterReq memberRegisterInfo) {
 
 		Member member = new Member();
 		member.setId(memberRegisterInfo.getId());
@@ -37,7 +37,7 @@ public class MemberServiceImpl implements MemberService {
 	}
 	
 	@Override
-	public boolean loginMember(MemberLoginPostReq memberLoginInfo) {
+	public boolean loginMember(MemberLoginReq memberLoginInfo) {
 
 		Member member = memberRepository.findById(memberLoginInfo.getId()).get();
 		
