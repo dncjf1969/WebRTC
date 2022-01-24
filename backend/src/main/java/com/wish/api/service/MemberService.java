@@ -1,5 +1,6 @@
 package com.wish.api.service;
 
+import com.wish.api.request.MemberLoginPostReq;
 import com.wish.api.request.MemberRegisterPostReq;
 import com.wish.api.request.MemberTestReq;
 import com.wish.db.entity.Member;
@@ -12,4 +13,7 @@ public interface MemberService {
 	Member getMemberById(String id);
 	
 	Member getMembertest2(MemberTestReq testinfo);
+	
+	boolean loginMember(MemberLoginPostReq memberLoginInfo);
 }
+

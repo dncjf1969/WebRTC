@@ -4,16 +4,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.wish.api.request.MemberLoginPostReq;
 import com.wish.api.request.MemberRegisterPostReq;
 import com.wish.api.request.MemberTestReq;
 import com.wish.db.entity.Member;
 import com.wish.db.repository.MemberRepository;
 import com.wish.db.repository.MemberRepositorySupport;
 
-/**
- *	유저 관련 비즈니스 로직 처리를 위한 서비스 구현 정의.
- */
-@Service("memberService")
+
+@Service
 public class MemberServiceImpl implements MemberService {
 	@Autowired
 	MemberRepository memberRepository;
@@ -31,8 +30,25 @@ public class MemberServiceImpl implements MemberService {
 		member.setId(memberRegisterInfo.getId());
 		// 보안을 위해서 유저 패스워드 암호화 하여 디비에 저장.
 		member.setPassword(passwordEncoder.encode(memberRegisterInfo.getPassword()));
+		member.setName(memberRegisterInfo.getName());
+		member.setEmail(memberRegisterInfo.getEmail());
 		return memberRepository.save(member);
 
+	}
+	
+	@Override
+	public boolean loginMember(MemberLoginPostReq memberLoginInfo) {
+
+		Member member = memberRepository.findById(memberLoginInfo.getId()).get();
+		
+		String encodedInputPw = passwordEncoder.encode(memberLoginInfo.getPassword());
+		
+
+		if( passwordEncoder.matches(memberLoginInfo.getPassword(), member.getPassword())) return true;
+		
+		
+		if( encodedInputPw.equals(member.getPassword())) return true;
+		else return false;
 	}
 
 	@Override
