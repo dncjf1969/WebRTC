@@ -1,6 +1,7 @@
 package com.ssafy.api.service;
 
 import com.ssafy.api.request.MemberRegisterPostReq;
+import com.ssafy.api.request.MemberTestReq;
 import com.ssafy.db.entity.Member;
 
 /**
@@ -9,4 +10,6 @@ import com.ssafy.db.entity.Member;
 public interface MemberService {
 	Member createMember(MemberRegisterPostReq memberRegisterInfo);
 	Member getMemberById(String id);
+	
+	Member getMembertest2(MemberTestReq testinfo);
 }
