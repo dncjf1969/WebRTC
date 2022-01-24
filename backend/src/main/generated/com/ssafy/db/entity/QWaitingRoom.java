@@ -44,6 +44,8 @@ public class QWaitingRoom extends EntityPathBase<WaitingRoom> {
 
     public final StringPath name = createString("name");
 
+    public final BooleanPath ongoing = createBoolean("ongoing");
+
     public final NumberPath<Integer> password = createNumber("password", Integer.class);
 
     public final StringPath type = createString("type");
