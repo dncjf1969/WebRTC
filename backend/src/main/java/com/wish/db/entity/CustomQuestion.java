@@ -17,10 +17,10 @@ import javax.persistence.Entity;
 @Entity
 @Getter
 @Setter
-public class Prequestion  extends BaseEntity{
+public class CustomQuestion  extends BaseEntity{
 	// 미팅방ID, 질문내용, 
 	// 미팅룸 사용 중에 여기 접근한다.
 	// 미팅룸 종료시 사전질문도 삭제된다.
-	Long waitingroomId;
+	Long meetingroomId;
 	String content;
 }

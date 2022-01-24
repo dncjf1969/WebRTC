@@ -12,7 +12,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 /**
- * 유저 모델 정의.
+ * 멤버 모델 정의.
  */
 @Entity
 @Getter

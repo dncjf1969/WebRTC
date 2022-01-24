@@ -9,7 +9,7 @@ import lombok.Setter;
 import javax.persistence.Entity;
 
 /**
- * 유저 모델 정의.
+ * 기출질문 모델 정의.
  */
 @Entity
 @Getter
@@ -18,5 +18,6 @@ public class Question extends BaseEntity{
 
 	String content;
 	String type;
+	int count;	// 선택 횟수
      
 }
