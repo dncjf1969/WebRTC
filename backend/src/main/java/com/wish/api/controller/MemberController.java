@@ -10,9 +10,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.wish.api.request.MemberLoginPostReq;
 import com.wish.api.request.MemberRegisterPostReq;
 import com.wish.api.request.MemberTestReq;
 import com.wish.api.request.UserLoginPostReq;
+import com.wish.api.response.LoginPostRes;
+import com.wish.api.response.MemberLoginPostRes;
 import com.wish.api.response.MemberRes;
 import com.wish.api.service.MemberService;
 import com.wish.common.auth.SsafyUserDetails;
@@ -27,19 +30,17 @@ import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import springfox.documentation.annotations.ApiIgnore;
 
-/**
- * 유저 관련 API 요청 처리를 위한 컨트롤러 정의.
- */
-@Api(value = "유저 API", tags = {"User"})
+
+@Api(value = "유저 관련 API", tags = {"User"})
 @RestController
-@RequestMapping("/api/v1/members")
+@RequestMapping("/members")
 public class MemberController {
 	
 	@Autowired
 	MemberService memberService;
 	
-	@PostMapping()
-	@ApiOperation(value = "회원 가입", notes = "<strong>아이디와 패스워드</strong>를 통해 회원가입 한다.") 
+	@PostMapping("/signup")
+	@ApiOperation(value = "회원 가입", notes = "<strong>아이디, 패스워드, 이름, 이메일</strong>를 입력하여 회원가입한다.") 
     @ApiResponses({
         @ApiResponse(code = 200, message = "성공"),
         @ApiResponse(code = 401, message = "인증 실패"),
@@ -54,6 +55,26 @@ public class MemberController {
 		
 		return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success"));
 	}
+	
+	@PostMapping("/login")
+	@ApiOperation(value = "로그인", notes = "<strong>아이디와 패스워드</strong>를 입력하여 로그인한다.") 
+    @ApiResponses({
+        @ApiResponse(code = 200, message = "성공"),
+        @ApiResponse(code = 401, message = "인증 실패"),
+        @ApiResponse(code = 404, message = "사용자 없음"),
+        @ApiResponse(code = 500, message = "서버 오류")
+    })
+	public ResponseEntity<? extends BaseResponseBody> login(
+			@RequestBody @ApiParam(value="로그인 정보", required = true) MemberLoginPostReq loginInfo) {
+		
+		String userId = loginInfo.getId();
+		//임의로 리턴된 User 인스턴스. 현재 코드는 회원 가입 성공 여부만 판단하기 때문에 굳이 Insert 된 유저 정보를 응답하지 않음.
+		if(memberService.loginMember(loginInfo)) return ResponseEntity.ok(LoginPostRes.of(200, "Success", JwtTokenUtil.getToken(userId)));
+
+		//		return ResponseEntity.ok(MemberLoginPostRes.of(200, "Success", JwtTokenUtil.getToken(userId)));
+		else return ResponseEntity.status(401).body(BaseResponseBody.of(401, "Fail"));
+	}
+	
 	
 	@GetMapping("/me")
 	@ApiOperation(value = "회원 본인 정보 조회", notes = "로그인한 회원 본인의 정보를 응답한다.") 
@@ -74,6 +95,7 @@ public class MemberController {
 		
 		return ResponseEntity.status(200).body(MemberRes.of(member));
 	}
+	
 	
 	
 	//test
