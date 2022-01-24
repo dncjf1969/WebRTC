@@ -13,6 +13,7 @@ import { signup, checkNickname, checkEmail } from './SignupSlice';
 
 // style
 const Wrapper = styled.div`
+  background-color: Bisque;
   height: 100%;
   display: flex;
   justify-content: center;
@@ -49,21 +50,29 @@ function SignUp() {
   const [repeatPassword, setRepeatPassword] = useState('');
   const classes = useStyles();
   const dispatch = useDispatch();
+// useState는 리액트 Hook의 하나이며, 상태 관리의 역할을 한다.
+// useState는 항상 2개의 value를 return한다. 첫번째 value는 state이고, 두번째 value는 modifier이다.
+// 생성한 action을 useDispatch를 통해 발생시킬 수 있다
+// ex. <button onClick={()=>dispatch({type:액션타입})}>
 
   // setState when user change input
   function handleNickname(event) {
     const { value } = event.target;
-    if (value.length < 7) {
+    if (value.length < 10) {
       setNickname(value);
       return true;
     }
     return false;
   }
+  // 닉네임 최대 10글자
+
   // submit when user click button
   function handleSubmit(event) {
     event.preventDefault();
     dispatch(signup(nickname));
   }
+  // event.preventDefault() = 기본 클릭 동작 방지하기
+  // '/signup' -> 비동기 호출 실시
 
   // validation (same password)
   useEffect(() => {
@@ -74,7 +83,11 @@ function SignUp() {
       return true;
     });
   }, [repeatPassword]);
-
+  // useEffect는 리액트 컴포넌트가 렌더링 될 때마다 특정 작업을 수행하도록 설정할 수 있는 Hook이다.
+  // 쉽게 말하면, 클래스형 컴포넌트의 componentDidMount + componentDidUpdate 를 합친 형태라고 이해하면 된다!
+  // 비밀번호 확인 창에 "정보를 입력해주세요" 가 뜨게 하는 기능
+  // ValidationForm = material.UI
+  
   // validation (maxlength)
   useEffect(() => {
     ValidatorForm.addValidationRule('maxNumber', (value) => {
@@ -84,6 +97,8 @@ function SignUp() {
       return true;
     });
   }, [nickname]);
+  //잘 모르겠다.
+  //없어도 잘 돌아가긴 함.
 
   return (
     <Wrapper>
