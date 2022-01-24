@@ -1,11 +1,24 @@
-import React from "react";
-// import { BrowserRouter, Route } from "react-router-dom";
+import React from 'react';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import styled from 'styled-components';
+import Login from '../features/auth/login/Login';
+import Home from '../features/Home';
+
+const Wrapper = styled.div`
+  background-color: white;
+  height: 100vh;
+`;
 
 function App() {
   return (
-    <div>
-      <h1>Hello, world!</h1>
-    </div>
+    <Wrapper>
+      <Router>
+        <Routes>
+          <Route path="/" element={<Home />}></Route>
+          <Route path="/login" element={<Login />}></Route>
+        </Routes>
+      </Router>
+    </Wrapper>
   );
 }
 
