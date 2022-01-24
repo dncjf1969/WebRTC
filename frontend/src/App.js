@@ -6,7 +6,7 @@ import React from 'react';
 // BrowserRouter -> 일반적인 홈페이지 경로
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import styled from 'styled-components';
-import SignUp from './features/auth/signup/Signup';
+import SignUp from './features/account/signup/Signup';
 import Home from './features/home/Home';
 
 const Wrapper = styled.div`
