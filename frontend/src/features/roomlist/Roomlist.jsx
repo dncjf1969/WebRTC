@@ -8,8 +8,8 @@ const Wrapper = styles.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  border-top: solid rgba(1, 208, 83, 1);
-  border-bottom: solid rgba(1, 208, 83, 1);
+  // border-top: solid rgba(1, 208, 83, 1);
+  // border-bottom: solid rgba(1, 208, 83, 1);
 `;
 
 const Links = styles.ul`
