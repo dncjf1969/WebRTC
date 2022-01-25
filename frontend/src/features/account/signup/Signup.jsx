@@ -9,7 +9,8 @@ import { Button } from '@material-ui/core';
 import { ValidatorForm, TextValidator } from 'react-material-ui-form-validator';
 // $ npm i @material-ui/core/styles
 import { makeStyles } from '@material-ui/core/styles';
-import { signup, checkNickname, checkEmail } from '../authSlice';
+import { signup, checkNickname } from '../authSlice';
+// import { checkEmail } from '../authSlice';
 
 // style
 const Wrapper = styled.div`
@@ -45,7 +46,7 @@ function SignUp() {
   // local state
   const [email, setEmail] = useState('');
   const [nickname, setNickname] = useState('');
-  const [confirmNumber, setConfirmNumber] = useState('');
+  // const [confirmNumber, setConfirmNumber] = useState('');
   const [password, setPassword] = useState('');
   const [repeatPassword, setRepeatPassword] = useState('');
   const classes = useStyles();
