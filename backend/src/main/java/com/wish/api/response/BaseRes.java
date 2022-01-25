@@ -1,4 +1,4 @@
-package com.wish.common.model.response;
+package com.wish.api.response;
 
 import org.springframework.http.HttpStatus;
 
@@ -13,25 +13,25 @@ import lombok.Setter;
 @Getter
 @Setter
 @ApiModel("BaseResponseBody")
-public class BaseResponseBody {
+public class BaseRes {
 	@ApiModelProperty(name="응답 메시지", example = "정상")
 	String message = null;
 	@ApiModelProperty(name="응답 코드", example = "200")
 	Integer statusCode = null;
 	
-	public BaseResponseBody() {}
+	public BaseRes() {}
 	
-	public BaseResponseBody(Integer statusCode){
+	public BaseRes(Integer statusCode){
 		this.statusCode = statusCode;
 	}
 	
-	public BaseResponseBody(Integer statusCode, String message){
+	public BaseRes(Integer statusCode, String message){
 		this.statusCode = statusCode;
 		this.message = message;
 	}
 	
-	public static BaseResponseBody of(Integer statusCode, String message) {
-		BaseResponseBody body = new BaseResponseBody();
+	public static BaseRes of(Integer statusCode, String message) {
+		BaseRes body = new BaseRes();
 		body.message = message;
 		body.statusCode = statusCode;
 		return body;

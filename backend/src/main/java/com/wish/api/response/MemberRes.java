@@ -1,6 +1,5 @@
 package com.wish.api.response;
 
-import com.wish.common.model.response.BaseResponseBody;
 import com.wish.db.entity.Member;
 
 import io.swagger.annotations.ApiModel;

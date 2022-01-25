@@ -11,13 +11,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.wish.api.request.MemberLoginReq;
-import com.wish.api.request.MemberRegisterReq;
-import com.wish.api.request.MemberTestReq;
+import com.wish.api.request.MemberSignupReq;
+import com.wish.api.response.BaseRes;
 import com.wish.api.response.MemberLoginRes;
 import com.wish.api.response.MemberRes;
 import com.wish.api.service.MemberService;
 import com.wish.common.auth.SsafyUserDetails;
-import com.wish.common.model.response.BaseResponseBody;
 import com.wish.common.util.JwtTokenUtil;
 import com.wish.db.entity.Member;
 
@@ -29,7 +28,7 @@ import io.swagger.annotations.ApiResponses;
 import springfox.documentation.annotations.ApiIgnore;
 
 
-@Api(value = "유저 관련 API", tags = {"User"})
+@Api(value = "유저 관련 API", tags = {"Member"})
 @RestController
 @RequestMapping("/members")
 public class MemberController {
@@ -45,13 +44,12 @@ public class MemberController {
         @ApiResponse(code = 404, message = "사용자 없음"),
         @ApiResponse(code = 500, message = "서버 오류")
     })
-	public ResponseEntity<? extends BaseResponseBody> register(
-			@RequestBody @ApiParam(value="회원가입 정보", required = true) MemberRegisterReq registerInfo) {
+	public ResponseEntity<? extends BaseRes> signup(
+			@RequestBody @ApiParam(value="회원가입 정보", required = true) MemberSignupReq signupInfo) {
 		
-		//임의로 리턴된 User 인스턴스. 현재 코드는 회원 가입 성공 여부만 판단하기 때문에 굳이 Insert 된 유저 정보를 응답하지 않음.
-		Member member = memberService.createMember(registerInfo);
+		Member member = memberService.signupMember(signupInfo);
 		
-		return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success"));
+		return ResponseEntity.status(200).body(BaseRes.of(200, "Success"));
 	}
 	
 	@PostMapping("/login")
@@ -62,15 +60,16 @@ public class MemberController {
         @ApiResponse(code = 404, message = "사용자 없음"),
         @ApiResponse(code = 500, message = "서버 오류")
     })
-	public ResponseEntity<? extends BaseResponseBody> login(
+	public ResponseEntity<? extends BaseRes> login(
 			@RequestBody @ApiParam(value="로그인 정보", required = true) MemberLoginReq loginInfo) {
 		
 		String userId = loginInfo.getId();
-		//임의로 리턴된 User 인스턴스. 현재 코드는 회원 가입 성공 여부만 판단하기 때문에 굳이 Insert 된 유저 정보를 응답하지 않음.
-		if(memberService.loginMember(loginInfo)) return ResponseEntity.ok(MemberLoginRes.of(200, "Success", JwtTokenUtil.getToken(userId)));
 
-		//		return ResponseEntity.ok(MemberLoginPostRes.of(200, "Success", JwtTokenUtil.getToken(userId)));
-		else return ResponseEntity.status(401).body(BaseResponseBody.of(401, "Fail"));
+		if(memberService.loginMember(loginInfo)) {
+			return ResponseEntity.ok(MemberLoginRes.of(200, "Success", JwtTokenUtil.getToken(userId)));
+		}
+
+		else return ResponseEntity.status(401).body(BaseRes.of(401, "Fail"));
 	}
 	
 	
@@ -82,33 +81,17 @@ public class MemberController {
         @ApiResponse(code = 404, message = "사용자 없음"),
         @ApiResponse(code = 500, message = "서버 오류")
     })
-	public ResponseEntity<MemberRes> getUserInfo(@ApiIgnore Authentication authentication) {
+	public ResponseEntity<MemberRes> getUserInfo(Authentication authentication) {
 		/**
 		 * 요청 헤더 액세스 토큰이 포함된 경우에만 실행되는 인증 처리이후, 리턴되는 인증 정보 객체(authentication) 통해서 요청한 유저 식별.
 		 * 액세스 토큰이 없이 요청하는 경우, 403 에러({"error": "Forbidden", "message": "Access Denied"}) 발생.
 		 */
 		SsafyUserDetails userDetails = (SsafyUserDetails)authentication.getDetails();
+		
+		System.out.println(userDetails.toString());
+		
 		String id = userDetails.getUsername();
 		Member member = memberService.getMemberById(id);
-		
-		return ResponseEntity.status(200).body(MemberRes.of(member));
-	}
-	
-	
-	
-	//test
-	@PostMapping("/me2")
-	@ApiOperation(value = "로그인 테스트용", notes = "테스트용 입니다.") 
-    @ApiResponses({
-        @ApiResponse(code = 200, message = "성공"),
-        @ApiResponse(code = 401, message = "인증 실패"),
-        @ApiResponse(code = 404, message = "사용자 없음"),
-        @ApiResponse(code = 500, message = "서버 오류")
-    })
-	public ResponseEntity<MemberRes> postTest(
-			@RequestBody @ApiParam(value="로그인 정보 테스트용", required = true) MemberTestReq testInfo) {
-		
-		Member member = memberService.getMembertest2(testInfo);
 		
 		return ResponseEntity.status(200).body(MemberRes.of(member));
 	}

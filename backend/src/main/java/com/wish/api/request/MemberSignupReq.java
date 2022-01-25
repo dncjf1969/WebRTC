@@ -11,7 +11,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @ApiModel("MemberRegisterPostReq")
-public class MemberRegisterReq {
+public class MemberSignupReq {
 	@ApiModelProperty(name="아이디", example="ssafy_web")
 	String id;
 	@ApiModelProperty(name="패스워드", example="your_password")

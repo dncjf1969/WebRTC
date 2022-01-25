@@ -25,12 +25,4 @@ public class MemberRepositorySupport {
         return Optional.ofNullable(member);
     }
     
-    public Optional<Member> login1(String id) {
-    	Member member = jpaQueryFactory.select(qMember).from(qMember)
-                .where(qMember.id.eq(id)).fetchOne();
-        if(member == null) return Optional.empty();
-        return Optional.ofNullable(member);
-    }
-    
-    
 }
