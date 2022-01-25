@@ -8,7 +8,7 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import styled from 'styled-components';
 import SignUp from '../features/account/signup/Signup';
 import Home from '../features/home/Home';
-// import RoomList from '../features/roomlist/Roomlist';
+import RoomList from '../features/roomlist/Roomlist';
 const Wrapper = styled.div`
   background-color: white;
   height: 100vh;
@@ -24,7 +24,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Home />}></Route>
           <Route path="/signup" element={<SignUp />}></Route>
-          {/* <Route path="/roomlist" element={<RoomList />}></Route> */}
+          <Route path="/roomlist" element={<RoomList />}></Route>
         </Routes>
       </Router>
     </Wrapper>
