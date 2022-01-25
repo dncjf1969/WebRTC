@@ -1,54 +1,53 @@
 import React, { useState } from 'react';
+import styles from 'styled-components';
+import { Container, Button } from '@material-ui/core';
+import { TextValidator, ValidatorForm } from 'react-material-ui-form-validator';
 import { useDispatch } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
-import { toast } from 'react-toastify';
-import { deleteToken } from '../../../common/JWT-common';
-import { login } from '../authSlice';
+import { login } from './LoginSlice';
 
-export default function Login() {
-  const history = useNavigate();
+// style
+
+const Wrapper = styles(Container)`
+  display: flex;
+  height: 100vh;
+  justify-content: center;
+  align-items: center;
+`;
+
+const Title = styles.span`
+  font-size: 2.5rem;
+`;
+
+const LoginContainer = styles.div`
+  display: flex;
+  flex-direction: column;
+`;
+
+// component
+function Login() {
   const dispatch = useDispatch();
-
+  // state
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-
+  // function
   function handleSubmit(e) {
     e.preventDefault();
     const data = {
       email,
       password,
     };
-    dispatch(login(data))
-      .unwrap()
-      .then(() => {
-        history.push('/');
-      })
-      .catch((err) => {
-        if (err.status === 400) {
-          toast.error('😥 입력하신 정보를 다시 확인해주세요');
-        } else if (err.status === 409) {
-          toast.error('😥 이미 로그인된 사용자입니다');
-        } else if (err.status === 401) {
-          toast.error('😥 아이디와 비밀번호를 다시 확인해주세요');
-          deleteToken();
-          history.push('/login');
-        } else if (err.status === 500) {
-          history.push('/error');
-        }
-      });
+    dispatch(login(data));
   }
 
   // render
   return (
-    <div>
-      <div>
-        <form
-          onSubmit={handleSubmit}
-        >
-          <input
-            islogininput="true"
+    <Wrapper>
+      <LoginContainer>
+        <Title>LOGO</Title>
+        <ValidatorForm onSubmit={handleSubmit}>
+          <TextValidator
             label="이메일"
-            onChange={(e) => setEmail(e.target.value.replace(/\s/g, ''))}
+            onChange={(e) => setEmail(e.target.value)}
             name="email"
             value={email}
             validators={['required', 'isEmail']}
@@ -62,9 +61,9 @@ export default function Login() {
               shrink: true,
             }}
           />
-          <input
+          <TextValidator
             label="비밀번호"
-            onChange={(e) => setPassword(e.target.value.replace(/\s/g, ''))}
+            onChange={(e) => setPassword(e.target.value)}
             value={password}
             name="password"
             type="password"
@@ -75,13 +74,11 @@ export default function Login() {
               shrink: true,
             }}
           />
-          <button yellow="true" type="submit">
-            로그인
-          </button>
-          <button mauve="true">회원가입</button>
-
-        </form>
-      </div>
-    </div>
+          <Button type="submit">로그인</Button>
+        </ValidatorForm>
+      </LoginContainer>
+    </Wrapper>
   );
 }
+
+export default Login;
