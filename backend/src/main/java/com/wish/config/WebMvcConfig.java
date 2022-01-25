@@ -24,7 +24,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
         configuration.addAllowedOriginPattern("*");
         configuration.addAllowedMethod("*");
         configuration.addAllowedHeader("*");
-        configuration.addExposedHeader(JwtTokenUtil.HEADER_STRING);
+        configuration.addExposedHeader(JwtTokenUtil.HEADER_KEY);
         configuration.setAllowCredentials(true);
         configuration.setMaxAge(3600L);
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
