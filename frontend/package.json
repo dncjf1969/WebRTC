@@ -18,6 +18,10 @@
     "react-redux": "^7.2.6",
     "react-router-dom": "^6.2.1",
     "react-scripts": "5.0.0",
+<<<<<<< HEAD
+=======
+    "react-toastify": "^8.1.0",
+>>>>>>> hui
     "styled-components": "^5.3.3",
     "web-vitals": "^2.1.4"
   },

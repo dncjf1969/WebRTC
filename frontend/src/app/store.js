@@ -1,0 +1,20 @@
+// store.js는 reducer 및 store 를 모으고 통합
+// combineReducers: 말그대로 reducer를 합치는 함수
+// configueStore:store를 만들어주는 함수(craeteStroe와 같다.)
+// 필수값은 reducer필드이다.(하나의 객체 형태로)
+// middleware필드를 전달하지 않으면 기본적으로 제공되는 미들웨어가 있다(getDefaultMiddleware 이 API로 기본 미들웨어를 가져온다.)
+// 기본 미들웨어로는 redux-thunk
+// configureSttore를 통해 생성된 store는 Redux DevTools Extension을 사용하여 dspatch된 action과 history, state 변경사항들을 쉽게 볼 수 있다.
+import { combineReducers, configureStore } from "@reduxjs/toolkit";
+import SignUpReducer from "../features/account/authSlice";
+
+const rootreducer = combineReducers({
+  // 각 리듀서를 합침
+  signup: SignUpReducer,
+});
+
+const store = configureStore({
+  reducer: rootreducer, // 합친 리듀서 연결
+});
+
+export default store; // 외부 인스톨이 가능하게 해줌

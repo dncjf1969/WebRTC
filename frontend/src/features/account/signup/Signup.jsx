@@ -202,4 +202,8 @@ function SignUp() {
   );
 }
 
+<<<<<<< HEAD
 export default SignUp;
+=======
+export default SignUp;
+>>>>>>> hui
