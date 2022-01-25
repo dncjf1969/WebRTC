@@ -1,20 +1,23 @@
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import axios from 'axios';
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import { deleteToken, saveToken } from "../../common/JWT-common";
+import axios from "axios";
 
 // signup axios -> REST API, params 필요
 export const signup = createAsyncThunk(
-  'SIGNUP',   // 액션 이름을 정의해 주도록 합니다.
-  async (userInfo) => {   // 비동기 호출 함수를 정의합니다.
+  "SIGNUP", // 액션 이름을 정의해 주도록 합니다.
+  async (userInfo) => {
+    // 비동기 호출 함수를 정의합니다.
     console.log(userInfo);
     await axios
-      .post('/signup', userInfo)
+      .post("/signup", userInfo)
       .then((res) => {
         return res.data;
       })
       .catch((err) => {
         return err;
       });
-});
+  }
+);
 // 변수나 함수 앞에 export를 붙이면 내보내기가 가능하다.
 // Redux Toolkit의 createAsyncThunk로 비동기 처리하기
 // 비동기는 이전 작업 수행 중에도 다른 작업을 수행 할 수 있게 하는 것, 작업이 순차적으로 실행되지 않는 것이다.
@@ -27,26 +30,11 @@ export const signup = createAsyncThunk(
 
 // email confirm axios -> REST API, params 필요
 export const checkEmail = createAsyncThunk(
-  'CHECK_EMAIL',
+  "CHECK_EMAIL", 
   async (emailInfo) => {
-    console.log('이메일 버튼 활성화', emailInfo);
+    console.log("이메일 버튼 활성화", emailInfo);
     await axios
-      .get('/checkemail', emailInfo)
-      .then((res) => {
-        return res.data;
-      })
-      .catch((err) => {
-        return err;
-      });
-});
-
-// nickname confirm axios -> REST API, params 필요
-export const checkNickname = createAsyncThunk(
-  'CHECK_NICKNAME',
-  async (nickname) => {
-    console.log('닉네임 버튼 활성화', nickname);
-    await axios
-      .get('/checknickname', nickname)
+      .get("/checkemail", emailInfo)
       .then((res) => {
         return res.data;
       })
@@ -56,12 +44,59 @@ export const checkNickname = createAsyncThunk(
   }
 );
 
+// nickname confirm axios -> REST API, params 필요
+export const checkNickname = createAsyncThunk(
+  "CHECK_NICKNAME",
+  async (nickname) => {
+    console.log("닉네임 버튼 활성화", nickname);
+    await axios
+      .get("/checknickname", nickname)
+      .then((res) => {
+        return res.data;
+      })
+      .catch((err) => {
+        return err;
+      });
+  }
+);
+
+// 로그인
+export const login = createAsyncThunk(
+  "LOGIN",
+  async (userInfo, { rejectWithValue }) => {
+    try {
+      const response = await axios.post("/api/auth/login", userInfo);
+      const {
+        data: { token },
+      } = response;
+      saveToken(token);
+      return response;
+    } catch (err) {
+      return rejectWithValue(err.response);
+    }
+  }
+);
+
+// 로그아웃
+export const logout = createAsyncThunk(
+  "LOGOUT",
+  async (arg, { rejectWithValue }) => {
+    try {
+      const response = await axios.post("/api/auth/logout");
+      deleteToken();
+      return response;
+    } catch (err) {
+      return rejectWithValue(err.response);
+    }
+  }
+);
+
 const authSlice = createSlice({
-  name: 'auth', // 초기 state 값
-  initialState: { 
+  name: "auth", // 초기 state 값
+  initialState: {
     user: {
-      nickname: '김싸피',
-      email: 'abc@naver.com',
+      nickname: "김싸피",
+      email: "abc@naver.com",
     },
   },
   reducers: {},
@@ -79,11 +114,9 @@ const authSlice = createSlice({
 // reducers : 리듀서를 작성합니다. 이때 해당 리듀서의 키값으로 액션함수가 자동으로 생성됩니다..
 // extraReducers : 액션함수가 자동으로 생성되지 않는 별도의 액션함수가 존재하는 리듀서를 정의합니다. (선택 옵션 입니다.)
 
-
 // export const { signup } = signUpSlice.actions;
 // export const userSelector = (state) => state.user;
 export default authSlice.reducer;
-
 
 // slice의 기본적인 아이디어는 이렇다.
 // logIn reducer는 logIn action creator 함수와 짝이므로 항상 같이다니게 마련이다.
