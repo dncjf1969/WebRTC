@@ -30,12 +30,11 @@ const useStyles = makeStyles({
     justifyContent: 'center',
   },
 });
-// Dialog태그는 ui 컴포넌트로 클릭하면 모달창 나오도록하는 태그임 하위 태그들은 ul li 태그와 비슷한 관계라고 보면 됨
+
 export default function MakeRoomModal({ isOpen, handleModalClose }) {
   const classes = useStyles();
   return (
     <div>
-      
       <Dialog
         open={isOpen}
         onClose={handleModalClose}
@@ -48,12 +47,14 @@ export default function MakeRoomModal({ isOpen, handleModalClose }) {
           <DialogContentText>
             방은 Private으로 만들어지며, 비밀번호를 설정해주시면 됩니다!
           </DialogContentText>
-          {/* <ImageContainer>
-            <ImageField src="https://picsum.photos/50" />
-            <ImageField src="https://picsum.photos/50" />
-            <ImageField src="https://picsum.photos/50" />
-          </ImageContainer> */}
+          <ImageContainer>
+            <ImageField src="https://picsum.photos/1" />
+            <ImageField src="https://picsum.photos/2" />
+            <ImageField src="https://picsum.photos/3" />
+          </ImageContainer>
+          <TextField autoFocus margin="dense" id="roomName" label="방 제목" />
           <TextField autoFocus margin="dense" id="password" label="비밀번호" />
+          <TextField autoFocus margin="dense" id="password" label="인원" />
         </DialogContent>
         <DialogActions className={classes.dialogactions}>
           <Button onClick={handleModalClose} color="primary">

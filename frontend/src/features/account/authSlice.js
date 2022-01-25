@@ -29,17 +29,20 @@ export const signup = createAsyncThunk(
 // 정리하자면, 동기적으로 처리할 일이 있는 비동기 작업에 await 를 붙이고, 해당 작업을 포함하고 있는 함수에 async 를 붙이면 된다.
 
 // email confirm axios -> REST API, params 필요
-export const checkEmail = createAsyncThunk("CHECK_EMAIL", async (emailInfo) => {
-  console.log("이메일 버튼 활성화", emailInfo);
-  await axios
-    .get("/checkemail", emailInfo)
-    .then((res) => {
-      return res.data;
-    })
-    .catch((err) => {
-      return err;
-    });
-});
+export const checkEmail = createAsyncThunk(
+  "CHECK_EMAIL", 
+  async (emailInfo) => {
+    console.log("이메일 버튼 활성화", emailInfo);
+    await axios
+      .get("/checkemail", emailInfo)
+      .then((res) => {
+        return res.data;
+      })
+      .catch((err) => {
+        return err;
+      });
+  }
+);
 
 // nickname confirm axios -> REST API, params 필요
 export const checkNickname = createAsyncThunk(

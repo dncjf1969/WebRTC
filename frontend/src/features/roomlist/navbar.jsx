@@ -1,14 +1,11 @@
-import React, { useState } from 'react';
+import React from 'react';
 import styles from 'styled-components';
 import { Link } from 'react-router-dom';
-import DropDownMenu from './NavbarDropdown';
 
 const Wrapper = styles.div`
   height: 65px;
   display: flex;
   justify-content: space-between;
-  position: fixed;
-  width: 100%;
   align-items: center;
   border-bottom: solid rgba(248, 208, 83, 1);
 `;
@@ -20,28 +17,24 @@ const Logo = styles.div`
 `;
 
 const Links = styles.ul`
-  display: flex;
-  justify-content: center;
-  align-items: center;
   & > * {
     margin-right: 25px;
+  } > span
+  {
     cursor: pointer;
-  } > button {
-    font-size: 1rem;
   }
 `;
 
 function Navbar() {
+ 
   return (
     <Wrapper>
       <Logo />
       <Links>
         <Link to="/">Home</Link>
-        <Link to="/signup">회원가입</Link>
-        <Link to="/login">로그인</Link>
-        <Link to="/roomlist">방리스트</Link>
+        <Link to="/signup">Signup</Link>
+        <Link to="/roomlist">Room</Link>
         
-        <DropDownMenu />
       </Links>
     </Wrapper>
   );
