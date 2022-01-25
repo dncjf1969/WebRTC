@@ -7,6 +7,7 @@ import React from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import styled from "styled-components";
 import SignUp from "../features/account/signup/Signup";
+import Login from "../features/account/login/Login";
 import Home from "../features/home/Home";
 
 const Wrapper = styled.div`
@@ -24,6 +25,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Home />}></Route>
           <Route path="/signup" element={<SignUp />}></Route>
+          <Route path="/login" element={<Login />}></Route>
         </Routes>
       </Router>
     </Wrapper>

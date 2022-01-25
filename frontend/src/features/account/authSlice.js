@@ -1,4 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import { deleteToken, saveToken } from "../../common/JWT-common";
 import axios from "axios";
 
 // signup axios -> REST API, params 필요
@@ -53,6 +54,37 @@ export const checkNickname = createAsyncThunk(
       .catch((err) => {
         return err;
       });
+  }
+);
+
+// 로그인
+export const login = createAsyncThunk(
+  "LOGIN",
+  async (userInfo, { rejectWithValue }) => {
+    try {
+      const response = await axios.post("/api/auth/login", userInfo);
+      const {
+        data: { token },
+      } = response;
+      saveToken(token);
+      return response;
+    } catch (err) {
+      return rejectWithValue(err.response);
+    }
+  }
+);
+
+// 로그아웃
+export const logout = createAsyncThunk(
+  "LOGOUT",
+  async (arg, { rejectWithValue }) => {
+    try {
+      const response = await axios.post("/api/auth/logout");
+      deleteToken();
+      return response;
+    } catch (err) {
+      return rejectWithValue(err.response);
+    }
   }
 );
 

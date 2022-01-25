@@ -57,6 +57,7 @@ function Navbar() {
       />
       <Links>
         <Link to="/signup">회원가입</Link>
+        <Link to="/login">로그인</Link>
         <button type="button" onClick={() => setIsMakeOpen(true)}>
           방만들기
         </button>

@@ -2,6 +2,7 @@ import React from 'react';
 import Button from '@material-ui/core/Button';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
+// import { MenuItem } from '@mui/material'; 위와 동일
 import { Avatar } from '@material-ui/core';
 import { Link } from 'react-router-dom';
 // import defaultImage from '../assets/default.png';
@@ -16,7 +17,7 @@ export default function SimpleMenu() {
   const handleClose = () => {
     setAnchorEl(null);
   };
-
+// MenuItem 태그는 
   return (
     <div>
       <Button
