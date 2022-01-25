@@ -8,7 +8,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-@ApiModel("MemberLoginPostReq")
+@ApiModel("MemberLoginReq")
 public class MemberLoginReq {
 	@ApiModelProperty(name="유저 ID", example="ssafy_web")
 	String id;
