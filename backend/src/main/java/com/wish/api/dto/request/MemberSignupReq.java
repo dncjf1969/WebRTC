@@ -1,4 +1,4 @@
-package com.wish.api.request;
+package com.wish.api.dto.request;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;

@@ -1,8 +1,8 @@
 package com.wish.api.service;
 
-import com.wish.api.request.MemberLoginReq;
-import com.wish.api.request.MemberSignupReq;
-import com.wish.api.request.MemberUpdateReq;
+import com.wish.api.dto.request.MemberLoginReq;
+import com.wish.api.dto.request.MemberSignupReq;
+import com.wish.api.dto.request.MemberUpdateReq;
 import com.wish.db.entity.Member;
 
 

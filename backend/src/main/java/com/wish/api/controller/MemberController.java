@@ -1,6 +1,5 @@
 package com.wish.api.controller;
 
-import com.wish.api.request.MemberUpdateReq;
 import com.wish.common.auth.JwtAuthenticationFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -8,11 +7,12 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
-import com.wish.api.request.MemberLoginReq;
-import com.wish.api.request.MemberSignupReq;
-import com.wish.api.response.BaseRes;
-import com.wish.api.response.MemberLoginRes;
-import com.wish.api.response.MemberRes;
+import com.wish.api.dto.request.MemberLoginReq;
+import com.wish.api.dto.request.MemberSignupReq;
+import com.wish.api.dto.request.MemberUpdateReq;
+import com.wish.api.dto.response.BaseRes;
+import com.wish.api.dto.response.MemberLoginRes;
+import com.wish.api.dto.response.MemberRes;
 import com.wish.api.service.MemberService;
 import com.wish.common.auth.SsafyUserDetails;
 import com.wish.common.util.JwtTokenUtil;
