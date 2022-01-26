@@ -1,18 +1,21 @@
 package com.wish.api.service;
 
 
+import com.wish.api.request.CustomQuestionCreateReq;
+import com.wish.api.request.CustomQuestionUpdateReq;
+import com.wish.db.entity.CustomQuestion;
 import com.wish.db.entity.Question;
 
 import java.util.List;
 
 
-public interface QuestionService {
+public interface CustomQuestionService {
 
-	List<Question> readQuestionList();
-	int createCustomQuestion(Long meetingroomId, String content);
-	int updateCustomQuestion();
-	int deleteCustomQuestion();
-	int deleteAllCustomQuestion();
+	List<CustomQuestion> readAllCustomQuestionList(String meetingroomId);
+	int createCustomQuestion(CustomQuestionCreateReq customQuestionCreateReq);
+	int updateCustomQuestion(CustomQuestionUpdateReq customQuestionUpdateReq);
+	int deleteCustomQuestion(Long id);
+	int deleteAllCustomQuestion(String meetingroomId);
 
 }
 

@@ -18,6 +18,9 @@ public class Question extends BaseEntity{
 
 	String content;
 	String type;
+
+	String job;
+
 	int count;	// 선택 횟수
      
 }

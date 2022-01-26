@@ -1,158 +1,129 @@
 package com.wish.api.controller;
 
-import com.wish.api.request.MemberUpdateReq;
-import com.wish.common.auth.JwtAuthenticationFilter;
+import com.wish.api.request.*;
+import com.wish.api.response.BaseRes;
+import com.wish.api.response.QuestionListRes;
+import com.wish.api.service.CustomQuestionService;
+import com.wish.api.service.QuestionService;
+import com.wish.db.entity.CustomQuestion;
+import com.wish.db.entity.Question;
+import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
-import com.wish.api.request.MemberLoginReq;
-import com.wish.api.request.MemberSignupReq;
-import com.wish.api.response.BaseRes;
-import com.wish.api.response.MemberLoginRes;
-import com.wish.api.response.MemberRes;
-import com.wish.api.service.MemberService;
-import com.wish.common.auth.SsafyUserDetails;
-import com.wish.common.util.JwtTokenUtil;
-import com.wish.db.entity.Member;
-
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
-import springfox.documentation.annotations.ApiIgnore;
+import java.util.List;
 
 
-@Api(value = "유저 관련 API", tags = {"Member"})
+@Api(value = "질문 관련 API", tags = {"Question"})
 @RestController
-@RequestMapping("/members")
-public class MemberController {
+@RequestMapping("/question")
+public class QuestionController {
 	
 	@Autowired
-	MemberService memberService;
-	
-	@PostMapping("/signup")
-	@ApiOperation(value = "회원 가입", notes = "<strong>아이디, 패스워드, 이름, 이메일</strong>를 입력하여 회원가입한다.") 
-    @ApiResponses({
-        @ApiResponse(code = 200, message = "성공"),
-        @ApiResponse(code = 401, message = "인증 실패"),
-        @ApiResponse(code = 404, message = "사용자 없음"),
-        @ApiResponse(code = 500, message = "서버 오류")
-    })
-	public ResponseEntity<? extends BaseRes> signup(
-			@RequestBody @ApiParam(value="회원가입 정보", required = true) MemberSignupReq signupInfo) {
+	QuestionService questionService;
 
-		int results_num = memberService.signupMember(signupInfo);
+	@Autowired
+	CustomQuestionService customQuestionService;
 
-		if(results_num == 0) return ResponseEntity.status(200).body(BaseRes.of(200, "회원가입 성공."));
-		else if(results_num == 1) return ResponseEntity.status(401).body(BaseRes.of(401, "이미 가입된 아이디입니다."));
-		else return ResponseEntity.status(401).body(BaseRes.of(401, "예상치 못한 결과입니다."));
-
-	}
-	
-	@PostMapping("/login")
-	@ApiOperation(value = "로그인", notes = "<strong>아이디와 패스워드</strong>를 입력하여 로그인한다.") 
-    @ApiResponses({
-        @ApiResponse(code = 200, message = "성공"),
-        @ApiResponse(code = 401, message = "인증 실패"),
-        @ApiResponse(code = 404, message = "사용자 없음"),
-        @ApiResponse(code = 500, message = "서버 오류")
-    })
-	public ResponseEntity<? extends BaseRes> login(
-			@RequestBody @ApiParam(value="로그인 정보", required = true) MemberLoginReq loginInfo) {
-		
-		String userId = loginInfo.getId();
-
-		if(memberService.loginMember(loginInfo)) {
-			return ResponseEntity.ok(MemberLoginRes.of(200, "Success", JwtTokenUtil.createJwtToken(userId)));
-		}
-
-		else return ResponseEntity.status(401).body(BaseRes.of(401, "Fail"));
-	}
-
-	@PutMapping
-	@ApiOperation(value = "회원수정", notes = "<strong>아이디, 패스워드, 이름, email</strong>를 입력하여 회원정보를 수정한다.")
+	@GetMapping
+	@ApiOperation(value = "질문 조회", notes = "waitingroomid에서 질문 가져오기.")
 	@ApiResponses({
 			@ApiResponse(code = 200, message = "성공"),
 			@ApiResponse(code = 401, message = "인증 실패"),
 			@ApiResponse(code = 404, message = "사용자 없음"),
 			@ApiResponse(code = 500, message = "서버 오류")
 	})
-	public ResponseEntity<? extends BaseRes> updateMember(
-			@RequestBody @ApiParam(value="회원수정 정보", required = true) MemberUpdateReq updateInfo) {
+	public ResponseEntity<? extends BaseRes> readQuestion(
+			@ApiParam(value="사전질문 리스트 조회할 방 id", required = true) @RequestParam String meetingroomId) {
 
-		int results_num = memberService.updateMember(updateInfo);
+		List<CustomQuestion> customQuestionList = customQuestionService.readAllCustomQuestionList(meetingroomId);
+		List<Question> questionList = questionService.read20QuestionList();
 
-		if(results_num == 0) return ResponseEntity.status(200).body(BaseRes.of(200, "회원수정 성공."));
-		else if(results_num == 1) return ResponseEntity.status(401).body(BaseRes.of(401, "등록되지 않은 아이디입니다."));
-		else return ResponseEntity.status(401).body(BaseRes.of(401, "예상치 못한 결과입니다."));
-	}
-
-	@DeleteMapping
-	@ApiOperation(value = "회원탈퇴", notes = "<strong>아이디</strong>를 입력하여 회원탈퇴한다.")
-	@ApiResponses({
-			@ApiResponse(code = 200, message = "성공"),
-			@ApiResponse(code = 401, message = "인증 실패"),
-			@ApiResponse(code = 404, message = "사용자 없음"),
-			@ApiResponse(code = 500, message = "서버 오류")
-	})
-	public ResponseEntity<? extends BaseRes> deleteMember(
-			@ApiParam(value="회원탈퇴할 아이디", required = true) @RequestParam String memberDeleteId) {
-
-		int results_num = memberService.deleteMember(memberDeleteId);
-
-		if(results_num==0) return ResponseEntity.status(200).body(BaseRes.of(200, "회원삭제 성공."));
-		else if(results_num==1) return ResponseEntity.status(401).body(BaseRes.of(401, "등록되지 않은 아이디입니다."));
-		else return ResponseEntity.status(401).body(BaseRes.of(401, "예상치 못한 결과입니다."));
-	}
-
-	@GetMapping("/findPW")
-	@ApiOperation(value = "비밀번호 찾기", notes = "회원가입할 때 사용했던 <strong>아이디와 이메일</strong>을 입력하여 비밀번호를 찾는다.")
-	@ApiResponses({
-			@ApiResponse(code = 200, message = "성공"),
-			@ApiResponse(code = 401, message = "인증 실패"),
-			@ApiResponse(code = 404, message = "사용자 없음"),
-			@ApiResponse(code = 500, message = "서버 오류")
-	})
-	public ResponseEntity<? extends BaseRes> findPassword(
-			@ApiParam(value="회원가입했던 아이디", required = true) @RequestParam String memberId,
-			@ApiParam(value="회원가입했던 이메일", required = true) @RequestParam String memberEmail) {
-
-		int results_num = memberService.findPassword(memberId, memberEmail);
-
-		if(results_num==0) return ResponseEntity.status(200).body(BaseRes.of(200, "가입하신 이메일로 임시 비밀번호가 전송되었습니다."));
-		else if(results_num==1) return ResponseEntity.status(401).body(BaseRes.of(401, "아이디나 이메일을 확인해주세요."));
-		else return ResponseEntity.status(401).body(BaseRes.of(401, "예상치 못한 결과입니다."));
+		return ResponseEntity.ok(QuestionListRes.of(200, "Success", customQuestionList, questionList));
 	}
 
 
-	@GetMapping("/me")
-	@ApiOperation(value = "회원 본인 정보 조회", notes = "로그인한 회원 본인의 정보를 응답한다.") 
+	@PostMapping("/custom")
+	@ApiOperation(value = "사전 질문 생성", notes = "<strong>방 정보, 내용</strong>을 입력하여 사전질문을 추가한다.")
     @ApiResponses({
         @ApiResponse(code = 200, message = "성공"),
         @ApiResponse(code = 401, message = "인증 실패"),
         @ApiResponse(code = 404, message = "사용자 없음"),
         @ApiResponse(code = 500, message = "서버 오류")
     })
-	public ResponseEntity<MemberRes> getUserInfo(Authentication authentication) {
+	public ResponseEntity<? extends BaseRes> createCustomQuestion(
+			@RequestBody @ApiParam(value="사전질문 생성 정보", required = true) CustomQuestionCreateReq customQuestionCreateReq) {
 
-		/**
-		 * 요청 헤더 액세스 토큰이 포함된 경우에만 실행되는 인증 처리이후, 리턴되는 인증 정보 객체(authentication) 통해서 요청한 유저 식별.
-		 * 액세스 토큰이 없이 요청하는 경우, 403 에러({"error": "Forbidden", "message": "Access Denied"}) 발생.
-		 */
+		int results_num = customQuestionService.createCustomQuestion(customQuestionCreateReq);
 
-		SsafyUserDetails userDetails = (SsafyUserDetails)authentication.getDetails();
+		if(results_num == 0) return ResponseEntity.status(200).body(BaseRes.of(200, "사전 질문 생성 성공."));
+//		else if(results_num == 1) return ResponseEntity.status(401).body(BaseRes.of(401, "이미 가입된 아이디입니다."));
+//		else return ResponseEntity.status(401).body(BaseRes.of(401, "예상치 못한 결과입니다."));
 
-		System.out.println(userDetails.toString());
-
-		String id = userDetails.getUsername();
-		Member member = memberService.getMemberById(id);
-		
-		return ResponseEntity.status(200).body(MemberRes.of(member));
+		return ResponseEntity.status(401).body(BaseRes.of(401, "예상치 못한 결과입니다."));
 	}
-	
+
+
+	@PutMapping("/custom")
+	@ApiOperation(value = "사전 질문 수정", notes = "<strong>사전질문 id, 내용</strong>을 입력하여 사전질문을 수정한다.")
+	@ApiResponses({
+			@ApiResponse(code = 200, message = "성공"),
+			@ApiResponse(code = 401, message = "인증 실패"),
+			@ApiResponse(code = 404, message = "사용자 없음"),
+			@ApiResponse(code = 500, message = "서버 오류")
+	})
+	public ResponseEntity<? extends BaseRes> updateCustomQuestion(
+			@RequestBody @ApiParam(value="사전질문 수정 정보", required = true)CustomQuestionUpdateReq customQuestionUpdateReq) {
+
+		int results_num = customQuestionService.updateCustomQuestion(customQuestionUpdateReq);
+
+		if(results_num == 0) return ResponseEntity.status(200).body(BaseRes.of(200, "사전 질문 수정 성공."));
+		//else if(results_num == 1) return ResponseEntity.status(401).body(BaseRes.of(401, "등록되지 않은 아이디입니다."));
+		// else return ResponseEntity.status(401).body(BaseRes.of(401, "예상치 못한 결과입니다."));
+
+		return ResponseEntity.status(401).body(BaseRes.of(401, "예상치 못한 결과입니다."));
+	}
+
+	@DeleteMapping("/custom")
+	@ApiOperation(value = "사전 질문 삭제", notes = "<strong> 사전질문 id </strong>를 입력하여 사전질문을 삭제한다.")
+	@ApiResponses({
+			@ApiResponse(code = 200, message = "성공"),
+			@ApiResponse(code = 401, message = "인증 실패"),
+			@ApiResponse(code = 404, message = "사용자 없음"),
+			@ApiResponse(code = 500, message = "서버 오류")
+	})
+	public ResponseEntity<? extends BaseRes> deleteCustomQuestion(
+			@ApiParam(value="삭제할 사전질문 id", required = true) @RequestParam Long id) {
+
+		int results_num = customQuestionService.deleteCustomQuestion(id);
+
+		if(results_num==0) return ResponseEntity.status(200).body(BaseRes.of(200, "사전질문 삭제 성공."));
+		//else if(results_num==1) return ResponseEntity.status(401).body(BaseRes.of(401, "등록되지 않은 아이디입니다."));
+		//else return ResponseEntity.status(401).body(BaseRes.of(401, "예상치 못한 결과입니다."));
+		return ResponseEntity.status(401).body(BaseRes.of(401, "예상치 못한 결과입니다."));
+	}
+
+
+	@DeleteMapping("/custom/all")
+	@ApiOperation(value = "사전 질문 모두 삭제", notes = "<strong> 방정보 id </strong>를 입력하여 해당 방의 사전질문을 모두 삭제한다.")
+	@ApiResponses({
+			@ApiResponse(code = 200, message = "성공"),
+			@ApiResponse(code = 401, message = "인증 실패"),
+			@ApiResponse(code = 404, message = "사용자 없음"),
+			@ApiResponse(code = 500, message = "서버 오류")
+	})
+	public ResponseEntity<? extends BaseRes> deleteAllCustomQuestion(
+			@ApiParam(value="사전질문을 모두 삭제할 방 id", required = true) @RequestParam String meetingroomId) {
+
+		int results_num = customQuestionService.deleteAllCustomQuestion(meetingroomId);
+
+		if(results_num==0) return ResponseEntity.status(200).body(BaseRes.of(200, "해당 방 사전질문 모두 삭제 성공."));
+		//else if(results_num==1) return ResponseEntity.status(401).body(BaseRes.of(401, "등록되지 않은 아이디입니다."));
+		//else return ResponseEntity.status(401).body(BaseRes.of(401, "예상치 못한 결과입니다."));
+		return ResponseEntity.status(401).body(BaseRes.of(401, "예상치 못한 결과입니다."));
+	}
+
+
 	
 }
