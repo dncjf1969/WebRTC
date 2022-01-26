@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import styles from 'styled-components';
 import MakeRoomModal from './MakeRoomModal';
 import FindRoomModal from './FindRoomModal';
+import CustomizedInputBase from './searchbar2';
 
 const Wrapper = styles.div`
   height: 65px;
@@ -33,6 +34,7 @@ function RoomList() {
       <div>
         <h1>Roomlist</h1>
       </div>
+      <CustomizedInputBase />
 
       <MakeRoomModal
         fullWidth

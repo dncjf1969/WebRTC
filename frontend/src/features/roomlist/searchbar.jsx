@@ -16,7 +16,7 @@ const useStyles = makeStyles({
   },
 });
 
-export default function FindRoomModal({ isOpen, handleModalClose }) {
+export default function Searchbar({ isOpen, handleModalClose }) {
   const classes = useStyles();
   return (
     <div>
@@ -44,11 +44,12 @@ export default function FindRoomModal({ isOpen, handleModalClose }) {
           </Button>
         </DialogActions>
       </Dialog>
+      
     </div>
   );
 }
 
-FindRoomModal.propTypes = {
+Searchbar.propTypes = {
   isOpen: PropTypes.bool.isRequired,
   handleModalClose: PropTypes.func.isRequired,
 };

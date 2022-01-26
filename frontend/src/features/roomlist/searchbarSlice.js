@@ -1,12 +1,12 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import axios from '../../../common/http-common';
+import axios from '../../common/http-common';
 
 // createAsyncThunk
 // 액션 타입 문자열, 프로미스를 반환하는 비동기 함수, 추가 옵션 순서대로 인자를 받는 함수다.
 
-export const login = createAsyncThunk('LOGIN', async (userInfo) => {
+export const search = createAsyncThunk('SEARCH', async (roomname) => {
   await axios
-    .post('/login', userInfo)
+    .post('/searchroom', roomname)
     .then((res) => {
       return res.data;
     })
@@ -15,21 +15,21 @@ export const login = createAsyncThunk('LOGIN', async (userInfo) => {
     });
 });
 
-const loginSlice = createSlice({
-  name: 'login',
+const searchbarSlice = createSlice({
+  name: 'search',
   initialState: {
-    user: {},
+    roomname: {},
     loading: 'idle',
   },
   reducers: {},
   extraReducers: {
-    [login.pending]: () => {
+    [search.pending]: () => {
       console.log('pending');
     },
   },
 });
 
-export default loginSlice.reducer;
+export default searchbarSlice.reducer;
 
 // createSlice = reducer만 생성하여도 reducer의 key 값으로 action까지 자동으로 생성해 주는 기능을 지원
 // name : 해당 모듈의 이름을 작성합니다.

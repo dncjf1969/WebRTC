@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 export default axios.create({
-  baseURL: 'http://localhost:3000', // default URL
+  baseURL: 'http://i6e104.p.ssafy.io/', // default URL
   header: {
     Authorization: '',
   },
