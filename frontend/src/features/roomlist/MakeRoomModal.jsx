@@ -9,10 +9,6 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { makeStyles } from '@material-ui/core/styles';
-import FormControl from '@mui/material/FormControl';
-import InputLabel from '@mui/material/InputLabel';
-import Select from '@mui/material/Select';
-import MenuItem from '@mui/material/MenuItem';
 
 const ImageContainer = styled.div`
   display: flex;
@@ -58,24 +54,7 @@ export default function MakeRoomModal({ isOpen, handleModalClose }) {
           </ImageContainer>
           <TextField autoFocus margin="dense" id="roomName" label="방 제목" />
           <TextField autoFocus margin="dense" id="password" label="비밀번호" />
-          <FormControl>
-            <InputLabel id="demo-simple-select-label">인원수</InputLabel>
-            <Select
-              labelId="demo-simple-select-label"
-              id="demo-simple-select"
-              // value={age}
-              label="Age"
-              // onChange={handleChange}
-            >
-              <MenuItem value={1}>1</MenuItem>
-              <MenuItem value={2}>2</MenuItem>
-              <MenuItem value={3}>3</MenuItem>
-              <MenuItem value={4}>4</MenuItem>
-              <MenuItem value={5}>5</MenuItem>
-              <MenuItem value={6}>6</MenuItem>
-            </Select>
-          </FormControl>
-          
+          <TextField autoFocus margin="dense" id="password" label="인원" />
         </DialogContent>
         <DialogActions className={classes.dialogactions}>
           <Button onClick={handleModalClose} color="primary">

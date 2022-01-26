@@ -1,3 +1,7 @@
+<<<<<<< HEAD
+import React from 'react';
+import Navbar from '../../common/navbar/navbar';
+=======
 import React, {Component} from 'react';
 import Navbar from '../../common/navbar/navbar'
 import styled from 'styled-components';
@@ -7,12 +11,8 @@ import normal from '../../assets/normal.png'
 import pt from '../../assets/pt.png'
 import debate from '../../assets/debate.png'
 import { Link } from 'react-router-dom'
-<<<<<<< HEAD
-import "style.css"
-
-=======
-import './style.css'
->>>>>>> fa9b369f4aba0db34b359cb5f692c87efb224767
+import nonline from './style.css'
+>>>>>>> e1ec463c6efbe498650c6f43bbdde2680679827b
 
 const Wrapper = styled.div`
   height: 100vh;
@@ -25,6 +25,16 @@ const Wrapper = styled.div`
   flex-direction: column;
 `;
 
+const TextWrapper = styled.div`
+  height: 20vh;
+  display: flex;
+  justify-content: center;
+`;
+
+const QuickImage = styled.img`
+  width: 500px;
+  height: 200px;
+`;
 
 const StartWrapper = styled.div`
   height: 60vh;
@@ -67,7 +77,7 @@ class Home extends Component {
         <Navbar />
         <Wrapper>
           <StartWrapper>
-            {interviewKinds.map((kindList) => {
+            {interviewKinds.map((kindList, index) => {
               return (
                 <Link to={{
                   pathname: `${kindList.link}`,

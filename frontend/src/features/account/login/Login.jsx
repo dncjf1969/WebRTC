@@ -6,7 +6,6 @@ import { useDispatch } from 'react-redux';
 import { login } from './LoginSlice';
 
 // style
-
 const Wrapper = styles(Container)`
   display: flex;
   height: 100vh;
@@ -25,10 +24,14 @@ const LoginContainer = styles.div`
 
 // component
 function Login() {
+  // 생성한 action을 useDispatch를 통해 발생시킬 수 있다
+  // ex. <button onClick={()=>dispatch({type:액션타입})}>
   const dispatch = useDispatch();
+
   // state
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+
   // function
   function handleSubmit(e) {
     e.preventDefault();
@@ -36,7 +39,7 @@ function Login() {
       email,
       password,
     };
-    dispatch(login(data));
+    dispatch(login(data)); // LoginSlice에서 가져온 로그인 액션, login(data) 는 createAsyncThunk로 만든것.
   }
 
   // render
