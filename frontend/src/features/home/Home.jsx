@@ -6,7 +6,7 @@ import Kind from './Kind';
 import normal from '../../assets/normal.png'
 import pt from '../../assets/pt.png'
 import debate from '../../assets/debate.png'
-import {Link } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import nonline from './style.css'
 
 const Wrapper = styled.div`
