@@ -121,7 +121,7 @@ public class MemberController {
 			@ApiParam(value="회원가입했던 아이디", required = true) @RequestParam String memberId,
 			@ApiParam(value="회원가입했던 이메일", required = true) @RequestParam String memberEmail) {
 
-
+				
 		int results_num = memberService.findPassword(memberId, memberEmail);
 
 		if(results_num==0) return ResponseEntity.status(200).body(BaseRes.of(200, "가입하신 이메일로 임시 비밀번호가 전송되었습니다."));
