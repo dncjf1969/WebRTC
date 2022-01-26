@@ -1,4 +1,4 @@
-package com.wish.api.request;
+package com.wish.api.dto.request;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -7,10 +7,10 @@ import lombok.Setter;
 
 @Getter
 @Setter
-@ApiModel("CustomQuestionUpdateReq")
-public class CustomQuestionUpdateReq {
-    @ApiModelProperty(name="질문 id", example="4")
-    Long id;
+@ApiModel("CustomQuestionCreateReq")
+public class CustomQuestionCreateReq {
+    @ApiModelProperty(name="대기방 id", example="abcd123")
+    String meetingroomId;
     @ApiModelProperty(name="질문 내용", example="자기소개해보세요")
     String content;
 }
