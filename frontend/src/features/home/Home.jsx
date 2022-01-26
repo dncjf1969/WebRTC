@@ -7,12 +7,7 @@ import normal from '../../assets/normal.png'
 import pt from '../../assets/pt.png'
 import debate from '../../assets/debate.png'
 import { Link } from 'react-router-dom'
-<<<<<<< HEAD
-import "style.css"
-
-=======
 import './style.css'
->>>>>>> fa9b369f4aba0db34b359cb5f692c87efb224767
 
 const Wrapper = styled.div`
   height: 100vh;
