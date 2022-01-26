@@ -11,7 +11,7 @@ import org.springframework.http.HttpStatus;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.ImmutableMap;
-import com.wish.api.response.BaseRes;
+import com.wish.api.dto.response.BaseRes;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 

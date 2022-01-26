@@ -1,4 +1,4 @@
-package com.wish.api.response;
+package com.wish.api.dto.response;
 
 import com.wish.db.entity.Member;
 
