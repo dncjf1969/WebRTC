@@ -40,7 +40,6 @@ function Navbar() {
         <Link to="/signup">회원가입</Link>
         <Link to="/login">로그인</Link>
         <Link to="/roomlist">방리스트</Link>
-        
         <DropDownMenu />
       </Links>
     </Wrapper>
