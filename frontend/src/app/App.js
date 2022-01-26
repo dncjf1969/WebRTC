@@ -10,6 +10,8 @@ import SignUp from "../features/account/signup/Signup";
 import Login from "../features/account/login/Login";
 import Home from "../features/home/Home";
 import RoomList from '../features/roomlist/Roomlist';
+import DataTable from '../features/roomlist/roomarray2'
+import RoomArray from '../features/roomlist/roomarray'
 
 const Wrapper = styled.div`
   background-color: white;
@@ -28,6 +30,8 @@ function App() {
           <Route path="/signup" element={<SignUp />}></Route>
           <Route path="/login" element={<Login />}></Route>
           <Route path="/roomlist" element={<RoomList />}></Route>
+          <Route path="/test" element={<DataTable />}></Route>
+          <Route path="/test2" element={<RoomArray />}></Route>
         </Routes>
       </Router>
     </Wrapper>
