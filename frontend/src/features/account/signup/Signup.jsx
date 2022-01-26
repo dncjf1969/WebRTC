@@ -1,13 +1,8 @@
 import { useState, React, useEffect } from 'react';
-// $ npm i react-redux
 import { useDispatch } from 'react-redux';
-// $ npm i styled-components
 import styled from 'styled-components';
-// $ npm install @material-ui/core
 import { Button } from '@material-ui/core';
-// $ npm i react-material-ui-form-validator
 import { ValidatorForm, TextValidator } from 'react-material-ui-form-validator';
-// $ npm i @material-ui/core/styles
 import { makeStyles } from '@material-ui/core/styles';
 import { signup, checkNickname, checkEmail } from '../authSlice';
 
