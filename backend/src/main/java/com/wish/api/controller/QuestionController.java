@@ -1,8 +1,8 @@
 package com.wish.api.controller;
 
-import com.wish.api.request.*;
-import com.wish.api.response.BaseRes;
-import com.wish.api.response.QuestionListRes;
+import com.wish.api.dto.request.*;
+import com.wish.api.dto.response.BaseRes;
+import com.wish.api.dto.response.QuestionListRes;
 import com.wish.api.service.CustomQuestionService;
 import com.wish.api.service.QuestionService;
 import com.wish.db.entity.CustomQuestion;

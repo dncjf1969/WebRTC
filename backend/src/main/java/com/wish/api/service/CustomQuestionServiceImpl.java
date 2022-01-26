@@ -1,18 +1,13 @@
 package com.wish.api.service;
 
-import com.wish.api.request.CustomQuestionCreateReq;
-import com.wish.api.request.CustomQuestionUpdateReq;
+import com.wish.api.dto.request.CustomQuestionCreateReq;
+import com.wish.api.dto.request.CustomQuestionUpdateReq;
 import com.wish.db.entity.CustomQuestion;
-import com.wish.db.entity.Question;
 import com.wish.db.repository.CustomQuestionRepository;
-import com.wish.db.repository.CustomQuestionRepositorySupport;
-import com.wish.db.repository.MemberRepository;
-import com.wish.db.repository.MemberRepositorySupport;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 
 @Service

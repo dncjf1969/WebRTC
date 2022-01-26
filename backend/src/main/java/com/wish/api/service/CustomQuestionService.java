@@ -1,8 +1,8 @@
 package com.wish.api.service;
 
 
-import com.wish.api.request.CustomQuestionCreateReq;
-import com.wish.api.request.CustomQuestionUpdateReq;
+import com.wish.api.dto.request.CustomQuestionCreateReq;
+import com.wish.api.dto.request.CustomQuestionUpdateReq;
 import com.wish.db.entity.CustomQuestion;
 import com.wish.db.entity.Question;
 

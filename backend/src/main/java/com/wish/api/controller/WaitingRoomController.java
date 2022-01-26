@@ -41,6 +41,7 @@ import io.swagger.annotations.ApiResponses;
 @RequestMapping("/room/waiting")
 public class WaitingRoomController {
 	// Openvidu 관련 객체 생성
+//	private OpenVidu openVidu;
 	
 	// 방 목록을 관리할 list
 	private List<WaitingRoom> roomList = new LinkedList<WaitingRoom>();
