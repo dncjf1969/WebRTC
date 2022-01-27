@@ -14,4 +14,10 @@ public class MemberLoginReq {
 	String id;
 	@ApiModelProperty(name="유저 Password", example="your_password")
 	String password;
+	@Override
+	public String toString() {
+		return "MemberLoginReq [id=" + id + ", password=" + password + "]";
+	}
+	
+	
 }
