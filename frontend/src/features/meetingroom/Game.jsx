@@ -1,20 +1,9 @@
 import axios from 'axios';
 import { OpenVidu } from 'openvidu-browser';
-import React, { Component } from 'react';
-import './Room.css';
-import UserVideoComponent from './UserVideoComponent';
-<<<<<<< HEAD
-import { Layout, Menu } from 'antd';
-import {
-  MenuUnfoldOutlined,
-  MenuFoldOutlined,
-  UserOutlined,
-  VideoCameraOutlined,
-  UploadOutlined,
-} from '@ant-design/icons';
-import 'antd/dist/antd.css';
-=======
->>>>>>> frontend
+import React, { Component, createRef  } from 'react';
+import '../interview/Room.css';
+import UserVideoComponent from '../interview/UserVideoComponent';
+import Messages from './Messages';
 
 const OPENVIDU_SERVER_URL = 'https://' + window.location.hostname + ':4443';
 const OPENVIDU_SERVER_SECRET = 'MY_SECRET';
@@ -31,6 +20,8 @@ class Room extends Component {
             mainStreamManager: undefined,
             publisher: undefined,
             subscribers: [],
+            messages: [],
+            message: '',
         };
 
         this.joinSession = this.joinSession.bind(this);
@@ -39,11 +30,13 @@ class Room extends Component {
         this.handleChangeUserName = this.handleChangeUserName.bind(this);
         this.handleMainVideoStream = this.handleMainVideoStream.bind(this);
         this.onbeforeunload = this.onbeforeunload.bind(this);
-<<<<<<< HEAD
-=======
-        // this.startButton = this.startButton.bind(this);
->>>>>>> frontend
-    }
+        this.startButton = this.startButton.bind(this);
+         // ref
+        this.chatboxmessage = createRef(null);
+        this.sendmessageByClick = this.sendmessageByClick.bind(this);
+        this.sendmessageByEnter = this.sendmessageByEnter.bind(this);
+        this.handleChatMessageChange = this.handleChatMessageChange.bind(this);
+      }
 
     componentDidMount() {
         window.addEventListener('beforeunload', this.onbeforeunload);
@@ -63,6 +56,62 @@ class Room extends Component {
         });
     }
 
+    handleChatMessageChange(e) {
+      this.setState({
+        message: e.target.value,
+      });
+    }
+
+    sendmessageByClick() {
+      this.setState({
+        messages: [
+          ...this.state.messages,
+          {
+            userName: this.state.myUserName,
+            text: this.state.message,
+            chatClass: 'messages__item--operator',
+          },
+        ],
+      });
+      const mySession = this.state.session;
+  
+      mySession.signal({
+        data: `${this.state.myUserName},${this.state.message}`,
+        to: [],
+        type: 'chat',
+      });
+  
+      this.setState({
+        message: '',
+      });
+    }
+
+    sendmessageByEnter(e) {
+      if (e.key === 'Enter') {
+        this.setState({
+          messages: [
+            ...this.state.messages,
+            {
+              userName: this.state.myUserName,
+              text: this.state.message,
+              chatClass: 'messages__item--operator',
+            },
+          ],
+        });
+        const mySession = this.state.session;
+  
+        mySession.signal({
+          data: `${this.state.myUserName},${this.state.message}`,
+          to: [],
+          type: 'chat',
+        });
+  
+        this.setState({
+          message: '',
+        });
+      }
+    }
+  
     handleChangeUserName(e) {
         this.setState({
             myUserName: e.target.value,
@@ -125,6 +174,22 @@ class Room extends Component {
                     this.deleteSubscriber(event.stream.streamManager);
                 });
 
+                mySession.on('signal:chat', (event) => {
+                  let chatdata = event.data.split(',');
+                  if (chatdata[0] !== this.state.myUserName) {
+                    this.setState({
+                      messages: [
+                        ...this.state.messages,
+                        {
+                          userName: chatdata[0],
+                          text: chatdata[1],
+                          chatClass: 'messages__item--visitor',
+                        },
+                      ],
+                    });
+                  }
+                });
+                
                 // On every asynchronous exception...
                 mySession.on('exception', (exception) => {
                     console.warn(exception);
@@ -177,6 +242,28 @@ class Room extends Component {
         );
     }
 
+      // 시작버튼
+    start() {
+      setTimeout(() => {
+        this.setState({ started: false });
+        this.init();
+      }, 5000);
+      setTimeout(() => {
+        this.setState({ readystate: 'start' });
+      }, 3000);
+      this.setState({
+        started: true,
+      });
+    }
+
+    startButton() {
+      let mySession = this.state.session;
+      mySession.signal({
+        data: 'start',
+        type: 'start',
+      });
+    }
+
     leaveSession() {
 
         // --- 7) Leave the session by calling 'disconnect' method over the Session object ---
@@ -202,10 +289,6 @@ class Room extends Component {
     render() {
         const mySessionId = this.state.mySessionId;
         const myUserName = this.state.myUserName;
-<<<<<<< HEAD
-        const { Header, Sider, Content } = Layout;
-=======
->>>>>>> frontend
 
         return (
             <div className="container">
@@ -248,39 +331,6 @@ class Room extends Component {
                 ) : null}
 
                 {this.state.session !== undefined ? (
-<<<<<<< HEAD
-                    <Layout>
-                      <Sider>
-                        <div className="logo" />
-                        <Menu theme="dark" mode="inline" defaultSelectedKeys={['1']}>
-                          <Menu.Item key="1">
-                            user1
-                          </Menu.Item>
-                          <Menu.Item key="2" >
-                            user2 
-                          </Menu.Item>
-                          <Menu.Item key="3" >
-                            user3
-                          </Menu.Item>
-                        </Menu>
-                      </Sider>
-                
-                      <Layout className="site-layout">
-                        <Header className="site-layout-background" style={{ padding: 0 }}>
-                        </Header>
-                        <Content
-                          className="site-layout-background"
-                          style={{
-                            margin: '24px 16px',
-                            padding: 24,
-                            minHeight: 280,
-                          }}
-                        >
-                          Chatting
-                        </Content>
-                      </Layout>
-                    </Layout>
-=======
                     <div id="session">
                         <div id="session-header">
                             <h1 id="session-title">{mySessionId}</h1>
@@ -312,7 +362,6 @@ class Room extends Component {
                             ))}
                         </div>
                     </div>
->>>>>>> frontend
                 ) : null}
             </div>
         );

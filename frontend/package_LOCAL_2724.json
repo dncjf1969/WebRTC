@@ -20,13 +20,8 @@
     "antd": "^4.18.5",
     "antd-demo": "^0.1.0",
     "axios": "^0.25.0",
-    "jquery": "^3.6.0",
     "mui-datatables": "^4.0.0",
-<<<<<<< HEAD
     "openvidu-browser": "2.20.0",
-=======
-    "openvidu-browser": "^2.21.0-beta1",
->>>>>>> frontend
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-material-ui-form-validator": "^3.0.0",
