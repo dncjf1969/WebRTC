@@ -29,16 +29,13 @@ function Login() {
   const dispatch = useDispatch();
 
   // state
-  const [email, setEmail] = useState('');
+  const [ID, setID] = useState('');
   const [password, setPassword] = useState('');
 
   // function
   function handleSubmit(e) {
     e.preventDefault();
-    const data = {
-      email,
-      password,
-    };
+    const data = { 'id': ID, 'password': password, };
     dispatch(login(data)); // LoginSlice에서 가져온 로그인 액션, login(data) 는 createAsyncThunk로 만든것.
   }
 
@@ -49,14 +46,13 @@ function Login() {
         <Title>LOGO</Title>
         <ValidatorForm onSubmit={handleSubmit}>
           <TextValidator
-            label="이메일"
-            onChange={(e) => setEmail(e.target.value)}
+            label="아이디"
+            onChange={(e) => setID(e.target.value)}
             name="email"
-            value={email}
-            validators={['required', 'isEmail']}
+            value={ID}
+            validators={['required']}
             errorMessages={[
               '정보를 입력해주세요',
-              '이메일 형식으로 입력해주세요',
             ]}
             variant="outlined"
             autoFocus
