@@ -10,8 +10,12 @@ import SignUp from "../features/account/signup/Signup";
 import Login from "../features/account/login/Login";
 import Home from "../features/home/Home";
 import RoomList from '../features/roomlist/Roomlist';
-import DataTable from '../features/roomlist/roomarray2'
-import RoomArray from '../features/roomlist/roomarray'
+import MyPage from '../features/mypage/Mypage';
+import DataTable from '../features/roomlist/roomarray2';
+import RoomArray from '../features/roomlist/roomarray';
+import Game from '../features/meetingroom/Game';
+import Room from '../features/interview/Room';
+import VideoRoomComponent from "../features/roomTest/VideoRoomComponent";
 
 const Wrapper = styled.div`
   background-color: white;
@@ -30,8 +34,12 @@ function App() {
           <Route path="/signup" element={<SignUp />}></Route>
           <Route path="/login" element={<Login />}></Route>
           <Route path="/roomlist" element={<RoomList />}></Route>
+          <Route path="/mypage" element={<MyPage />} />
           <Route path="/test" element={<DataTable />}></Route>
           <Route path="/test2" element={<RoomArray />}></Route>
+          <Route path="/game" element={<Game />}></Route>
+          <Route path="/room" element={<Room />}></Route>
+          <Route path="/roomTest" element={<VideoRoomComponent />}></Route>
         </Routes>
       </Router>
     </Wrapper>
