@@ -46,7 +46,7 @@ function Login() {
   return (
     <Wrapper>
       <LoginContainer>
-        <Title>LOGO</Title>
+        <Title>☆로그인페이지★</Title>
         <ValidatorForm onSubmit={handleSubmit}>
           <TextValidator
             label="아이디"

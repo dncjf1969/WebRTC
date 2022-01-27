@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { deleteToken, saveToken } from "../../common/JWT-common";
-import axios from "axios";
+import axios from "../../common/http-common";
 
 // signup axios -> REST API, params 필요
 export const signup = createAsyncThunk(
@@ -9,8 +9,9 @@ export const signup = createAsyncThunk(
     // 비동기 호출 함수를 정의합니다.
     console.log(userInfo);
     await axios
-      .post("/signup", userInfo)
+      .post("/members/signup", userInfo)
       .then((res) => {
+        console.log(res)
         return res.data;
       })
       .catch((err) => {
@@ -51,6 +52,21 @@ export const checkNickname = createAsyncThunk(
     console.log("닉네임 버튼 활성화", nickname);
     await axios
       .get("/checknickname", nickname)
+      .then((res) => {
+        return res.data;
+      })
+      .catch((err) => {
+        return err;
+      });
+  }
+);
+
+export const checkID = createAsyncThunk(
+  "CHECK_NICKNAME",
+  async (ID) => {
+    console.log("아이디 버튼 활성화", ID);
+    await axios
+      .get("/checknickname", ID)
       .then((res) => {
         return res.data;
       })
@@ -103,7 +119,7 @@ const authSlice = createSlice({
   // 조사 필요, return 값 찾아야함
   // fullfilled -> 완료되었을 때 무슨 일을 할지 (signup은 로그인 시켜준다, 이런것)
   extraReducers: {
-    [signup.fulfilled]: (state) => [...state],
+    // [signup.fulfilled]: (state) => [...state],
     [checkEmail.fulfilled]: () => [],
     [checkNickname.fullfilled]: () => [],
   },

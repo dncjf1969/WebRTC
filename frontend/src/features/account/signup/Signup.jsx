@@ -9,7 +9,7 @@ import { Button } from '@material-ui/core';
 import { ValidatorForm, TextValidator } from 'react-material-ui-form-validator';
 // $ npm i @material-ui/core/styles
 import { makeStyles } from '@material-ui/core/styles';
-import { signup, checkNickname, checkEmail } from '../authSlice';
+import { signup, checkNickname, checkEmail, checkID } from '../authSlice';
 
 // style
 const Wrapper = styled.div`
@@ -44,7 +44,8 @@ const useStyles = makeStyles({
 function SignUp() {
   // local state
   const [email, setEmail] = useState('');
-  const [nickname, setNickname] = useState('');
+  const [ID, setID] = useState('');
+  const [Nickname, setNickname] = useState('');
   const [confirmNumber, setConfirmNumber] = useState('');
   const [password, setPassword] = useState('');
   const [repeatPassword, setRepeatPassword] = useState('');
@@ -56,6 +57,15 @@ function SignUp() {
 // ex. <button onClick={()=>dispatch({type:액션타입})}>
 
   // setState when user change input
+  function handleID(event) {
+    const { value } = event.target;
+    if (value.length < 10) {
+      setID(value);
+      return true;
+    }
+    return false;
+  }
+
   function handleNickname(event) {
     const { value } = event.target;
     if (value.length < 10) {
@@ -70,9 +80,10 @@ function SignUp() {
   function handleSubmit(event) {
     event.preventDefault();
     const data = {
-      email,
-      nickname,
-      password,
+      'email': email,
+      'id': ID,
+      'name': Nickname,
+      'password': password
     }
     dispatch(signup(data));
   }
@@ -101,7 +112,8 @@ function SignUp() {
       }
       return true;
     });
-  }, [nickname]);
+  }, [ID, Nickname]);
+
   //잘 모르겠다.
   //없어도 잘 돌아가긴 함.
 
@@ -111,11 +123,11 @@ function SignUp() {
         <Title><h1>WISH</h1></Title>
         <ValidatorForm onSubmit={handleSubmit} className={classes.validatorForm}>
           <TextValidator
-            label="닉네임"
-            onChange={handleNickname}
+            label="아이디"
+            onChange={handleID}
             color="secondary"
-            name="nickname"
-            value={nickname}
+            name="ID"
+            value={ID}
             validators={['required']}
             errorMessages={['정보를 입력해주세요']}
             InputLabelProps={{
@@ -127,7 +139,27 @@ function SignUp() {
             size="small"
             fullWidth
           />
-          <Button onClick={() => dispatch(checkNickname(nickname))}>
+          <Button onClick={() => dispatch(checkID(ID))}>
+            중복확인
+          </Button>
+          <TextValidator
+            label="닉네임"
+            onChange={handleNickname}
+            color="secondary"
+            name="nickname"
+            value={Nickname}
+            validators={['required']}
+            errorMessages={['정보를 입력해주세요']}
+            InputLabelProps={{
+              shrink: true,
+            }}
+            helperText="최대 10글자입니다."
+            variant="outlined"
+            margin="normal"
+            size="small"
+            fullWidth
+          />
+          <Button onClick={() => dispatch(checkNickname(Nickname))}>
             중복확인
           </Button>
           <TextValidator
