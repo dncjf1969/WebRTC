@@ -8,34 +8,48 @@ import com.wish.api.dto.response.WaitingroomSearchRes;
 
 public class SearchUtil {
 	
-	public List<WaitingroomSearchRes> search(List<WaitingRoom> list, String keyword){
-		List<WaitingroomSearchRes> res = new ArrayList<WaitingroomSearchRes>();
-		
-		// map 순회하면서 조건에 맞는 방을 res에 추가해서 반환하기
-		
-		return res;
-	}
-	
-	// 방 이름으로 검색
-	public List<WaitingroomSearchRes> existByName(List<WaitingRoom> list, String name){
+	public static List<WaitingroomSearchRes> search(List<WaitingRoom> list, String keyword){
 		List<WaitingroomSearchRes> res = new ArrayList<WaitingroomSearchRes>();
 		
 		// map 순회하면서 조건에 맞는 방을 res에 추가해서 반환하기
 		for (WaitingRoom now : list) {
-			if(name.equals(now.getName())) {
-				WaitingroomSearchRes room = new WaitingroomSearchRes();
-				room.setRoomId(now.getRoomId());
-				room.setName(now.getName());
-				room.setManager(now.getManager());
-				room.setType(now.getType());
-				room.setJob(now.getJob());
-				room.setMemberMax(now.getMemberMax());
-				room.setMemberCount(now.getMemberCount());
-				
+			if(now.getName().contains(keyword)) {
+				// WaitingRoom을 WaitingroomSearchRes로 변경
+				WaitingroomSearchRes room = WaitingroomSearchRes.of(now);				
 				res.add(room);
 			}
 		}
 		
 		return res;
+	}
+	
+	// 방 이름으로 검색
+	public static List<WaitingroomSearchRes> existByName(List<WaitingRoom> list, String name){
+		List<WaitingroomSearchRes> res = new ArrayList<WaitingroomSearchRes>();
+		
+		// map 순회하면서 조건에 맞는 방을 res에 추가해서 반환하기
+		for (WaitingRoom now : list) {
+			if(name.equals(now.getName())) {
+				// WaitingRoom을 WaitingroomSearchRes로 변경
+				WaitingroomSearchRes room = WaitingroomSearchRes.of(now);				
+				res.add(room);
+			}
+		}
+		
+		return res;
+	}
+	
+	// 방id로 정확히 그 방을 검색
+	public static WaitingRoom searchById(List<WaitingRoom> list, int roomId){
+		List<WaitingroomSearchRes> res = new ArrayList<WaitingroomSearchRes>();
+		
+		// map 순회하면서 조건에 맞는 방을 res에 추가해서 반환하기
+		for (WaitingRoom now : list) {
+			if(now.getRoomId() == roomId) {
+				return now;
+			}
+		}
+		
+		return null;
 	}
 }
