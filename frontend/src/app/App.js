@@ -11,8 +11,9 @@ import Login from "../features/account/login/Login";
 import Home from "../features/home/Home";
 import RoomList from '../features/roomlist/Roomlist';
 import MyPage from '../features/mypage/Mypage';
-import DataTable from '../features/roomlist/roomarray2'
-import RoomArray from '../features/roomlist/roomarray'
+import DataTable from '../features/roomlist/roomarray2';
+import RoomArray from '../features/roomlist/roomarray';
+import Game from '../features/meetingroom/Game';
 
 const Wrapper = styled.div`
   background-color: white;
@@ -34,6 +35,7 @@ function App() {
           <Route path="/mypage" element={<MyPage />} />
           <Route path="/test" element={<DataTable />}></Route>
           <Route path="/test2" element={<RoomArray />}></Route>
+          <Route path="/game" element={<Game />}></Route>
         </Routes>
       </Router>
     </Wrapper>
