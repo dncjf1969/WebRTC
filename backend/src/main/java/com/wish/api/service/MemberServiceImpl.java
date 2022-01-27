@@ -167,5 +167,15 @@ public class MemberServiceImpl implements MemberService {
 		
 		return member;
 	}
+
+	@Override
+	public boolean checkId(String id) {
+		return memberRepository.existsById(id);
+	}
+
+	@Override
+	public boolean checkName(String name) {
+		return memberRepository.existsByName(name);
+	}
 	
 }

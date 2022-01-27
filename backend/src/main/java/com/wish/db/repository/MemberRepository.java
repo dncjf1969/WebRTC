@@ -19,6 +19,10 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
 	Optional<Member> findById(String id);
     
 	Optional<Member> findByEmail(String id);
+	
+	boolean existsById(String id);
+	boolean existsByName(String name);
+	
     //jpql
     @Query(value = "select * from member where id = ?1 and name = ?2", nativeQuery = true)
     Optional<Member> find2(String id, String name);

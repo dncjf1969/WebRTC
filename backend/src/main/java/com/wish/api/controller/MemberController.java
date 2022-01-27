@@ -33,6 +33,10 @@ public class MemberController {
 	
 	@Autowired
 	MemberService memberService;
+
+	// 응답 메세지
+	private static final String success = "Success";
+	private static final String fail = "fail";
 	
 	@PostMapping("/signup")
 	@ApiOperation(value = "회원 가입", notes = "<strong>아이디, 패스워드, 이름, 이메일</strong>를 입력하여 회원가입한다.") 
@@ -155,5 +159,41 @@ public class MemberController {
 		return ResponseEntity.status(200).body(MemberRes.of(member));
 	}
 	
+	@GetMapping("/check/id")
+	@ApiOperation(value = "회원가입시 아이디 중복 조회", notes = "이미 있는 아이디라면 사용 불가") 
+    @ApiResponses({
+        @ApiResponse(code = 200, message = "성공"),
+        @ApiResponse(code = 401, message = "아이디 중복"),
+        @ApiResponse(code = 500, message = "서버 오류")
+    })
+	public ResponseEntity<BaseRes> checkId(@ApiParam(value="중복검사할 아이디", required = true) String id) {
+		// id 가 이상한 문자열이 아닌지 검사->XSS
+		if(memberService.checkId(id)) {
+			// 중복이 있다 -> 가입 불가
+			return ResponseEntity.status(401).body(BaseRes.of(401, fail));
+		}else {
+			// 중복이 없다 -> 가입 가능
+			return ResponseEntity.status(200).body(BaseRes.of(200, success));
+		}
+	}
+	
+
+	@GetMapping("/check/name")
+	@ApiOperation(value = "회원가입시 이름 중복 조회", notes = "이미 있는 이름이라면 사용 불가") 
+    @ApiResponses({
+        @ApiResponse(code = 200, message = "성공"),
+        @ApiResponse(code = 401, message = "이름 중복"),
+        @ApiResponse(code = 500, message = "서버 오류")
+    })
+	public ResponseEntity<BaseRes> checkName(@ApiParam(value="중복검사할 이름", required = true)String name) {
+		// id 가 이상한 문자열이 아닌지 검사->XSS
+		if(memberService.checkName(name)) {
+			// 중복이 있다 -> 가입 불가
+			return ResponseEntity.status(401).body(BaseRes.of(401, fail));
+		}else {
+			// 중복이 없다 -> 가입 가능
+			return ResponseEntity.status(200).body(BaseRes.of(200, success));
+		}
+	}
 	
 }

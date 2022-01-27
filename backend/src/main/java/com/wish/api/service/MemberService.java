@@ -18,5 +18,8 @@ public interface MemberService {
 
 	Member getMemberById(String id);
 	
+	boolean checkId(String id);
+	boolean checkName(String name);
+	
 }
 
