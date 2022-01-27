@@ -3,6 +3,15 @@ import { OpenVidu } from 'openvidu-browser';
 import React, { Component } from 'react';
 import './Room.css';
 import UserVideoComponent from './UserVideoComponent';
+import { Layout, Menu } from 'antd';
+import {
+  MenuUnfoldOutlined,
+  MenuFoldOutlined,
+  UserOutlined,
+  VideoCameraOutlined,
+  UploadOutlined,
+} from '@ant-design/icons';
+import 'antd/dist/antd.css';
 
 const OPENVIDU_SERVER_URL = 'https://' + window.location.hostname + ':4443';
 const OPENVIDU_SERVER_SECRET = 'MY_SECRET';
@@ -186,6 +195,7 @@ class Room extends Component {
     render() {
         const mySessionId = this.state.mySessionId;
         const myUserName = this.state.myUserName;
+        const { Header, Sider, Content } = Layout;
 
         return (
             <div className="container">
@@ -228,37 +238,37 @@ class Room extends Component {
                 ) : null}
 
                 {this.state.session !== undefined ? (
-                    <div id="session">
-                        <div id="session-header">
-                            <h1 id="session-title">{mySessionId}</h1>
-                            <input
-                                className="btn btn-large btn-danger"
-                                type="button"
-                                id="buttonLeaveSession"
-                                onClick={this.leaveSession}
-                                value="Leave session"
-                            />
-                        </div>
-
-                        {this.state.mainStreamManager !== undefined ? (
-                            <div id="main-video" className="col-md-6">
-                                <UserVideoComponent streamManager={this.state.mainStreamManager} />
-                            </div>
-                        ) : null}
-                        <div id="video-container" className="col-md-6">
-                            {this.state.publisher !== undefined ? (
-                                <div className="stream-container col-md-6 col-xs-6" onClick={() => this.handleMainVideoStream(this.state.publisher)}>
-                                    <UserVideoComponent
-                                        streamManager={this.state.publisher} />
-                                </div>
-                            ) : null}
-                            {this.state.subscribers.map((sub, i) => (
-                                <div key={i} className="stream-container col-md-6 col-xs-6" onClick={() => this.handleMainVideoStream(sub)}>
-                                    <UserVideoComponent streamManager={sub} />
-                                </div>
-                            ))}
-                        </div>
-                    </div>
+                    <Layout>
+                      <Sider>
+                        <div className="logo" />
+                        <Menu theme="dark" mode="inline" defaultSelectedKeys={['1']}>
+                          <Menu.Item key="1">
+                            user1
+                          </Menu.Item>
+                          <Menu.Item key="2" >
+                            user2 
+                          </Menu.Item>
+                          <Menu.Item key="3" >
+                            user3
+                          </Menu.Item>
+                        </Menu>
+                      </Sider>
+                
+                      <Layout className="site-layout">
+                        <Header className="site-layout-background" style={{ padding: 0 }}>
+                        </Header>
+                        <Content
+                          className="site-layout-background"
+                          style={{
+                            margin: '24px 16px',
+                            padding: 24,
+                            minHeight: 280,
+                          }}
+                        >
+                          Chatting
+                        </Content>
+                      </Layout>
+                    </Layout>
                 ) : null}
             </div>
         );
