@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,11 +20,18 @@ import com.wish.api.dto.request.WaitingroomCreateReq;
 import com.wish.api.dto.request.WaitingroomManagerReq;
 import com.wish.api.dto.request.WaitingroomModifyReq;
 import com.wish.api.dto.response.BaseRes;
-import com.wish.api.dto.response.WaitingroomAddressRes;
 import com.wish.api.dto.response.WaitingroomListRes;
 import com.wish.api.dto.response.WaitingroomSearchRes;
+import com.wish.api.dto.response.WaitingroomTokenRes;
 import com.wish.common.util.SearchUtil;
 
+import io.openvidu.java.client.OpenVidu;
+import io.openvidu.java.client.OpenViduHttpException;
+import io.openvidu.java.client.OpenViduJavaClientException;
+import io.openvidu.java.client.OpenViduRole;
+import io.openvidu.java.client.Session;
+import io.openvidu.java.client.ConnectionProperties;
+import io.openvidu.java.client.ConnectionType;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -40,8 +48,6 @@ import io.swagger.annotations.ApiResponses;
 @RestController
 @RequestMapping("/room/waiting")
 public class WaitingRoomController {
-	// Openvidu 관련 객체 생성
-//	private OpenVidu openVidu;
 	
 	// 방 목록을 관리할 list
 	private List<WaitingRoom> roomList = new LinkedList<WaitingRoom>();
@@ -53,6 +59,23 @@ public class WaitingRoomController {
 	private static final String success = "Success";
 	private static final String fail = "fail";
 	
+
+	// Openvidu 관련 객체 생성
+	private OpenVidu openVidu;
+	
+	// OpenVidu서버 주소
+	private String OPENVIDU_URL;
+	// OpenVidu와 공유하는 SECRET
+	private String SECRET;
+
+	private SearchUtil searchUtil = new SearchUtil();
+	
+	public WaitingRoomController(@Value("${openvidu.secret}") String secret, @Value("${openvidu.url}") String openviduUrl) {
+		this.SECRET = secret;
+		this.OPENVIDU_URL = openviduUrl;
+		this.openVidu = new OpenVidu(OPENVIDU_URL, SECRET);
+	}
+	
 	@GetMapping
 	@ApiOperation(value = "대기방 검색", notes = "<strong>검색 키워드</strong>를 입력하여 방 목록을 반환한다") 
     @ApiResponses({
@@ -62,7 +85,7 @@ public class WaitingRoomController {
         @ApiResponse(code = 500, message = "서버 에러")
     })
 	public ResponseEntity<WaitingroomListRes> searchWaitingRoom(
-			@RequestParam @ApiParam(value="방 검색 키워드", required = true) String keyword ) {
+			@RequestParam @ApiParam(value="방 검색 키워드") String keyword ) {
 	
 		// OpenVidu롤 방 생성
 		// ?? util 객체 이렇게 할건지, 싱글톤으로할건지
@@ -84,17 +107,46 @@ public class WaitingRoomController {
 	@ApiOperation(value = "대기방 생성", notes = "<strong>방이름, 종류, 방장, 최대인원, 비밀번호</strong>를 입력하여 방을 생성 한다.") 
     @ApiResponses({
         @ApiResponse(code = 201, message = "성공"),
-        @ApiResponse(code = 401, message = "생성 실패"),
+        @ApiResponse(code = 401, message = "동일한 이름의 방 존재"),
         @ApiResponse(code = 404, message = "사용자 없음"),
         @ApiResponse(code = 500, message = "서버 에러")
     })
-	public ResponseEntity<WaitingroomAddressRes> createWaitingRoom(
-			@RequestBody @ApiParam(value="방 생성 정보", required = true) WaitingroomCreateReq createInfo) {
+	public ResponseEntity<WaitingroomTokenRes> createWaitingRoom(
+			@RequestBody @ApiParam(value="방 생성 정보", required = true) WaitingroomCreateReq createInfo) throws OpenViduJavaClientException, OpenViduHttpException {
 	
-		//OpenVidu롤 방 생성
-		String address = "";
+		// 로그인 검사
+		try {
+//			checkUserLogged(httpSession);
+		} catch (Exception e) {
+//			return "index";
+		}
 		
-		return ResponseEntity.status(201).body(WaitingroomAddressRes.of(address));
+		// OpenViduRole : https://docs.openvidu.io/en/stable/api/openvidu-node-client/enums/openvidurole.html
+		// MODERATOR / PUBLISHER / SUBSCRIBER
+		OpenViduRole role = OpenViduRole.PUBLISHER;
+		
+		// 세션에 참여한 다른 참여자들에게 전달할 추가 정보
+		// 이름을 전달한다.
+		String serverData = "{\"serverData\": \"" + createInfo.getName() + "\"}";
+
+		// ConnectionProperties : https://docs.openvidu.io/en/stable/api/openvidu-node-client/interfaces/connectionproperties.html
+		ConnectionProperties connectionProperties = new ConnectionProperties.Builder()
+				.type(ConnectionType.WEBRTC)	// 연결 타입  WEBRTC / IPCAM
+				.role(role)						// role : 역할(권한)
+				.data(serverData)				// data : 닉네임같은 사용자에 대한 일부 데이터
+				.record(true)					// 녹화 => https://docs.openvidu.io/en/2.20.0/advanced-features/recording/#how-to-record-sessions
+				.build();
+		
+		// 방 생성
+		Session session = this.openVidu.createSession();
+		String token = session.createConnection(connectionProperties).getToken();	// 주소가 들어간다 wss://192.~
+		
+		// 방목록에 새로 만든 방 추가
+		WaitingRoom room = WaitingRoom.of(session, token, autoIncreament++, createInfo);
+		roomList.add(room);
+		
+		// 클라이언트에 토큰(주소) 전달
+		return ResponseEntity.status(201).body(WaitingroomTokenRes.of(token));
 	}
 	
 	
@@ -147,7 +199,7 @@ public class WaitingRoomController {
         @ApiResponse(code = 404, message = "존재하지 않는 방 id입니다."),
         @ApiResponse(code = 500, message = "서버 에러")
     })
-	public ResponseEntity<WaitingroomAddressRes> enterWaitingRoom(
+	public ResponseEntity<WaitingroomTokenRes> enterWaitingRoom(
 			@RequestParam @ApiParam(value="방id", required = true) int roomId,
 			@RequestParam @ApiParam(value="방 비밀번호", required = true) String password) {
 	
@@ -157,7 +209,7 @@ public class WaitingRoomController {
 		// 주소 리턴
 		String address = "";
 		
-		return ResponseEntity.status(200).body(WaitingroomAddressRes.of(address));
+		return ResponseEntity.status(200).body(WaitingroomTokenRes.of(address));
 	}
 	
 
