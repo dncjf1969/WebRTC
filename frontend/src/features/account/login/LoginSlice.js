@@ -1,19 +1,26 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import axios from '../../../common/http-common';
+import { saveToken } from '../../../common/JWT-common'
 
 // createAsyncThunk
 // 액션 타입 문자열, 프로미스를 반환하는 비동기 함수, 추가 옵션 순서대로 인자를 받는 함수다.
 
 export const login = createAsyncThunk('LOGIN', async (userInfo) => {
-  await axios
-    .post('/login', userInfo)
-    .then((res) => {
-      return res.data;
-    })
-    .catch((err) => {
-      return err;
-    });
+  try {
+    const response = await axios.post('/members/login', userInfo)
+    const {
+      data: {accessToken},
+    } = response;
+    saveToken(accessToken);
+    console.log(response)
+    return response;
+  } catch (err) {
+    return(err.response)
+  }
 });
+
+
+
 
 const loginSlice = createSlice({
   name: 'login',
