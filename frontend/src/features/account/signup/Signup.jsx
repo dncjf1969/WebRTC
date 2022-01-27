@@ -90,6 +90,17 @@ function SignUp() {
   // event.preventDefault() = 기본 클릭 동작 방지하기
   // '/signup' -> 비동기 호출 실시
 
+  function handleIDCheck() {
+    const data = ID
+    dispatch(checkID(data));
+  }
+
+  async function handleNicknameCheck() {
+    const data = Nickname
+    const temp = await dispatch(checkNickname(data));
+    console.log(temp)
+  }
+
   // validation (same password)
   useEffect(() => {
     ValidatorForm.addValidationRule('isPasswordMatch', (value) => {
@@ -139,7 +150,7 @@ function SignUp() {
             size="small"
             fullWidth
           />
-          <Button onClick={() => dispatch(checkID(ID))}>
+          <Button onClick={handleIDCheck}>
             중복확인
           </Button>
           <TextValidator
@@ -159,7 +170,7 @@ function SignUp() {
             size="small"
             fullWidth
           />
-          <Button onClick={() => dispatch(checkNickname(Nickname))}>
+          <Button onClick={handleNicknameCheck}>
             중복확인
           </Button>
           <TextValidator

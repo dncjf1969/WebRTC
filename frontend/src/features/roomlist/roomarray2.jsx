@@ -1,5 +1,7 @@
-import * as React from 'react';
 import { DataGrid } from '@mui/x-data-grid';
+import { useEffect, useState } from 'react';
+import { searchRoom } from './roomSlice';
+import { useDispatch } from 'react-redux';
 
 // 요청을 보내서 다음과 같은 응답을 받았다고 가정
 const tempData = [
@@ -19,8 +21,10 @@ const tempData = [
   }
 ]
 
+
+
 const columns = [
-  { field: 'id', headerName: '방아이디', width: 70, type: 'number'},
+  { field: 'id', headerName: '방아이디', width: 100, type: 'number'},
   { field: 'name', headerName: '방제', width: 130 },
   { field: 'type', headerName: '면접종류', width: 130 },
   {
@@ -62,6 +66,11 @@ const columns = [
 const rows = tempData;
 
 export default function DataTable() {
+
+  const [word, setWord] = useState('')
+  // const [data, setData] = useState([])
+  const dispatch = useDispatch();
+  useEffect(() => {dispatch(searchRoom(word))}, [word]);
   return (
     <div style={{ height: 400, width: '100%' }}>
       <DataGrid

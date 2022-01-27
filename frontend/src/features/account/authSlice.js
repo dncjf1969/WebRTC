@@ -49,13 +49,15 @@ export const checkEmail = createAsyncThunk(
 export const checkNickname = createAsyncThunk(
   "CHECK_NICKNAME",
   async (nickname) => {
-    console.log("닉네임 버튼 활성화", nickname);
+    // console.log("닉네임 버튼 활성화", nickname);
     await axios
-      .get("/checknickname", nickname)
+      .get(`/members/check/name?name=${nickname}`, nickname)
       .then((res) => {
+        console.log(res)
         return res.data;
       })
       .catch((err) => {
+        console.log(err)
         return err;
       });
   }
@@ -64,10 +66,11 @@ export const checkNickname = createAsyncThunk(
 export const checkID = createAsyncThunk(
   "CHECK_NICKNAME",
   async (ID) => {
-    console.log("아이디 버튼 활성화", ID);
+    // console.log("아이디 버튼 활성화", ID);
     await axios
-      .get("/checknickname", ID)
+      .get(`/members/check/name?name=${ID}`, ID)
       .then((res) => {
+        console.log(res)
         return res.data;
       })
       .catch((err) => {
