@@ -40,10 +40,10 @@ const Main = styled.main`
 `;
 
 // 제목
-const Title = styled.div`
-  font-weight: bold;
-  font-size: 3rem;
-`;
+// const Title = styled.div`
+//   font-weight: bold;
+//   font-size: 3rem;
+// `;
 
 // 내용
 const Content = styled.span`
@@ -78,6 +78,8 @@ export default function MyPage() {
           <Sidebar>
             <ProfileImage src={defaultImage} alt="profile" />
           </Sidebar>
+          <br />
+          <br />
         <Main>
           <BasicInfo>
             <Nickname>
@@ -97,6 +99,8 @@ export default function MyPage() {
               <Content>{email}</Content>
             </Email>
           </BasicInfo>
+          <br />
+          <br />
           <Record>
             <h2>내 기록</h2>
             <MyTable />

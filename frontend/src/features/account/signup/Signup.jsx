@@ -1,10 +1,10 @@
 import { useState, React, useEffect } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 import { Button } from '@material-ui/core';
 import { ValidatorForm, TextValidator } from 'react-material-ui-form-validator';
 import { makeStyles } from '@material-ui/core/styles';
-import { signup, checkNickname, checkEmail } from '../authSlice';
+import { signup, checkNickname, setNicknameCheckedFalse  } from '../authSlice';
 
 // style
 const Wrapper = styled.div`
@@ -40,7 +40,7 @@ function SignUp() {
   // local state
   const [email, setEmail] = useState('');
   const [nickname, setNickname] = useState('');
-  const [confirmNumber, setConfirmNumber] = useState('');
+  const { isNicknameChecked } = useSelector((state) => state.auth);
   const [password, setPassword] = useState('');
   const [repeatPassword, setRepeatPassword] = useState('');
   const classes = useStyles();
@@ -53,6 +53,9 @@ function SignUp() {
   // setState when user change input
   function handleNickname(event) {
     const { value } = event.target;
+    if (isNicknameChecked) {
+      dispatch(setNicknameCheckedFalse());
+    }
     if (value.length < 10) {
       setNickname(value);
       return true;
@@ -60,6 +63,14 @@ function SignUp() {
     return false;
   }
   // 닉네임 최대 10글자
+
+  function isValidNickname() {
+    dispatch(checkNickname(nickname))
+      .unwrap()
+      .catch((err) => {
+        alert(err.data.message);
+      });
+  }
 
   // submit when user click button
   function handleSubmit(event) {
@@ -69,7 +80,7 @@ function SignUp() {
       nickname,
       password,
     }
-    dispatch(signup(data));
+    dispatch(signup(data))
   }
   // event.preventDefault() = 기본 클릭 동작 방지하기
   // '/signup' -> 비동기 호출 실시
@@ -104,7 +115,9 @@ function SignUp() {
     <Wrapper>
       <LoginContainer>
         <Title><h1>WISH</h1></Title>
-        <ValidatorForm onSubmit={handleSubmit} className={classes.validatorForm}>
+        <ValidatorForm 
+        onSubmit={handleSubmit} c
+        lassName={classes.validatorForm}>
           <TextValidator
             label="닉네임"
             onChange={handleNickname}
@@ -122,7 +135,9 @@ function SignUp() {
             size="small"
             fullWidth
           />
-          <Button onClick={() => dispatch(checkNickname(nickname))}>
+          <Button disabled={isNicknameChecked || !nickname}
+            onClick={isValidNickname} 
+            >
             중복확인
           </Button>
           <TextValidator
@@ -131,7 +146,6 @@ function SignUp() {
             name="email"
             value={email}
             color="success"
-            helperText="양식에 맞게 적어주세요"
             validators={['required', 'isEmail']}
             errorMessages={['정보를 입력해주세요', 'email is not valid']}
             InputLabelProps={{
@@ -142,19 +156,7 @@ function SignUp() {
             size="small"
             fullWidth
           />
-          {/* button disabled 토글 필요 */}
-          {/* <Button onClick={() => dispatch(checkEmail(email))}>인증하기</Button>
-          <TextValidator
-            label="인증번호"
-            onChange={(e) => setConfirmNumber(e.target.value)}
-            name="confirmNumber"
-            value={confirmNumber}
-            validators={['required']}
-            errorMessages={['정보를 입력해주세요']}
-            InputLabelProps={{
-              shrink: true,
-            }}
-          /> */}
+          
           <TextValidator
             label="비밀번호"
             onChange={(e) => setPassword(e.target.value)}
@@ -191,6 +193,7 @@ function SignUp() {
             fullWidth
           />
           <Button type="submit">Submit</Button>
+          
         </ValidatorForm>
       </LoginContainer>
     </Wrapper>
