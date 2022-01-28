@@ -3,18 +3,6 @@ import { OpenVidu } from 'openvidu-browser';
 import React, { Component } from 'react';
 import './Room.css';
 import UserVideoComponent from './UserVideoComponent';
-<<<<<<< HEAD
-import { Layout, Menu } from 'antd';
-import {
-  MenuUnfoldOutlined,
-  MenuFoldOutlined,
-  UserOutlined,
-  VideoCameraOutlined,
-  UploadOutlined,
-} from '@ant-design/icons';
-import 'antd/dist/antd.css';
-=======
->>>>>>> frontend
 
 const OPENVIDU_SERVER_URL = 'https://' + window.location.hostname + ':4443';
 const OPENVIDU_SERVER_SECRET = 'MY_SECRET';
@@ -39,10 +27,7 @@ class Room extends Component {
         this.handleChangeUserName = this.handleChangeUserName.bind(this);
         this.handleMainVideoStream = this.handleMainVideoStream.bind(this);
         this.onbeforeunload = this.onbeforeunload.bind(this);
-<<<<<<< HEAD
-=======
         // this.startButton = this.startButton.bind(this);
->>>>>>> frontend
     }
 
     componentDidMount() {
@@ -202,10 +187,6 @@ class Room extends Component {
     render() {
         const mySessionId = this.state.mySessionId;
         const myUserName = this.state.myUserName;
-<<<<<<< HEAD
-        const { Header, Sider, Content } = Layout;
-=======
->>>>>>> frontend
 
         return (
             <div className="container">
@@ -248,39 +229,6 @@ class Room extends Component {
                 ) : null}
 
                 {this.state.session !== undefined ? (
-<<<<<<< HEAD
-                    <Layout>
-                      <Sider>
-                        <div className="logo" />
-                        <Menu theme="dark" mode="inline" defaultSelectedKeys={['1']}>
-                          <Menu.Item key="1">
-                            user1
-                          </Menu.Item>
-                          <Menu.Item key="2" >
-                            user2 
-                          </Menu.Item>
-                          <Menu.Item key="3" >
-                            user3
-                          </Menu.Item>
-                        </Menu>
-                      </Sider>
-                
-                      <Layout className="site-layout">
-                        <Header className="site-layout-background" style={{ padding: 0 }}>
-                        </Header>
-                        <Content
-                          className="site-layout-background"
-                          style={{
-                            margin: '24px 16px',
-                            padding: 24,
-                            minHeight: 280,
-                          }}
-                        >
-                          Chatting
-                        </Content>
-                      </Layout>
-                    </Layout>
-=======
                     <div id="session">
                         <div id="session-header">
                             <h1 id="session-title">{mySessionId}</h1>
@@ -312,7 +260,6 @@ class Room extends Component {
                             ))}
                         </div>
                     </div>
->>>>>>> frontend
                 ) : null}
             </div>
         );

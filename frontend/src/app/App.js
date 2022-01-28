@@ -9,12 +9,6 @@ import styled from "styled-components";
 import SignUp from "../features/account/signup/Signup";
 import Login from "../features/account/login/Login";
 import Home from "../features/home/Home";
-<<<<<<< HEAD
-// import RoomList from "../features/roomlist/Roomlist";
-// import DataTable from "../features/roomlist/roomarray2";
-// import RoomArray from "../features/roomlist/roomarray";
-import Room from "../features/interview/Room";
-=======
 import RoomList from '../features/roomlist/Roomlist';
 import MyPage from '../features/mypage/Mypage';
 import DataTable from '../features/roomlist/roomarray2';
@@ -22,7 +16,6 @@ import RoomArray from '../features/roomlist/roomarray';
 import Game from '../features/meetingroom/Game';
 import Room from '../features/interview/Room';
 import VideoRoomComponent from "../features/roomTest/VideoRoomComponent";
->>>>>>> frontend
 
 const Wrapper = styled.div`
   background-color: white;
@@ -40,12 +33,6 @@ function App() {
           <Route path="/" element={<Home />}></Route>
           <Route path="/signup" element={<SignUp />}></Route>
           <Route path="/login" element={<Login />}></Route>
-<<<<<<< HEAD
-          {/* <Route path="/roomlist" element={<RoomList />}></Route>
-          <Route path="/test" element={<DataTable />}></Route>
-          <Route path="/test2" element={<RoomArray />}></Route> */}
-          <Route path="/room" element={<Room />}></Route>
-=======
           <Route path="/roomlist" element={<RoomList />}></Route>
           <Route path="/mypage" element={<MyPage />} />
           <Route path="/test" element={<DataTable />}></Route>
@@ -53,7 +40,6 @@ function App() {
           <Route path="/game" element={<Game />}></Route>
           <Route path="/room" element={<Room />}></Route>
           <Route path="/roomTest" element={<VideoRoomComponent />}></Route>
->>>>>>> frontend
         </Routes>
       </Router>
     </Wrapper>
