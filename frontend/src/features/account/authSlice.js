@@ -74,6 +74,7 @@ export const checkID = createAsyncThunk(
         return res.data;
       })
       .catch((err) => {
+        console.log(err)
         return err;
       });
   }
