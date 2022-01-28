@@ -191,6 +191,10 @@ dependencies {
 
     //메일
     implementation 'org.springframework.boot:spring-boot-starter-mail'
+    
+    // OpenVidu
+    // https://mvnrepository.com/artifact/io.openvidu/openvidu-java-client
+	implementation group: 'io.openvidu', name: 'openvidu-java-client', version: '2.20.0'
 
 }
 
