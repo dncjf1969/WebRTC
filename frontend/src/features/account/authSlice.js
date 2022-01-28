@@ -51,22 +51,22 @@ export const checkNickname = createAsyncThunk(
 );
 
 // nickname confirm axios -> REST API, params 필요
-export const checkNickname = createAsyncThunk(
-  "CHECK_NICKNAME",
-  async (nickname) => {
-    // console.log("닉네임 버튼 활성화", nickname);
-    await axios
-      .get(`/members/check/name?name=${nickname}`, nickname)
-      .then((res) => {
-        console.log(res)
-        return res.data;
-      })
-      .catch((err) => {
-        console.log(err)
-        return err;
-      });
-  }
-);
+// export const checkNickname = createAsyncThunk(
+//   "CHECK_NICKNAME",
+//   async (nickname) => {
+//     // console.log("닉네임 버튼 활성화", nickname);
+//     await axios
+//       .get(`/members/check/name?name=${nickname}`, nickname)
+//       .then((res) => {
+//         console.log(res)
+//         return res.data;
+//       })
+//       .catch((err) => {
+//         console.log(err)
+//         return err;
+//       });
+//   }
+// );
 
 export const checkID = createAsyncThunk(
   "CHECK_NICKNAME",
@@ -135,7 +135,7 @@ const authSlice = createSlice({
   // fullfilled -> 완료되었을 때 무슨 일을 할지? (signup은 로그인 시켜준다, 이런것?)
   extraReducers: {
     // [signup.fulfilled]: (state) => [...state],
-    [checkEmail.fulfilled]: () => [],
+    // [checkEmail.fulfilled]: () => [],
     [checkNickname.fullfilled]: () => [],
   },
 });
