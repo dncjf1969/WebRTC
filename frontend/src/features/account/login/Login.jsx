@@ -35,10 +35,7 @@ function Login() {
   // function
   function handleSubmit(e) {
     e.preventDefault();
-    const data = {
-      ID,
-      password,
-    };
+    const data = { 'id': ID, 'password': password, };
     dispatch(login(data)); // LoginSlice에서 가져온 로그인 액션, login(data) 는 createAsyncThunk로 만든것.
   }
 
