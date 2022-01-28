@@ -47,11 +47,7 @@ export default function MakeRoomModal({ isOpen, handleModalClose }) {
           <DialogContentText>
             방은 Private으로 만들어지며, 비밀번호를 설정해주시면 됩니다!
           </DialogContentText>
-          <ImageContainer>
-            <ImageField src="https://picsum.photos/1" />
-            <ImageField src="https://picsum.photos/2" />
-            <ImageField src="https://picsum.photos/3" />
-          </ImageContainer>
+          
           <TextField autoFocus margin="dense" id="roomName" label="방 제목" />
           <TextField autoFocus margin="dense" id="password" label="비밀번호" />
           <TextField autoFocus margin="dense" id="password" label="인원" />
