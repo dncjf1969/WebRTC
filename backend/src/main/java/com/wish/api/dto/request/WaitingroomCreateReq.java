@@ -19,7 +19,7 @@ public class WaitingroomCreateReq {
 	@ApiModelProperty(name="면접 종류", example="인적성")
 	String type;
 
-	@ApiModelProperty(name="직무 종류", example="인적성")
+	@ApiModelProperty(name="직무 종류", example="IT")
 	String job;
 	
 	@ApiModelProperty(name="방장 id", example="chris1225")
@@ -30,5 +30,4 @@ public class WaitingroomCreateReq {
 	
 	@ApiModelProperty(name="방 비밀번호", example="0000")
 	String password;
-
 }
