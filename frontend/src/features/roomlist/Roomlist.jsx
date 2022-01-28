@@ -3,15 +3,14 @@ import styles from 'styled-components';
 import MakeRoomModal from './MakeRoomModal';
 import FindRoomModal from './FindRoomModal';
 import CustomizedInputBase from './searchbar2';
-import RoomArray from './roomarray';
+// import DataTable from './roomarray2';
 
 const Wrapper = styles.div`
-  height: 65px;
+  background-color: Bisque;
+  height: 100%;
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
-  // border-top: solid rgba(1, 208, 83, 1);
-  // border-bottom: solid rgba(1, 208, 83, 1);
 `;
 
 const Links = styles.ul`
@@ -34,14 +33,10 @@ function RoomList() {
     <Wrapper>
       <div>
         <h1>Roomlist</h1>
-      </div>
 
-      <CustomizedInputBase />
-
-      <div>
-      <CustomizedInputBase />
       </div>
-           
+      
+      <CustomizedInputBase />
       <MakeRoomModal
         fullWidth
         isOpen={isMakeOpen}
@@ -66,7 +61,12 @@ function RoomList() {
           방찾기
         </button>
       </Links>
+      
     </Wrapper>
+    
+    // <DataTable />
+   
+    
   );
 }
 

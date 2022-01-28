@@ -151,8 +151,6 @@ public class MemberController {
 
 		SsafyUserDetails userDetails = (SsafyUserDetails)authentication.getDetails();
 
-		System.out.println(userDetails.toString());
-
 		String id = userDetails.getUsername();
 		Member member = memberService.getMemberById(id);
 		

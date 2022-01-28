@@ -11,6 +11,7 @@ const Wrapper = styles(Container)`
   height: 100vh;
   justify-content: center;
   align-items: center;
+  background-color: white
 `;
 
 const Title = styles.span`
@@ -20,6 +21,11 @@ const Title = styles.span`
 const LoginContainer = styles.div`
   display: flex;
   flex-direction: column;
+  background-color: white;
+  height: 100%;
+  justify-content: center;
+  align-items: center;
+
 `;
 
 // component
