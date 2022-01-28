@@ -17,7 +17,7 @@ public class WaitingroomManagerReq {
 	int roomId; 
 	
 	@ApiModelProperty(name="방장 id", example="chris1225")
-	String managerId;
+	String managerToken;
 
 	@ApiModelProperty(name="다음 방장 id", example="joe123")
 	String nextManagerId;

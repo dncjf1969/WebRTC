@@ -1,15 +1,23 @@
 package com.wish.api.dto;
 
-import java.util.List;
+import com.wish.api.dto.request.WaitingroomCreateReq;
 
+import io.openvidu.java.client.Session;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter
 @Setter
-public class WaitingRoom {	
-	// OpenVidu에서 발급하는 방 (주소)
-	String address;
+@AllArgsConstructor
+@NoArgsConstructor
+public class WaitingRoom {		
+	// 세션(OpenVidu 방)
+	Session session;
+	
+	// 토큰
+	String token;
 	
 	// 방id => 방 식별에 사용한다., autoIncreament
 	int roomId;
@@ -36,4 +44,21 @@ public class WaitingRoom {
 	
 	// 방 비밀번호
 	String password;
+	
+	public static WaitingRoom of(Session session, String token, int roomId, WaitingroomCreateReq createInfo) {
+		WaitingRoom room = new WaitingRoom();
+		room.setSession(session);
+		room.setToken(token);
+		room.setRoomId(roomId);
+		room.setManager(createInfo.getManager());
+		room.setName(createInfo.getName());
+		room.setType(createInfo.getType());
+		room.setJob(createInfo.getJob());
+		room.setMemberMax(createInfo.getMemberMax());
+		room.setMemberCount(1);
+		room.setPassword(createInfo.getPassword());
+		
+		return room;
+	}
+	
 }
