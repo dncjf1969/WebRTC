@@ -1,5 +1,7 @@
 package com.wish.api.dto.response;
 
+import com.wish.api.dto.WaitingRoom;
+
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
@@ -39,4 +41,17 @@ public class WaitingroomSearchRes extends BaseRes{
 
 	@ApiModelProperty(name="참여자 현재 인원", example="4")
 	int memberCount;
+	
+	public static WaitingroomSearchRes of(WaitingRoom input) {
+		WaitingroomSearchRes room = new WaitingroomSearchRes();
+		room.setRoomId(input.getRoomId());
+		room.setName(input.getName());
+		room.setManager(input.getManager());
+		room.setType(input.getType());
+		room.setJob(input.getJob());
+		room.setMemberMax(input.getMemberMax());
+		room.setMemberCount(input.getMemberCount());
+		
+		return room;
+	}
 }

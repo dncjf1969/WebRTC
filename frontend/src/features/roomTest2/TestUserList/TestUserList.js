@@ -16,7 +16,6 @@ class TestUserList extends Component {
     }
 
     
-
     readyTest(){
 		//signal을 보낸다.
 		//이 signal을 받는 것은 200번째줄부터
