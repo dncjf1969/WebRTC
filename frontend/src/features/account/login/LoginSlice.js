@@ -9,9 +9,9 @@ export const login = createAsyncThunk('LOGIN', async (userInfo) => {
   try {
     const response = await axios.post('/members/login', userInfo)
     const {
-      data: {token},
+      data: {accessToken},
     } = response;
-    saveToken(token);
+    saveToken(accessToken);
     console.log(response)
     return response;
   } catch (err) {

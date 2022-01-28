@@ -38,6 +38,10 @@ function RoomList() {
 
       <CustomizedInputBase />
 
+      <div>
+      <CustomizedInputBase />
+      </div>
+           
       <MakeRoomModal
         fullWidth
         isOpen={isMakeOpen}
