@@ -41,7 +41,10 @@ function Login() {
   // function
   function handleSubmit(e) {
     e.preventDefault();
-    const data = { 'id': ID, 'password': password, };
+    const data = {
+      'id': ID,
+      'password': password,
+    };
     dispatch(login(data)); // LoginSlice에서 가져온 로그인 액션, login(data) 는 createAsyncThunk로 만든것.
   }
 
@@ -49,7 +52,7 @@ function Login() {
   return (
     <Wrapper>
       <LoginContainer>
-        <Title>LOGO</Title>
+        <Title>☆로그인페이지★</Title>
         <ValidatorForm onSubmit={handleSubmit}>
           <TextValidator
             label="아이디"

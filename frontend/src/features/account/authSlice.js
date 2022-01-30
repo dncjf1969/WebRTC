@@ -1,19 +1,23 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { deleteToken, saveToken } from "../../common/JWT-common";
-import axios from '../../common/http-common';
-// import axios from "axios";
+import axios from "../../common/http-common";
 
 // signup axios -> REST API, params 필요
 // 회원가입
 export const signup = createAsyncThunk(
   "SIGNUP", // 액션 이름을 정의해 주도록 합니다.
-  async (userInfo, { rejectWithValue }) => {
-    try {
-      const response = await axios.post('/signup', userInfo);
-      return response;
-    } catch (err) {
-      return rejectWithValue(err.response);
-    }
+  async (userInfo) => {
+    // 비동기 호출 함수를 정의합니다.
+    console.log(userInfo);
+    await axios
+      .post("/members/signup", userInfo)
+      .then((res) => {
+        console.log(res)
+        return res.data;
+      })
+      .catch((err) => {
+        return err;
+      });
   }
 );
 
@@ -31,22 +35,55 @@ export const signup = createAsyncThunk(
 // await 는 혼자만 쓸 수 없다. async와 세트로 사용한다. async를 붙이면 그 함수는 Promise 객체를 반환한다.
 // 정리하자면, 동기적으로 처리할 일이 있는 비동기 작업에 await 를 붙이고, 해당 작업을 포함하고 있는 함수에 async 를 붙이면 된다.
 
-// 닉네임 중복 검사
+// // 닉네임 중복 검사
+// export const checkNickname = createAsyncThunk(
+//   'CHECK_NICKNAME',
+//   async (nickname, { rejectWithValue }) => {
+//     try {
+//       const response = await axios.get('/api/user/check_nickname', {
+//         params: { nickname },
+//       });
+//       return response.data;
+//     } catch (err) {
+//       return rejectWithValue(err.response);
+//     }
+//   }
+// );
+
+// nickname confirm axios -> REST API, params 필요
 export const checkNickname = createAsyncThunk(
-  'CHECK_NICKNAME',
-  async (nickname, { rejectWithValue }) => {
-    try {
-      const response = await axios.get('/api/user/check_nickname', {
-        params: { nickname },
+  "CHECK_NICKNAME",
+  async (nickname) => {
+    // console.log("닉네임 버튼 활성화", nickname);
+    await axios
+      .get(`/members/check/name?name=${nickname}`)
+      .then((res) => {
+        console.log(res)
+        return res.data;
+      })
+      .catch((err) => {
+        console.log(err)
+        return err;
       });
-      return response.data;
-    } catch (err) {
-      return rejectWithValue(err.response);
-    }
   }
 );
 
-
+export const checkID = createAsyncThunk(
+  "CHECK_NICKNAME",
+  async (ID) => {
+    // console.log("아이디 버튼 활성화", ID);
+    await axios
+      .get(`/members/check/id?id=${ID}`)
+      .then((res) => {
+        console.log(res)
+        return res.data;
+      })
+      .catch((err) => {
+        console.log(err)
+        return err;
+      });
+  }
+);
 
 // 로그인
 export const login = createAsyncThunk(
@@ -97,31 +134,9 @@ const authSlice = createSlice({
   // 조사 필요, return 값 찾아야함
   // fullfilled -> 완료되었을 때 무슨 일을 할지? (signup은 로그인 시켜준다, 이런것?)
   extraReducers: {
-    [signup.fulfilled]: (state) => {
-      console.log('reducer', state);
-    },
-    [signup.rejected]: (state) => {
-      console.log('reducer 회원가입 실패');
-      state.user = {};
-    },
-    [login.fulfilled]: (state) => {
-      state.isLoggedin = true;
-      console.log('reducer 로그인 성공');
-    },
-    [login.rejected]: (state) => {
-      state.isLoggedin = false;
-      console.log('reducer 로그인 실패');
-    },
-    [logout.fulfilled]: (state) => {
-      console.log('로그아웃', state);
-      state.user = {};
-    },
-    [checkNickname.fulfilled]: (state) => {
-      state.isNicknameChecked = true;
-    },
-    [checkNickname.rejected]: (state) => {
-      state.isNicknameChecked = false;
-    },
+    // [signup.fulfilled]: (state) => [...state],
+    // [checkEmail.fulfilled]: () => [],
+    [checkNickname.fullfilled]: () => [],
   },
 });
 // createSlice = reducer만 생성하여도 reducer의 key 값으로 action까지 자동으로 생성해 주는 기능을 지원
