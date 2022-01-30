@@ -59,7 +59,7 @@ function SignUp() {
   // setState when user change input
   function handleID(event) {
     const { value } = event.target;
-    if (value.length < 10) {
+    if (value.length < 11) {
       setID(value);
       return true;
     }
@@ -68,7 +68,7 @@ function SignUp() {
 
   function handleNickname(event) {
     const { value } = event.target;
-    if (value.length < 10) {
+    if (value.length < 11) {
       setNickname(value);
       return true;
     }
@@ -118,7 +118,7 @@ function SignUp() {
   // validation (maxlength)
   useEffect(() => {
     ValidatorForm.addValidationRule('maxNumber', (value) => {
-      if (value.length > 9) {
+      if (value.length > 10) {
         return false;
       }
       return true;
