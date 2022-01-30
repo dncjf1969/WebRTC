@@ -50,7 +50,7 @@ import io.swagger.annotations.ApiResponses;
 
 @Api(value = "면접/대기방 관련 API", tags = {"Room"})
 @RestController
-@RequestMapping("/room/waiting")
+@RequestMapping("/room")
 public class WaitingRoomController {
 	
 	// 방 목록을 관리할 list
@@ -80,7 +80,7 @@ public class WaitingRoomController {
 		this.openVidu = new OpenVidu(OPENVIDU_URL, SECRET);
 	}
 	
-	@GetMapping
+	@GetMapping("/waiting")
 	@ApiOperation(value = "대기방 검색", notes = "<strong>검색 키워드</strong>를 입력하여 방 목록을 반환한다") 
     @ApiResponses({
         @ApiResponse(code = 200, message = "성공"),
@@ -108,7 +108,7 @@ public class WaitingRoomController {
 	}
 	
 	
-	@PostMapping
+	@PostMapping("/waiting")
 	@ApiOperation(value = "대기방 생성", notes = "<strong>방이름, 종류, 방장, 최대인원, 비밀번호</strong>를 입력하여 방을 생성 한다.") 
     @ApiResponses({
         @ApiResponse(code = 201, message = "성공"),
@@ -151,11 +151,11 @@ public class WaitingRoomController {
 		roomList.add(room);
 		
 		// 클라이언트에 토큰(주소) 전달
-		return ResponseEntity.status(201).body(WaitingroomTokenRes.of(token));
+		return ResponseEntity.status(201).body(WaitingroomTokenRes.of(token,room.getRoomId()));
 	}
 	
 	
-	@PutMapping
+	@PutMapping("/waiting")
 	@ApiOperation(value = "대기방 설정 수정", notes = "<strong>방이름, 종류, 방장, 최대인원, 비밀번호 등</strong>를 입력하여 방 설정을 수정한다.") 
     @ApiResponses({
         @ApiResponse(code = 201, message = "수정 성공"),
@@ -199,7 +199,7 @@ public class WaitingRoomController {
 	}
 	
 	
-	@DeleteMapping
+	@DeleteMapping("/waiting")
 	@ApiOperation(value = "대기방 삭제", notes = "<strong>방 id</strong>를 입력하여 방을 삭제한다.") 
     @ApiResponses({
         @ApiResponse(code = 200, message = "삭제 성공"),
@@ -223,7 +223,7 @@ public class WaitingRoomController {
 		return ResponseEntity.status(404).body(BaseRes.of(404, fail));
 	}
 	
-	@GetMapping("/enter")
+	@GetMapping("/waiting/enter")
 	@ApiOperation(value = "대기방 참여", notes = "<strong>방Id, 비밀번호</strong>를 입력하여 대기방 주소를 받아간다.") 
     @ApiResponses({
         @ApiResponse(code = 200, message = "성공"),
@@ -262,11 +262,11 @@ public class WaitingRoomController {
 		}		
 
 		// 주소 리턴
-		return ResponseEntity.status(200).body(WaitingroomTokenRes.of(token));
+		return ResponseEntity.status(200).body(WaitingroomTokenRes.of(token,roomId));
 	}
 	
 
-	@GetMapping("/exit")
+	@GetMapping("/waiting/exit")
 	@ApiOperation(value = "대기방 나가기", notes = "<strong>방Id, 사용자 id</strong>") 
     @ApiResponses({
         @ApiResponse(code = 200, message = "성공"),
@@ -302,7 +302,7 @@ public class WaitingRoomController {
 	}
 	
 	
-	@PutMapping("/manager")
+	@PutMapping("/waiting/manager")
 	@ApiOperation(value = "방장 변경", notes = "<strong>방id, 본인id(현재방장), 바꿀 방장id</strong>를 입력하여 방장을 변경한다.") 
     @ApiResponses({
         @ApiResponse(code = 201, message = "변경 성공"),
@@ -334,5 +334,54 @@ public class WaitingRoomController {
 		
 		return ResponseEntity.status(401).body(BaseRes.of(401, fail));
 	}	
+	
+	
+	
+	@GetMapping("/meeting/start")
+	@ApiOperation(value = "미팅 시작", notes = "방장이 시작시 알림") 
+    @ApiResponses({
+        @ApiResponse(code = 200, message = "성공"),
+        @ApiResponse(code = 401, message = "변경 실패"),
+        @ApiResponse(code = 403, message = "현재 방장이 아니라 권한 위임 불가"),
+        @ApiResponse(code = 404, message = "지정한 새 방장이 방에 존재하지 않음"),
+        @ApiResponse(code = 500, message = "서버 에러")
+    })
+	public ResponseEntity<BaseRes> startMeeting(
+			@RequestParam @ApiParam(value="대기방 id", required = true) int roomId) {
+	
+		for (int i = 0, size = roomList.size(); i < size; i++) {
+			if(roomList.get(i).getRoomId()==roomId) {
+				roomList.get(i).setNowMeeting(true);
+				return ResponseEntity.status(200).body(BaseRes.of(200, success));
+			}
+		}
+		
+		// DB에 넣어서 db에서 사용하는 id를 프론트로 반환
+		
+		return ResponseEntity.status(401).body(BaseRes.of(401, fail));
+	}
+	
+	@GetMapping("/meeting/finish")
+	@ApiOperation(value = "미팅 시작", notes = "방장이 종료시 알림") 
+    @ApiResponses({
+        @ApiResponse(code = 201, message = "성공"),
+        @ApiResponse(code = 401, message = "변경 실패"),
+        @ApiResponse(code = 403, message = "현재 방장이 아니라 권한 위임 불가"),
+        @ApiResponse(code = 404, message = "지정한 새 방장이 방에 존재하지 않음"),
+        @ApiResponse(code = 500, message = "서버 에러")
+    })
+	public ResponseEntity<BaseRes> finishMeeting(
+			@RequestParam @ApiParam(value="대기방 id", required = true) int roomId) {
+	
+		for (int i = 0, size = roomList.size(); i < size; i++) {
+			if(roomList.get(i).getRoomId()==roomId) {
+				roomList.get(i).setNowMeeting(false);
+				return ResponseEntity.status(200).body(BaseRes.of(201, success));
+			}
+		}
+		
+		return ResponseEntity.status(401).body(BaseRes.of(401, fail));
+	}
+	
 
 }
