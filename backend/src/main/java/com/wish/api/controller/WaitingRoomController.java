@@ -247,7 +247,7 @@ public class WaitingRoomController {
 				// 비밀번호 일치여부 확인
 				if(password.equals(room.getPassword())) {
 					token = room.getToken();
-					room.setMemberCount(room.getMemberCount()+1);
+					room.setMemberCount(room.getMemberCount()+1);	// 현재인원+1
 				}else {
 					// 비밀번호 틀림
 					return ResponseEntity.status(401).body(BaseRes.of(401, fail));
@@ -276,7 +276,8 @@ public class WaitingRoomController {
     })
 	public ResponseEntity<BaseRes> exitWaitingRoom(
 			@RequestParam @ApiParam(value="나가려는 방 id", required = true) int roomId,
-			@RequestParam @ApiParam(value="나가려는 멤버", required = true) String memberId) {
+			@RequestParam @ApiParam(value="나가려는 멤버", required = true) String memberId,
+			@RequestParam @ApiParam(value="다음 방장", allowEmptyValue=true) String nextManager) {
 	
 		// 방장 이름으로 방 찾기
 		// 방장이 나간다면..?
@@ -285,9 +286,9 @@ public class WaitingRoomController {
 		for (int i = 0, n = roomList.size(); i<n; i++) {
 			room = roomList.get(i);
 			if(room.getRoomId() == roomId) {
-				// 나가려는게 방장이면
+				// 나가려는게 방장이면 클라이언트에서 지정된 다음 방장으로 변경
 				if(memberId.equals(room.getManager())) {
-					// 적절한 대처를 해주자..?
+					room.setManager(nextManager);
 				}
 				
 				// 인원수 -1
@@ -341,7 +342,7 @@ public class WaitingRoomController {
 	@ApiOperation(value = "미팅 시작", notes = "방장이 시작시 알림") 
     @ApiResponses({
         @ApiResponse(code = 200, message = "성공"),
-        @ApiResponse(code = 401, message = "변경 실패"),
+        @ApiResponse(code = 401, message = "JWT 유효성 검사 실패"),
         @ApiResponse(code = 403, message = "현재 방장이 아니라 권한 위임 불가"),
         @ApiResponse(code = 404, message = "지정한 새 방장이 방에 존재하지 않음"),
         @ApiResponse(code = 500, message = "서버 에러")
@@ -362,11 +363,11 @@ public class WaitingRoomController {
 	}
 	
 	@GetMapping("/meeting/finish")
-	@ApiOperation(value = "미팅 시작", notes = "방장이 종료시 알림") 
+	@ApiOperation(value = "미팅 종료", notes = "방장이 종료시 알림") 
     @ApiResponses({
         @ApiResponse(code = 201, message = "성공"),
-        @ApiResponse(code = 401, message = "변경 실패"),
-        @ApiResponse(code = 403, message = "현재 방장이 아니라 권한 위임 불가"),
+        @ApiResponse(code = 401, message = "JWT 유효성 검사 실패"),
+        @ApiResponse(code = 403, message = "현재 방장이 아니라 종료 알림 불가"),
         @ApiResponse(code = 404, message = "지정한 새 방장이 방에 존재하지 않음"),
         @ApiResponse(code = 500, message = "서버 에러")
     })
