@@ -35,20 +35,7 @@ export const signup = createAsyncThunk(
 // await 는 혼자만 쓸 수 없다. async와 세트로 사용한다. async를 붙이면 그 함수는 Promise 객체를 반환한다.
 // 정리하자면, 동기적으로 처리할 일이 있는 비동기 작업에 await 를 붙이고, 해당 작업을 포함하고 있는 함수에 async 를 붙이면 된다.
 
-// // 닉네임 중복 검사
-// export const checkNickname = createAsyncThunk(
-//   'CHECK_NICKNAME',
-//   async (nickname, { rejectWithValue }) => {
-//     try {
-//       const response = await axios.get('/api/user/check_nickname', {
-//         params: { nickname },
-//       });
-//       return response.data;
-//     } catch (err) {
-//       return rejectWithValue(err.response);
-//     }
-//   }
-// );
+
 
 // nickname confirm axios -> REST API, params 필요
 export const checkNickname = createAsyncThunk(
@@ -69,7 +56,7 @@ export const checkNickname = createAsyncThunk(
 );
 
 export const checkID = createAsyncThunk(
-  "CHECK_NICKNAME",
+  "CHECK_ID",
   async (ID) => {
     // console.log("아이디 버튼 활성화", ID);
     await axios
@@ -85,22 +72,23 @@ export const checkID = createAsyncThunk(
   }
 );
 
-// 로그인
-export const login = createAsyncThunk(
-  "LOGIN",
-  async (userInfo, { rejectWithValue }) => {
-    try {
-      const response = await axios.post("/api//login", userInfo);
-      const {
-        data: { token },
-      } = response;
-      saveToken(token);
-      return response;
-    } catch (err) {
-      return rejectWithValue(err.response);
-    }
-  }
-);
+// 로그인은 LoginSlice에서 처리
+// // 로그인
+// export const login = createAsyncThunk(
+//   "LOGIN",
+//   async (userInfo, { rejectWithValue }) => {
+//     try {
+//       const response = await axios.post("/api//login", userInfo);
+//       const {
+//         data: { token },
+//       } = response;
+//       saveToken(token);
+//       return response;
+//     } catch (err) {
+//       return rejectWithValue(err.response);
+//     }
+//   }
+// );
 
 // 로그아웃
 export const logout = createAsyncThunk(

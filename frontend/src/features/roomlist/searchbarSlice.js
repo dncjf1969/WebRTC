@@ -6,9 +6,10 @@ import axios from '../../common/http-common';
 
 export const search = createAsyncThunk('SEARCH', async (roomname) => {
   await axios
-    .post('/searchroom', roomname)
+  .get(`/room/waiting?keyword=${roomname}`)
     .then((res) => {
-      return res.data;
+      console.log(res.data.list)
+      return res.data.list;
     })
     .catch((err) => {
       return err;
