@@ -234,7 +234,7 @@ public class WaitingRoomController {
     })
 	public ResponseEntity<BaseRes> enterWaitingRoom(
 			@RequestParam @ApiParam(value="방id", required = true) int roomId,
-			@RequestParam @ApiParam(value="방 비밀번호", required = true) String password) {
+			@RequestParam @ApiParam(value="방 비밀번호") String password) {
 
 		String token = "";
 		
