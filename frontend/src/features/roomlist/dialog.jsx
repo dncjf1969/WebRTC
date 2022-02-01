@@ -22,7 +22,7 @@ export default function FormDialog({room}) {
 
   const handleEnter = async () => {
     await axios
-      .post(`/room/waiting/enter?password=${password}&roomId=${roomId}`)
+      .get(`/room/waiting/enter?password=${password}&roomId=${parseInt(roomId)}`)
       .then((res) => {
         console.log(res)
         return res.data;

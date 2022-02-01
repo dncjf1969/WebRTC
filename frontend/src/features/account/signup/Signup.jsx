@@ -1,6 +1,7 @@
 import { useState, React, useEffect } from 'react';
 // $ npm i react-redux
 import { useDispatch } from 'react-redux';
+import { useNavigate } from "react-router-dom";
 // $ npm i styled-components
 import styled from 'styled-components';
 // $ npm install @material-ui/core
@@ -9,7 +10,8 @@ import { Button } from '@material-ui/core';
 import { ValidatorForm, TextValidator } from 'react-material-ui-form-validator';
 // $ npm i @material-ui/core/styles
 import { makeStyles } from '@material-ui/core/styles';
-import { signup, checkNickname, checkEmail, checkID } from '../authSlice';
+import { signup, checkEmail } from '../authSlice';
+import axios from '../../../common/http-common'
 
 // style
 const Wrapper = styled.div`
@@ -46,15 +48,25 @@ function SignUp() {
   const [email, setEmail] = useState('');
   const [ID, setID] = useState('');
   const [Nickname, setNickname] = useState('');
+
+  // 인증후에 ID, 닉네임 다시 입력시 인증 다시받도록 하기위함
+  useEffect(() => {setCheckId(false)}, [ID]);
+  useEffect(() => {setCheckNickname(false)}, [Nickname]);
+
   const [confirmNumber, setConfirmNumber] = useState('');
   const [password, setPassword] = useState('');
   const [repeatPassword, setRepeatPassword] = useState('');
+
+  const [checkId, setCheckId] = useState(false)
+  const [checkNickname, setCheckNickname] = useState(false)
+
   const classes = useStyles();
   const dispatch = useDispatch();
 // useState는 리액트 Hook의 하나이며, 상태 관리의 역할을 한다.
 // useState는 항상 2개의 value를 return한다. 첫번째 value는 state이고, 두번째 value는 modifier이다.
 // 생성한 action을 useDispatch를 통해 발생시킬 수 있다
 // ex. <button onClick={()=>dispatch({type:액션타입})}>
+  const navigate = useNavigate();
 
   // setState when user change input
   function handleID(event) {
@@ -79,26 +91,63 @@ function SignUp() {
   // submit when user click button
   function handleSubmit(event) {
     event.preventDefault();
-    const data = {
-      'email': email,
-      'id': ID,
-      'name': Nickname,
-      'password': password
+    if (checkId && checkNickname) {
+      const data = {
+        'email': email,
+        'id': ID,
+        'name': Nickname,
+        'password': password
+      }
+      dispatch(signup(data));
+      alert('요청보냄')
+      navigate("/login")
+    } else if (!checkId && checkNickname) {
+      alert('아이디 중복을 확인해주세요')
+    } else if (checkId && !checkNickname) {
+      alert('닉네임 중복을 확인해주세요')
+    } else if (!checkId && !checkNickname) {
+      alert('아이디와 닉네임의 중복을 확인해주세요')
     }
-    dispatch(signup(data));
+    
+    
   }
   // event.preventDefault() = 기본 클릭 동작 방지하기
   // '/signup' -> 비동기 호출 실시
 
-  function handleIDCheck() {
-    const data = ID
-    dispatch(checkID(data));
+  async function handleIDCheck() {
+    await axios
+      .get(`/members/check/id?id=${ID}`)
+      .then((res) => {
+        console.log(res)
+        alert("사용 가능한 아이디입니다")
+        setCheckId(true)
+        return res.data;
+      })
+      .catch((err) => {
+        console.log(err)
+        alert("이미 존재하는 아이디입니다")
+        setCheckId(false)
+        return err;
+      });
   }
 
+  
+
   async function handleNicknameCheck() {
-    const data = Nickname
-    const temp = await dispatch(checkNickname(data));
-    console.log(temp)
+    await axios
+      .get(`/members/check/name?name=${Nickname}`)
+      .then((res) => {
+        console.log(res)
+        alert("사용 가능한 닉네임입니다")
+        setCheckNickname(true)
+        return res.data;
+      })
+      .catch((err) => {
+        console.log(err)
+        alert("이미 존재하는 닉네임입니다")
+        setCheckNickname(false)
+        return err;
+      });
   }
 
   // validation (same password)
@@ -226,10 +275,7 @@ function SignUp() {
             name="repeatPassword"
             value={repeatPassword}
             validators={['isPasswordMatch', 'required']}
-            errorMessages={[
-              '비밀번호가 일치하지 않습니다',
-              '정보를 입력해주세요',
-            ]}
+            errorMessages={['비밀번호가 일치하지 않습니다', '정보를 입력해주세요']}
             InputLabelProps={{
               shrink: true,
             }}

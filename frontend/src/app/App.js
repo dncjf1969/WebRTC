@@ -16,6 +16,7 @@ import Game from '../features/meetingroom/Game';
 import Room from '../features/interview/Room';
 import VideoRoomComponent from "../features/roomTest/VideoRoomComponent";
 import TestComponent from "../features/roomTest2/TestComponent";
+import Navbar from "../common/navbar/navbar";
 
 const Wrapper = styled.div`
   background-color: white;
@@ -29,6 +30,7 @@ function App() {
     // Route = 하나의 컴포넌트이자, URL
     <Wrapper>
       <Router>
+        <Navbar />
         <Routes>
           <Route path="/" element={<Home />}></Route>
           <Route path="/signup" element={<SignUp />}></Route>
