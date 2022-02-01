@@ -4,6 +4,7 @@ import InputBase from '@mui/material/InputBase';
 import Divider from '@mui/material/Divider';
 import IconButton from '@mui/material/IconButton';
 import SearchIcon from '@mui/icons-material/Search';
+import AutorenewIcon from '@mui/icons-material/Autorenew';
 import Button from '@mui/material/Button';
 import { useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
@@ -132,6 +133,9 @@ export default function CustomizedInputBase() {
     setWord(room)
   }
 
+  function handleRenew() {
+    search('')
+  }
     
   return (
     <>
@@ -151,7 +155,11 @@ export default function CustomizedInputBase() {
         <SearchIcon />
       </IconButton>
     </Paper>
+    
     <Button variant="outlined" onClick={handleClickOpen}>방만들기</Button>
+    <IconButton sx={{ p: '10px' }} aria-label="renew" onClick={handleRenew}>
+        <AutorenewIcon />
+    </IconButton>
 
     <Dialog open={open} onClose={handleClose}>
       <DialogTitle>방만들기</DialogTitle>
@@ -165,9 +173,7 @@ export default function CustomizedInputBase() {
         fullWidth
         variant="standard"
         onChange={(e) => setName(e.target.value)}
-
         value={name}
-
       />
         
         
