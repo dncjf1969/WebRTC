@@ -7,6 +7,7 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import axios from '../../common/http-common'
+import { useNavigate } from "react-router-dom";
 
 export default function FormDialog({room}) {
   const [open, setOpen] = React.useState(false);
@@ -19,19 +20,25 @@ export default function FormDialog({room}) {
   const handleClose = () => {
     setOpen(false);
   };
+  
+  const navigate = useNavigate()
 
   const handleEnter = async () => {
     await axios
-      .get(`/room/waiting/enter?password=${password}&roomId=${parseInt(roomId)}`)
+      .get(`/room/waiting/enter?password=${password !== null ? password : ''}&roomId=${parseInt(roomId)}`)
       .then((res) => {
         console.log(res)
+        // navigate('/roomtest2')
         return res.data;
       })
       .catch((err) => {
+        console.log(password, roomId)
         console.log(err)
         return err;
       });
   };
+
+
   const {name, job, manager, memberCount, memberMax, roomId, type, exitPassword} = room
   return (
     <div>

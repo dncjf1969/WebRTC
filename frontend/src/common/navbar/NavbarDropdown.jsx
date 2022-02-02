@@ -46,7 +46,7 @@ export default function SimpleMenu() {
         onClose={handleClose}
       >
         <MenuItem onClick={handleClose}>
-          <Link to="/">홈페이지</Link>
+          <Link to="/mypage">마이페이지</Link>
         </MenuItem>
         <MenuItem onClick={handleLogout}>로그아웃</MenuItem>
       </Menu>

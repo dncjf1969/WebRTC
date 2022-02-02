@@ -22,10 +22,6 @@ const Links = styles.ul`
 `;
 
 function RoomList() {
-  const [isMakeOpen, setIsMakeOpen] = useState(false);
-  const handleMakeModal = () => setIsMakeOpen(false);
-  const [isFindOpen, setIsFindOpen] = useState(false);
-  const handleFindModal = () => setIsFindOpen(false);
 
   return (
     <Wrapper>
