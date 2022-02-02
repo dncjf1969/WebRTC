@@ -59,8 +59,14 @@ public class WaitingRoom {
 		room.setJob(createInfo.getJob());
 		room.setMemberMax(createInfo.getMemberMax());
 		room.setMemberCount(1);
-		room.setPassword(createInfo.getPassword());
 		room.setNowMeeting(false);
+
+		// 비밀번호 입력
+		room.setPassword(createInfo.getPassword());
+		// 비밀번호가 입력되지 않았다면  ""로 초기화
+		if(createInfo.getPassword() == null){
+			room.setPassword("");
+		}
 		
 		return room;
 	}
