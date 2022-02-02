@@ -55,9 +55,9 @@ public class WaitingroomSearchRes extends BaseRes{
 		room.setMemberMax(input.getMemberMax());
 		room.setMemberCount(input.getMemberCount());
 		
-		// 비밀번호가 있다면 true, 없다면 false
-		if(input.getPassword() != null) room.setExitPassword(true);
-		else room.setExitPassword(false);
+		// 비밀번호가 없거나 공란이면 false, 있으면 true
+		if(input.getPassword() == null || input.getPassword().equals("")) room.setExitPassword(false);
+		else room.setExitPassword(true);
 		
 		return room;
 	}
