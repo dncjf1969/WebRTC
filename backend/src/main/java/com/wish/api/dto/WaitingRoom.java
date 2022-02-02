@@ -45,6 +45,9 @@ public class WaitingRoom {
 	// 방 비밀번호
 	String password;
 	
+	// 미팅 시작 여부
+	boolean nowMeeting;
+	
 	public static WaitingRoom of(Session session, String token, int roomId, WaitingroomCreateReq createInfo) {
 		WaitingRoom room = new WaitingRoom();
 		room.setSession(session);
@@ -57,6 +60,7 @@ public class WaitingRoom {
 		room.setMemberMax(createInfo.getMemberMax());
 		room.setMemberCount(1);
 		room.setPassword(createInfo.getPassword());
+		room.setNowMeeting(false);
 		
 		return room;
 	}

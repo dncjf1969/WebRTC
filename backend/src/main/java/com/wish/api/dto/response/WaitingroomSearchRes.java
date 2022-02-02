@@ -41,6 +41,9 @@ public class WaitingroomSearchRes extends BaseRes{
 
 	@ApiModelProperty(name="참여자 현재 인원", example="4")
 	int memberCount;
+
+	@ApiModelProperty(name="비밀번호 여부", example="true")
+	boolean exitPassword;
 	
 	public static WaitingroomSearchRes of(WaitingRoom input) {
 		WaitingroomSearchRes room = new WaitingroomSearchRes();
@@ -51,6 +54,10 @@ public class WaitingroomSearchRes extends BaseRes{
 		room.setJob(input.getJob());
 		room.setMemberMax(input.getMemberMax());
 		room.setMemberCount(input.getMemberCount());
+		
+		// 비밀번호가 있다면 true, 없다면 false
+		if(input.getPassword() != null) room.setExitPassword(true);
+		else room.setExitPassword(false);
 		
 		return room;
 	}
