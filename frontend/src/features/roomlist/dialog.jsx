@@ -12,6 +12,7 @@ import { useNavigate } from "react-router-dom";
 export default function FormDialog({room}) {
   const [open, setOpen] = React.useState(false);
   const [password, setPassword] = React.useState(null);
+  const [token, setToken] = React.useState('dd');
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -28,7 +29,11 @@ export default function FormDialog({room}) {
       .get(`/room/waiting/enter?password=${password !== null ? password : ''}&roomId=${parseInt(roomId)}`)
       .then((res) => {
         console.log(res)
-        // navigate('/roomtest2')
+        const token = res.data.token
+        
+        console.log(token)
+        // navigate('/test', token)
+
         return res.data;
       })
       .catch((err) => {

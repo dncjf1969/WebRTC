@@ -10,7 +10,7 @@ import { Button } from '@material-ui/core';
 import { ValidatorForm, TextValidator } from 'react-material-ui-form-validator';
 // $ npm i @material-ui/core/styles
 import { makeStyles } from '@material-ui/core/styles';
-import { signup, checkEmail } from '../authSlice';
+// import { signup, checkEmail } from '../authSlice';
 import axios from '../../../common/http-common'
 
 // style
@@ -88,6 +88,22 @@ function SignUp() {
   }
   // 닉네임 최대 10글자
 
+  const signup = ( // 액션 이름을 정의해 주도록 합니다.
+    async (userInfo) => {
+      // 비동기 호출 함수를 정의합니다.
+      console.log(userInfo);
+      await axios
+        .post("/members/signup", userInfo)
+        .then((res) => {
+          console.log(res)
+          return res.data;
+        })
+        .catch((err) => {
+          return err;
+        });
+    }
+  );
+
   // submit when user click button
   function handleSubmit(event) {
     event.preventDefault();
@@ -98,7 +114,7 @@ function SignUp() {
         'name': Nickname,
         'password': password
       }
-      dispatch(signup(data));
+      signup(data);
       alert('요청보냄')
       navigate("/login")
     } else if (!checkId && checkNickname) {

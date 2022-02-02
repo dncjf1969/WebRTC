@@ -7,17 +7,17 @@
 // configureSttore를 통해 생성된 store는 Redux DevTools Extension을 사용하여 dspatch된 action과 history, state 변경사항들을 쉽게 볼 수 있다.
 
 import { combineReducers, configureStore } from "@reduxjs/toolkit";
-import SignUpReducer from "../features/account/authSlice";
-// reducer를 모아주는 함수,store를만들어주는 함수
-import AuthReducer from "../features/account/authSlice";
-import LoginReducer from "../features/account/login/LoginSlice"
+// import SignUpReducer from "../features/account/authSlice";
+// // reducer를 모아주는 함수,store를만들어주는 함수
+// import AuthReducer from "../features/account/authSlice";
+// import LoginReducer from "../features/account/login/LoginSlice"
 
 
 // 각 리듀서를 합침
 const rootreducer = combineReducers({
-  signup: SignUpReducer,
-  auth: AuthReducer,
-  login: LoginReducer,
+  // signup: SignUpReducer,
+  // auth: AuthReducer,
+  // login: LoginReducer,
 });
 
 // 합친 리듀서 연결
