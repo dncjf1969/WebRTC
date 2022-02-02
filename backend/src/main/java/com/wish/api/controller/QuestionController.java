@@ -136,7 +136,7 @@ public class QuestionController {
 			@ApiResponse(code=404, message = "사용자 없음"),
 			@ApiResponse(code=500, message = "서버 오류"),
 	})
-	public ResponseEntity<? extends BaseRes>  selectedQusetion(
+	public ResponseEntity<? extends BaseRes> selectedQusetion(
 			@RequestBody @ApiParam(value="선택된 질문 id", required = true)  QuestionSelectReq questionSelectReq){
 
 		int results_num = questionService.selectedQuestionAddCnt1(questionSelectReq);
@@ -160,7 +160,7 @@ public class QuestionController {
 		int results_num = relationQuestionService.relationQuestionAddCnt1(relationQuestionUpdateReq);
 
 		if(results_num==0) return ResponseEntity.status(200).body(BaseRes.of(200, "연관 질문 카운트 +1."));
-
+		
 		return ResponseEntity.status(401).body(BaseRes.of(401, "예상치 못한 결과입니다."));
 	}
 

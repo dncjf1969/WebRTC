@@ -90,9 +90,10 @@ public class JwtAuthenticationFilter extends BasicAuthenticationFilter {
 //            DecodedJWT decodedJWT = verifier.verify(token.replace(JwtTokenUtil.TOKEN_PREFIX, ""));
             DecodedJWT decodedJWT = JwtTokenUtil.createDecodedJWT(token);
 
-            String memberId = decodedJWT.getSubject();
-            //Claim memberId_claim = decodedJWT.getClaim("memberId");
-            //String memberId = memberId_claim.asString();
+            
+            //String memberId = decodedJWT.getSubject();
+            Claim memberId_claim = decodedJWT.getClaim("memberId");
+            String memberId = memberId_claim.asString();
             System.out.println(memberId + "가 너의 아이디.");
 
             // Search in the DB if we find the user by token subject (username)

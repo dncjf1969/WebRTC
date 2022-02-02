@@ -27,7 +27,7 @@ public class QuestionServiceImpl implements QuestionService {
     public int selectedQuestionAddCnt1(QuestionSelectReq questionSelectReq){
 
         Optional<Question> ques = questionRepository.findById(questionSelectReq.getQuestionId());
-
+        
         if(ques.isPresent()){
             Question ques2 = ques.get();
             int temp = ques2.getCount();

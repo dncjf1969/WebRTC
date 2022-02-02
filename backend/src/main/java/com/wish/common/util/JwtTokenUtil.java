@@ -45,6 +45,8 @@ public class JwtTokenUtil {
         this.secretKey = secretKey;
         this.expiration = expiration;
         this.algo = Algorithm.HMAC512(secretKey.getBytes());
+        //암호화 알고리즘 다른거도 가능할듯.
+       
     }
 
 //	public void setExpirationTime() {

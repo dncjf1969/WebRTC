@@ -24,6 +24,7 @@ public class RelationQuestionServiceImpl implements RelationQuestionService {
         Optional<RelationQuestion> relation_ques = relationQuestionRepository.findByParentIdAndChildId(parentId, childId);
 
         if(!relation_ques.isPresent()){
+        	//create
             RelationQuestion relationQuestion2 = new RelationQuestion();
             relationQuestion2.setParentId(parentId);
             relationQuestion2.setChildId(childId);
@@ -31,13 +32,14 @@ public class RelationQuestionServiceImpl implements RelationQuestionService {
 
             relationQuestionRepository.save(relationQuestion2);
         }
-        else {
+        else { 
+        	//update
             RelationQuestion relationQuestion2 = relation_ques.get();
             int temp = relationQuestion2.getCount();
             temp++;
             relationQuestion2.setCount(temp);
-            relationQuestionRepository.save(relationQuestion2);
 
+            relationQuestionRepository.save(relationQuestion2);
         }
 
         return 0;
