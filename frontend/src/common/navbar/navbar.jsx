@@ -2,6 +2,9 @@ import React, { useState } from 'react';
 import styles from 'styled-components';
 import { Link } from 'react-router-dom';
 import DropDownMenu from './NavbarDropdown';
+import HomeRoundedIcon from '@mui/icons-material/HomeRounded';
+import IconButton from '@mui/material/IconButton';
+
 import logo from '../../assets/logo.png'
 
 const Wrapper = styles.div`
@@ -15,8 +18,8 @@ const Wrapper = styles.div`
 `;
 
 const Logo = styles.div`
-  width: 100%;
-  height: 100%;
+  width: 10%;
+  height: 10%;
   background-image: url(${logo})
 `;
 
@@ -37,7 +40,13 @@ function Navbar() {
     <Wrapper>
       <Logo />
       <Links>
-        <Link to="/">Home</Link>
+
+        <Link to="/">
+          <IconButton>
+            <HomeRoundedIcon/>
+              Home
+          </IconButton>
+        </Link>
         <Link to="/signup">회원가입</Link>
         <Link to="/login">로그인</Link>
         <Link to="/roomlist">방리스트</Link>
