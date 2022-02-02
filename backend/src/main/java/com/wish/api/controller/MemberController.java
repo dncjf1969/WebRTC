@@ -67,7 +67,7 @@ public class MemberController {
     })
 	public ResponseEntity<? extends BaseRes> login(
 			@RequestBody @ApiParam(value="로그인 정보", required = true) MemberLoginReq loginInfo) {
-		
+		System.out.println(loginInfo.toString());
 		String userId = loginInfo.getId();
 
 		if(memberService.loginMember(loginInfo)) {

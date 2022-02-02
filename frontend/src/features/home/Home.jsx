@@ -58,22 +58,19 @@ class Home extends Component {
   // pathname이라는 변수에 넣어줘야함
   render() {
     return (
-      <>
-        <Navbar />
-        <Wrapper>
-          <StartWrapper>
-            {interviewKinds.map((kindList) => {
-              return (
-                <Link to={{
-                  pathname: `${kindList.link}`,
-                }} id='nonline'>
-                  <Kind imgSrc={kindList.source} title={kindList.title}/>
-                </Link>
-              );
-            })}
-          </StartWrapper>
-        </Wrapper>
-      </>
+      <Wrapper>
+        <StartWrapper>
+          {interviewKinds.map((kindList) => {
+            return (
+              <Link key={kindList.title} to={{
+                pathname: `${kindList.link}`,
+              }} id='nonline'>
+                <Kind imgSrc={kindList.source} title={kindList.title}/>
+              </Link>
+            );
+          })}
+        </StartWrapper>
+      </Wrapper>
     );
   }
 }

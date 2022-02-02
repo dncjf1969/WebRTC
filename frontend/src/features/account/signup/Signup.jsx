@@ -1,10 +1,17 @@
 import { useState, React, useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+// $ npm i react-redux
+import { useDispatch } from 'react-redux';
+import { useNavigate } from "react-router-dom";
+// $ npm i styled-components
 import styled from 'styled-components';
+// $ npm install @material-ui/core
 import { Button } from '@material-ui/core';
+// $ npm i react-material-ui-form-validator
 import { ValidatorForm, TextValidator } from 'react-material-ui-form-validator';
+// $ npm i @material-ui/core/styles
 import { makeStyles } from '@material-ui/core/styles';
-import { signup, checkNickname, setNicknameCheckedFalse  } from '../authSlice';
+import { signup, checkEmail } from '../authSlice';
+import axios from '../../../common/http-common'
 
 // style
 const Wrapper = styled.div`
@@ -39,24 +46,41 @@ const useStyles = makeStyles({
 function SignUp() {
   // local state
   const [email, setEmail] = useState('');
-  const [nickname, setNickname] = useState('');
-  const { isNicknameChecked } = useSelector((state) => state.auth);
+  const [ID, setID] = useState('');
+  const [Nickname, setNickname] = useState('');
+
+  // 인증후에 ID, 닉네임 다시 입력시 인증 다시받도록 하기위함
+  useEffect(() => {setCheckId(false)}, [ID]);
+  useEffect(() => {setCheckNickname(false)}, [Nickname]);
+
+  const [confirmNumber, setConfirmNumber] = useState('');
   const [password, setPassword] = useState('');
   const [repeatPassword, setRepeatPassword] = useState('');
+
+  const [checkId, setCheckId] = useState(false)
+  const [checkNickname, setCheckNickname] = useState(false)
+
   const classes = useStyles();
   const dispatch = useDispatch();
 // useState는 리액트 Hook의 하나이며, 상태 관리의 역할을 한다.
 // useState는 항상 2개의 value를 return한다. 첫번째 value는 state이고, 두번째 value는 modifier이다.
 // 생성한 action을 useDispatch를 통해 발생시킬 수 있다
 // ex. <button onClick={()=>dispatch({type:액션타입})}>
+  const navigate = useNavigate();
 
   // setState when user change input
+  function handleID(event) {
+    const { value } = event.target;
+    if (value.length < 11) {
+      setID(value);
+      return true;
+    }
+    return false;
+  }
+
   function handleNickname(event) {
     const { value } = event.target;
-    if (isNicknameChecked) {
-      dispatch(setNicknameCheckedFalse());
-    }
-    if (value.length < 10) {
+    if (value.length < 11) {
       setNickname(value);
       return true;
     }
@@ -64,26 +88,67 @@ function SignUp() {
   }
   // 닉네임 최대 10글자
 
-  function isValidNickname() {
-    dispatch(checkNickname(nickname))
-      .unwrap()
-      .catch((err) => {
-        alert(err.data.message);
-      });
-  }
-
   // submit when user click button
   function handleSubmit(event) {
     event.preventDefault();
-    const data = {
-      email,
-      nickname,
-      password,
+    if (checkId && checkNickname) {
+      const data = {
+        'email': email,
+        'id': ID,
+        'name': Nickname,
+        'password': password
+      }
+      dispatch(signup(data));
+      alert('요청보냄')
+      navigate("/login")
+    } else if (!checkId && checkNickname) {
+      alert('아이디 중복을 확인해주세요')
+    } else if (checkId && !checkNickname) {
+      alert('닉네임 중복을 확인해주세요')
+    } else if (!checkId && !checkNickname) {
+      alert('아이디와 닉네임의 중복을 확인해주세요')
     }
-    dispatch(signup(data))
+    
+    
   }
   // event.preventDefault() = 기본 클릭 동작 방지하기
   // '/signup' -> 비동기 호출 실시
+
+  async function handleIDCheck() {
+    await axios
+      .get(`/members/check/id?id=${ID}`)
+      .then((res) => {
+        console.log(res)
+        alert("사용 가능한 아이디입니다")
+        setCheckId(true)
+        return res.data;
+      })
+      .catch((err) => {
+        console.log(err)
+        alert("이미 존재하는 아이디입니다")
+        setCheckId(false)
+        return err;
+      });
+  }
+
+  
+
+  async function handleNicknameCheck() {
+    await axios
+      .get(`/members/check/name?name=${Nickname}`)
+      .then((res) => {
+        console.log(res)
+        alert("사용 가능한 닉네임입니다")
+        setCheckNickname(true)
+        return res.data;
+      })
+      .catch((err) => {
+        console.log(err)
+        alert("이미 존재하는 닉네임입니다")
+        setCheckNickname(false)
+        return err;
+      });
+  }
 
   // validation (same password)
   useEffect(() => {
@@ -102,12 +167,13 @@ function SignUp() {
   // validation (maxlength)
   useEffect(() => {
     ValidatorForm.addValidationRule('maxNumber', (value) => {
-      if (value.length > 9) {
+      if (value.length > 10) {
         return false;
       }
       return true;
     });
-  }, [nickname]);
+  }, [ID, Nickname]);
+
   //잘 모르겠다.
   //없어도 잘 돌아가긴 함.
 
@@ -115,15 +181,13 @@ function SignUp() {
     <Wrapper>
       <LoginContainer>
         <Title><h1>WISH</h1></Title>
-        <ValidatorForm 
-        onSubmit={handleSubmit} c
-        lassName={classes.validatorForm}>
+        <ValidatorForm onSubmit={handleSubmit} className={classes.validatorForm}>
           <TextValidator
-            label="닉네임"
-            onChange={handleNickname}
+            label="아이디"
+            onChange={handleID}
             color="secondary"
-            name="nickname"
-            value={nickname}
+            name="ID"
+            value={ID}
             validators={['required']}
             errorMessages={['정보를 입력해주세요']}
             InputLabelProps={{
@@ -135,9 +199,27 @@ function SignUp() {
             size="small"
             fullWidth
           />
-          <Button disabled={isNicknameChecked || !nickname}
-            onClick={isValidNickname} 
-            >
+          <Button onClick={handleIDCheck}>
+            중복확인
+          </Button>
+          <TextValidator
+            label="닉네임"
+            onChange={handleNickname}
+            color="secondary"
+            name="nickname"
+            value={Nickname}
+            validators={['required']}
+            errorMessages={['정보를 입력해주세요']}
+            InputLabelProps={{
+              shrink: true,
+            }}
+            helperText="최대 10글자입니다."
+            variant="outlined"
+            margin="normal"
+            size="small"
+            fullWidth
+          />
+          <Button onClick={handleNicknameCheck}>
             중복확인
           </Button>
           <TextValidator
@@ -146,6 +228,7 @@ function SignUp() {
             name="email"
             value={email}
             color="success"
+            helperText="양식에 맞게 적어주세요"
             validators={['required', 'isEmail']}
             errorMessages={['정보를 입력해주세요', 'email is not valid']}
             InputLabelProps={{
@@ -156,7 +239,19 @@ function SignUp() {
             size="small"
             fullWidth
           />
-          
+          {/* button disabled 토글 필요 */}
+          {/* <Button onClick={() => dispatch(checkEmail(email))}>인증하기</Button>
+          <TextValidator
+            label="인증번호"
+            onChange={(e) => setConfirmNumber(e.target.value)}
+            name="confirmNumber"
+            value={confirmNumber}
+            validators={['required']}
+            errorMessages={['정보를 입력해주세요']}
+            InputLabelProps={{
+              shrink: true,
+            }}
+          /> */}
           <TextValidator
             label="비밀번호"
             onChange={(e) => setPassword(e.target.value)}
@@ -180,10 +275,7 @@ function SignUp() {
             name="repeatPassword"
             value={repeatPassword}
             validators={['isPasswordMatch', 'required']}
-            errorMessages={[
-              '비밀번호가 일치하지 않습니다',
-              '정보를 입력해주세요',
-            ]}
+            errorMessages={['비밀번호가 일치하지 않습니다', '정보를 입력해주세요']}
             InputLabelProps={{
               shrink: true,
             }}
@@ -193,7 +285,6 @@ function SignUp() {
             fullWidth
           />
           <Button type="submit">Submit</Button>
-          
         </ValidatorForm>
       </LoginContainer>
     </Wrapper>

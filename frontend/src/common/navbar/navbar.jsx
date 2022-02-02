@@ -2,21 +2,22 @@ import React, { useState } from 'react';
 import styles from 'styled-components';
 import { Link } from 'react-router-dom';
 import DropDownMenu from './NavbarDropdown';
+import logo from '../../assets/logo.png'
 
 const Wrapper = styles.div`
   height: 65px;
   display: flex;
   justify-content: space-between;
-  position: fixed;
+  position: block;
   width: 100%;
   align-items: center;
   border-bottom: solid rgba(248, 208, 83, 1);
 `;
 
 const Logo = styles.div`
-  width: 50px;
+  width: 100%;
   height: 100%;
-  background-image: url(https://picsum.photos/50/65)
+  background-image: url(${logo})
 `;
 
 const Links = styles.ul`
