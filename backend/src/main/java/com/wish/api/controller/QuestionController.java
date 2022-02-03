@@ -5,6 +5,7 @@ import com.wish.api.dto.response.BaseRes;
 import com.wish.api.dto.response.QuestionListRes;
 import com.wish.api.service.CustomQuestionService;
 import com.wish.api.service.QuestionService;
+import com.wish.api.service.RelationQuestionService;
 import com.wish.db.entity.CustomQuestion;
 import com.wish.db.entity.Question;
 import io.swagger.annotations.*;
@@ -25,6 +26,9 @@ public class QuestionController {
 
 	@Autowired
 	CustomQuestionService customQuestionService;
+
+	@Autowired
+	RelationQuestionService relationQuestionService;
 
 	@GetMapping
 	@ApiOperation(value = "질문 조회", notes = "waitingroomid에서 질문 가져오기.")
@@ -124,6 +128,40 @@ public class QuestionController {
 		return ResponseEntity.status(401).body(BaseRes.of(401, "예상치 못한 결과입니다."));
 	}
 
+	@PutMapping("/past")
+	@ApiOperation(value="선택된 질문 카운트 올리기", notes="선택된 질문을 카운트 1 올린다.")
+	@ApiResponses({
+			@ApiResponse(code=200, message = "성공"),
+			@ApiResponse(code=401, message = "인증 실패"),
+			@ApiResponse(code=404, message = "사용자 없음"),
+			@ApiResponse(code=500, message = "서버 오류"),
+	})
+	public ResponseEntity<? extends BaseRes> selectedQusetion(
+			@RequestBody @ApiParam(value="선택된 질문 id", required = true)  QuestionSelectReq questionSelectReq){
 
-	
+		int results_num = questionService.selectedQuestionAddCnt1(questionSelectReq);
+
+		if(results_num==0) return ResponseEntity.status(200).body(BaseRes.of(200, "선택된 질문 카운트 +1."));
+
+		return ResponseEntity.status(401).body(BaseRes.of(401, "예상치 못한 결과입니다."));
+	}
+
+	@PutMapping("/relation")
+	@ApiOperation(value="연관 질문 카운트 올리기", notes="연관 질문을 등록하거나 카운트 1 올린다.")
+	@ApiResponses({
+			@ApiResponse(code=200, message = "성공"),
+			@ApiResponse(code=401, message = "인증 실패"),
+			@ApiResponse(code=404, message = "사용자 없음"),
+			@ApiResponse(code=500, message = "서버 오류"),
+	})
+	public ResponseEntity<? extends BaseRes>  relationQusetion(
+			@RequestBody @ApiParam(value="연관 부모, 자식 질문 id", required = true) RelationQuestionUpdateReq relationQuestionUpdateReq){
+
+		int results_num = relationQuestionService.relationQuestionAddCnt1(relationQuestionUpdateReq);
+
+		if(results_num==0) return ResponseEntity.status(200).body(BaseRes.of(200, "연관 질문 카운트 +1."));
+		
+		return ResponseEntity.status(401).body(BaseRes.of(401, "예상치 못한 결과입니다."));
+	}
+
 }

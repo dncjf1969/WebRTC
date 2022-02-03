@@ -6,6 +6,9 @@ import { useDispatch } from 'react-redux';
 import axios from '../../../common/http-common';
 import { saveToken } from '../../../common/JWT-common'
 import { useNavigate } from "react-router-dom";
+import logo from '../../../assets/logo.png'
+
+
 
 // style
 const Wrapper = styles(Container)`
@@ -31,7 +34,11 @@ const LoginContainer = styles.div`
 `;
 
 
-
+const Logo = styles.img`
+  width: 480px;
+  height: 160px;
+  background-image: url(${logo});
+`;
 
 // component
 function Login() {
@@ -73,8 +80,9 @@ function Login() {
   // render
   return (
     <Wrapper>
+      <Logo />
       <LoginContainer>
-        <Title>☆로그인페이지★</Title>
+        <Title>로그인페이지</Title>
         <ValidatorForm onSubmit={handleSubmit}>
           <TextValidator
             label="아이디"

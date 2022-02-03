@@ -4,11 +4,11 @@
 // deleteToken : local storage 에서 토큰 삭제
 
 export const saveToken = (token) => {
-  window.localStorage.setItem('token', token);
+  window.localStorage.setItem('jwt', token);
 };
 export const getToken = () => {
-  return window.localStorage.getItem('token');
+  return window.localStorage.getItem('jwt');
 };
 export const deleteToken = () => {
-  window.localStorage.removeItem('token');
+  window.localStorage.removeItem('jwt');
 };

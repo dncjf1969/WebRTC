@@ -15,10 +15,15 @@ import lombok.Setter;
 public class WaitingroomTokenRes extends BaseRes{
 	@ApiModelProperty(name="방 토큰(주소)", example="wss://192.168.99.100:4443/openvidu")
 	String token;
+	
 
-	public static WaitingroomTokenRes of(String token) {
+	@ApiModelProperty(name="리스트에서 사용하는 room id", example="1")
+	int roomId;
+
+	public static WaitingroomTokenRes of(String token, int roomId) {
 		WaitingroomTokenRes res = new WaitingroomTokenRes();
 		res.setToken(token);
+		res.setRoomId(roomId);
 		return res;
 	}
 }
