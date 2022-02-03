@@ -28,9 +28,31 @@ class TestComponent extends Component {
       : "MY_SECRET";
     this.hasBeenUpdated = false;
     this.layout = new OpenViduLayout();
+<<<<<<< HEAD
     let sessionName = this.props.sessionName
       ? this.props.sessionName
       : "SessionA";
+=======
+    // let sessionName = this.props.sessionName
+    //   ? this.props.sessionName
+    //   : "SessionA";
+    let sessionName = window.localStorage.getItem('roomId')
+    //let userName = this.props.user ? this.props.user : 'OpenVidu_User' + Math.floor(Math.random() * 100);
+    // let tempNamelist = [
+    //   "이정123",
+    //   "우처리",
+    //   "young남",
+    //   "조소히",
+    //   "현아짱99",
+    //   "동준은쌈디",
+    //   "나는우철",
+    //   "나는용남",
+    //   "소힝",
+    //   "현아입니다",
+    //   "",
+    // ];
+    // let userName = tempNamelist[Math.floor(Math.random() * 10)];
+>>>>>>> 21a7cd557d8b87dfc5852776ea54389666df17a4
     let userName = this.props.user
       ? this.props.user
       : "OpenVidu_User" + Math.floor(Math.random() * 100);
@@ -81,11 +103,13 @@ class TestComponent extends Component {
       bigFirst: true, // Whether to place the big one in the top left (true) or bottom right
       animate: true, // Whether you want to animate the transitions
     };
+
     // 레이아웃
     this.layout.initLayoutContainer(
       document.getElementById("layout"),
       openViduLayoutOptions
     );
+
     // 사용자가 페이지를 떠날 때 정말 떠날것인지 확인하는 대화상자 팝업
     window.addEventListener("beforeunload", this.onbeforeunload);
     window.addEventListener("resize", this.updateLayout);
@@ -223,13 +247,20 @@ class TestComponent extends Component {
   }
 
   connectToSession() {
+<<<<<<< HEAD
     // 서버를 꺼서 로직 확인 안됨
     if (this.props.token !== undefined) {
       console.log("token received: ", this.props.token);
       this.connect(this.props.token);
     } else {
+=======
+    if (this.sessionName !== undefined) {
+      // console.log("token received: 111 ", ovToken);
+      // console.log("proptoken", this.props.token)
+>>>>>>> 21a7cd557d8b87dfc5852776ea54389666df17a4
       this.getToken()
         .then((token) => {
+          // console.log("token received: ", this.props.token);
           console.log(token);
           this.connect(token);
         })
@@ -243,7 +274,32 @@ class TestComponent extends Component {
             });
           }
           console.log(
-            "There was an error getting the token:",
+            "There was an error getting the token: 333",
+            this.props.token,
+            error.code,
+            error.message
+          );
+          alert("There was an error getting the token:", error.message);
+        });
+    } else {
+      this.getToken()
+        .then((token) => {
+          // console.log("token received: ", this.props.token);
+          console.log(token);
+          this.connect(token);
+        })
+        .catch((error) => {
+          if (this.props.error) {
+            this.props.error({
+              error: error.error,
+              messgae: error.message,
+              code: error.code,
+              status: error.status,
+            });
+          }
+          console.log(
+            "There was an error getting the token: 333",
+            this.props.token,
             error.code,
             error.message
           );
@@ -262,7 +318,7 @@ class TestComponent extends Component {
         if (this.props.error) {
           this.props.error({
             error: error.error,
-            messgae: error.message,
+            message: error.message,
             code: error.code,
             status: error.status,
           });
