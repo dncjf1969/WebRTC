@@ -243,12 +243,16 @@ class TestComponent extends Component {
   }
 
   connectToSession() {
-    if (this.props.token !== undefined) {
-      console.log("token received: ", this.props.token);
-      this.connect(this.props.token);
+    const ovToken = window.localStorage.getItem('ovToken')
+    if (ovToken !== undefined) {
+      console.log("token received: 111 ", ovToken);
+      console.log("proptoken", this.props.token)
+
+      this.connect(ovToken);
     } else {
       this.getToken()
         .then((token) => {
+          // console.log("token received: ", this.props.token);
           console.log(token);
           this.connect(token);
         })
@@ -262,7 +266,8 @@ class TestComponent extends Component {
             });
           }
           console.log(
-            "There was an error getting the token:",
+            "There was an error getting the token: 333",
+            this.props.token,
             error.code,
             error.message
           );
@@ -281,7 +286,7 @@ class TestComponent extends Component {
         if (this.props.error) {
           this.props.error({
             error: error.error,
-            messgae: error.message,
+            message: error.message,
             code: error.code,
             status: error.status,
           });

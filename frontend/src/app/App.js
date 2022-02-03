@@ -38,12 +38,12 @@ function App() {
           <Route path="/login" element={<Login />}></Route>
           <Route path="/roomlist" element={<RoomList />}></Route>
           <Route path="/mypage" element={<MyPage />} />
-          <Route path="/test" element={<DataTable />}></Route>
+          {/* <Route path="/test" element={<DataTable />}></Route> */}
           {/* <Route path="/game" element={<Game />}></Route>
           <Route path="/room" element={<Room />}></Route> */}
           <Route path="/roomTest" element={<VideoRoomComponent />}></Route>
           <Route path="/roomTest2" element={<TestComponent />}></Route>
-          <Route path="/test" element={<Test />}></Route>
+          <Route path="/test" element={<Test/>}></Route>
         </Routes>
       </Router>
     </Wrapper>
