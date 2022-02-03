@@ -3,7 +3,12 @@ import styles from 'styled-components';
 import { Container, Button } from '@material-ui/core';
 import { TextValidator, ValidatorForm } from 'react-material-ui-form-validator';
 import { useDispatch } from 'react-redux';
-import { login } from './LoginSlice';
+import axios from '../../../common/http-common';
+import { saveToken } from '../../../common/JWT-common'
+import { useNavigate } from "react-router-dom";
+import logo from '../../../assets/logo.png'
+
+
 
 // style
 const Wrapper = styles(Container)`
@@ -11,6 +16,7 @@ const Wrapper = styles(Container)`
   height: 100vh;
   justify-content: center;
   align-items: center;
+  background-color: white
 `;
 
 const Title = styles.span`
@@ -20,30 +26,63 @@ const Title = styles.span`
 const LoginContainer = styles.div`
   display: flex;
   flex-direction: column;
+  background-color: white;
+  height: 100%;
+  justify-content: center;
+  align-items: center;
+
+`;
+
+
+const Logo = styles.img`
+  width: 480px;
+  height: 160px;
+  background-image: url(${logo});
 `;
 
 // component
 function Login() {
   // 생성한 action을 useDispatch를 통해 발생시킬 수 있다
   // ex. <button onClick={()=>dispatch({type:액션타입})}>
-  const dispatch = useDispatch();
-
+  
   // state
   const [ID, setID] = useState('');
   const [password, setPassword] = useState('');
 
+  //navigate
+  const navigate = useNavigate()
+
   // function
   function handleSubmit(e) {
     e.preventDefault();
-    const data = { 'id': ID, 'password': password, };
-    dispatch(login(data)); // LoginSlice에서 가져온 로그인 액션, login(data) 는 createAsyncThunk로 만든것.
+    const data = {
+      'id': ID,
+      'password': password,
+    };
+    login(data); // LoginSlice에서 가져온 로그인 액션, login(data) 는 createAsyncThunk로 만든것.
   }
+
+  async function login (userInfo) {
+    try {
+      const response = await axios.post('/members/login', userInfo)
+      const {
+        data: {accessToken},
+      } = response;
+      saveToken(accessToken);
+      console.log(response)
+      navigate('/')
+      return response;
+    } catch (err) {
+      return(err.response)
+    }
+  };
 
   // render
   return (
     <Wrapper>
+      <Logo />
       <LoginContainer>
-        <Title>LOGO</Title>
+        <Title>로그인페이지</Title>
         <ValidatorForm onSubmit={handleSubmit}>
           <TextValidator
             label="아이디"

@@ -12,7 +12,6 @@ import styled from 'styled-components';
 import defaultImage from '../../assets/pt.png';
 
 // component
-import Navbar from '../../common/navbar/navbar';
 import MyTable from './Mytable';
 // import Calender from './Calender';
 
@@ -71,9 +70,13 @@ const Footer = styled.footer``;
 export default function MyPage() {
   const { nickname, email } = useSelector((state) => state.auth.user);
   const badgeLen = 5;
+
+  function handleDeleteBtn() {
+
+  };
+
   return (
     <>
-      <Navbar />
       <Wrapper>
           <Sidebar>
             <ProfileImage src={defaultImage} alt="profile" />
@@ -111,6 +114,7 @@ export default function MyPage() {
               color="secondary"
               size="small"
               startIcon={<DeleteIcon />}
+              onClick={handleDeleteBtn}
             >
               회원탈퇴
             </Button>
