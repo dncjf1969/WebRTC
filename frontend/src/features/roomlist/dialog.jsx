@@ -29,25 +29,27 @@ function FormDialog({room}) {
   let navigate = useNavigate()
 
   const handleEnter = async () => {
-    await axios
-      .get(`/room/waiting/enter?password=${password !== null ? password : ''}&roomId=${parseInt(roomId)}`)
-      .then((res) => {
-        console.log(res)
-        const token = res.data.token
+    // await axios
+    //   .get(`/room/waiting/enter?password=${password !== null ? password : ''}&roomId=${parseInt(roomId)}`)
+    //   .then((res) => {
+    //     console.log(res)
+    //     const token = res.data.token
         
-        console.log(token)
+    //     console.log(token)
         
-        window.localStorage.setItem('ovToken', token);
-        // render(TestComponent)
-        navigate('/roomtest2')
+    //     window.localStorage.setItem('ovToken', token);
+    //     // render(TestComponent)
+    //     navigate('/roomtest2')
 
-        return res.data;
-      })
-      .catch((err) => {
-        console.log(password, roomId)
-        console.log(err)
-        return err;
-      });
+    //     return res.data;
+    //   })
+    //   .catch((err) => {
+    //     console.log(password, roomId)
+    //     console.log(err)
+    //     return err;
+    //   });
+    window.localStorage.setItem('roomId', roomId);
+    navigate('/roomtest2')
   };
 
 

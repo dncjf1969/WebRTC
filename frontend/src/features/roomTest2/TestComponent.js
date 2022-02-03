@@ -35,9 +35,10 @@ class TestComponent extends Component {
       : "MY_SECRET";
     this.hasBeenUpdated = false;
     this.layout = new OpenViduLayout();
-    let sessionName = this.props.sessionName
-      ? this.props.sessionName
-      : "SessionA";
+    // let sessionName = this.props.sessionName
+    //   ? this.props.sessionName
+    //   : "SessionA";
+    let sessionName = window.localStorage.getItem('roomId')
     //let userName = this.props.user ? this.props.user : 'OpenVidu_User' + Math.floor(Math.random() * 100);
     // let tempNamelist = [
     //   "이정123",
@@ -108,11 +109,13 @@ class TestComponent extends Component {
       bigFirst: true, // Whether to place the big one in the top left (true) or bottom right
       animate: true, // Whether you want to animate the transitions
     };
+
     // 레이아웃
     this.layout.initLayoutContainer(
       document.getElementById("layout"),
       openViduLayoutOptions
     );
+
     // 사용자가 페이지를 떠날 때 정말 떠날것인지 확인하는 대화상자 팝업
     window.addEventListener("beforeunload", this.onbeforeunload);
     window.addEventListener("resize", this.updateLayout);
@@ -243,12 +246,32 @@ class TestComponent extends Component {
   }
 
   connectToSession() {
-    const ovToken = window.localStorage.getItem('ovToken')
-    if (ovToken !== undefined) {
-      console.log("token received: 111 ", ovToken);
-      console.log("proptoken", this.props.token)
-
-      this.connect(ovToken);
+    if (this.sessionName !== undefined) {
+      // console.log("token received: 111 ", ovToken);
+      // console.log("proptoken", this.props.token)
+      this.getToken()
+        .then((token) => {
+          // console.log("token received: ", this.props.token);
+          console.log(token);
+          this.connect(token);
+        })
+        .catch((error) => {
+          if (this.props.error) {
+            this.props.error({
+              error: error.error,
+              messgae: error.message,
+              code: error.code,
+              status: error.status,
+            });
+          }
+          console.log(
+            "There was an error getting the token: 333",
+            this.props.token,
+            error.code,
+            error.message
+          );
+          alert("There was an error getting the token:", error.message);
+        });
     } else {
       this.getToken()
         .then((token) => {
