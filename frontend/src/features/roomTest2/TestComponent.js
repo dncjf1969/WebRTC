@@ -3,7 +3,7 @@ import axios from "axios";
 import "./TestComponent.css";
 import { OpenVidu } from "openvidu-browser";
 import StreamComponent from "./stream/StreamComponent";
-// import DialogExtensionComponent from "./dialog-extension/DialogExtension";
+
 import ChatComponent from "./chat/ChatComponent";
 
 import OpenViduLayout from "../layout/openvidu-layout";
@@ -13,16 +13,9 @@ import ToolbarComponent from "./toolbar/ToolbarComponent";
 //
 import TestCharacter from "./Testcharacter/Testcharacter";
 import TestUserList from "./TestUserList/TestUserList";
-import TestQuesList from "./TestQuesList/TestQuesList";
+import QuestList from "./TestQuesList/TestQuesList";
 
-import imgA from "./testImages/rion.PNG";
-import imgB from "./testImages/muzi.PNG";
-import imgC from "./testImages/neo.PNG";
-import imgD from "./testImages/prodo.PNG";
-import imgE from "./testImages/prodo.PNG";
-import imgF from "./testImages/prodo.PNG";
-
-var localUser = new UserModel();
+let localUser = new UserModel();
 
 class TestComponent extends Component {
   constructor(props) {
@@ -38,31 +31,9 @@ class TestComponent extends Component {
     let sessionName = this.props.sessionName
       ? this.props.sessionName
       : "SessionA";
-    //let userName = this.props.user ? this.props.user : 'OpenVidu_User' + Math.floor(Math.random() * 100);
-    // let tempNamelist = [
-    //   "이정123",
-    //   "우처리",
-    //   "young남",
-    //   "조소히",
-    //   "현아짱99",
-    //   "동준은쌈디",
-    //   "나는우철",
-    //   "나는용남",
-    //   "소힝",
-    //   "현아입니다",
-    //   "",
-    // ];
-    // let userName = tempNamelist[Math.floor(Math.random() * 10)];
     let userName = this.props.user
       ? this.props.user
       : "OpenVidu_User" + Math.floor(Math.random() * 100);
-    // let imgList2 = [
-    //   require("./testImages/muzi.PNG"),
-    //   require("./testImages/muzi.PNG"),
-    //   require("./testImages/neo.PNG"),
-    //   require("./testImages/prodo.PNG"),
-    //   require("./testImages/prodo.PNG"),
-    // ];
     this.remotes = [];
     this.localUserAccessAllowed = false;
     this.state = {
@@ -73,11 +44,13 @@ class TestComponent extends Component {
       subscribers: [],
       chatDisplay: "none",
       currentVideoDevice: undefined,
-      nowUser: [],
-      // imgList: imgList2,
+      // question: [],
     };
     console.log("state다");
     console.log(this.state);
+    // 사전질문 받는 이벤트
+    // this.question
+
     this.joinSession = this.joinSession.bind(this);
     this.leaveSession = this.leaveSession.bind(this);
     this.onbeforeunload = this.onbeforeunload.bind(this);
@@ -146,19 +119,22 @@ class TestComponent extends Component {
 
         this.state.session.on("connectionCreated", (event) => {
           console.log("!!! conectioncreated");
-          console.log(event.target.remoteConnections);
+          // console.log(event.target.remoteConnections);
           // event-connection-data는 me
           // event-target-remoteConnections는 참여자들(나 포함)
           //this.state.nowUser = event.target.remoteConnections;
           // 참여자 전체 정보
-          var temp = event.target.remoteConnections;
+          // let temp = event.target.remoteConnections;
           //this.state.nowUser = [];
 
           //temp.forEach(element => {
-          var temp2 = JSON.parse(event.connection.data);
-          console.log(temp2);
+          let temp2 = JSON.parse(event.connection.data);
+          // event.connection.data.clientData 는 유저의 닉네임
+          // console.log("tmep2다");
+          // console.log(temp2);
+
           // 로컬 유저에 대한 정보
-          var temp = {
+          let temp = {
             userName: temp2.clientData,
             sessionID: event.connection.connectionId,
             ReadyState: false,
@@ -168,9 +144,10 @@ class TestComponent extends Component {
           //});
           console.log("!?!");
           console.log(this.state.nowUser);
-          for (var i = 1; i < this.state.nowUser.length; i++) {
-            var temp3 = "name" + i;
-            var tempHtml =
+          for (let i = 1; i < this.state.nowUser.length; i++) {
+            let temp3 = "name" + i;
+            console.log("temp3", temp3);
+            let tempHtml =
               `<img src= "` +
               this.state.imgList[i] +
               `" style="float: left;
@@ -195,13 +172,13 @@ class TestComponent extends Component {
           console.log(event.target.remoteConnections);
 
           //시그널을 보낸 세션 아이디
-          var xx = event.from.connectionId;
+          let xx = event.from.connectionId;
           console.log(xx + "가 레디를 하겠대 or 레디 취소 하겠대.");
           console.log(this.state.nowUser);
-          for (var i = 0; i < this.state.nowUser.length; i++) {
+          for (let i = 0; i < this.state.nowUser.length; i++) {
             if (this.state.nowUser[i].sessionID === xx) {
               // 레디. 이렇게 나오는게 맞는가?
-              var temp3 = "ready" + i;
+              let temp3 = "ready" + i;
 
               //                            document.getElementById(temp3).innerHTML = "준비!";
               // 이거 작동 원리 한 번 봐야함
@@ -220,12 +197,12 @@ class TestComponent extends Component {
 
         this.state.session.on("signal:makeQues", (event) => {
           //시그널을 보낸 세션 아이디
-          var xx = event.from.connectionId;
+          let xx = event.from.connectionId;
           console.log(xx + "가 질문 만들겠대.");
           // event는 어떻게 찍으면 나오나?
           console.log(event.data);
-          var zz = "";
-          for (var i = 0; i < this.state.nowUser.length; i++) {
+          let zz = "";
+          for (let i = 0; i < this.state.nowUser.length; i++) {
             if (this.state.nowUser[i].sessionID === xx) {
               // zz는 userName
               zz = this.state.nowUser[i].userName;
@@ -300,8 +277,8 @@ class TestComponent extends Component {
   }
 
   async connectWebCam() {
-    var devices = await this.OV.getDevices();
-    var videoDevices = devices.filter((device) => device.kind === "videoinput");
+    let devices = await this.OV.getDevices();
+    let videoDevices = devices.filter((device) => device.kind === "videoinput");
 
     let publisher = this.OV.initPublisher(undefined, {
       audioSource: undefined,
@@ -351,7 +328,7 @@ class TestComponent extends Component {
   }
 
   updateSubscribers() {
-    var subscribers = this.remotes;
+    let subscribers = this.remotes;
     this.setState(
       {
         subscribers: subscribers,
@@ -445,7 +422,7 @@ class TestComponent extends Component {
   subscribeToStreamCreated() {
     this.state.session.on("streamCreated", (event) => {
       const subscriber = this.state.session.subscribe(event.stream, undefined);
-      // var subscribers = this.state.subscribers;
+      // let subscribers = this.state.subscribers;
       subscriber.on("streamPlaying", (e) => {
         this.checkSomeoneShareScreen();
         subscriber.videos[0].video.parentElement.classList.remove(
@@ -556,19 +533,19 @@ class TestComponent extends Component {
   async switchCamera() {
     try {
       const devices = await this.OV.getDevices();
-      var videoDevices = devices.filter(
+      let videoDevices = devices.filter(
         (device) => device.kind === "videoinput"
       );
 
       if (videoDevices && videoDevices.length > 1) {
-        var newVideoDevice = videoDevices.filter(
+        let newVideoDevice = videoDevices.filter(
           (device) => device.deviceId !== this.state.currentVideoDevice.deviceId
         );
 
         if (newVideoDevice.length > 0) {
           // Creating a new publisher with specific videoSource
           // In mobile devices the default and first camera is the front one
-          var newPublisher = this.OV.initPublisher(undefined, {
+          let newPublisher = this.OV.initPublisher(undefined, {
             audioSource: undefined,
             videoSource: newVideoDevice[0].deviceId,
             publishAudio: localUser.isAudioActive(),
@@ -707,7 +684,7 @@ class TestComponent extends Component {
   render() {
     const mySessionId = this.state.mySessionId;
     const localUser = this.state.localUser;
-    var chatDisplay = { display: this.state.chatDisplay };
+    let chatDisplay = { display: this.state.chatDisplay };
 
     return (
       <div className="container" id="container">
@@ -718,25 +695,16 @@ class TestComponent extends Component {
           showNotification={this.state.messageReceived}
           camStatusChanged={this.camStatusChanged}
           micStatusChanged={this.micStatusChanged}
-          screenShare={this.screenShare}
-          stopScreenShare={this.stopScreenShare}
-          toggleFullscreen={this.toggleFullscreen}
-          switchCamera={this.switchCamera}
           leaveSession={this.leaveSession}
           toggleChat={this.toggleChat}
         />
-
-        {/* <DialogExtensionComponent
-          showDialog={this.state.showExtensionDialog}
-          cancelClicked={this.closeDialogExtension}
-        /> */}
 
         <div id="layout" className="bounds">
           <TestUserList
             session={this.state.session}
             nowUser={this.state.nowUser}
           />
-          <TestQuesList session={this.state.session} />
+          <QuestList session={this.state.session} />
           {localUser !== undefined &&
             localUser.getStreamManager() !== undefined && (
               <div className="OT_root OT_publisher custom-class" id="localUser">
@@ -795,7 +763,7 @@ class TestComponent extends Component {
 
   createSession(sessionId) {
     return new Promise((resolve, reject) => {
-      var data = JSON.stringify({ customSessionId: sessionId });
+      let data = JSON.stringify({ customSessionId: sessionId });
       axios
         .post(this.OPENVIDU_SERVER_URL + "/openvidu/api/sessions", data, {
           headers: {
@@ -809,7 +777,7 @@ class TestComponent extends Component {
           resolve(response.data.id);
         })
         .catch((response) => {
-          var error = Object.assign({}, response);
+          let error = Object.assign({}, response);
           if (error.response && error.response.status === 409) {
             resolve(sessionId);
           } else {
@@ -839,7 +807,7 @@ class TestComponent extends Component {
 
   createToken(sessionId) {
     return new Promise((resolve, reject) => {
-      var data = JSON.stringify({});
+      let data = JSON.stringify({});
       axios
         .post(
           this.OPENVIDU_SERVER_URL +
