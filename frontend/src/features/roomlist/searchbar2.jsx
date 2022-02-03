@@ -60,6 +60,7 @@ export default function CustomizedInputBase() {
 
   // 방생성 버튼 
   const handleCreateRoom = async () => {
+    
     const data = {
       "job": job,
       "manager": "chris1225",

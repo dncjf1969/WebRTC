@@ -124,8 +124,6 @@ function SignUp() {
     } else if (!checkId && !checkNickname) {
       alert('아이디와 닉네임의 중복을 확인해주세요')
     }
-    
-    
   }
   // event.preventDefault() = 기본 클릭 동작 방지하기
   // '/signup' -> 비동기 호출 실시
