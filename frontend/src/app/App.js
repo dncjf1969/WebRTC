@@ -10,13 +10,17 @@ import SignUp from "../features/account/signup/Signup";
 import Login from "../features/account/login/Login";
 import Home from "../features/home/Home";
 import RoomList from '../features/roomlist/Roomlist';
-import MyPage from '../features/mypage/Mypage';
+import Mypage from '../features/mypage/Mypage';
 import DataTable from '../features/roomlist/roomarray2';
-import Game from '../features/meetingroom/Game';
-import Room from '../features/interview/Room';
 import VideoRoomComponent from "../features/roomTest/VideoRoomComponent";
 import TestComponent from "../features/roomTest2/TestComponent";
 import Navbar from "../common/navbar/navbar";
+import Error404 from '../common/error/Error404';
+import Error500 from '../common/error/Error500';
+
+// // routes
+import PrivateRoute from '../common/routes/PrivateRoute';
+import PublicRoute from '../common/routes/PublicRoute';
 
 const Wrapper = styled.div`
   background-color: white;
@@ -33,15 +37,15 @@ function App() {
         <Navbar />
         <Routes>
           <Route path="/" element={<Home />}></Route>
-          <Route path="/signup" element={<SignUp />}></Route>
-          <Route path="/login" element={<Login />}></Route>
+          <Route restricted path="/signup" element={<SignUp />}></Route>
+          <Route restricted path="/login" element={<Login />}></Route>
           <Route path="/roomlist" element={<RoomList />}></Route>
-          <Route path="/mypage" element={<MyPage />} />
+          <Route path="/mypage" element={<Mypage />} />
           <Route path="/test" element={<DataTable />}></Route>
-          <Route path="/game" element={<Game />}></Route>
-          <Route path="/room" element={<Room />}></Route>
           <Route path="/roomTest" element={<VideoRoomComponent />}></Route>
           <Route path="/roomTest2" element={<TestComponent />}></Route>
+          <Route path="*" element={<Error404 />}></Route>
+          <Route path="/error" element={<Error500 />}></Route>
         </Routes>
       </Router>
     </Wrapper>

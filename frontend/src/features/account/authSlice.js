@@ -104,6 +104,18 @@ export const logout = createAsyncThunk(
   }
 );
 
+export const loadUser = createAsyncThunk(
+  'LOAD_USER',
+  async (arg, { rejectWithValue }) => {
+    try {
+      const response = await axios.get('/members/me');
+      return response.data;
+    } catch (err) {
+      return rejectWithValue(err.response);
+    }
+  }
+);
+
 const initialState = {
   user: {},
   isNicknameChecked: false,
