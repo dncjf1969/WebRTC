@@ -28,15 +28,10 @@ class TestComponent extends Component {
       : "MY_SECRET";
     this.hasBeenUpdated = false;
     this.layout = new OpenViduLayout();
-<<<<<<< HEAD
-    let sessionName = this.props.sessionName
-      ? this.props.sessionName
-      : "SessionA";
-=======
     // let sessionName = this.props.sessionName
     //   ? this.props.sessionName
     //   : "SessionA";
-    let sessionName = window.localStorage.getItem('roomId')
+    let sessionName = window.localStorage.getItem("roomId");
     //let userName = this.props.user ? this.props.user : 'OpenVidu_User' + Math.floor(Math.random() * 100);
     // let tempNamelist = [
     //   "이정123",
@@ -52,7 +47,6 @@ class TestComponent extends Component {
     //   "",
     // ];
     // let userName = tempNamelist[Math.floor(Math.random() * 10)];
->>>>>>> 21a7cd557d8b87dfc5852776ea54389666df17a4
     let userName = this.props.user
       ? this.props.user
       : "OpenVidu_User" + Math.floor(Math.random() * 100);
@@ -247,17 +241,9 @@ class TestComponent extends Component {
   }
 
   connectToSession() {
-<<<<<<< HEAD
-    // 서버를 꺼서 로직 확인 안됨
-    if (this.props.token !== undefined) {
-      console.log("token received: ", this.props.token);
-      this.connect(this.props.token);
-    } else {
-=======
     if (this.sessionName !== undefined) {
       // console.log("token received: 111 ", ovToken);
       // console.log("proptoken", this.props.token)
->>>>>>> 21a7cd557d8b87dfc5852776ea54389666df17a4
       this.getToken()
         .then((token) => {
           // console.log("token received: ", this.props.token);
