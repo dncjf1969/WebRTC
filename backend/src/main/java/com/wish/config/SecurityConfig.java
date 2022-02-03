@@ -2,8 +2,10 @@ package com.wish.config;
 
 import com.wish.api.service.MemberService;
 import com.wish.common.auth.JwtAuthenticationFilter;
+import com.wish.common.auth.JwtFilter;
 import com.wish.common.auth.SsafyMemberDetailService;
 
+import com.wish.common.auth.TestFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -11,6 +13,7 @@ import org.springframework.security.authentication.dao.DaoAuthenticationProvider
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -28,7 +31,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private SsafyMemberDetailService ssafyMemberDetailService;
     
     @Autowired
-    private MemberService memeberService;
+    private MemberService memberService;
     
     // Password 인코딩 방식에 BCrypt 암호화 방식 사용
     @Bean
@@ -52,17 +55,36 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         auth.authenticationProvider(authenticationProvider());
     }
 
+    @Override public void configure(WebSecurity web) throws Exception { 
+    	web.ignoring()
+    	.antMatchers("/resources/**")
+    	.antMatchers("/css/**")
+    	.antMatchers("/vendor/**")
+    	.antMatchers("/js/**")
+    	.antMatchers("/favicon*/**")
+    	.antMatchers("/img/**")
+    	.antMatchers("/swagger-ui/**")
+    	.antMatchers("/swagger-resources/**")
+    	.antMatchers("/v2/**")
+    	.antMatchers("/question")
+    	.antMatchers("/members/login")
+    	.antMatchers("/members/signup")
+    	.antMatchers("/members/findPW")
+    	; 
+    }
+
+    	
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http
-                .httpBasic().disable()
-                .csrf().disable()
-                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS) // 토큰 기반 인증이므로 세션 사용 하지않음
-                .and()
-                .addFilter(new JwtAuthenticationFilter(authenticationManager(), memeberService)) //HTTP 요청에 JWT 토큰 인증 필터를 거치도록 필터를 추가
-                .authorizeRequests()
-                .antMatchers("/api/v1/users/me").authenticated()       //인증이 필요한 URL과 필요하지 않은 URL에 대하여 설정
-    	        	    .anyRequest().permitAll()
-                .and().cors();
+    	http
+    	.httpBasic().disable() // Http basic Auth  기반으로 로그인 인증창이 뜸.  disable 시에 인증창 뜨지 않음. 
+    	.csrf().disable()  // rest api이므로 csrf 보안이 필요없으므로 disable처리.
+    	.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS) // 토큰 기반 인증이므로 세션 사용 하지않음 // jwt token으로 인증하므로 stateless 하도록 처리.
+    	.and()
+    	//.addFilter(new JwtFilter( authenticationManager(), memberService)) //HTTP 요청에 JWT 토큰 인증 필터를 거치도록 필터를 추가
+    	.addFilter(new JwtFilter(authenticationManager(), memberService))
+    	.authorizeRequests()
+    	.anyRequest().authenticated() 
+    	.and().cors();
     }
 }

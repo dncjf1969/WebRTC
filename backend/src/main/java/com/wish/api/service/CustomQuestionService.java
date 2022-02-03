@@ -17,5 +17,7 @@ public interface CustomQuestionService {
 	int deleteCustomQuestion(Long id);
 	int deleteAllCustomQuestion(String meetingroomId);
 
+
+
 }
 

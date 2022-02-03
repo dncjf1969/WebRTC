@@ -45,6 +45,8 @@ public class JwtTokenUtil {
         this.secretKey = secretKey;
         this.expiration = expiration;
         this.algo = Algorithm.HMAC512(secretKey.getBytes());
+        //암호화 알고리즘 다른거도 가능할듯.
+       
     }
 
 //	public void setExpirationTime() {
@@ -58,11 +60,13 @@ public class JwtTokenUtil {
 
     public static String createJwtToken(String userId) {
         Date expirationDate = JwtTokenUtil.createExpirationDate(expiration);
-
-        return JWT.create().withIssuer(ISSUER).withClaim("memberId", userId).withExpiresAt(expirationDate)
+        
+        String createdJwt = JwtTokenUtil.TOKEN_PREFIX;
+        
+        return createdJwt + JWT.create().withIssuer(ISSUER).withClaim("memberId", userId).withExpiresAt(expirationDate)
                 .withIssuedAt(Date.from(LocalDateTime.now().atZone(ZoneId.systemDefault()).toInstant()))
                 .sign(algo);
-
+        
         //with subject 안하고 그냥 subject 하면 안되나?
 //        return JWT.create().withIssuer(ISSUER).withSubject(userId).withClaim("userId", userId).withExpiresAt(expirationDate)
 //                .withIssuedAt(Date.from(LocalDateTime.now().atZone(ZoneId.systemDefault()).toInstant()))

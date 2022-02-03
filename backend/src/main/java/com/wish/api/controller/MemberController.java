@@ -3,6 +3,7 @@ package com.wish.api.controller;
 import com.wish.common.auth.JwtAuthenticationFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
@@ -15,6 +16,7 @@ import com.wish.api.dto.response.MemberLoginRes;
 import com.wish.api.dto.response.MemberRes;
 import com.wish.api.service.MemberService;
 import com.wish.common.auth.SsafyUserDetails;
+import com.wish.common.auth.TestFilter;
 import com.wish.common.util.JwtTokenUtil;
 import com.wish.db.entity.Member;
 
@@ -85,7 +87,7 @@ public class MemberController {
 			@ApiResponse(code = 404, message = "사용자 없음"),
 			@ApiResponse(code = 500, message = "서버 오류")
 	})
-	public ResponseEntity<? extends BaseRes> updateMember(
+	public ResponseEntity<? extends BaseRes> updateMember(@ApiIgnore Authentication authentication,
 			@RequestBody @ApiParam(value="회원수정 정보", required = true) MemberUpdateReq updateInfo) {
 
 		int results_num = memberService.updateMember(updateInfo);
@@ -104,8 +106,12 @@ public class MemberController {
 			@ApiResponse(code = 500, message = "서버 오류")
 	})
 	public ResponseEntity<? extends BaseRes> deleteMember(
-			@ApiParam(value="회원탈퇴할 아이디", required = true) @RequestParam String memberDeleteId) {
+			@ApiIgnore Authentication authentication) {
 
+		SsafyUserDetails userDetails = (SsafyUserDetails)authentication.getDetails();
+
+		String memberDeleteId = userDetails.getUsername();
+		
 		int results_num = memberService.deleteMember(memberDeleteId);
 
 		if(results_num==0) return ResponseEntity.status(200).body(BaseRes.of(200, "회원삭제 성공."));
@@ -142,7 +148,7 @@ public class MemberController {
         @ApiResponse(code = 404, message = "사용자 없음"),
         @ApiResponse(code = 500, message = "서버 오류")
     })
-	public ResponseEntity<MemberRes> getUserInfo(Authentication authentication) {
+	public ResponseEntity<MemberRes> getUserInfo(@ApiIgnore Authentication authentication) {
 
 		/**
 		 * 요청 헤더 액세스 토큰이 포함된 경우에만 실행되는 인증 처리이후, 리턴되는 인증 정보 객체(authentication) 통해서 요청한 유저 식별.
@@ -195,3 +201,15 @@ public class MemberController {
 	}
 	
 }
+
+//http
+//.httpBasic().disable() // Http basic Auth  기반으로 로그인 인증창이 뜸.  disable 시에 인증창 뜨지 않음. 
+//.csrf().disable()  // rest api이므로 csrf 보안이 필요없으므로 disable처리.
+//.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS) // 토큰 기반 인증이므로 세션 사용 하지않음 // jwt token으로 인증하므로 stateless 하도록 처리.
+//.and()
+////.addFilter(new JwtFilter( authenticationManager(), memberService)) //HTTP 요청에 JWT 토큰 인증 필터를 거치도록 필터를 추가
+//.addFilter(new TestFilter(authenticationManager(), memberService))
+//.authorizeRequests()
+//.antMatchers("/members/me").authenticated() //인증이 필요한 URL
+//.anyRequest().permitAll()    // 나머지 모든 요청 허용
+//.and().cors();
