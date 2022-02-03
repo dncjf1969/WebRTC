@@ -3,7 +3,7 @@ import axios from "axios";
 import "./TestComponent.css";
 import { OpenVidu } from "openvidu-browser";
 import StreamComponent from "./stream/StreamComponent";
-import DialogExtensionComponent from "./dialog-extension/DialogExtension";
+// import DialogExtensionComponent from "./dialog-extension/DialogExtension";
 import ChatComponent from "./chat/ChatComponent";
 
 import OpenViduLayout from "../layout/openvidu-layout";
@@ -39,28 +39,30 @@ class TestComponent extends Component {
       ? this.props.sessionName
       : "SessionA";
     //let userName = this.props.user ? this.props.user : 'OpenVidu_User' + Math.floor(Math.random() * 100);
-    let tempNamelist = [
-      "이정123",
-      "우처리",
-      "young남",
-      "조소히",
-      "현아짱99",
-      "동준은쌈디",
-      "나는우철",
-      "나는용남",
-      "소힝",
-      "현아입니다",
-      "",
-    ];
-    let userName = tempNamelist[Math.floor(Math.random() * 10)];
-
-    let imgList2 = [
-      require("./testImages/muzi.PNG"),
-      require("./testImages/muzi.PNG"),
-      require("./testImages/neo.PNG"),
-      require("./testImages/prodo.PNG"),
-      require("./testImages/prodo.PNG"),
-    ];
+    // let tempNamelist = [
+    //   "이정123",
+    //   "우처리",
+    //   "young남",
+    //   "조소히",
+    //   "현아짱99",
+    //   "동준은쌈디",
+    //   "나는우철",
+    //   "나는용남",
+    //   "소힝",
+    //   "현아입니다",
+    //   "",
+    // ];
+    // let userName = tempNamelist[Math.floor(Math.random() * 10)];
+    let userName = this.props.user
+      ? this.props.user
+      : "OpenVidu_User" + Math.floor(Math.random() * 100);
+    // let imgList2 = [
+    //   require("./testImages/muzi.PNG"),
+    //   require("./testImages/muzi.PNG"),
+    //   require("./testImages/neo.PNG"),
+    //   require("./testImages/prodo.PNG"),
+    //   require("./testImages/prodo.PNG"),
+    // ];
     this.remotes = [];
     this.localUserAccessAllowed = false;
     this.state = {
@@ -72,9 +74,10 @@ class TestComponent extends Component {
       chatDisplay: "none",
       currentVideoDevice: undefined,
       nowUser: [],
-      imgList: imgList2,
+      // imgList: imgList2,
     };
-
+    console.log("state다");
+    console.log(this.state);
     this.joinSession = this.joinSession.bind(this);
     this.leaveSession = this.leaveSession.bind(this);
     this.onbeforeunload = this.onbeforeunload.bind(this);
@@ -105,11 +108,12 @@ class TestComponent extends Component {
       bigFirst: true, // Whether to place the big one in the top left (true) or bottom right
       animate: true, // Whether you want to animate the transitions
     };
-
+    // 레이아웃
     this.layout.initLayoutContainer(
       document.getElementById("layout"),
       openViduLayoutOptions
     );
+    // 사용자가 페이지를 떠날 때 정말 떠날것인지 확인하는 대화상자 팝업
     window.addEventListener("beforeunload", this.onbeforeunload);
     window.addEventListener("resize", this.updateLayout);
     window.addEventListener("resize", this.checkSize);
@@ -141,22 +145,25 @@ class TestComponent extends Component {
         document.getElementById("name0").innerHTML = this.state.myUserName;
 
         this.state.session.on("connectionCreated", (event) => {
-          console.log("!!!");
+          console.log("!!! conectioncreated");
           console.log(event.target.remoteConnections);
+          // event-connection-data는 me
+          // event-target-remoteConnections는 참여자들(나 포함)
           //this.state.nowUser = event.target.remoteConnections;
+          // 참여자 전체 정보
           var temp = event.target.remoteConnections;
           //this.state.nowUser = [];
 
           //temp.forEach(element => {
           var temp2 = JSON.parse(event.connection.data);
           console.log(temp2);
-
+          // 로컬 유저에 대한 정보
           var temp = {
             userName: temp2.clientData,
             sessionID: event.connection.connectionId,
             ReadyState: false,
           };
-
+          console.log("event다", event);
           this.state.nowUser.push(temp);
           //});
           console.log("!?!");
@@ -180,23 +187,27 @@ class TestComponent extends Component {
           }
 
           if (this.state.isReady === true) {
+            // 레디했다
           }
         });
-
+        // 새유저가 들어왔을 때, 다른사람의 레디 정보가 반영 안됨
         this.state.session.on("signal:readyTest", (event) => {
           console.log(event.target.remoteConnections);
 
           //시그널을 보낸 세션 아이디
           var xx = event.from.connectionId;
           console.log(xx + "가 레디를 하겠대 or 레디 취소 하겠대.");
-
+          console.log(this.state.nowUser);
           for (var i = 0; i < this.state.nowUser.length; i++) {
             if (this.state.nowUser[i].sessionID === xx) {
+              // 레디. 이렇게 나오는게 맞는가?
               var temp3 = "ready" + i;
 
               //                            document.getElementById(temp3).innerHTML = "준비!";
+              // 이거 작동 원리 한 번 봐야함
               if (document.getElementById(temp3).innerHTML != "준비 완료!") {
                 document.getElementById(temp3).innerHTML = "준비 완료!";
+                console.log(this.state.nowUser[i]);
                 this.state.nowUser[i].ReadyState = true;
               } else {
                 document.getElementById(temp3).innerHTML = "준비 중..";
@@ -702,10 +713,10 @@ class TestComponent extends Component {
           toggleChat={this.toggleChat}
         />
 
-        <DialogExtensionComponent
+        {/* <DialogExtensionComponent
           showDialog={this.state.showExtensionDialog}
           cancelClicked={this.closeDialogExtension}
-        />
+        /> */}
 
         <div id="layout" className="bounds">
           <TestUserList
@@ -716,8 +727,13 @@ class TestComponent extends Component {
           {localUser !== undefined &&
             localUser.getStreamManager() !== undefined && (
               <div className="OT_root OT_publisher custom-class" id="localUser">
-                {/* { <TestCharacter/> }
-                            { <StreamComponent user={localUser} handleNickname={this.nicknameChanged} /> } */}
+                {<TestCharacter />}
+                {
+                  <StreamComponent
+                    user={localUser}
+                    handleNickname={this.nicknameChanged}
+                  />
+                }
               </div>
             )}
           {/* {this.state.subscribers.map((sub, i) => (
