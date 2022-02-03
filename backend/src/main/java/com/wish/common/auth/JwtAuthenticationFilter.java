@@ -48,20 +48,29 @@ public class JwtAuthenticationFilter extends BasicAuthenticationFilter {
             throws ServletException, IOException {
         // Read the Authorization header, where the JWT Token should be
         String header = request.getHeader(JwtTokenUtil.HEADER_KEY);
+        header = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJpc3MiOiJ3aXNoLmNvbSIsImV4cCI6MTY0NTA4MjcwMCwiaWF0IjoxNjQzNzg2NzAwLCJtZW1iZXJJZCI6ImEifQ.Ghc36EBzhfMb_IJX5eqY9lP4w9DMZrRRcGjAvuK5ICOIaMYSLnDt6WZ9Dc7jpsv4rmottPXsw30vrxrje32quA";
+        System.out.println(header);
+        System.out.println("!!");
+        System.out.println(JwtTokenUtil.TOKEN_PREFIX);
+
 
         // If header does not contain BEARER or is null delegate to Spring impl and exit
-        if (header == null || !header.startsWith(JwtTokenUtil.TOKEN_PREFIX)) {
-            filterChain.doFilter(request, response);
-            return;
-        }
+//        if (header == null || !header.startsWith(JwtTokenUtil.TOKEN_PREFIX)) {
+//            filterChain.doFilter(request, response);
+//            System.out.println("?!");
+//            return;
+//        }
 
         try {
             // If header is present, try grab user principal from database and perform authorization
             Authentication authentication = getAuthentication(request);
             // jwt 토큰으로 부터 획득한 인증 정보(authentication) 설정.
             SecurityContextHolder.getContext().setAuthentication(authentication);
+            System.out.println(authentication.toString());
+            System.out.println("~!");
         } catch (Exception ex) {
             ResponseBodyWriteUtil.sendError(request, response, ex);
+            System.out.println("??!");
             return;
         }
 
@@ -82,6 +91,7 @@ public class JwtAuthenticationFilter extends BasicAuthenticationFilter {
     @Transactional(readOnly = true)
     public Authentication getAuthentication(HttpServletRequest request) throws Exception {
         String token = request.getHeader(JwtTokenUtil.HEADER_KEY);
+        token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJpc3MiOiJ3aXNoLmNvbSIsImV4cCI6MTY0NTA4MjcwMCwiaWF0IjoxNjQzNzg2NzAwLCJtZW1iZXJJZCI6ImEifQ.Ghc36EBzhfMb_IJX5eqY9lP4w9DMZrRRcGjAvuK5ICOIaMYSLnDt6WZ9Dc7jpsv4rmottPXsw30vrxrje32quA";
 
         if (token != null) {
 //            // parse the token and validate it (decode)

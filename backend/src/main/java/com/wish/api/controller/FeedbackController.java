@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -16,12 +17,14 @@ import com.wish.api.dto.request.FeedbackCreateReq;
 import com.wish.api.dto.response.BaseRes;
 import com.wish.api.dto.response.FeedbackRes;
 import com.wish.api.service.FeedbackService;
+import com.wish.common.auth.SsafyUserDetails;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
+import springfox.documentation.annotations.ApiIgnore;
 
 @Api(value = "피드백 관련 API", tags = {"Feedback"})
 @RestController
@@ -45,8 +48,12 @@ public class FeedbackController {
         @ApiResponse(code = 500, message = "서버 오류")
     })
 	public ResponseEntity<List<FeedbackRes>> getMyFeedback(
-			@RequestParam @ApiParam(value="멤버Id")String memberId) {
+			@ApiIgnore Authentication authentication) {
 		
+		SsafyUserDetails userDetail = (SsafyUserDetails)authentication.getDetails();
+		
+		String memberId = userDetail.getUsername();
+				
 		List<FeedbackRes> res = feedbackService.getMyFeedback(memberId);
 
 		return ResponseEntity.status(200).body(res);
@@ -76,7 +83,12 @@ public class FeedbackController {
         @ApiResponse(code = 500, message = "서버 오류")
     })
 	public ResponseEntity<BaseRes> deleteFeedback(
-			@RequestParam @ApiParam(value="멤버Id")Long feedbackId) {
+			@ApiIgnore Authentication authentication,
+			@RequestParam @ApiParam(value="피드백 Id")Long feedbackId) {
+		
+		SsafyUserDetails userDetail = (SsafyUserDetails)authentication.getDetails();
+		//ToDO
+		//유저 디테일이 안 생긴다면 수행 불가.로 해야함.
 		
 		if(feedbackService.deleteFeedback(feedbackId)) return ResponseEntity.status(200).body(BaseRes.of(201, success));
 		return ResponseEntity.status(401).body(BaseRes.of(401, fail));
