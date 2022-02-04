@@ -34,6 +34,7 @@ export default class ToolbarComponent extends Component {
         this.switchCamera = this.switchCamera.bind(this);
         this.leaveSession = this.leaveSession.bind(this);
         this.toggleChat = this.toggleChat.bind(this);
+        this.toggleQues = this.toggleQues.bind(this);
     }
 
 
@@ -68,6 +69,10 @@ export default class ToolbarComponent extends Component {
 
     toggleChat() {
         this.props.toggleChat();
+    }
+
+    toggleQues(){
+        this.props.toggleQues();
     }
 
     render() {
@@ -133,12 +138,21 @@ export default class ToolbarComponent extends Component {
                         <IconButton color="secondary" className="navButton" onClick={this.leaveSession} id="navLeaveButton">
                             <PowerSettingsNew />
                         </IconButton> */}
+
+                        <IconButton color="inherit" onClick={this.toggleQues} id="navQuesButton">
+                            {this.props.showNotification && <div id="point" className="" />}
+                            <Tooltip title="Ques">
+                                <QuestionAnswer />
+                            </Tooltip>
+                        </IconButton>
+
                          <IconButton color="inherit" onClick={this.toggleChat} id="navChatButton">
                             {this.props.showNotification && <div id="point" className="" />}
                             <Tooltip title="Chat">
                                 <QuestionAnswer />
                             </Tooltip>
                         </IconButton>
+                        
                     </div>
                 </Toolbar>
             </AppBar>

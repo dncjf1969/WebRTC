@@ -25,6 +25,7 @@ public class SsafyUserDetails implements UserDetails {
     public SsafyUserDetails(Member member) {
     		super();
     		this.member = member;
+    		
     }
     
     public Member getMember() {

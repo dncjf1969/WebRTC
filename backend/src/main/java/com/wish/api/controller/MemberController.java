@@ -69,7 +69,7 @@ public class MemberController {
     })
 	public ResponseEntity<? extends BaseRes> login(
 			@RequestBody @ApiParam(value="로그인 정보", required = true) MemberLoginReq loginInfo) {
-		System.out.println(loginInfo.toString());
+		
 		String userId = loginInfo.getId();
 
 		if(memberService.loginMember(loginInfo)) {
@@ -202,14 +202,4 @@ public class MemberController {
 	
 }
 
-//http
-//.httpBasic().disable() // Http basic Auth  기반으로 로그인 인증창이 뜸.  disable 시에 인증창 뜨지 않음. 
-//.csrf().disable()  // rest api이므로 csrf 보안이 필요없으므로 disable처리.
-//.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS) // 토큰 기반 인증이므로 세션 사용 하지않음 // jwt token으로 인증하므로 stateless 하도록 처리.
-//.and()
-////.addFilter(new JwtFilter( authenticationManager(), memberService)) //HTTP 요청에 JWT 토큰 인증 필터를 거치도록 필터를 추가
-//.addFilter(new TestFilter(authenticationManager(), memberService))
-//.authorizeRequests()
-//.antMatchers("/members/me").authenticated() //인증이 필요한 URL
-//.anyRequest().permitAll()    // 나머지 모든 요청 허용
-//.and().cors();
+

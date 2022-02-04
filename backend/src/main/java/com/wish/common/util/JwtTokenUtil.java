@@ -41,7 +41,7 @@ public class JwtTokenUtil {
 
 
     @Autowired
-    public JwtTokenUtil(@Value("${jwt.secret}") String secretKey, @Value("${jwt.expiration}") Integer expiration) {
+    public JwtTokenUtil(@Value("${jwt.secretKey}") String secretKey, @Value("${jwt.expirationTime}") Integer expiration) {
         this.secretKey = secretKey;
         this.expiration = expiration;
         this.algo = Algorithm.HMAC512(secretKey.getBytes());
@@ -96,7 +96,7 @@ public class JwtTokenUtil {
         //token_prefix는 앞에 붙는건가보네.
         try {
             DecodedJWT temp_decodedJWT = verifier.verify(token.replace(TOKEN_PREFIX, ""));
-
+            																
             return temp_decodedJWT;
 
         } catch (AlgorithmMismatchException ex) {
