@@ -2,10 +2,11 @@ package com.wish.config;
 
 import com.wish.api.service.MemberService;
 import com.wish.common.auth.JwtAuthenticationFilter;
-import com.wish.common.auth.JwtFilter;
 import com.wish.common.auth.SsafyMemberDetailService;
 
 import com.wish.common.auth.TestFilter;
+import com.wish.common.jwt.JwtFilter;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -19,6 +20,8 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.authentication.logout.LogoutFilter;
 
 /**
  * 인증(authentication) 와 인가(authorization) 처리를 위한 스프링 시큐리티 설정 정의.
@@ -55,7 +58,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         auth.authenticationProvider(authenticationProvider());
     }
 
-    @Override public void configure(WebSecurity web) throws Exception { 
+    @Override 
+    public void configure(WebSecurity web) throws Exception { 
     	web.ignoring()
     	.antMatchers("/resources/**")
     	.antMatchers("/css/**")
@@ -70,9 +74,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     	.antMatchers("/members/login")
     	.antMatchers("/members/signup")
     	.antMatchers("/members/findPW")
+    	.antMatchers("/")
     	; 
     }
 
+//      요청 -> dispatcherServlet -> 컨트롤러 
+//      요청  -> 필터 -> 
     	
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -81,9 +88,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     	.csrf().disable()  // rest api이므로 csrf 보안이 필요없으므로 disable처리.
     	.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS) // 토큰 기반 인증이므로 세션 사용 하지않음 // jwt token으로 인증하므로 stateless 하도록 처리.
     	.and()
+//    	.addFilterBefore(new JwtFilter(), UsernamePasswordAuthenticationFilter.class)
     	//.addFilter(new JwtFilter( authenticationManager(), memberService)) //HTTP 요청에 JWT 토큰 인증 필터를 거치도록 필터를 추가
-    	.addFilter(new JwtFilter(authenticationManager(), memberService))
     	.authorizeRequests()
+//    	.antMatchers("/members/findPW").authenticated() // 인증이 필요함.
+//    	.antMatchers("/members/findPW").permitAll() // 필터 통과. 근데 인증은 걍 허용함.
     	.anyRequest().authenticated() 
     	.and().cors();
     }
