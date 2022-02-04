@@ -263,7 +263,7 @@ export default class Game extends Component {
       publisher: undefined,
       subscribers: [],
       started: false,
-      readystate: "ready",
+      readystate: "null",
       gametype: "pushUp",
       status: "up",
       check: false,
@@ -479,14 +479,17 @@ export default class Game extends Component {
             subscribers,
           });
         });
+        // 아까 start타입으로 시그널 트리거
         mySession.on("signal:start", (event) => {
           this.setState({ gameId: event.data });
           this.start();
         });
         mySession.on("signal:count", (event) => {
           let countdata = event.data.split(",");
+
           this.state.ranking.set(countdata[0], countdata[1]);
           this.setState({
+            // 키와 밸류가 한 쌍인
             sortedrank: new Map(
               [...this.state.ranking.entries()].sort((a, b) => b[1] - a[1])
             ),
@@ -500,6 +503,9 @@ export default class Game extends Component {
           });
           this.renderTableData();
         });
+        // 누군가 chat 시그널 보냈을 때 반응
+        // 사전질문 리스트에 저장하고 누가 들어오면 그 리스트를 [클라이언트 ]보내줘라 누군가 연결이 됐어 그럼 걔한테 시그널 타입 A를 보내면 그 타입 A에는 사전질문 리스트를 담아서 보내
+        // 그럼 유저는 타입 A라는 시그널이 들어오면 사전질문 리스트 받으니까 그거를 setstate로 갱신
         mySession.on("signal:chat", (event) => {
           let chatdata = event.data.split(",");
           if (chatdata[0] !== this.state.myUserName) {
@@ -596,7 +602,7 @@ export default class Game extends Component {
     return new Promise((resolve, reject) => {
       $.ajax({
         type: "GET",
-        url: `${"https://i5a608.p.ssafy.io:8443/api/sessions/"}${
+        url: `${"https://i6e201.p.ssafy.io:8443/api/sessions/"}${
           this.state.mySessionId
         }/connection`,
         headers: {
@@ -626,6 +632,7 @@ export default class Game extends Component {
         timer: true,
         count: 0,
         status: "up",
+        // SKWN
         ranking: new Map(),
         sortedrank: new Map(),
         readystate: "ready",
@@ -656,14 +663,17 @@ export default class Game extends Component {
 
   startButton() {
     let mySession = this.state.session;
-    // axios1
-    //   .put(`/api/game/start?roomId=${this.state.mySessionId}`)
-    //   .then((response) => {
-    //     mySession.signal({
-    //       data: response.data.gameId,
-    //       type: "start",
-    //     });
-    //   });
+    axios1
+      // 방에 대한 토큰
+      .put(`/api/game/start?roomId=${this.state.mySessionId}`)
+      .then((response) => {
+        mySession.signal({
+          // 시그널을 보낸다는 거는 데이터와 타입을 클라이언트에 보냄
+          // start라는 시그널을 받은 클라이언트들은 실행
+          data: response.data.gameId,
+          type: "start",
+        });
+      });
   }
 
   // 시작버튼
@@ -911,8 +921,11 @@ export default class Game extends Component {
       let data = {};
       axios
         .post(
+          // 이 주소로 포스트요청하겠4다 ㅇㅇ
           `${OPENVIDU_SERVER_URL}/openvidu/api/sessions/${sessionId}/connection`,
+          // data -> 내가 요청할때 필요한 정보를 담아서 보낸다
           data,
+          // 헤더 담아서 보냄 (서버한테 요청보낼때 담아서 보냄)
           {
             headers: {
               Authorization: `Basic ${btoa(
@@ -922,8 +935,10 @@ export default class Game extends Component {
             },
           }
         )
+        // 서버로부터 응답 -> 그럼 여기에 유저네임이라던가 면접유형들이 아하 그럼 이게 이제 우리 스테이트에 어디에 담겨? 토큰에? 응응 아하 아하
         .then((response) => {
           resolve(response.data.token);
+          // respons2.sessionID
         })
         .catch((error) => reject(error));
     });
