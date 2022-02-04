@@ -28,6 +28,7 @@ plugins {
     id 'java'
     id 'idea'
     id 'org.springframework.boot' version "${springBootVer}"
+    id 'base'
 }
 
 apply plugin: 'io.spring.dependency-management'
