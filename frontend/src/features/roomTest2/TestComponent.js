@@ -13,7 +13,7 @@ import ToolbarComponent from "./toolbar/ToolbarComponent";
 //
 import TestCharacter from "./Testcharacter/Testcharacter";
 import TestUserList from "./TestUserList/TestUserList";
-// import TestQuesList from "./TestQuesList/TestQuesList";
+import TestQuesList from "./TestQuesList/TestQuesList";
 
 import imgA from "./testImages/rion.PNG";
 import imgB from "./testImages/muzi.PNG";
@@ -91,7 +91,7 @@ class TestComponent extends Component {
     this.toggleChat = this.toggleChat.bind(this);
     this.checkNotification = this.checkNotification.bind(this);
     this.checkSize = this.checkSize.bind(this);
-    this.QuesList = this.QuesList.bind(this);
+    this.toggleQues = this.toggleQues.bind(this);
   }
 
   componentDidMount() {
@@ -646,7 +646,7 @@ class TestComponent extends Component {
     this.layout.setLayoutOptions(openviduLayoutOptions);
     this.updateLayout();
   }
-  QuesList(property) {
+  toggleQues(property) {
     let display = property;
 
     if (display === undefined) {
@@ -716,7 +716,7 @@ class TestComponent extends Component {
           switchCamera={this.switchCamera}
           leaveSession={this.leaveSession}
           toggleChat={this.toggleChat}
-          QuesList={this.QuesList}
+          toggleQues={this.toggleQues}
         />
 
         <DialogExtensionComponent
@@ -729,7 +729,9 @@ class TestComponent extends Component {
             session={this.state.session}
             nowUser={this.state.nowUser}
           />
-          {/* <TestQuesList session={this.state.session} /> */}
+          <TestQuesList 
+          session={this.state.session}
+          QuesDisplay={this.state.QuesDisplay} />
           {localUser !== undefined &&
             localUser.getStreamManager() !== undefined && (
               <div className="OT_root OT_publisher custom-class" id="localUser">

@@ -19,7 +19,7 @@ import PowerSettingsNew from '@material-ui/icons/PowerSettingsNew';
 import QuestionAnswer from '@material-ui/icons/QuestionAnswer';
 
 import IconButton from '@material-ui/core/IconButton';
-import TestQuesList from '../TestQuesList/TestQuesList';
+
 const logo = require('../../../assets/pt.png');
 
 export default class ToolbarComponent extends Component {
@@ -34,7 +34,7 @@ export default class ToolbarComponent extends Component {
         this.switchCamera = this.switchCamera.bind(this);
         this.leaveSession = this.leaveSession.bind(this);
         this.toggleChat = this.toggleChat.bind(this);
-        this.QuesList = this.QuesList.bind(this);
+        this.toggleQues = this.toggleQues.bind(this);
     }
 
 
@@ -67,12 +67,8 @@ export default class ToolbarComponent extends Component {
         this.props.leaveSession();
     }
 
-    testQuestList() {
-        this.props.TestQuesList();
-    }
-
-    QuesList() {
-        this.props.QuesList();
+    toggleQues() {
+        this.props.toggleQues();
     }
 
     toggleChat() {
@@ -84,27 +80,24 @@ export default class ToolbarComponent extends Component {
         const localUser = this.props.user;
 
         const tempStyle={
-            width:"900px",
-            marginLeft:"10px",
+            width:"400px",
+            marginLeft:"20px",
         }
 
         const tempStyle2={
-            width:"900px",
-            marginLeft:"10px",
-           
+            width:"400px",
+            marginLeft:"20px",
         }
 
         return (
             <AppBar className="toolbar" id="header">
                 <Toolbar className="toolbar">
                     <div id="navSessionInfo">
-                        <img
+                        {/* <img
                             id="header_img"
                             alt="OpenVidu Logo"
                             src={logo}
-                            width={40}
-                            height={40}
-                        />
+                        /> */}
 
                         {this.props.sessionId && <div id="titleContent" style={tempStyle2}>
                             {/* <span id="session-title">{mySessionId}</span> */}
@@ -112,8 +105,6 @@ export default class ToolbarComponent extends Component {
                         </div>}
                     </div>
 
-                    {/* 버튼을 숨겨놓음
-                    나중에 방장이 start 버튼을 누르면 이 버튼들이 보이게 할 예정 */}
                     <div className="buttonsContent">
                         <IconButton color="inherit" className="navButton" id="navMicButton" onClick={this.micStatusChanged}>
                             {localUser !== undefined && localUser.isAudioActive() ? <Mic /> : <MicOff color="secondary" />}
@@ -141,24 +132,24 @@ export default class ToolbarComponent extends Component {
                         <IconButton color="inherit" className="navButton" onClick={this.switchCamera}>
                             <SwitchVideoIcon />
                         </IconButton>
-
+                        
                         <IconButton color="inherit" className="navButton" onClick={this.toggleFullscreen}>
                             {localUser !== undefined && this.state.fullscreen ? <FullscreenExit /> : <Fullscreen />}
                         </IconButton>
-                        
+
                         <IconButton color="secondary" className="navButton" onClick={this.leaveSession} id="navLeaveButton">
                             <PowerSettingsNew />
                         </IconButton>
-                        
 
-                        <IconButton color="inherit" onClick={this.TestQuesList} id="navQuestionButton">                            <button />
+                        <IconButton color="inherit" onClick={this.toggleQues} id="navQuesButton">
+                            {this.props.showNotification && <div id="point" className="" />}
+                            <Tooltip title="">
+                                <QuestionAnswer />
+                            </Tooltip>
                         </IconButton>
 
                          <IconButton color="inherit" onClick={this.toggleChat} id="navChatButton">
                             {this.props.showNotification && <div id="point" className="" />}
-                            <Tooltip title="Chat">
-                                <TestQuesList />
-                            </Tooltip>
                             <Tooltip title="Chat">
                                 <QuestionAnswer />
                             </Tooltip>

@@ -73,6 +73,7 @@ class TestQuesList extends Component {
             border: '1px solid black',
             marginLeft:"250px",
             marginTop:"50px",
+            display:this.props.QuesDisplay,
         }
         const tempStyle3={
             display:"inline-block",
