@@ -5,29 +5,58 @@
 // middleware필드를 전달하지 않으면 기본적으로 제공되는 미들웨어가 있다(getDefaultMiddleware 이 API로 기본 미들웨어를 가져온다.)
 // 기본 미들웨어로는 redux-thunk
 // configureSttore를 통해 생성된 store는 Redux DevTools Extension을 사용하여 dspatch된 action과 history, state 변경사항들을 쉽게 볼 수 있다.
+import { combineReducers, createStore, configureStore } from "@reduxjs/toolkit";
 
-import { combineReducers, configureStore } from "@reduxjs/toolkit";
-import SignUpReducer from "../features/account/authSlice";
-// reducer를 모아주는 함수,store를만들어주는 함수
-import AuthReducer from "../features/account/authSlice";
-import LoginReducer from "../features/account/login/LoginSlice"
+// 액션명 정의
+const SAVE = "SAVE";
+const DELETE = "DELETE";
+
+// 액션 생성 함수
+const saveToken = token => {
+  return {
+    type: SAVE,
+    token
+  };
+};
+
+const deleteToDo = id => {
+  return {
+    type: DELETE,
+    id
+  };
+};
+
+// 리듀서
+const tokenReducer = (state = [], action) => {
+  switch (action.type) {
+    case SAVE:
+      return [ action.token ];
+    case DELETE:
+      return state.filter(toDo => toDo !== action.id);
+    default:
+      return state;
+  }
+};
 
 
 // 각 리듀서를 합침
 const rootreducer = combineReducers({
-  signup: SignUpReducer,
-  auth: AuthReducer,
-  login: LoginReducer,
+  // signup: SignUpReducer,
+  // auth: AuthReducer,
+  // login: LoginReducer,
+  tokenReducer
 });
 
 // 합친 리듀서 연결
-const store = configureStore({
-  reducer: rootreducer, // 합친 리듀서 연결
-  middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware({
-      serializableCheck: false,
-    }),
-});
+const store = createStore(
+  rootreducer // 합친 리듀서 연결
+);
+
+// 다른 컴포넌트에서 action을 하나하나 import하지 않고 action creators만 import하기위해
+export const actionCreators = {
+  saveToken,
+  deleteToDo
+}
 
 export default store; // 외부 인스톨이 가능하게 해줌
 

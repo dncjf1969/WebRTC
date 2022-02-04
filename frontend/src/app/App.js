@@ -9,6 +9,7 @@ import styled from "styled-components";
 import SignUp from "../features/account/signup/Signup";
 import Login from "../features/account/login/Login";
 import Home from "../features/home/Home";
+<<<<<<< HEAD
 import RoomList from '../features/roomlist/Roomlist';
 import Mypage from '../features/mypage/Mypage';
 import DataTable from '../features/roomlist/roomarray2';
@@ -21,6 +22,17 @@ import Error500 from '../common/error/Error500';
 // // routes
 import PrivateRoute from '../common/routes/PrivateRoute';
 import PublicRoute from '../common/routes/PublicRoute';
+=======
+import RoomList from "../features/roomlist/Roomlist";
+import MyPage from "../features/mypage/Mypage";
+import DataTable from "../features/roomlist/roomarray2";
+// import Game from '../features/meetingroom/Game';
+// import Room from '../features/interview/Room';
+import VideoRoomComponent from "../features/roomTest/VideoRoomComponent";
+import TestComponent from "../features/roomTest2/TestComponent";
+import Navbar from "../common/navbar/navbar";
+import Test from "../features/roomlist/test";
+>>>>>>> frontend
 
 const Wrapper = styled.div`
   background-color: white;
@@ -42,10 +54,18 @@ function App() {
           <Route path="/roomlist" element={<RoomList />}></Route>
           <Route path="/mypage" element={<Mypage />} />
           <Route path="/test" element={<DataTable />}></Route>
+<<<<<<< HEAD
           <Route path="/roomTest" element={<VideoRoomComponent />}></Route>
           <Route path="/roomTest2" element={<TestComponent />}></Route>
           <Route path="*" element={<Error404 />}></Route>
           <Route path="/error" element={<Error500 />}></Route>
+=======
+          {/* <Route path="/game" element={<Game />}></Route>
+          <Route path="/room" element={<Room />}></Route> */}
+          <Route path="/roomTest" element={<VideoRoomComponent />}></Route>
+          <Route path="/roomTest2" element={<TestComponent />}></Route>
+          <Route path="/test" element={<Test />}></Route>
+>>>>>>> frontend
         </Routes>
       </Router>
     </Wrapper>

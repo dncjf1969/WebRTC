@@ -8,10 +8,13 @@ import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import axios from '../../common/http-common'
 import { useNavigate } from "react-router-dom";
+import { connect } from 'react-redux';
+import { actionCreators } from '../../app/store';
 
-export default function FormDialog({room}) {
+function FormDialog({room}) {
   const [open, setOpen] = React.useState(false);
   const [password, setPassword] = React.useState(null);
+  // const [token, setToken] = React.useState('dd');
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -28,7 +31,14 @@ export default function FormDialog({room}) {
       .get(`/room/waiting/enter?password=${password !== null ? password : ''}&roomId=${parseInt(roomId)}`)
       .then((res) => {
         console.log(res)
-        // navigate('/roomtest2')
+        const token = res.data.token
+        
+        console.log(token)
+        
+        window.localStorage.setItem('ovToken', token);
+        
+        // navigate('/test')
+
         return res.data;
       })
       .catch((err) => {
@@ -78,3 +88,16 @@ export default function FormDialog({room}) {
     </div>
   );
 }
+
+function mapStateToProps(state) {
+  // console.log(states)
+  return { thisToken: state.tokenReducer }
+}
+
+function mapDispatchToProps(dispatch, ownProps) {
+  return {
+    saveToken: (token) => dispatch(actionCreators.saveToken(token)) // 만들어서 컴포넌트에서사용
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps) (FormDialog);
