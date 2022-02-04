@@ -71,7 +71,7 @@ export default function CustomizedInputBase() {
     };
     console.log(data)
     
-      // console.log("아이디 버튼 활성화", ID);
+    // console.log("아이디 버튼 활성화", ID);
     await axios
       .post(`/room/waiting`, data)
       .then((res) => {
