@@ -707,7 +707,7 @@ class TestComponent extends Component {
           micStatusChanged={this.micStatusChanged}
           screenShare={this.screenShare}
           stopScreenShare={this.stopScreenShare}
-          toggleFullscreen={this.toggleFullscreen}
+          // toggleFullscreen={this.toggleFullscreen}
           switchCamera={this.switchCamera}
           leaveSession={this.leaveSession}
           toggleChat={this.toggleChat}
