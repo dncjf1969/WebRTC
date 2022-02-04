@@ -28,6 +28,7 @@ plugins {
     id 'java'
     id 'idea'
     id 'org.springframework.boot' version "${springBootVer}"
+    id 'base'
 }
 
 apply plugin: 'io.spring.dependency-management'
@@ -196,6 +197,11 @@ dependencies {
     // https://mvnrepository.com/artifact/io.openvidu/openvidu-java-client
 	implementation group: 'io.openvidu', name: 'openvidu-java-client', version: '2.20.0'
 
+}
+
+// 젠킨스 배포용
+bootJar {
+    mainClass = 'com.wish.GroupCallApplication'
 }
 
 test {
