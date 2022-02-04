@@ -198,6 +198,11 @@ dependencies {
 
 }
 
+// 젠킨스 배포용
+bootJar {
+    mainClass = 'com.wish.GroupCallApplication'
+}
+
 test {
     useJUnitPlatform()
 }
