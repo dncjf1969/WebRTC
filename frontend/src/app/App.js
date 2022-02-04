@@ -14,7 +14,7 @@ import MyPage from '../features/mypage/Mypage';
 import DataTable from '../features/roomlist/roomarray2';
 // import Game from '../features/meetingroom/Game';
 // import Room from '../features/interview/Room';
-// import VideoRoomComponent from "../features/roomTest/VideoRoomComponent";
+import VideoRoomComponent from "../features/roomTest/VideoRoomComponent";
 import TestComponent from "../features/roomTest2/TestComponent";
 import Navbar from "../common/navbar/navbar";
 import Test from "../features/roomlist/test";
@@ -40,8 +40,8 @@ function App() {
           <Route path="/mypage" element={<MyPage />} />
           {/* <Route path="/test" element={<DataTable />}></Route> */}
           {/* <Route path="/game" element={<Game />}></Route> */}
-          {/* <Route path="/room" element={<Room />}></Route>
-          <Route path="/roomTest" element={<VideoRoomComponent />}></Route> */}
+          {/* <Route path="/room" element={<Room />}></Route> */}
+          <Route path="/roomTest" element={<VideoRoomComponent />}></Route>
           <Route path="/roomTest2" element={<TestComponent />}></Route>
           <Route path="/test" element={<Test />}></Route>
         </Routes>

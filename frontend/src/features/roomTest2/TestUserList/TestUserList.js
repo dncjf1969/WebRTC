@@ -48,14 +48,14 @@ class TestUserList extends Component {
             display:"inline-block",
             width:"400px",
             height:"400px",
-            marginLeft:"50px",
+            marginLeft:"10px",
         }
 
         const tempStyle2={
             display:"inline-block",
             width:"500px",
             height:"400px",
-            marginLeft:"200px",
+            marginLeft:"0px",
             backgroundColor : 'white',
             border: '1px solid black',
 
@@ -64,7 +64,7 @@ class TestUserList extends Component {
             display:"inline-block",
             width:"500px",
             height:"100px",
-            marginLeft:"200px",
+            marginLeft:"0px",
             backgroundColor : 'white',
             border: '1px solid black',
         }
