@@ -1,0 +1,32 @@
+# Why docker-compose
+# 기본 도커 사용시 명령어에 이런 저런 옵션이 붙으면서 길어진다.
+# 컨테이너간 연결, 통신을 해야하면 매우 길어진다.
+# docker-compose 사용시 이러한 부분을 yml파일로 정의할 수 있기 때문에 실행이 간단해진다.
+
+version: '3.2'
+
+services: 
+  frontend:
+    image: frontend-vue
+    build:
+      context: frontend/
+      dockerfile: Dockerfile
+    ports:
+      - "80:80"
+      - "443:443" 
+    # [인증서 파일 저장 경로]:/var/www/html
+    volumes:
+      - /home/ubuntu/docker-volume/ssl:/var/www/html
+    container_name: "frontend"
+  
+  backend:
+    image: backend-spring
+    build:
+      context: backend/
+      dockerfile: Dockerfile
+    ports:
+      - "8443:8443"  
+		# [인증서 파일 저장 경로]:/root 
+    volumes:
+      - /home/ubuntu/docker-volume/ssl:/root
+    container_name: "backend"
