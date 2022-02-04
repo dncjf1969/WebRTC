@@ -15,5 +15,5 @@ services:
       - "8443:8443"  
     # [인증서 파일 저장 경로]:/root 
     volumes:
-      - /home/ubuntu/docker-volume/ssl:/root
+      - /home/ubuntu/WISH/ssl:/root
     container_name: "backend"
