@@ -9,16 +9,16 @@ import styled from "styled-components";
 import SignUp from "../features/account/signup/Signup";
 import Login from "../features/account/login/Login";
 import Home from "../features/home/Home";
-import RoomList from '../features/roomlist/Roomlist';
-import MyPage from '../features/mypage/Mypage';
-import DataTable from '../features/roomlist/roomarray2';
+import RoomList from "../features/roomlist/Roomlist";
+import MyPage from "../features/mypage/Mypage";
+import DataTable from "../features/roomlist/roomarray2";
 // import Game from '../features/meetingroom/Game';
 // import Room from '../features/interview/Room';
 // import VideoRoomComponent from "../features/roomTest/VideoRoomComponent";
 import TestComponent from "../features/roomTest2/TestComponent";
 import Navbar from "../common/navbar/navbar";
 import Test from "../features/roomlist/test";
-
+import Game from "../features/game/Game";
 const Wrapper = styled.div`
   background-color: white;
   height: 100vh;
@@ -44,6 +44,7 @@ function App() {
           <Route path="/roomTest" element={<VideoRoomComponent />}></Route> */}
           <Route path="/roomTest2" element={<TestComponent />}></Route>
           <Route path="/test" element={<Test />}></Route>
+          <Route path="/game" element={<Game />}></Route>
         </Routes>
       </Router>
     </Wrapper>
