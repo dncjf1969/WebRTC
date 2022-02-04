@@ -27,6 +27,7 @@ var localUser = new UserModel();
 class TestComponent extends Component {
   constructor(props) {
     super(props);
+
     this.OPENVIDU_SERVER_URL = this.props.openviduServerUrl
       ? this.props.openviduServerUrl
       : "https://" + "i6e201.p.ssafy.io" + ":4443";
@@ -67,11 +68,63 @@ class TestComponent extends Component {
     this.remotes = [];
     this.localUserAccessAllowed = false;
     this.state = {
+      // 방id like key
       mySessionId: sessionName,
+      // 방에 들어간 유저 - > nickname
       myUserName: userName,
+      // session은 내가 있는 그 session 자체
       session: undefined,
-      localUser: undefined,
+      // 메인 카메라 화면사람 지정
+      mainStreamManager: undefined,
+      // 나
+      publisher: undefined,
+      // 나를 제외한 유저들
       subscribers: [],
+      started: false,
+      readystate: 'ready',
+      // gametype: 인성,직무 면접 
+      gametype: 'pushUp',
+      // 우리한테 필요없음
+      status: 'up',
+      // TM에 필요했던거 
+      check: false,
+      // 카운트세는거 필요ㄴㄴ
+      count: 0,
+      // TM에 필요했던거
+      webcam: undefined,
+      // TM에 필요했던거
+      model: undefined,
+      // TM에 필요했던거
+      URL: undefined,
+      // [닉네임, 갯수] 배열
+      ranking: new Map(),
+      // 랭킹정하는 배열 
+      sortedrank: new Map(),
+      // 최종 등수를 인덱스 순으로 정렬된 데이터
+      rankdata: undefined,
+      messages: [],
+      chaton: false,
+      message: '',
+      // 방장 (정의하는 기준 )
+      ishost: false,
+      // 토론, pt 한다면 추가 
+      timer: false,
+      // DB저장용 게임 ID 
+      gameId: undefined,
+      // 높은 확률로 jwt토큰인데 여기서 사용안했음 
+      token: undefined,
+      audiostate: false,
+      videostate: true,
+      // 방제목 결정 
+      headerText: '',
+      // 
+      arrow: false,
+      leaved: false,
+      isRankModalOpen: false,
+      startbuttonstate: true,
+      finalRank: [],
+      isFliped: true,
+      localUser: undefined,
       chatDisplay: "none",
       currentVideoDevice: undefined,
       nowUser: [],
@@ -97,6 +150,9 @@ class TestComponent extends Component {
   }
 
   componentDidMount() {
+    console.log('마운트됐다');
+    console.log(this.state.myUserName);
+    this.state.myUserName = 'ㅇㅇㅇㅇ';
     const openViduLayoutOptions = {
       maxRatio: 3 / 2, // The narrowest ratio that will be used (default 2x3)
       minRatio: 9 / 16, // The widest ratio that will be used (default 16x9)
@@ -225,15 +281,18 @@ class TestComponent extends Component {
           //시그널을 보낸 세션 아이디
           var xx = event.from.connectionId;
           console.log(xx + "가 질문 만들겠대.");
+          // event는 어떻게 찍으면 나오나?
           console.log(event.data);
           var zz = "";
           for (var i = 0; i < this.state.nowUser.length; i++) {
             if (this.state.nowUser[i].sessionID === xx) {
+              // zz는 userName
               zz = this.state.nowUser[i].userName;
+              console.log(this.state);
               break;
             }
           }
-          var yy = event.data;
+
           document.getElementById("quesList").innerHTML +=
             `<div style="border: 1px solid black; float:left; width:380px"> <div style="font-size:17pt; margin-left:3px; float:left">` +
             event.data +
@@ -336,9 +395,11 @@ class TestComponent extends Component {
       frameRate: 30,
       insertMode: "APPEND",
     });
-
+    // publisher에 대한 호가인
     if (this.state.session.capabilities.publish) {
+      // 장치에 대한 권한 허용을 받는다
       publisher.on("accessAllowed", () => {
+        console.log("session이다", this.state.session);
         this.state.session.publish(publisher).then(() => {
           this.updateSubscribers();
           this.localUserAccessAllowed = true;
@@ -348,6 +409,7 @@ class TestComponent extends Component {
         });
       });
     }
+    // local유저가 기기에 대한 권한을 다 받고 한 다음 정보재정의
     localUser.setNickname(this.state.myUserName);
     localUser.setConnectionId(this.state.session.connection.connectionId);
     localUser.setScreenShareActive(false);
@@ -424,6 +486,8 @@ class TestComponent extends Component {
     }
   }
   camStatusChanged() {
+    // 스타트가 아닐때는 isVideoActive를 false
+    // 스타트면은 isVideoActive true
     localUser.setVideoActive(!localUser.isVideoActive());
     localUser.getStreamManager().publishVideo(localUser.isVideoActive());
     this.sendSignalUserChanged({ isVideoActive: localUser.isVideoActive() });
@@ -436,7 +500,7 @@ class TestComponent extends Component {
     this.sendSignalUserChanged({ isAudioActive: localUser.isAudioActive() });
     this.setState({ localUser: localUser });
   }
-
+  // 없애도됨
   nicknameChanged(nickname) {
     let localUser = this.state.localUser;
     localUser.setNickname(nickname);
@@ -445,6 +509,7 @@ class TestComponent extends Component {
       nickname: this.state.localUser.getNickname(),
     });
   }
+  // 없애도됨
 
   deleteSubscriber(stream) {
     const remoteUsers = this.state.subscribers;
@@ -497,33 +562,33 @@ class TestComponent extends Component {
   }
 
   subscribeToUserChanged() {
-    // this.state.session.on('signal:userChanged', (event) => {
-    //     let remoteUsers = this.state.subscribers;
-    //     remoteUsers.forEach((user) => {
-    //         if (user.getConnectionId() === event.from.connectionId) {
-    //             const data = JSON.parse(event.data);
-    //             console.log('EVENTO REMOTE: ', event.data);
-    //             if (data.isAudioActive !== undefined) {
-    //                 user.setAudioActive(data.isAudioActive);
-    //             }
-    //             if (data.isVideoActive !== undefined) {
-    //                 user.setVideoActive(data.isVideoActive);
-    //             }
-    //             if (data.nickname !== undefined) {
-    //                 user.setNickname(data.nickname);
-    //             }
-    //             if (data.isScreenShareActive !== undefined) {
-    //                 user.setScreenShareActive(data.isScreenShareActive);
-    //             }
-    //         }
-    //     });
-    //     this.setState(
-    //         {
-    //             subscribers: remoteUsers,
-    //         },
-    //         () => this.checkSomeoneShareScreen(),
-    //     );
-    // });
+    this.state.session.on("signal:userChanged", (event) => {
+      let remoteUsers = this.state.subscribers;
+      remoteUsers.forEach((user) => {
+        if (user.getConnectionId() === event.from.connectionId) {
+          const data = JSON.parse(event.data);
+          console.log("EVENTO REMOTE: ", event.data);
+          if (data.isAudioActive !== undefined) {
+            user.setAudioActive(data.isAudioActive);
+          }
+          if (data.isVideoActive !== undefined) {
+            user.setVideoActive(data.isVideoActive);
+          }
+          if (data.nickname !== undefined) {
+            user.setNickname(data.nickname);
+          }
+          if (data.isScreenShareActive !== undefined) {
+            user.setScreenShareActive(data.isScreenShareActive);
+          }
+        }
+      });
+      this.setState(
+        {
+          subscribers: remoteUsers,
+        },
+        () => this.checkSomeoneShareScreen()
+      );
+    });
   }
 
   updateLayout() {
@@ -539,7 +604,7 @@ class TestComponent extends Component {
     };
     this.state.session.signal(signalOptions);
   }
-
+  // 없애도됨
   toggleFullscreen() {
     const document = window.document;
     const fs = document.getElementById("container");
@@ -570,7 +635,7 @@ class TestComponent extends Component {
       }
     }
   }
-
+  // 없애도됨
   async switchCamera() {
     try {
       const devices = await this.OV.getDevices();
@@ -610,7 +675,7 @@ class TestComponent extends Component {
       console.error(e);
     }
   }
-
+  // 없애도됨
   screenShare() {
     const videoSource =
       navigator.userAgent.indexOf("Firefox") !== -1 ? "window" : "screen";
@@ -652,16 +717,16 @@ class TestComponent extends Component {
       publisher.videos[0].video.parentElement.classList.remove("custom-class");
     });
   }
-
+  // 없애도됨
   closeDialogExtension() {
     this.setState({ showExtensionDialog: false });
   }
-
+  // 없애도됨
   stopScreenShare() {
     this.state.session.unpublish(localUser.getStreamManager());
     this.connectWebCam();
   }
-
+  // 없애도됨
   checkSomeoneShareScreen() {
     let isScreenShared;
     // return true if at least one passes the test
@@ -698,12 +763,14 @@ class TestComponent extends Component {
     }
     this.updateLayout();
   }
-
+  // 메세지 알림 기능
   checkNotification(event) {
     this.setState({
       messageReceived: this.state.chatDisplay === "none",
     });
   }
+  // 이거 뭔지 모르겠다
+
   checkSize() {
     if (
       document.getElementById("layout").offsetWidth <= 700 &&
@@ -727,9 +794,11 @@ class TestComponent extends Component {
 
     return (
       <div className="container" id="container">
+        <h1>{this.state.myUserName}</h1>
         <ToolbarComponent
           sessionId={mySessionId}
           user={localUser}
+          // 메세지 받음
           showNotification={this.state.messageReceived}
           camStatusChanged={this.camStatusChanged}
           micStatusChanged={this.micStatusChanged}

@@ -7,7 +7,7 @@ import SearchIcon from '@mui/icons-material/Search';
 import AutorenewIcon from '@mui/icons-material/Autorenew';
 import Button from '@mui/material/Button';
 import { useDispatch } from 'react-redux';
-import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 // 방만들기 dialog
 import FormDialog from './dialog';
@@ -58,6 +58,7 @@ export default function CustomizedInputBase() {
 
   const [name, setName] = useState('');
 
+  let navigate = useNavigate()
   // 방생성 버튼 
   const handleCreateRoom = async () => {
     
@@ -76,12 +77,16 @@ export default function CustomizedInputBase() {
       .post(`/room/waiting`, data)
       .then((res) => {
         console.log(res)
+        const roomId = res.data.roomId
+        window.localStorage.setItem('roomId', roomId);
+        navigate('/roomtest2')
         return res.data;
       })
       .catch((err) => {
         console.log(err)
         return err;
       });
+      
     
   };
 
