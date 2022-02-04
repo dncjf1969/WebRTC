@@ -73,9 +73,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     	.antMatchers("/question")
     	.antMatchers("/members/login")
     	.antMatchers("/members/signup")
-    	.antMatchers("/members/findPW")
-    	.antMatchers("/")
-    	; 
+    	.antMatchers("/members/findPW"); 
     }
 
 //      요청 -> dispatcherServlet -> 컨트롤러 
@@ -93,7 +91,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     	.authorizeRequests()
 //    	.antMatchers("/members/findPW").authenticated() // 인증이 필요함.
 //    	.antMatchers("/members/findPW").permitAll() // 필터 통과. 근데 인증은 걍 허용함.
-    	.anyRequest().authenticated() 
+//    	.anyRequest().authenticated() 
+    	.anyRequest().permitAll()
     	.and().cors();
     }
 }
