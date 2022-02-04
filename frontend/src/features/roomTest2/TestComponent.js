@@ -27,6 +27,7 @@ var localUser = new UserModel();
 class TestComponent extends Component {
   constructor(props) {
     super(props);
+
     this.OPENVIDU_SERVER_URL = this.props.openviduServerUrl
       ? this.props.openviduServerUrl
       : "https://" + "i6e201.p.ssafy.io" + ":4443";
@@ -67,11 +68,63 @@ class TestComponent extends Component {
     this.remotes = [];
     this.localUserAccessAllowed = false;
     this.state = {
+      // 방id like key
       mySessionId: sessionName,
+      // 방에 들어간 유저 - > nickname
       myUserName: userName,
+      // session은 내가 있는 그 session 자체
       session: undefined,
-      localUser: undefined,
+      // 메인 카메라 화면사람 지정
+      mainStreamManager: undefined,
+      // 나
+      publisher: undefined,
+      // 나를 제외한 유저들
       subscribers: [],
+      started: false,
+      readystate: 'ready',
+      // gametype: 인성,직무 면접 
+      gametype: 'pushUp',
+      // 우리한테 필요없음
+      status: 'up',
+      // TM에 필요했던거 
+      check: false,
+      // 카운트세는거 필요ㄴㄴ
+      count: 0,
+      // TM에 필요했던거
+      webcam: undefined,
+      // TM에 필요했던거
+      model: undefined,
+      // TM에 필요했던거
+      URL: undefined,
+      // [닉네임, 갯수] 배열
+      ranking: new Map(),
+      // 랭킹정하는 배열 
+      sortedrank: new Map(),
+      // 최종 등수를 인덱스 순으로 정렬된 데이터
+      rankdata: undefined,
+      messages: [],
+      chaton: false,
+      message: '',
+      // 방장 (정의하는 기준 )
+      ishost: false,
+      // 토론, pt 한다면 추가 
+      timer: false,
+      // DB저장용 게임 ID 
+      gameId: undefined,
+      // 높은 확률로 jwt토큰인데 여기서 사용안했음 
+      token: undefined,
+      audiostate: false,
+      videostate: true,
+      // 방제목 결정 
+      headerText: '',
+      // 
+      arrow: false,
+      leaved: false,
+      isRankModalOpen: false,
+      startbuttonstate: true,
+      finalRank: [],
+      isFliped: true,
+      localUser: undefined,
       chatDisplay: "none",
       currentVideoDevice: undefined,
       nowUser: [],
@@ -97,6 +150,9 @@ class TestComponent extends Component {
   }
 
   componentDidMount() {
+    console.log('마운트됐다');
+    console.log(this.state.myUserName);
+    this.state.myUserName = 'ㅇㅇㅇㅇ';
     const openViduLayoutOptions = {
       maxRatio: 3 / 2, // The narrowest ratio that will be used (default 2x3)
       minRatio: 9 / 16, // The widest ratio that will be used (default 16x9)
@@ -727,6 +783,7 @@ class TestComponent extends Component {
 
     return (
       <div className="container" id="container">
+        <h1>{this.state.myUserName}</h1>
         <ToolbarComponent
           sessionId={mySessionId}
           user={localUser}
