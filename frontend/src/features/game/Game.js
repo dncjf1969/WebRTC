@@ -316,14 +316,17 @@ export default class Game extends Component {
 
   componentDidMount() {
     // this.props.doResetMyPageInfo();
+    // 창 닫을려고 하면 componentwillunmount
     window.addEventListener("beforeunload", () => {
       this.componentWillUnmount();
     });
     music.currentTime = 0;
     setTimeout(() => {
       const { state } = this.props;
+      // 우리가 받아올 것 : name(방제), manager(참가자닉네임), password, type axios 요청 /room/waiting
       const { token, roomId, nickname, gameType } = state;
       if (roomId === "") {
+        // navigate('/')
         this.props.history.push("/error");
       }
       this.setState({
@@ -332,6 +335,8 @@ export default class Game extends Component {
         myUserName: nickname,
         gametype: gameType,
       });
+      // url 파람스 추가
+      // this.setState({headerText: name })
       switch (gameType) {
         case 1:
           this.setState({ headerText: roomId + "/스쿼트" });
@@ -467,6 +472,7 @@ export default class Game extends Component {
         // --- 3) Specify the actions when events take place in the session ---
 
         // On every new Stream received...
+        // 새로운 스트림이 발생할때마다 받아서 subscribers에 저장함
         mySession.on("streamCreated", (event) => {
           // Subscribe to the Stream to receive it. Second parameter is undefined
           // so OpenVidu doesn't create an HTML video by its own
@@ -546,22 +552,22 @@ export default class Game extends Component {
         // On every asynchronous exception...
         mySession.on("exception", (exception) => {});
 
-        // --- 4) Connect to the session with a valid user token ---
+        // --- 4) 유효한 사용자 토큰으로 세션에 연결 ---
 
-        // 'getToken' method is simulating what your server-side should do.
-        // 'token' parameter should be retrieved and returned by your own backend
+        // 'getToken' 메소드는 서버 측에서 수행해야 할 작업을 시뮬레이션하는 것
+        // 백엔드에서 'token'파라미터가 검색되고 반환되어야함
 
-        // First param is the token got from OpenVidu Server. Second param can be retrieved by every user on event
         // 'streamCreated' (property Stream.connection.data), and will be appended to DOM as the user's nickname
         this.getToken().then((token) => {
-          // First param is the token got from OpenVidu Server. Second param can be retrieved by every user on event
+          // 첫 번째 매개 변수는 OpenVidu Server에서 가져온 토큰. 두번째 매개 변수는 이벤트에 대한 모든 유저로부터 검색됨
           // 'streamCreated' (property Stream.connection.data), and will be appended to DOM as the user's nickname
           mySession
             .connect(token, { clientData: this.state.myUserName })
             .then(() => {
+              // updataHost 이벤트로 해당 리스트의 첫 번째 유저를 받아와서 방장(호스트)으로 지정
               this.updateHost().then((firstUser) => {
                 const host = JSON.parse(firstUser).clientData;
-
+                // ishost는 각 유저들 state 구분해서 t/f 가림 나 === host이면, 나의 ishost state는 true
                 if (this.state.myUserName === host)
                   this.setState({ ishost: true });
               });
@@ -570,13 +576,14 @@ export default class Game extends Component {
               // Init a publisher passing undefined as targetElement (we don't want OpenVidu to insert a video
               // element: we will manage it on our own) and with the desired properties
               let publisher = this.OV.initPublisher(undefined, {
+                // 카메라랑 오디오 소스를 false 혹은 null로 하면 안켜짐
                 audioSource: undefined, // The source of audio. If undefined default microphone
                 videoSource: undefined, // The source of video. If undefined default webcam
                 publishAudio: false, // Whether you want to start publishing with your audio unmuted or not
                 publishVideo: true, // Whether you want to start publishing with your video enabled or not
                 resolution: "640x480", // The resolution of your video
                 frameRate: 30, // The frame rate of your video
-                insertMode: "APPEND", // How the video is inserted in the target element 'video-container'
+                insertMode: "APPEND", // How the video is insertㄴed in the target element 'video-container'
                 mirror: false, // Whether to mirror your local video or not
               });
 
