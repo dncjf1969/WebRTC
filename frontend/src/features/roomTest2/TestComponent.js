@@ -3,7 +3,7 @@ import axios from "axios";
 import "./TestComponent.css";
 import { OpenVidu } from "openvidu-browser";
 import StreamComponent from "./stream/StreamComponent";
-// import DialogExtensionComponent from "./dialog-extension/DialogExtension";
+import DialogExtensionComponent from "./dialog-extension/DialogExtension";
 import ChatComponent from "./chat/ChatComponent";
 
 import OpenViduLayout from "../layout/openvidu-layout";
@@ -22,7 +22,7 @@ import imgD from "./testImages/prodo.PNG";
 import imgE from "./testImages/prodo.PNG";
 import imgF from "./testImages/prodo.PNG";
 
-var localUser = new UserModel();
+let localUser = new UserModel();
 
 class TestComponent extends Component {
   constructor(props) {
@@ -39,30 +39,28 @@ class TestComponent extends Component {
       ? this.props.sessionName
       : "SessionA";
     //let userName = this.props.user ? this.props.user : 'OpenVidu_User' + Math.floor(Math.random() * 100);
-    // let tempNamelist = [
-    //   "이정123",
-    //   "우처리",
-    //   "young남",
-    //   "조소히",
-    //   "현아짱99",
-    //   "동준은쌈디",
-    //   "나는우철",
-    //   "나는용남",
-    //   "소힝",
-    //   "현아입니다",
-    //   "",
-    // ];
-    // let userName = tempNamelist[Math.floor(Math.random() * 10)];
-    let userName = this.props.user
-      ? this.props.user
-      : "OpenVidu_User" + Math.floor(Math.random() * 100);
-    // let imgList2 = [
-    //   require("./testImages/muzi.PNG"),
-    //   require("./testImages/muzi.PNG"),
-    //   require("./testImages/neo.PNG"),
-    //   require("./testImages/prodo.PNG"),
-    //   require("./testImages/prodo.PNG"),
-    // ];
+    let tempNamelist = [
+      "이정123",
+      "우처리",
+      "young남",
+      "조소히",
+      "현아짱99",
+      "동준은쌈디",
+      "나는우철",
+      "나는용남",
+      "소힝",
+      "현아입니다",
+      "",
+    ];
+    let userName = tempNamelist[Math.floor(Math.random() * 10)];
+
+    let imgList2 = [
+      require("./testImages/muzi.PNG"),
+      require("./testImages/muzi.PNG"),
+      require("./testImages/neo.PNG"),
+      require("./testImages/prodo.PNG"),
+      require("./testImages/prodo.PNG"),
+    ];
     this.remotes = [];
     this.localUserAccessAllowed = false;
     this.state = {
@@ -74,10 +72,9 @@ class TestComponent extends Component {
       chatDisplay: "none",
       currentVideoDevice: undefined,
       nowUser: [],
-      // imgList: imgList2,
+      imgList: imgList2,
     };
-    console.log("state다");
-    console.log(this.state);
+
     this.joinSession = this.joinSession.bind(this);
     this.leaveSession = this.leaveSession.bind(this);
     this.onbeforeunload = this.onbeforeunload.bind(this);
@@ -108,12 +105,11 @@ class TestComponent extends Component {
       bigFirst: true, // Whether to place the big one in the top left (true) or bottom right
       animate: true, // Whether you want to animate the transitions
     };
-    // 레이아웃
+
     this.layout.initLayoutContainer(
       document.getElementById("layout"),
       openViduLayoutOptions
     );
-    // 사용자가 페이지를 떠날 때 정말 떠날것인지 확인하는 대화상자 팝업
     window.addEventListener("beforeunload", this.onbeforeunload);
     window.addEventListener("resize", this.updateLayout);
     window.addEventListener("resize", this.checkSize);
@@ -145,32 +141,29 @@ class TestComponent extends Component {
         document.getElementById("name0").innerHTML = this.state.myUserName;
 
         this.state.session.on("connectionCreated", (event) => {
-          console.log("!!! conectioncreated");
+          console.log("!!!");
           console.log(event.target.remoteConnections);
-          // event-connection-data는 me
-          // event-target-remoteConnections는 참여자들(나 포함)
           //this.state.nowUser = event.target.remoteConnections;
-          // 참여자 전체 정보
-          var temp = event.target.remoteConnections;
+          // let temp = event.target.remoteConnections;
           //this.state.nowUser = [];
 
           //temp.forEach(element => {
-          var temp2 = JSON.parse(event.connection.data);
+          let temp2 = JSON.parse(event.connection.data);
           console.log(temp2);
-          // 로컬 유저에 대한 정보
-          var temp = {
+
+          let temp = {
             userName: temp2.clientData,
             sessionID: event.connection.connectionId,
             ReadyState: false,
           };
-          console.log("event다", event);
+
           this.state.nowUser.push(temp);
           //});
           console.log("!?!");
           console.log(this.state.nowUser);
-          for (var i = 1; i < this.state.nowUser.length; i++) {
-            var temp3 = "name" + i;
-            var tempHtml =
+          for (let i = 1; i < this.state.nowUser.length; i++) {
+            let temp3 = "name" + i;
+            let tempHtml =
               `<img src= "` +
               this.state.imgList[i] +
               `" style="float: left;
@@ -187,27 +180,23 @@ class TestComponent extends Component {
           }
 
           if (this.state.isReady === true) {
-            // 레디했다
           }
         });
-        // 새유저가 들어왔을 때, 다른사람의 레디 정보가 반영 안됨
+
         this.state.session.on("signal:readyTest", (event) => {
           console.log(event.target.remoteConnections);
 
           //시그널을 보낸 세션 아이디
-          var xx = event.from.connectionId;
+          let xx = event.from.connectionId;
           console.log(xx + "가 레디를 하겠대 or 레디 취소 하겠대.");
-          console.log(this.state.nowUser);
-          for (var i = 0; i < this.state.nowUser.length; i++) {
+
+          for (let i = 0; i < this.state.nowUser.length; i++) {
             if (this.state.nowUser[i].sessionID === xx) {
-              // 레디. 이렇게 나오는게 맞는가?
-              var temp3 = "ready" + i;
+              let temp3 = "ready" + i;
 
               //                            document.getElementById(temp3).innerHTML = "준비!";
-              // 이거 작동 원리 한 번 봐야함
               if (document.getElementById(temp3).innerHTML != "준비 완료!") {
                 document.getElementById(temp3).innerHTML = "준비 완료!";
-                console.log(this.state.nowUser[i]);
                 this.state.nowUser[i].ReadyState = true;
               } else {
                 document.getElementById(temp3).innerHTML = "준비 중..";
@@ -220,17 +209,17 @@ class TestComponent extends Component {
 
         this.state.session.on("signal:makeQues", (event) => {
           //시그널을 보낸 세션 아이디
-          var xx = event.from.connectionId;
+          let xx = event.from.connectionId;
           console.log(xx + "가 질문 만들겠대.");
           console.log(event.data);
-          var zz = "";
-          for (var i = 0; i < this.state.nowUser.length; i++) {
+          let zz = "";
+          for (let i = 0; i < this.state.nowUser.length; i++) {
             if (this.state.nowUser[i].sessionID === xx) {
               zz = this.state.nowUser[i].userName;
               break;
             }
           }
-          var yy = event.data;
+          let yy = event.data;
           document.getElementById("quesList").innerHTML +=
             `<div style="border: 1px solid black; float:left; width:380px"> <div style="font-size:17pt; margin-left:3px; float:left">` +
             event.data +
@@ -296,8 +285,8 @@ class TestComponent extends Component {
   }
 
   async connectWebCam() {
-    var devices = await this.OV.getDevices();
-    var videoDevices = devices.filter((device) => device.kind === "videoinput");
+    let devices = await this.OV.getDevices();
+    let videoDevices = devices.filter((device) => device.kind === "videoinput");
 
     let publisher = this.OV.initPublisher(undefined, {
       audioSource: undefined,
@@ -344,7 +333,7 @@ class TestComponent extends Component {
   }
 
   updateSubscribers() {
-    var subscribers = this.remotes;
+    let subscribers = this.remotes;
     this.setState(
       {
         subscribers: subscribers,
@@ -435,7 +424,7 @@ class TestComponent extends Component {
   subscribeToStreamCreated() {
     this.state.session.on("streamCreated", (event) => {
       const subscriber = this.state.session.subscribe(event.stream, undefined);
-      // var subscribers = this.state.subscribers;
+      // let subscribers = this.state.subscribers;
       subscriber.on("streamPlaying", (e) => {
         this.checkSomeoneShareScreen();
         subscriber.videos[0].video.parentElement.classList.remove(
@@ -546,19 +535,19 @@ class TestComponent extends Component {
   async switchCamera() {
     try {
       const devices = await this.OV.getDevices();
-      var videoDevices = devices.filter(
+      let videoDevices = devices.filter(
         (device) => device.kind === "videoinput"
       );
 
       if (videoDevices && videoDevices.length > 1) {
-        var newVideoDevice = videoDevices.filter(
+        let newVideoDevice = videoDevices.filter(
           (device) => device.deviceId !== this.state.currentVideoDevice.deviceId
         );
 
         if (newVideoDevice.length > 0) {
           // Creating a new publisher with specific videoSource
           // In mobile devices the default and first camera is the front one
-          var newPublisher = this.OV.initPublisher(undefined, {
+          let newPublisher = this.OV.initPublisher(undefined, {
             audioSource: undefined,
             videoSource: newVideoDevice[0].deviceId,
             publishAudio: localUser.isAudioActive(),
@@ -695,7 +684,7 @@ class TestComponent extends Component {
   render() {
     const mySessionId = this.state.mySessionId;
     const localUser = this.state.localUser;
-    var chatDisplay = { display: this.state.chatDisplay };
+    let chatDisplay = { display: this.state.chatDisplay };
 
     return (
       <div className="container" id="container">
@@ -713,10 +702,10 @@ class TestComponent extends Component {
           toggleChat={this.toggleChat}
         />
 
-        {/* <DialogExtensionComponent
+        <DialogExtensionComponent
           showDialog={this.state.showExtensionDialog}
           cancelClicked={this.closeDialogExtension}
-        /> */}
+        />
 
         <div id="layout" className="bounds">
           <TestUserList
@@ -727,13 +716,8 @@ class TestComponent extends Component {
           {localUser !== undefined &&
             localUser.getStreamManager() !== undefined && (
               <div className="OT_root OT_publisher custom-class" id="localUser">
-                {<TestCharacter />}
-                {
-                  <StreamComponent
-                    user={localUser}
-                    handleNickname={this.nicknameChanged}
-                  />
-                }
+                {/* { <TestCharacter/> }
+                            { <StreamComponent user={localUser} handleNickname={this.nicknameChanged} /> } */}
               </div>
             )}
           {/* {this.state.subscribers.map((sub, i) => (
@@ -782,7 +766,7 @@ class TestComponent extends Component {
 
   createSession(sessionId) {
     return new Promise((resolve, reject) => {
-      var data = JSON.stringify({ customSessionId: sessionId });
+      let data = JSON.stringify({ customSessionId: sessionId });
       axios
         .post(this.OPENVIDU_SERVER_URL + "/openvidu/api/sessions", data, {
           headers: {
@@ -796,7 +780,7 @@ class TestComponent extends Component {
           resolve(response.data.id);
         })
         .catch((response) => {
-          var error = Object.assign({}, response);
+          let error = Object.assign({}, response);
           if (error.response && error.response.status === 409) {
             resolve(sessionId);
           } else {
@@ -826,7 +810,7 @@ class TestComponent extends Component {
 
   createToken(sessionId) {
     return new Promise((resolve, reject) => {
-      var data = JSON.stringify({});
+      let data = JSON.stringify({});
       axios
         .post(
           this.OPENVIDU_SERVER_URL +
