@@ -75,6 +75,7 @@ export default class ChatComponent extends Component {
 
     close() {
         this.props.close(undefined);
+        
     }
 
     render() {

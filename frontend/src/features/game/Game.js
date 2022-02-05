@@ -609,7 +609,7 @@ export default class Game extends Component {
     return new Promise((resolve, reject) => {
       $.ajax({
         type: "GET",
-        url: `${"https://i6e201.p.ssafy.io:8443/api/sessions/"}${
+        url: `${"https://i6e201.p.ssafy.io:8443/room/waiting/"}${
           this.state.mySessionId
         }/connection`,
         headers: {
@@ -667,7 +667,7 @@ export default class Game extends Component {
   chattoggle() {
     this.setState({ chaton: !this.state.chaton });
   }
-
+// 시작버튼
   startButton() {
     let mySession = this.state.session;
     axios1
@@ -683,7 +683,7 @@ export default class Game extends Component {
       });
   }
 
-  // 시작버튼
+
   leaveSession() {
     // --- 7) Leave the session by calling 'disconnect' method over the Session object ---
     const mySession = this.state.session;

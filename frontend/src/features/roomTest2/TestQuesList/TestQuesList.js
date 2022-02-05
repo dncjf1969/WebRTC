@@ -69,6 +69,7 @@ class TestQuesList extends Component {
             display:"inline-block",
             width:"800px",
             height:"100px",
+            
             backgroundColor : 'white',
             border: '1px solid black',
             marginLeft:"0px",

@@ -41,17 +41,6 @@ class TestComponent extends Component {
       : "SessionA";
     //let userName = this.props.user ? this.props.user : 'OpenVidu_User' + Math.floor(Math.random() * 100);
     let tempNamelist = [
-      "이정123",
-      "우처리",
-      "young남",
-      "조소히",
-      "현아짱99",
-      "동준은쌈디",
-      "나는우철",
-      "나는용남",
-      "소힝",
-      "현아입니다",
-      "",
     ];
     let userName = tempNamelist[Math.floor(Math.random() * 10)];
 
@@ -122,7 +111,7 @@ class TestComponent extends Component {
       finalRank: [],
       isFliped: true,
       localUser: undefined,
-      chatDisplay: "none",
+      chatDisplay: "true",
       QuesDisplay: "none",
       currentVideoDevice: undefined,
       nowUser: [],
@@ -147,21 +136,19 @@ class TestComponent extends Component {
     this.toggleQues = this.toggleQues.bind(this);
   }
 
+  // 렌더링 될때마다 실행
   componentDidMount() {
-<<<<<<< HEAD
     console.log('마운트됐다');
     console.log(this.state.myUserName);
-    this.state.myUserName = 'ㅇㅇㅇㅇ';
-=======
-    // console.log("props다!!!", this.props);
->>>>>>> hui
+    console.log(this.state.mySessionId);
+    // this.state.myUserName = 'ㅇㅇㅇㅇ';
     const openViduLayoutOptions = {
       maxRatio: 3 / 2, // The narrowest ratio that will be used (default 2x3)
       minRatio: 9 / 16, // The widest ratio that will be used (default 16x9)
-      fixedRatio: false, // If this is true then the aspect ratio of the video is maintained and minRatio and maxRatio are ignored (default false)
+      fixedRatio: true, // If this is true then the aspect ratio of the video is maintained and minRatio and maxRatio are ignored (default false)
       bigClass: "OV_big", // The class to add to elements that should be sized bigger
       bigPercentage: 0.8, // The maximum percentage of space the big ones should take up
-      bigFixedRatio: false, // fixedRatio for the big ones
+      bigFixedRatio: true, // fixedRatio for the big ones
       bigMaxRatio: 3 / 2, // The narrowest ratio to use for the big elements (default 2x3)
       bigMinRatio: 9 / 16, // The widest ratio to use for the big elements (default 16x9)
       bigFirst: true, // Whether to place the big one in the top left (true) or bottom right
@@ -191,7 +178,7 @@ class TestComponent extends Component {
 
   joinSession() {
     this.OV = new OpenVidu();
-
+    
     this.setState(
       {
         session: this.OV.initSession(),
@@ -203,15 +190,15 @@ class TestComponent extends Component {
         document.getElementById("name0").innerHTML = this.state.myUserName;
 
         this.state.session.on("connectionCreated", (event) => {
-          console.log("!!!");
-          console.log(event.target.remoteConnections);
+          // console.log("!!!");
+          // console.log(event.target.remoteConnections);
           //this.state.nowUser = event.target.remoteConnections;
           // let temp = event.target.remoteConnections;
           //this.state.nowUser = [];
 
           //temp.forEach(element => {
           let temp2 = JSON.parse(event.connection.data);
-          console.log(temp2);
+          // console.log(temp2);
 
           let temp = {
             userName: temp2.clientData,
@@ -221,8 +208,8 @@ class TestComponent extends Component {
 
           this.state.nowUser.push(temp);
           //});
-          console.log("!?!");
-          console.log(this.state.nowUser);
+          // console.log("!?!");
+          // console.log(this.state.nowUser);
           for (let i = 1; i < this.state.nowUser.length; i++) {
             let temp3 = "name" + i;
             let tempHtml =
@@ -246,8 +233,8 @@ class TestComponent extends Component {
         });
 
         this.state.session.on("signal:readyTest", (event) => {
-          console.log(event.target.remoteConnections);
-
+          // console.log(event.target.remoteConnections);
+          
           //시그널을 보낸 세션 아이디
           let xx = event.from.connectionId;
           console.log(xx + "가 레디를 하겠대 or 레디 취소 하겠대.");
@@ -274,6 +261,7 @@ class TestComponent extends Component {
           let xx = event.from.connectionId;
           console.log(xx + "가 질문 만들겠대.");
           console.log(event.data);
+          console.log(event);
           let zz = "";
           for (let i = 0; i < this.state.nowUser.length; i++) {
             if (this.state.nowUser[i].sessionID === xx) {
@@ -282,6 +270,9 @@ class TestComponent extends Component {
             }
           }
           let yy = event.data;
+          // this.setState(
+          //   ...TestQuesList, this.state.TestQuesList
+          // )
           document.getElementById("quesList").innerHTML +=
             `<div style="border: 1px solid black; float:left; width:380px"> <div style="font-size:17pt; margin-left:3px; float:left">` +
             event.data +
@@ -301,7 +292,7 @@ class TestComponent extends Component {
       this.getToken()
         .then((token) => {
           console.log(token);
-          this.connect(token);
+          this.connect(token)
         })
         .catch((error) => {
           if (this.props.error) {
@@ -428,18 +419,9 @@ class TestComponent extends Component {
       subscribers: [],
       mySessionId: "SessionA",
       tempNamelist: [
-        "이정정",
-        "우처리",
-        "young남",
-        "조소히",
-        "hyuna55",
-        "동준은쌈디",
-        "나는우철",
-        "용남",
-        "소힝",
-        "현아입니다",
       ],
-      myUserName: this.tempNamelist[Math.floor(Math.random() * 10)],
+      myUserName:this.myUserName,
+      // myUserName: this.tempNamelist[Math.floor(Math.random() * 10)],
       localUser: undefined,
     });
     if (this.props.leaveSession) {
@@ -552,7 +534,7 @@ class TestComponent extends Component {
   updateLayout() {
     setTimeout(() => {
       this.layout.updateLayout();
-    }, 20);
+    }, 1);
   }
 
   sendSignalUserChanged(data) {
@@ -707,33 +689,35 @@ class TestComponent extends Component {
     this.updateLayout();
   }
   toggleQues(property) {
-    let display = property;
+    let toggleQuesdisplay = property;
 
-    if (display === undefined) {
-      display = this.state.QuesDisplay === "none" ? "block" : "none";
+    if (toggleQuesdisplay === undefined) {
+      toggleQuesdisplay = this.state.QuesDisplay === "none" ? "block" : "none";
     }
-    if (display === "block") {
-      this.setState({ QuesDisplay: display, messageReceived: false });
+    if (toggleQuesdisplay === "block") {
+      this.setState({ QuesDisplay: toggleQuesdisplay, messageReceived: false });
     } else {
-      console.log("chat", display);
-      this.setState({ QuesDisplay: display });
+      console.log("ques", toggleQuesdisplay);
+      this.setState({ QuesDisplay: toggleQuesdisplay });
     }
-    this.updateLayout();
+    // this.updateLayout();
   }
 
   toggleChat(property) {
-    let display = property;
+    let toggleChatdisplay = property;
 
-    if (display === undefined) {
-      display = this.state.chatDisplay === "none" ? "block" : "none";
+    if (toggleChatdisplay === undefined) {
+      console.log("gggg", toggleChatdisplay);
+      toggleChatdisplay = this.state.chatDisplay === "none" ? "block" : "none";
     }
-    if (display === "block") {
-      this.setState({ chatDisplay: display, messageReceived: false });
+
+    if (toggleChatdisplay === "block") {
+      this.setState({ chatDisplay: toggleChatdisplay, messageReceived: false });
     } else {
-      console.log("chat", display);
-      this.setState({ chatDisplay: display });
+      console.log("chat", toggleChatdisplay);
+      this.setState({ chatDisplay: toggleChatdisplay });
     }
-    this.updateLayout();
+    // this.updateLayout();
   }
 
   checkNotification(event) {
@@ -742,21 +726,25 @@ class TestComponent extends Component {
     });
   }
   checkSize() {
-    if (
-      document.getElementById("layout").offsetWidth <= 700 &&
-      !this.hasBeenUpdated
-    ) {
-      this.toggleChat("none");
-      this.hasBeenUpdated = true;
-    }
-    if (
-      document.getElementById("layout").offsetWidth > 700 &&
-      this.hasBeenUpdated
-    ) {
-      this.hasBeenUpdated = false;
-    }
+    // if (
+    //   document.getElementById("layout").offsetWidth <= 700 &&
+    //   !this.hasBeenUpdated
+    // ) {
+    //   this.toggleChat("none");
+    //   this.hasBeenUpdated = false;
+    // }
+    // if (
+    //   document.getElementById("layout").offsetWidth > 700 &&
+    //   this.hasBeenUpdated
+    // ) {
+    //   this.hasBeenUpdated = false;
+    // }
   }
-
+  changeChatting = () => {
+    this.setState({
+      text: "변경 성공!",
+    });
+  };
   render() {
     const mySessionId = this.state.mySessionId;
     const localUser = this.state.localUser;
@@ -793,8 +781,7 @@ class TestComponent extends Component {
           <TestQuesList 
           session={this.state.session}
           QuesDisplay={this.state.QuesDisplay} />
-          
-          {localUser !== undefined &&
+          {/* {localUser !== undefined &&
             localUser.getStreamManager() !== undefined && (
               <div className="OT_root OT_publisher custom-class" id="localUser">
                 { <StreamComponent user={localUser} handleNickname={this.nicknameChanged} /> }
@@ -804,7 +791,7 @@ class TestComponent extends Component {
               <div key={i} className="OT_root OT_publisher custom-class" id="remoteUsers">
                 { <StreamComponent user={localUser} handleNickname={this.nicknameChanged} /> }
               </div>
-            ))}
+            ))} */}
             
           {localUser !== undefined &&
             localUser.getStreamManager() !== undefined && (
@@ -817,6 +804,7 @@ class TestComponent extends Component {
                   chatDisplay={this.state.chatDisplay}
                   close={this.toggleChat}
                   messageReceived={this.checkNotification}
+                  
                 />
               </div>
             )}
