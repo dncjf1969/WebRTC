@@ -8,6 +8,7 @@ import CustomizedInputBase from './searchbar2';
 
 export default function DataTable() {
 
+
   return (
     <CustomizedInputBase />
   );

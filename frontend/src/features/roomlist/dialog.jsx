@@ -100,4 +100,4 @@ function mapDispatchToProps(dispatch, ownProps) {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps) (FormDialog);
+export default connect(mapStateToProps, mapDispatchToProps)(FormDialog);
