@@ -12,7 +12,7 @@ import ToolbarComponent from "./toolbar/ToolbarComponent";
 
 //
 import TestCharacter from "./Testcharacter/Testcharacter";
-import TestUserList from "./TestUserList/TestUserList";
+import Users from "./TestUserList/Users";
 import TestQuesList from "./TestQuesList/TestQuesList";
 
 import imgA from "./testImages/rion.PNG";
@@ -21,6 +21,7 @@ import imgC from "./testImages/neo.PNG";
 import imgD from "./testImages/prodo.PNG";
 import imgE from "./testImages/prodo.PNG";
 import imgF from "./testImages/prodo.PNG";
+import TestUserList from "./TestUserList/TestUserList";
 
 let localUser = new UserModel();
 
@@ -116,6 +117,8 @@ class TestComponent extends Component {
       currentVideoDevice: undefined,
       nowUser: [],
       imgList: imgList2,
+      // isViewer: false,
+      roles: [],
     };
 
     this.joinSession = this.joinSession.bind(this);
@@ -232,25 +235,33 @@ class TestComponent extends Component {
           }
         });
 
+        this.state.session.on("signal:roleChangeButton", (event) => {
+          // let role = event.data;
+          console.log(event);
+          let role = event.data;
+          let rolechanger = event.from.connectionId;
+          console.log("역할이다잉", role);
+          // 사전질문 삭제 -> 배열에서 걔를 찾아가지고 삭제하고 다시 setState
+          // 사전질문  -> 배열에서 걔를 찾아가지고 삭제하고 다시 setState
+          // for (let i = 0; i < this.state.roles.length, i++) {
+          //   if this.state.roles
+          // }
+          this.setState({
+            roles: [...this.state.roles, { rolechanger, role }],
+          });
+
+          console.log("역할들이다잉", this.state.roles);
+        });
+
         this.state.session.on("signal:readyTest", (event) => {
-          // console.log(event.target.remoteConnections);
-          
+          console.log(event);
+
           //시그널을 보낸 세션 아이디
           let xx = event.from.connectionId;
           console.log(xx + "가 레디를 하겠대 or 레디 취소 하겠대.");
 
           for (let i = 0; i < this.state.nowUser.length; i++) {
             if (this.state.nowUser[i].sessionID === xx) {
-              let temp3 = "ready" + i;
-
-              //                            document.getElementById(temp3).innerHTML = "준비!";
-              if (document.getElementById(temp3).innerHTML != "준비 완료!") {
-                document.getElementById(temp3).innerHTML = "준비 완료!";
-                this.state.nowUser[i].ReadyState = true;
-              } else {
-                document.getElementById(temp3).innerHTML = "준비 중..";
-                this.state.nowUser[i].ReadyState = false;
-              }
               break;
             }
           }
@@ -776,7 +787,8 @@ class TestComponent extends Component {
         <div id="layout" className="bounds">
           <TestUserList
             session={this.state.session}
-            nowUser={this.state.nowUser}
+            // nowUser={this.state.nowUser}
+            roles={this.roles}
           />
           <TestQuesList 
           session={this.state.session}
