@@ -14,7 +14,7 @@ import MyPage from "../features/mypage/Mypage";
 import DataTable from "../features/roomlist/roomarray2";
 // import Game from '../features/meetingroom/Game';
 // import Room from '../features/interview/Room';
-// import VideoRoomComponent from "../features/roomTest/VideoRoomComponent";
+import VideoRoomComponent from "../features/roomTest/VideoRoomComponent";
 import TestComponent from "../features/roomTest2/TestComponent";
 import Navbar from "../common/navbar/navbar";
 import Error404 from '../common/error/Error404';
@@ -46,6 +46,7 @@ function App() {
           <Route restricted path="/login" element={<Login />}></Route>
           <Route path="/roomlist" element={<RoomList />}></Route>
           <Route path="/mypage" element={<MyPage />} />
+          <Route path="/roomTest" element={<VideoRoomComponent />}></Route>
           <Route path="/roomTest2" element={<TestComponent />}></Route>
           <Route path="/test" element={<Test />}></Route>
           <Route path="/game" element={<Game />}></Route>

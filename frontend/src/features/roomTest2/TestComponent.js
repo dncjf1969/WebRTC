@@ -70,6 +70,7 @@ class TestComponent extends Component {
       localUser: undefined,
       subscribers: [],
       chatDisplay: "none",
+      QuesDisplay: "none",
       currentVideoDevice: undefined,
       nowUser: [],
       imgList: imgList2,
@@ -90,6 +91,7 @@ class TestComponent extends Component {
     this.toggleChat = this.toggleChat.bind(this);
     this.checkNotification = this.checkNotification.bind(this);
     this.checkSize = this.checkSize.bind(this);
+    this.toggleQues = this.toggleQues.bind(this);
   }
 
   componentDidMount() {
@@ -644,6 +646,20 @@ class TestComponent extends Component {
     this.layout.setLayoutOptions(openviduLayoutOptions);
     this.updateLayout();
   }
+  toggleQues(property) {
+    let display = property;
+
+    if (display === undefined) {
+      display = this.state.QuesDisplay === "none" ? "block" : "none";
+    }
+    if (display === "block") {
+      this.setState({ QuesDisplay: display, messageReceived: false });
+    } else {
+      console.log("chat", display);
+      this.setState({ QuesDisplay: display });
+    }
+    this.updateLayout();
+  }
 
   toggleChat(property) {
     let display = property;
@@ -700,29 +716,32 @@ class TestComponent extends Component {
           switchCamera={this.switchCamera}
           leaveSession={this.leaveSession}
           toggleChat={this.toggleChat}
+          toggleQues={this.toggleQues}
         />
 
         <DialogExtensionComponent
-          showDialog={this.state.showExtensionDialog}
+          showDialog={this.state.showExtensionDialog} 
           cancelClicked={this.closeDialogExtension}
         />
-
+        
         <div id="layout" className="bounds">
           <TestUserList
             session={this.state.session}
             nowUser={this.state.nowUser}
           />
-          <TestQuesList session={this.state.session} />
+          <TestQuesList 
+          session={this.state.session}
+          QuesDisplay={this.state.QuesDisplay} />
           {localUser !== undefined &&
             localUser.getStreamManager() !== undefined && (
               <div className="OT_root OT_publisher custom-class" id="localUser">
+                
                 {/* { <TestCharacter/> }
                             { <StreamComponent user={localUser} handleNickname={this.nicknameChanged} /> } */}
               </div>
             )}
           {/* {this.state.subscribers.map((sub, i) => (
                         <div key={i} className="OT_root OT_publisher custom-class" id="remoteUsers">
-                            { <TestCharacter/> }
                             { <StreamComponent user={localUser} handleNickname={this.nicknameChanged} /> }
 
                         </div>
@@ -733,6 +752,7 @@ class TestComponent extends Component {
                 className="OT_root OT_publisher custom-class"
                 style={chatDisplay}
               >
+                
                 <ChatComponent
                   user={localUser}
                   chatDisplay={this.state.chatDisplay}
