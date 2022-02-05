@@ -43,6 +43,8 @@ class TestUserList extends Component {
 		});
     }
 
+    
+
     render() {
         const tempStyle={
             display:"inline-block",
@@ -79,24 +81,36 @@ class TestUserList extends Component {
             fontSize: "14pt"
         }
 
+        
+        
+        // const myNickName = temp.clientData
         return (
             <div style={tempStyle}>
                 <div>
                         <div id="named0" style={tempStyle2}>
                             <div>
                             <div id="seat0"> 내 자리 </div>
-                                
+
                                 <img src={ imgA } style={tempStyle4}/>
-                                <div id="name0"> 이름 </div>
-                                <div id="ready0" style={tempStyle5}> 준비 중.. </div>
+                                <div id="name0"> {this.props.userName} </div>
+                                <div id="ready0" style={tempStyle5}> {this.props.ready} </div>
                                 <div>
                                 <button onClick={this.readyTest}> ready </button>
                                 </div>
-
-                            </div>
-                              
+                            </div>            
                         </div>
-                        <div id="named1" style={tempStyle3}>
+                        <div>
+            {this.props.subscribers.map((userInfo) =>
+                <div style={tempStyle3}>
+                <div>
+                    <div id="seat1"> {userInfo.nickname} </div>
+                        <div>{userInfo.ready ? "준비 완료!!!" : "준비 중..."}</div>
+                    </div>   
+                </div>
+            )}
+            </div>
+                        
+                        {/* <div id="named1" style={tempStyle3}>
                         <div>
                             <div id="seat1"> 1번 자리 </div>
                                 <div id="name1">
@@ -130,7 +144,7 @@ class TestUserList extends Component {
                                 <div id="name5"> 
                                 </div>
                             </div>
-                        </div>
+                        </div> */}
                 </div>
             </div>);
     }

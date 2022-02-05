@@ -40,31 +40,10 @@ class TestComponent extends Component {
     //   ? this.props.sessionName
     //   : "SessionA";
     let sessionName = window.localStorage.getItem('roomId')
-    //let userName = this.props.user ? this.props.user : 'OpenVidu_User' + Math.floor(Math.random() * 100);
-    // let tempNamelist = [
-    //   "이정123",
-    //   "우처리",
-    //   "young남",
-    //   "조소히",
-    //   "현아짱99",
-    //   "동준은쌈디",
-    //   "나는우철",
-    //   "나는용남",
-    //   "소힝",
-    //   "현아입니다",
-    //   "",
-    // ];
-    // let userName = tempNamelist[Math.floor(Math.random() * 10)];
     let userName = this.props.user
       ? this.props.user
       : "OpenVidu_User" + Math.floor(Math.random() * 100);
-    // let imgList2 = [
-    //   require("./testImages/muzi.PNG"),
-    //   require("./testImages/muzi.PNG"),
-    //   require("./testImages/neo.PNG"),
-    //   require("./testImages/prodo.PNG"),
-    //   require("./testImages/prodo.PNG"),
-    // ];
+   
     this.remotes = [];
     this.localUserAccessAllowed = false;
     this.state = {
@@ -81,7 +60,7 @@ class TestComponent extends Component {
       // 나를 제외한 유저들
       subscribers: [],
       started: false,
-      readystate: 'ready',
+      readyState: false,
       // gametype: 인성,직무 면접 
       gametype: 'pushUp',
       // 우리한테 필요없음
@@ -128,7 +107,7 @@ class TestComponent extends Component {
       chatDisplay: "none",
       currentVideoDevice: undefined,
       nowUser: [],
-      // imgList: imgList2,
+      customSubscriber: []
     };
     console.log("state다");
     console.log(this.state);
@@ -136,6 +115,7 @@ class TestComponent extends Component {
     this.leaveSession = this.leaveSession.bind(this);
     this.onbeforeunload = this.onbeforeunload.bind(this);
     this.updateLayout = this.updateLayout.bind(this);
+    this.readyStatusChanged = this.readyStatusChanged.bind(this);
     this.camStatusChanged = this.camStatusChanged.bind(this);
     this.micStatusChanged = this.micStatusChanged.bind(this);
     this.nicknameChanged = this.nicknameChanged.bind(this);
@@ -151,8 +131,6 @@ class TestComponent extends Component {
 
   componentDidMount() {
     console.log('마운트됐다');
-    console.log(this.state.myUserName);
-    this.state.myUserName = 'ㅇㅇㅇㅇ';
     const openViduLayoutOptions = {
       maxRatio: 3 / 2, // The narrowest ratio that will be used (default 2x3)
       minRatio: 9 / 16, // The widest ratio that will be used (default 16x9)
@@ -200,52 +178,51 @@ class TestComponent extends Component {
       () => {
         this.subscribeToStreamCreated();
         this.connectToSession();
+        console.log(this.state.session)
+        
+        this.state.session.on("streamCreated", (event) => {
+          console.log("스트림크리에이티드")
+          console.log(event)
+          console.log(this.state.subscribers)
 
-        document.getElementById("name0").innerHTML = this.state.myUserName;
+          // const temp2 = JSON.parse(event.connection.data);
+          // console.log(temp2.clientData);
+          // // 로컬 유저에 대한 정보
+          // const temp3 = {
+          //   userName: temp2.clientData,
+          //   sessionID: event.connection.connectionId,
+          //   ready: this.readyState,
+          // };
+          // console.log("event다", event);
+          // this.state.nowUser.push(temp3);
+        })
 
         this.state.session.on("connectionCreated", (event) => {
           console.log("!!! conectioncreated");
+          console.log(event)
+          // const temp = JSON.parse(event.target.options.metadata)
+          // console.log(temp.clientData)
           console.log(event.target.remoteConnections);
           // event-connection-data는 me
           // event-target-remoteConnections는 참여자들(나 포함)
           //this.state.nowUser = event.target.remoteConnections;
           // 참여자 전체 정보
-          var temp = event.target.remoteConnections;
+          // const temp = event.target.remoteConnections;
           //this.state.nowUser = [];
 
           //temp.forEach(element => {
-          var temp2 = JSON.parse(event.connection.data);
-          console.log(temp2);
+          const temp2 = JSON.parse(event.connection.data);
+          console.log(temp2.clientData);
           // 로컬 유저에 대한 정보
-          var temp = {
+          const temp3 = {
             userName: temp2.clientData,
             sessionID: event.connection.connectionId,
-            ReadyState: false,
+            ready: this.readyState,
           };
           console.log("event다", event);
-          this.state.nowUser.push(temp);
-          //});
-          console.log("!?!");
-          console.log(this.state.nowUser);
-          for (var i = 1; i < this.state.nowUser.length; i++) {
-            var temp3 = "name" + i;
-            var tempHtml =
-              `<img src= "` +
-              this.state.imgList[i] +
-              `" style="float: left;
-                        width:100px;
-                        height:100px"/>` +
-              `<div>` +
-              this.state.nowUser[i].userName +
-              `</div>` +
-              `<div id="ready` +
-              i +
-              `" style="font-size:14pt"> 준비 중.. </div>`;
+          this.state.nowUser.push(temp3);
 
-            document.getElementById(temp3).innerHTML = tempHtml;
-          }
-
-          if (this.state.isReady === true) {
+          if (this.state.readyState === true) {
             // 레디했다
           }
         });
@@ -255,44 +232,53 @@ class TestComponent extends Component {
 
           //시그널을 보낸 세션 아이디
           var xx = event.from.connectionId;
-          console.log(xx + "가 레디를 하겠대 or 레디 취소 하겠대.");
-          console.log(this.state.nowUser);
-          for (var i = 0; i < this.state.nowUser.length; i++) {
-            if (this.state.nowUser[i].sessionID === xx) {
-              // 레디. 이렇게 나오는게 맞는가?
-              var temp3 = "ready" + i;
-
-              //                            document.getElementById(temp3).innerHTML = "준비!";
-              // 이거 작동 원리 한 번 봐야함
-              if (document.getElementById(temp3).innerHTML != "준비 완료!") {
-                document.getElementById(temp3).innerHTML = "준비 완료!";
-                console.log(this.state.nowUser[i]);
-                this.state.nowUser[i].ReadyState = true;
-              } else {
-                document.getElementById(temp3).innerHTML = "준비 중..";
-                this.state.nowUser[i].ReadyState = false;
-              }
-              break;
-            }
+          if (xx === localUser.connectionId) {
+            this.readyStatusChanged()
           }
+          console.log(xx + "가 레디를 하겠대 or 레디 취소 하겠대.");
+          console.log(this.state.subscribers);
+          this.state.subscribers.forEach(element => {
+            if (element.connectionId === xx){
+              console.log(element)
+              element.setReady(!element.ready)
+              this.setState({subscribers : this.remotes})
+            }
+          });
+          // for (let i = 0; i < this.state.subscribers.length; i++) {
+          //   console.log(this.state.subscribers[i].connectionId)
+          //   if (this.state.subscribers[i].connectionId === xx) {
+          //     // console.log(this.state)
+          //     // this.state.subscribers[i].ready = !this.state.subscribers[i].ready
+          //     // // 레디. 이렇게 나오는게 맞는가?
+          //     // var temp3 = "ready" + i;
+
+          //     // // 이거 작동 원리 한 번 봐야함
+          //     // if (document.getElementById(temp3).innerHTML != "준비 완료!") {
+          //     //   document.getElementById(temp3).innerHTML = "준비 완료!";
+          //     //   console.log(this.state.nowUser[i]);
+          //     //   this.state.nowUser[i].readyState = true;
+          //     // } else {
+          //     //   document.getElementById(temp3).innerHTML = "준비 중..";
+          //     //   this.state.nowUser[i].readyState = false;
+          //     // }
+          //     // break;
+          //   }
+          // }
         });
 
         this.state.session.on("signal:makeQues", (event) => {
           //시그널을 보낸 세션 아이디
           var xx = event.from.connectionId;
           console.log(xx + "가 질문 만들겠대.");
-          // event는 어떻게 찍으면 나오나?
           console.log(event.data);
           var zz = "";
           for (var i = 0; i < this.state.nowUser.length; i++) {
             if (this.state.nowUser[i].sessionID === xx) {
-              // zz는 userName
               zz = this.state.nowUser[i].userName;
-              console.log(this.state);
               break;
             }
           }
-
+          var yy = event.data;
           document.getElementById("quesList").innerHTML +=
             `<div style="border: 1px solid black; float:left; width:380px"> <div style="font-size:17pt; margin-left:3px; float:left">` +
             event.data +
@@ -300,6 +286,7 @@ class TestComponent extends Component {
             zz +
             `</div> </div>`;
         });
+
       }
     );
   }
@@ -395,11 +382,9 @@ class TestComponent extends Component {
       frameRate: 30,
       insertMode: "APPEND",
     });
-    // publisher에 대한 호가인
+
     if (this.state.session.capabilities.publish) {
-      // 장치에 대한 권한 허용을 받는다
       publisher.on("accessAllowed", () => {
-        console.log("session이다", this.state.session);
         this.state.session.publish(publisher).then(() => {
           this.updateSubscribers();
           this.localUserAccessAllowed = true;
@@ -409,11 +394,11 @@ class TestComponent extends Component {
         });
       });
     }
-    // local유저가 기기에 대한 권한을 다 받고 한 다음 정보재정의
     localUser.setNickname(this.state.myUserName);
     localUser.setConnectionId(this.state.session.connection.connectionId);
     localUser.setScreenShareActive(false);
     localUser.setStreamManager(publisher);
+    localUser.setReady(false);
     this.subscribeToUserChanged();
     this.subscribeToStreamDestroyed();
     this.sendSignalUserChanged({
@@ -446,6 +431,7 @@ class TestComponent extends Component {
             isVideoActive: this.state.localUser.isVideoActive(),
             nickname: this.state.localUser.getNickname(),
             isScreenShareActive: this.state.localUser.isScreenShareActive(),
+            ready: this.state.localUser.isReady()
           });
         }
         this.updateLayout();
@@ -485,9 +471,13 @@ class TestComponent extends Component {
       this.props.leaveSession();
     }
   }
+
+  readyStatusChanged() {
+    localUser.setReady(!localUser.isReady())
+    this.sendSignalUserChanged({ ready: localUser.isReady() })
+    this.setState({ localUser: localUser });
+  }
   camStatusChanged() {
-    // 스타트가 아닐때는 isVideoActive를 false
-    // 스타트면은 isVideoActive true
     localUser.setVideoActive(!localUser.isVideoActive());
     localUser.getStreamManager().publishVideo(localUser.isVideoActive());
     this.sendSignalUserChanged({ isVideoActive: localUser.isVideoActive() });
@@ -500,7 +490,7 @@ class TestComponent extends Component {
     this.sendSignalUserChanged({ isAudioActive: localUser.isAudioActive() });
     this.setState({ localUser: localUser });
   }
-  // 없애도됨
+
   nicknameChanged(nickname) {
     let localUser = this.state.localUser;
     localUser.setNickname(nickname);
@@ -509,7 +499,6 @@ class TestComponent extends Component {
       nickname: this.state.localUser.getNickname(),
     });
   }
-  // 없애도됨
 
   deleteSubscriber(stream) {
     const remoteUsers = this.state.subscribers;
@@ -527,6 +516,7 @@ class TestComponent extends Component {
 
   subscribeToStreamCreated() {
     this.state.session.on("streamCreated", (event) => {
+      console.log(event)
       const subscriber = this.state.session.subscribe(event.stream, undefined);
       // var subscribers = this.state.subscribers;
       subscriber.on("streamPlaying", (e) => {
@@ -540,7 +530,9 @@ class TestComponent extends Component {
       newUser.setConnectionId(event.stream.connection.connectionId);
       newUser.setType("remote");
       const nickname = event.stream.connection.data.split("%")[0];
+      
       newUser.setNickname(JSON.parse(nickname).clientData);
+      newUser.setReady(false)
       this.remotes.push(newUser);
       if (this.localUserAccessAllowed) {
         this.updateSubscribers();
@@ -562,33 +554,33 @@ class TestComponent extends Component {
   }
 
   subscribeToUserChanged() {
-    this.state.session.on("signal:userChanged", (event) => {
-      let remoteUsers = this.state.subscribers;
-      remoteUsers.forEach((user) => {
-        if (user.getConnectionId() === event.from.connectionId) {
-          const data = JSON.parse(event.data);
-          console.log("EVENTO REMOTE: ", event.data);
-          if (data.isAudioActive !== undefined) {
-            user.setAudioActive(data.isAudioActive);
-          }
-          if (data.isVideoActive !== undefined) {
-            user.setVideoActive(data.isVideoActive);
-          }
-          if (data.nickname !== undefined) {
-            user.setNickname(data.nickname);
-          }
-          if (data.isScreenShareActive !== undefined) {
-            user.setScreenShareActive(data.isScreenShareActive);
-          }
-        }
-      });
-      this.setState(
-        {
-          subscribers: remoteUsers,
-        },
-        () => this.checkSomeoneShareScreen()
-      );
-    });
+    // this.state.session.on('signal:userChanged', (event) => {
+    //     let remoteUsers = this.state.subscribers;
+    //     remoteUsers.forEach((user) => {
+    //         if (user.getConnectionId() === event.from.connectionId) {
+    //             const data = JSON.parse(event.data);
+    //             console.log('EVENTO REMOTE: ', event.data);
+    //             if (data.isAudioActive !== undefined) {
+    //                 user.setAudioActive(data.isAudioActive);
+    //             }
+    //             if (data.isVideoActive !== undefined) {
+    //                 user.setVideoActive(data.isVideoActive);
+    //             }
+    //             if (data.nickname !== undefined) {
+    //                 user.setNickname(data.nickname);
+    //             }
+    //             if (data.isScreenShareActive !== undefined) {
+    //                 user.setScreenShareActive(data.isScreenShareActive);
+    //             }
+    //         }
+    //     });
+    //     this.setState(
+    //         {
+    //             subscribers: remoteUsers,
+    //         },
+    //         () => this.checkSomeoneShareScreen(),
+    //     );
+    // });
   }
 
   updateLayout() {
@@ -604,7 +596,7 @@ class TestComponent extends Component {
     };
     this.state.session.signal(signalOptions);
   }
-  // 없애도됨
+
   toggleFullscreen() {
     const document = window.document;
     const fs = document.getElementById("container");
@@ -635,7 +627,7 @@ class TestComponent extends Component {
       }
     }
   }
-  // 없애도됨
+
   async switchCamera() {
     try {
       const devices = await this.OV.getDevices();
@@ -675,7 +667,7 @@ class TestComponent extends Component {
       console.error(e);
     }
   }
-  // 없애도됨
+
   screenShare() {
     const videoSource =
       navigator.userAgent.indexOf("Firefox") !== -1 ? "window" : "screen";
@@ -717,16 +709,16 @@ class TestComponent extends Component {
       publisher.videos[0].video.parentElement.classList.remove("custom-class");
     });
   }
-  // 없애도됨
+
   closeDialogExtension() {
     this.setState({ showExtensionDialog: false });
   }
-  // 없애도됨
+
   stopScreenShare() {
     this.state.session.unpublish(localUser.getStreamManager());
     this.connectWebCam();
   }
-  // 없애도됨
+
   checkSomeoneShareScreen() {
     let isScreenShared;
     // return true if at least one passes the test
@@ -763,14 +755,12 @@ class TestComponent extends Component {
     }
     this.updateLayout();
   }
-  // 메세지 알림 기능
+
   checkNotification(event) {
     this.setState({
       messageReceived: this.state.chatDisplay === "none",
     });
   }
-  // 이거 뭔지 모르겠다
-
   checkSize() {
     if (
       document.getElementById("layout").offsetWidth <= 700 &&
@@ -798,7 +788,6 @@ class TestComponent extends Component {
         <ToolbarComponent
           sessionId={mySessionId}
           user={localUser}
-          // 메세지 받음
           showNotification={this.state.messageReceived}
           camStatusChanged={this.camStatusChanged}
           micStatusChanged={this.micStatusChanged}
@@ -816,9 +805,13 @@ class TestComponent extends Component {
         /> */}
 
         <div id="layout" className="bounds">
+          
           <TestUserList
             session={this.state.session}
-            nowUser={this.state.nowUser}
+            subscribers={this.state.subscribers}
+            myUserName={this.state.myUserName}
+            ready={this.state.readyState}
+            localUser={localUser}
           />
           <TestQuesList session={this.state.session} />
           {localUser !== undefined &&
