@@ -673,8 +673,8 @@ export default class Game extends Component {
     if (mySession) {
       mySession.disconnect();
     }
-    axios1
-      .put("/api/rooms", {
+    axios
+      .put("/api/room/meeting/finish", {
         roomId: this.state.mySessionId,
       })
       .then(() => {
