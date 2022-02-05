@@ -75,7 +75,7 @@ class TestComponent extends Component {
       nowUser: [],
       imgList: imgList2,
       // isViewer: false,
-      roles: [],
+      roles: new Map(),
     };
 
     this.joinSession = this.joinSession.bind(this);
@@ -194,17 +194,21 @@ class TestComponent extends Component {
           console.log(event);
           let role = event.data;
           let rolechanger = event.from.connectionId;
-          console.log("역할이다잉", role);
+
+          // A라는 방에 1,2,3 사람이 들어왔다(미디어서버 기본적으로 제공하는 prop+추가생성(내가 여기서 닉네임을 바꾸겠다   restapi갖고 있는 닉네임을 그대로 쓰고 싶어 -> 닉네임 데이터를 props받아서 여기서 갱신해야겠지 -> jwt token   ))
+
           // 사전질문 삭제 -> 배열에서 걔를 찾아가지고 삭제하고 다시 setState
           // 사전질문  -> 배열에서 걔를 찾아가지고 삭제하고 다시 setState
-          // for (let i = 0; i < this.state.roles.length, i++) {
-          //   if this.state.roles
-          // }
-          this.setState({
-            roles: [...this.state.roles, { rolechanger, role }],
-          });
-
+          if (role !== undefined) {
+            this.setState({
+              roles: this.state.roles.set(rolechanger, role),
+            });
+          }
+          // this.state.roles.push({ rolechanger, role });
           console.log("역할들이다잉", this.state.roles);
+
+          // roles의 스테이드들을 최신화했어 -> 얘를 방장한테 보내서 roles의 길이가 방 유저의 수랑 같아
+          // 그러면 start기능 startabled=true 해서 스타트 버튼 활성화
         });
 
         this.state.session.on("signal:readyTest", (event) => {

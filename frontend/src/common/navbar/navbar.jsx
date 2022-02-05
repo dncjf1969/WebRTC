@@ -4,8 +4,15 @@ import { Link } from 'react-router-dom';
 import DropDownMenu from './NavbarDropdown';
 import HomeRoundedIcon from '@mui/icons-material/HomeRounded';
 import IconButton from '@mui/material/IconButton';
+import styled from 'styled-components'
 
 import logo from '../../assets/logo.png'
+
+const HeaderBlock = styled.div`
+  position:fixed;
+  width:100%;
+  background:white;
+`;
 
 const Wrapper = styles.div`
   height: 65px;
@@ -37,6 +44,7 @@ const Links = styles.ul`
 
 function Navbar() {
   return (
+    <HeaderBlock>
     <Wrapper>
       <Logo />
       <Links>
@@ -53,7 +61,8 @@ function Navbar() {
         
         <DropDownMenu />
       </Links>
-    </Wrapper>
+      </Wrapper>
+      </HeaderBlock>
   );
 }
 

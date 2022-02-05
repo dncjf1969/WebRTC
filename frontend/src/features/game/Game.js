@@ -935,6 +935,7 @@ export default class Game extends Component {
           // 헤더 담아서 보냄 (서버한테 요청보낼때 담아서 보냄)
           {
             headers: {
+              // audturizations가 있어야 통과됨
               Authorization: `Basic ${btoa(
                 `OPENVIDUAPP:${OPENVIDU_SERVER_SECRET}`
               )}`,
