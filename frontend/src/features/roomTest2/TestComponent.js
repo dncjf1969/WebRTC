@@ -789,27 +789,25 @@ class TestComponent extends Component {
           <TestQuesList 
           session={this.state.session}
           QuesDisplay={this.state.QuesDisplay} />
+          
           {localUser !== undefined &&
             localUser.getStreamManager() !== undefined && (
               <div className="OT_root OT_publisher custom-class" id="localUser">
-                
-                {/* { <TestCharacter/> }
-                            { <StreamComponent user={localUser} handleNickname={this.nicknameChanged} /> } */}
+                { <StreamComponent user={localUser} handleNickname={this.nicknameChanged} /> }
               </div>
             )}
-          {/* {this.state.subscribers.map((sub, i) => (
-                        <div key={i} className="OT_root OT_publisher custom-class" id="remoteUsers">
-                            { <StreamComponent user={localUser} handleNickname={this.nicknameChanged} /> }
-
-                        </div>
-                    ))} */}
+          {this.state.subscribers.map((sub, i) => (
+              <div key={i} className="OT_root OT_publisher custom-class" id="remoteUsers">
+                { <StreamComponent user={localUser} handleNickname={this.nicknameChanged} /> }
+              </div>
+            ))}
+            
           {localUser !== undefined &&
             localUser.getStreamManager() !== undefined && (
               <div
                 className="OT_root OT_publisher custom-class"
                 style={chatDisplay}
-              >
-                
+              >     
                 <ChatComponent
                   user={localUser}
                   chatDisplay={this.state.chatDisplay}
