@@ -144,7 +144,7 @@ export default class ToolbarComponent extends Component {
                         <IconButton color="inherit" onClick={this.toggleQues} id="navQuesButton">
                             {this.props.showNotification && <div id="point" className="" />}
                             <Tooltip title="">
-                                <QuestionAnswer />
+                                <button />
                             </Tooltip>
                         </IconButton>
 

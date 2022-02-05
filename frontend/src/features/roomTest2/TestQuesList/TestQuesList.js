@@ -1,3 +1,4 @@
+import zIndex from '@material-ui/core/styles/zIndex';
 import React, { Component } from 'react';
 
 class TestQuesList extends Component {
@@ -57,22 +58,21 @@ class TestQuesList extends Component {
     }
     
     render() {
-        const tempStyle={
-            display:"inline-block",
-            width:"400px",
-            height:"400px",
-            marginLeft:"50px",
-        }
+        // const tempStyle={
+        //     display:"inline-block",
+        //     width:"700px",
+        //     height:"400px",
+        //     marginLeft:"50px",
+        // }
 
         const tempStyle2={
             display:"inline-block",
             width:"800px",
             height:"100px",
-            marginLeft:"200px",
             backgroundColor : 'white',
             border: '1px solid black',
-            marginLeft:"250px",
-            marginTop:"50px",
+            marginLeft:"0px",
+            marginTop:"0px",
             display:this.props.QuesDisplay,
         }
         const tempStyle3={
