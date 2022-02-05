@@ -148,9 +148,13 @@ class TestComponent extends Component {
   }
 
   componentDidMount() {
+<<<<<<< HEAD
     console.log('마운트됐다');
     console.log(this.state.myUserName);
     this.state.myUserName = 'ㅇㅇㅇㅇ';
+=======
+    // console.log("props다!!!", this.props);
+>>>>>>> hui
     const openViduLayoutOptions = {
       maxRatio: 3 / 2, // The narrowest ratio that will be used (default 2x3)
       minRatio: 9 / 16, // The widest ratio that will be used (default 16x9)
