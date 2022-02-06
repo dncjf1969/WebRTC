@@ -1,8 +1,9 @@
 package com.wish.api.controller;
 
-import com.wish.common.auth.JwtAuthenticationFilter;
+//import com.wish.common.auth.JwtAuthenticationFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -15,9 +16,8 @@ import com.wish.api.dto.response.BaseRes;
 import com.wish.api.dto.response.MemberLoginRes;
 import com.wish.api.dto.response.MemberRes;
 import com.wish.api.service.MemberService;
-import com.wish.common.auth.SsafyUserDetails;
-import com.wish.common.auth.TestFilter;
-import com.wish.common.util.JwtTokenUtil;
+import com.wish.common.auth.WishUserDetails;
+import com.wish.common.jwt.JwtUtil;
 import com.wish.db.entity.Member;
 
 import io.swagger.annotations.Api;
@@ -48,6 +48,7 @@ public class MemberController {
         @ApiResponse(code = 404, message = "사용자 없음"),
         @ApiResponse(code = 500, message = "서버 오류")
     })
+	@PreAuthorize("hasAnyRole('USER')")
 	public ResponseEntity<? extends BaseRes> signup(
 			@RequestBody @ApiParam(value="회원가입 정보", required = true) MemberSignupReq signupInfo) {
 
@@ -67,13 +68,14 @@ public class MemberController {
         @ApiResponse(code = 404, message = "사용자 없음"),
         @ApiResponse(code = 500, message = "서버 오류")
     })
+	@PreAuthorize("hasAnyRole('USER', 'ADMIN')")
 	public ResponseEntity<? extends BaseRes> login(
 			@RequestBody @ApiParam(value="로그인 정보", required = true) MemberLoginReq loginInfo) {
 		
-		String userId = loginInfo.getId();
+		String memberId = loginInfo.getId();
 
 		if(memberService.loginMember(loginInfo)) {
-			return ResponseEntity.ok(MemberLoginRes.of(200, "Success", JwtTokenUtil.createJwtToken(userId)));
+			return ResponseEntity.ok(MemberLoginRes.of(200, "Success", JwtUtil.createJwt(memberId)));
 		}
 
 		else return ResponseEntity.status(401).body(BaseRes.of(401, "Fail"));
@@ -87,6 +89,7 @@ public class MemberController {
 			@ApiResponse(code = 404, message = "사용자 없음"),
 			@ApiResponse(code = 500, message = "서버 오류")
 	})
+	@PreAuthorize("hasAnyRole('USER')")
 	public ResponseEntity<? extends BaseRes> updateMember(@ApiIgnore Authentication authentication,
 			@RequestBody @ApiParam(value="회원수정 정보", required = true) MemberUpdateReq updateInfo) {
 
@@ -105,11 +108,12 @@ public class MemberController {
 			@ApiResponse(code = 404, message = "사용자 없음"),
 			@ApiResponse(code = 500, message = "서버 오류")
 	})
+	@PreAuthorize("hasAnyRole('USER', 'ADMIN')")
 	public ResponseEntity<? extends BaseRes> deleteMember(
 			@ApiIgnore Authentication authentication) {
 
-		SsafyUserDetails userDetails = (SsafyUserDetails)authentication.getDetails();
-
+		WishUserDetails userDetails = (WishUserDetails)authentication.getDetails();
+		
 		String memberDeleteId = userDetails.getUsername();
 		
 		int results_num = memberService.deleteMember(memberDeleteId);
@@ -127,6 +131,7 @@ public class MemberController {
 			@ApiResponse(code = 404, message = "사용자 없음"),
 			@ApiResponse(code = 500, message = "서버 오류")
 	})
+	@PreAuthorize("hasAnyRole('USER', 'ADMIN')")
 	public ResponseEntity<? extends BaseRes> findPassword(
 			@ApiParam(value="회원가입했던 아이디", required = true) @RequestParam String memberId,
 			@ApiParam(value="회원가입했던 이메일", required = true) @RequestParam String memberEmail) {
@@ -148,6 +153,7 @@ public class MemberController {
         @ApiResponse(code = 404, message = "사용자 없음"),
         @ApiResponse(code = 500, message = "서버 오류")
     })
+	@PreAuthorize("hasAnyRole('USER')")
 	public ResponseEntity<MemberRes> getUserInfo(@ApiIgnore Authentication authentication) {
 
 		/**
@@ -155,7 +161,7 @@ public class MemberController {
 		 * 액세스 토큰이 없이 요청하는 경우, 403 에러({"error": "Forbidden", "message": "Access Denied"}) 발생.
 		 */
 
-		SsafyUserDetails userDetails = (SsafyUserDetails)authentication.getDetails();
+		WishUserDetails userDetails = (WishUserDetails)authentication.getDetails();
 
 		String id = userDetails.getUsername();
 		Member member = memberService.getMemberById(id);
@@ -170,6 +176,7 @@ public class MemberController {
         @ApiResponse(code = 401, message = "아이디 중복"),
         @ApiResponse(code = 500, message = "서버 오류")
     })
+	@PreAuthorize("hasAnyRole('USER')")
 	public ResponseEntity<BaseRes> checkId(@ApiParam(value="중복검사할 아이디", required = true) String id) {
 		// id 가 이상한 문자열이 아닌지 검사->XSS
 		if(memberService.checkId(id)) {
@@ -189,6 +196,7 @@ public class MemberController {
         @ApiResponse(code = 401, message = "이름 중복"),
         @ApiResponse(code = 500, message = "서버 오류")
     })
+	@PreAuthorize("hasAnyRole('USER')")
 	public ResponseEntity<BaseRes> checkName(@ApiParam(value="중복검사할 이름", required = true)String name) {
 		// id 가 이상한 문자열이 아닌지 검사->XSS
 		if(memberService.checkName(name)) {
