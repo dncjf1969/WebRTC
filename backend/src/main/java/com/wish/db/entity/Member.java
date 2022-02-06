@@ -31,7 +31,7 @@ public class Member{
     Date signUpDate;
     
     //이렇게 추가해줘야할듯.
-    List<String> role;
+    //List<String> role;
 
     
 }
