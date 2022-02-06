@@ -7,6 +7,8 @@ import java.util.List;
 import org.apache.tomcat.util.json.JSONParser;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -26,7 +28,6 @@ import com.wish.api.dto.response.BaseRes;
 import com.wish.api.dto.response.WaitingroomListRes;
 import com.wish.api.dto.response.WaitingroomSearchRes;
 import com.wish.api.dto.response.WaitingroomTokenRes;
-import com.wish.common.util.JwtTokenUtil;
 import com.wish.common.util.SearchUtil;
 
 import io.openvidu.java.client.OpenVidu;
@@ -41,6 +42,7 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
+import springfox.documentation.annotations.ApiIgnore;
 
 /*
  * OpenVidu의 방 목록을 관리해주는 기능 위주.
@@ -88,7 +90,9 @@ public class WaitingRoomController {
         @ApiResponse(code = 404, message = "???"),
         @ApiResponse(code = 500, message = "서버 에러")
     })
+	@PreAuthorize("hasAnyRole('USER', 'ADMIN')")
 	public ResponseEntity<WaitingroomListRes> searchWaitingRoom(
+			@ApiIgnore Authentication authentication,
 			@RequestParam @ApiParam(value="방 검색 키워드", allowEmptyValue=true) String keyword ) {
 	
 		List<WaitingroomSearchRes> res = new LinkedList<WaitingroomSearchRes>();
@@ -116,7 +120,9 @@ public class WaitingRoomController {
         @ApiResponse(code = 404, message = "사용자 없음"),
         @ApiResponse(code = 500, message = "서버 에러")
     })
+	@PreAuthorize("hasAnyRole('USER')")
 	public ResponseEntity<WaitingroomTokenRes> createWaitingRoom(
+			@ApiIgnore Authentication authentication,
 			@RequestBody @ApiParam(value="방 생성 정보", required = true) WaitingroomCreateReq createInfo) throws OpenViduJavaClientException, OpenViduHttpException {
 	
 		// 로그인 검사
@@ -164,8 +170,14 @@ public class WaitingRoomController {
         @ApiResponse(code = 404, message = "해당 방 없음"),
         @ApiResponse(code = 500, message = "서버 에러")
     })
+	@PreAuthorize("hasAnyRole('USER')")
 	public ResponseEntity<BaseRes> modifyWaitingRoom(
+			@ApiIgnore Authentication authentication,
 			@RequestBody @ApiParam(value="방 설정 정보", required = true) WaitingroomModifyReq modifyInfo) {
+		
+		
+		//authentication에 있는 멤버id로 방장인지 비교
+		
 		
 		int roomId = modifyInfo.getRoomId();		
 		
@@ -207,9 +219,16 @@ public class WaitingRoomController {
         @ApiResponse(code = 404, message = "해당 방 없음"),
         @ApiResponse(code = 500, message = "서버 에러")
     })
+	@PreAuthorize("hasAnyRole('USER')")
 	public ResponseEntity<BaseRes> deleteWaitingRoom(
+			@ApiIgnore Authentication authentication,
 			@RequestParam @ApiParam(value="방 id", required = true) int roomId) {
 	
+		
+		//authentication에 있는 멤버id로 방장인지 비교
+		
+		
+		
 		// OpenVidu에서 방 삭제 -> 이건 프론트에서 하는건가??
 		// 클라이언트끼리 웹소켓으로 정하고 서버에 보고할 뿐이라 검증할 필요 없음
 		int n = roomList.size();
@@ -232,7 +251,9 @@ public class WaitingRoomController {
         @ApiResponse(code = 404, message = "존재하지 않는 방 id입니다."),
         @ApiResponse(code = 500, message = "서버 에러")
     })
+	@PreAuthorize("hasAnyRole('USER')")
 	public ResponseEntity<BaseRes> enterWaitingRoom(
+			@ApiIgnore Authentication authentication,
 			@RequestParam @ApiParam(value="방id", required = true) int roomId,
 			@RequestParam @ApiParam(value="방 비밀번호", allowEmptyValue=true) String password) {
 
@@ -274,11 +295,16 @@ public class WaitingRoomController {
         @ApiResponse(code = 404, message = "???"),
         @ApiResponse(code = 500, message = "서버 에러")
     })
+	@PreAuthorize("hasAnyRole('USER')")
 	public ResponseEntity<BaseRes> exitWaitingRoom(
+			@ApiIgnore Authentication authentication,
 			@RequestParam @ApiParam(value="나가려는 방 id", required = true) int roomId,
 			@RequestParam @ApiParam(value="나가려는 멤버", required = true) String memberId,
 			@RequestParam @ApiParam(value="다음 방장", allowEmptyValue=true) String nextManager) {
 	
+		
+		
+		
 		// 방장 이름으로 방 찾기
 		// 방장이 나간다면..?
 		// 현재인원-1 -> 현재 인원 0이면 방을 자동 제거
@@ -294,7 +320,7 @@ public class WaitingRoomController {
 				// 인원수 -1
 				room.setMemberCount(room.getMemberCount()-1);
 				// 인원수 0이면 목록에서 방 제거
-				if(room.getMemberCount() == 0) this.deleteWaitingRoom(roomId);
+				if(room.getMemberCount() == 0) this.deleteWaitingRoom(authentication, roomId);
 				
 			}
 		}
@@ -312,9 +338,13 @@ public class WaitingRoomController {
         @ApiResponse(code = 404, message = "지정한 새 방장이 방에 존재하지 않음"),
         @ApiResponse(code = 500, message = "서버 에러")
     })
+	@PreAuthorize("hasAnyRole('USER')")
 	public ResponseEntity<BaseRes> changeManager(
+			@ApiIgnore Authentication authentication,
 			@RequestBody @ApiParam(value="방id, 본인id(현재방장), 바꿀 방장id", required = true) WaitingroomManagerReq managerChangeInfo ) {
 	
+		
+		//authentication에 있는 멤버id로 방장인지 비교
 		
 		int roomId = managerChangeInfo.getRoomId();
 
@@ -347,9 +377,15 @@ public class WaitingRoomController {
         @ApiResponse(code = 404, message = "지정한 새 방장이 방에 존재하지 않음"),
         @ApiResponse(code = 500, message = "서버 에러")
     })
+	@PreAuthorize("hasAnyRole('USER')")
 	public ResponseEntity<BaseRes> startMeeting(
+			@ApiIgnore Authentication authentication,
 			@RequestParam @ApiParam(value="대기방 id", required = true) int roomId) {
 	
+		
+		//authentication에 있는 멤버id로 방장인지 비교
+		
+		
 		for (int i = 0, size = roomList.size(); i < size; i++) {
 			if(roomList.get(i).getRoomId()==roomId) {
 				roomList.get(i).setNowMeeting(true);
@@ -371,7 +407,9 @@ public class WaitingRoomController {
         @ApiResponse(code = 404, message = "지정한 새 방장이 방에 존재하지 않음"),
         @ApiResponse(code = 500, message = "서버 에러")
     })
+	@PreAuthorize("hasAnyRole('USER')")
 	public ResponseEntity<BaseRes> finishMeeting(
+			@ApiIgnore Authentication authentication,
 			@RequestParam @ApiParam(value="대기방 id", required = true) int roomId) {
 	
 		for (int i = 0, size = roomList.size(); i < size; i++) {
