@@ -1,10 +1,10 @@
 package com.wish.config;
 
 import com.wish.api.service.MemberService;
-import com.wish.common.auth.JwtAuthenticationFilter;
-import com.wish.common.auth.SsafyMemberDetailService;
-
-import com.wish.common.auth.TestFilter;
+//import com.wish.common.auth.JwtAuthenticationFilter;
+//import com.wish.common.auth.SsafyMemberDetailService;
+//
+//import com.wish.common.auth.TestFilter;
 import com.wish.common.jwt.JwtFilter;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,8 +30,8 @@ import org.springframework.security.web.authentication.logout.LogoutFilter;
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
-    @Autowired
-    private SsafyMemberDetailService ssafyMemberDetailService;
+    //@Autowired
+    //private SsafyMemberDetailService ssafyMemberDetailService;
     
     @Autowired
     private MemberService memberService;
@@ -42,22 +42,23 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         return new BCryptPasswordEncoder();
     }
 
-    // DAO 기반으로 Authentication Provider를 생성
-    // BCrypt Password Encoder와 UserDetailService 구현체를 설정
-    @Bean
-    DaoAuthenticationProvider authenticationProvider() {
-        DaoAuthenticationProvider daoAuthenticationProvider = new DaoAuthenticationProvider();
-        daoAuthenticationProvider.setPasswordEncoder(passwordEncoder());
-        daoAuthenticationProvider.setUserDetailsService(this.ssafyMemberDetailService);
-        return daoAuthenticationProvider;
-    }
+//    // DAO 기반으로 Authentication Provider를 생성
+//    // BCrypt Password Encoder와 UserDetailService 구현체를 설정
+//    @Bean
+//    DaoAuthenticationProvider authenticationProvider() {
+//        DaoAuthenticationProvider daoAuthenticationProvider = new DaoAuthenticationProvider();
+//        daoAuthenticationProvider.setPasswordEncoder(passwordEncoder());
+//        daoAuthenticationProvider.setUserDetailsService(this.ssafyMemberDetailService);
+//        return daoAuthenticationProvider;
+//    }
+//
+//    // DAO 기반의 Authentication Provider가 적용되도록 설정
+//    @Override
+//    protected void configure(AuthenticationManagerBuilder auth) {
+//        auth.authenticationProvider(authenticationProvider());
+//    }
 
-    // DAO 기반의 Authentication Provider가 적용되도록 설정
-    @Override
-    protected void configure(AuthenticationManagerBuilder auth) {
-        auth.authenticationProvider(authenticationProvider());
-    }
-
+    //spring security를 안거치게 하는 설정.
     @Override 
     public void configure(WebSecurity web) throws Exception { 
     	web.ignoring()

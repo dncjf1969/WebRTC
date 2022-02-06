@@ -63,7 +63,7 @@ public class JwtFilter extends GenericFilterBean{
 		// TODO Auto-generated method stub
 		
 		System.out.println("this is JwtFilter");
-		//클라이언트의 요청을 HttpServletRequest 객체로 받아주어야
+		//클라이언트의 요청을 HttpServletRequest 객체로 만들어주어야 72번째줄에서처럼
 		//getHeader를 할 수 있다.
 		HttpServletRequest httpReq = (HttpServletRequest) request;
 		
@@ -97,18 +97,18 @@ public class JwtFilter extends GenericFilterBean{
 		//즉, 지금 접속해온 유저의 ID가 어떠한 권한이 있는지 Authentication 객체를 만들때 설정해주어야한다.
 		
 		
-		//멤버 아이디 가져옴.
+		//디코딩된 jwt토큰의 payload에서 멤버 아이디 가져옴.
 		Claim memberId_claim = decodedJwtToken.getClaim("memberId");
 		String memberId = memberId_claim.asString();
 		
 		
 		//Authentication 객체를 만든다.
+		//만들어진 auth에는 member 객체와 권한 및 인가를 위한 정보가 담긴 WishUserDetail이 담겨져있다.
 		Authentication auth = getAuthentication(memberId);
 		
-		//만들어진 auth에는 member객체와 권한 및 인가를 위한 정보가 담긴 WishUserDetail이 담겨져있다.
+		
 
 		//이 만들어진 auth를 세션 저장소인 securitycontextholder에 저장.
-		
 		//의문1. 세션 저장소인 이곳에 매번 저장을 왜 해야하나??? -> 여기에 저장을 해야 필터를 거치고 컨트롤러에 authentication을 인자로 넘길 수 있어서인가??
 		SecurityContextHolder.getContext().setAuthentication(auth);
 		
@@ -120,13 +120,9 @@ public class JwtFilter extends GenericFilterBean{
 
 		WishUserDetails userDetails = (WishUserDetails) wishUserDetailService.findByMemberIdAndGetAuthorities(memberId);
 		
-//		//멤버db에 있는 권한 정보로 가져와서 여기에 추가시켜주던가.
-//		List<GrantedAuthority> roles = new ArrayList<GrantedAuthority>();
-////		roles.add(e); 이런식으로
-
 		//아이디, 비밀번호, 권한, 생성한 wishUserDetail을 담아서
 		//Authentication 인터페이스를 구현한 UsernamePasswordAuthenticationToken 클래스로
-		//Authentication 객체를 생성!
+		//Authentication 객체를 생성. 그리고 이걸 return
 		UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(memberId, "", userDetails.getAuthorities());
 		auth.setDetails(userDetails);
 		

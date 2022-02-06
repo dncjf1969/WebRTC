@@ -14,7 +14,8 @@ public class WishUserDetails implements UserDetails{
 	Member member;
 	
 	//권한 뭐인지  방장, 일반사용자
-	List<GrantedAuthority> roles;
+//	List<GrantedAuthority> roles;
+	List<String> roles;
 	
 	
 	public WishUserDetails(Member member) {
@@ -28,7 +29,7 @@ public class WishUserDetails implements UserDetails{
 		return null;
 	}
 	
-	public void setAuthorities(List<GrantedAuthority> roles) {
+	public void setAuthorities(List<String> roles) {
 		this.roles = roles;
 	}
 

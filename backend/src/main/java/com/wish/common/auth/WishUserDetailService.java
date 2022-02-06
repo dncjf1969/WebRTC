@@ -38,7 +38,7 @@ public class WishUserDetailService implements UserDetailsService{
 		Member member = memberService.getMemberById(memberId);
 		if(member != null) {
 			WishUserDetails userDetails = new WishUserDetails(member);
-//			userDetails.setAuthorities(member.getRoles());
+			userDetails.setAuthorities(member.getRole());
 			//멤버 DB에 있는 권한 정보 가져와서 만든다.
 			return userDetails;
 		}

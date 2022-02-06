@@ -9,8 +9,12 @@ import com.wish.api.service.RelationQuestionService;
 import com.wish.db.entity.CustomQuestion;
 import com.wish.db.entity.Question;
 import io.swagger.annotations.*;
+import springfox.documentation.annotations.ApiIgnore;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -38,7 +42,9 @@ public class QuestionController {
 			@ApiResponse(code = 404, message = "사용자 없음"),
 			@ApiResponse(code = 500, message = "서버 오류")
 	})
+	@PreAuthorize("hasAnyRole('USER')")
 	public ResponseEntity<? extends BaseRes> readQuestion(
+			@ApiIgnore Authentication authentication,
 			@ApiParam(value="사전질문 리스트 조회할 방 id", required = true) @RequestParam String meetingroomId) {
 
 		List<CustomQuestion> customQuestionList = customQuestionService.readAllCustomQuestionList(meetingroomId);
@@ -56,7 +62,9 @@ public class QuestionController {
         @ApiResponse(code = 404, message = "사용자 없음"),
         @ApiResponse(code = 500, message = "서버 오류")
     })
+	@PreAuthorize("hasAnyRole('USER')")
 	public ResponseEntity<? extends BaseRes> createCustomQuestion(
+			@ApiIgnore Authentication authentication,
 			@RequestBody @ApiParam(value="사전질문 생성 정보", required = true) CustomQuestionCreateReq customQuestionCreateReq) {
 
 		int results_num = customQuestionService.createCustomQuestion(customQuestionCreateReq);
@@ -77,7 +85,9 @@ public class QuestionController {
 			@ApiResponse(code = 404, message = "사용자 없음"),
 			@ApiResponse(code = 500, message = "서버 오류")
 	})
+	@PreAuthorize("hasAnyRole('USER')")
 	public ResponseEntity<? extends BaseRes> updateCustomQuestion(
+			@ApiIgnore Authentication authentication,
 			@RequestBody @ApiParam(value="사전질문 수정 정보", required = true)CustomQuestionUpdateReq customQuestionUpdateReq) {
 
 		int results_num = customQuestionService.updateCustomQuestion(customQuestionUpdateReq);
@@ -97,7 +107,9 @@ public class QuestionController {
 			@ApiResponse(code = 404, message = "사용자 없음"),
 			@ApiResponse(code = 500, message = "서버 오류")
 	})
+	@PreAuthorize("hasAnyRole('USER')")
 	public ResponseEntity<? extends BaseRes> deleteCustomQuestion(
+			@ApiIgnore Authentication authentication,
 			@ApiParam(value="삭제할 사전질문 id", required = true) @RequestParam Long id) {
 
 		int results_num = customQuestionService.deleteCustomQuestion(id);
@@ -108,7 +120,6 @@ public class QuestionController {
 		return ResponseEntity.status(401).body(BaseRes.of(401, "예상치 못한 결과입니다."));
 	}
 
-
 	@DeleteMapping("/custom/all")
 	@ApiOperation(value = "사전 질문 모두 삭제", notes = "<strong> 방정보 id </strong>를 입력하여 해당 방의 사전질문을 모두 삭제한다.")
 	@ApiResponses({
@@ -117,7 +128,9 @@ public class QuestionController {
 			@ApiResponse(code = 404, message = "사용자 없음"),
 			@ApiResponse(code = 500, message = "서버 오류")
 	})
+	@PreAuthorize("hasAnyRole('USER')")
 	public ResponseEntity<? extends BaseRes> deleteAllCustomQuestion(
+			@ApiIgnore Authentication authentication,
 			@ApiParam(value="사전질문을 모두 삭제할 방 id", required = true) @RequestParam String meetingroomId) {
 
 		int results_num = customQuestionService.deleteAllCustomQuestion(meetingroomId);
@@ -136,7 +149,9 @@ public class QuestionController {
 			@ApiResponse(code=404, message = "사용자 없음"),
 			@ApiResponse(code=500, message = "서버 오류"),
 	})
+	@PreAuthorize("hasAnyRole('USER')")
 	public ResponseEntity<? extends BaseRes> selectedQusetion(
+			@ApiIgnore Authentication authentication,
 			@RequestBody @ApiParam(value="선택된 질문 id", required = true)  QuestionSelectReq questionSelectReq){
 
 		int results_num = questionService.selectedQuestionAddCnt1(questionSelectReq);
@@ -154,7 +169,9 @@ public class QuestionController {
 			@ApiResponse(code=404, message = "사용자 없음"),
 			@ApiResponse(code=500, message = "서버 오류"),
 	})
+	@PreAuthorize("hasAnyRole('USER')")
 	public ResponseEntity<? extends BaseRes>  relationQusetion(
+			@ApiIgnore Authentication authentication,
 			@RequestBody @ApiParam(value="연관 부모, 자식 질문 id", required = true) RelationQuestionUpdateReq relationQuestionUpdateReq){
 
 		int results_num = relationQuestionService.relationQuestionAddCnt1(relationQuestionUpdateReq);

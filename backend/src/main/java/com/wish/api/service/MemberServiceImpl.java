@@ -14,6 +14,8 @@ import com.wish.db.entity.Member;
 import com.wish.db.repository.MemberRepository;
 import com.wish.db.repository.MemberRepositorySupport;
 
+import java.util.Date;
+import java.util.List;
 import java.util.Optional;
 
 
@@ -45,7 +47,12 @@ public class MemberServiceImpl implements MemberService {
 			member.setPassword(passwordEncoder.encode(memberSignupInfo.getPassword()));
 			member.setName(memberSignupInfo.getName());
 			member.setEmail(memberSignupInfo.getEmail());
-
+			member.setSignUpDate( new Date());
+			
+			List<String> temp = member.getRole();
+			temp.add("USER");
+			member.setRole(temp);
+			
 			memberRepository.save(member);
 
 			//성공
