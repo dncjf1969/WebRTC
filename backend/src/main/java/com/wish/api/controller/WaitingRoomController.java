@@ -177,6 +177,7 @@ public class WaitingRoomController {
 		
 		
 		//authentication에 있는 멤버id로 방장인지 비교
+		String memberId = authentication.getName();
 		
 		
 		int roomId = modifyInfo.getRoomId();		
