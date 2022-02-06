@@ -1,7 +1,7 @@
 # 웹/모바일(웹 기술) 스켈레톤 프로젝트
 
 <!-- 필수 항목 -->
-
+ 
 ## 카테고리
 
 | Application | Domain | Language | Framework |
