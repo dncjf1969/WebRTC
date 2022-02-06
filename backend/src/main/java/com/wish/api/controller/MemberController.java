@@ -111,10 +111,8 @@ public class MemberController {
 	@PreAuthorize("hasAnyRole('USER', 'ADMIN')")
 	public ResponseEntity<? extends BaseRes> deleteMember(
 			@ApiIgnore Authentication authentication) {
-
-		WishUserDetails userDetails = (WishUserDetails)authentication.getDetails();
 		
-		String memberDeleteId = userDetails.getUsername();
+		String memberDeleteId = authentication.getName();
 		
 		int results_num = memberService.deleteMember(memberDeleteId);
 
@@ -161,10 +159,14 @@ public class MemberController {
 		 * 액세스 토큰이 없이 요청하는 경우, 403 에러({"error": "Forbidden", "message": "Access Denied"}) 발생.
 		 */
 
-		WishUserDetails userDetails = (WishUserDetails)authentication.getDetails();
-
-		String id = userDetails.getUsername();
-		Member member = memberService.getMemberById(id);
+//		WishUserDetails userDetails = (WishUserDetails)authentication.getDetails();
+//
+//		String id = userDetails.getUsername();
+		
+		String memberId = authentication.getName();
+		Member member = memberService.getMemberById(memberId);
+		
+		//멤버 정보 리스폰스에 담기
 		
 		return ResponseEntity.status(200).body(MemberRes.of(member));
 	}
