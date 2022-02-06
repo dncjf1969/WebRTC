@@ -11,6 +11,7 @@ const ImageContainer = styled.div`
   align-items: center;
   flex: 1;
   flex-wrap: wrap;
+  hoverable
 `;
 
 const Image = styled.img`

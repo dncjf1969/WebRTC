@@ -30,7 +30,6 @@ const LoginContainer = styles.div`
   height: 100%;
   justify-content: center;
   align-items: center;
-
 `;
 
 
@@ -38,6 +37,12 @@ const Logo = styles.img`
   width: 480px;
   height: 160px;
   background-image: url(${logo});
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+
 `;
 
 // component
@@ -80,8 +85,8 @@ function Login() {
   // render
   return (
     <Wrapper>
-      <Logo />
       <LoginContainer>
+      <Logo />
         <Title>로그인페이지</Title>
         <ValidatorForm onSubmit={handleSubmit}>
           <TextValidator

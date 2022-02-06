@@ -3,7 +3,7 @@ import imgA from "./testImages/rion.PNG";
 import imgB from "./testImages/muzi.PNG";
 import imgC from "./testImages/neo.PNG";
 import imgD from "./testImages/prodo.PNG";
-
+import Button from "react-bootstrap";
 class TestUserList extends Component {
   constructor(props) {
     super(props);
@@ -131,6 +131,9 @@ class TestUserList extends Component {
                   {this.state.isReady ? "나레디" : "레디안함"}{" "}
                 </button>
                 <button onClick={() => this.roleChangeButton()}>{role}</button>
+                {/* <Button variant="danger" onClick={() => console.log("Danger")}>
+                  Danger
+                </Button> */}
               </div>
             </div>
           </div>

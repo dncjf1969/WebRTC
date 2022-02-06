@@ -1,13 +1,15 @@
 import React, {Component} from 'react';
 import Navbar from '../../common/navbar/navbar'
 import styled from 'styled-components';
-import { connect } from 'react-redux';
 import Kind from './Kind';
 import normal from '../../assets/normal.png'
 import pt from '../../assets/pt.png'
 import debate from '../../assets/debate.png'
 import { Link } from 'react-router-dom'
 import './style.css'
+import { Card } from 'antd';
+
+const { Meta } = Card;
 
 const Wrapper = styled.div`
   height: 100vh;
@@ -56,7 +58,9 @@ class Home extends Component {
 // Link to="/signup"
 // 그러나 map으로 다 풀어서 각각에 맞는ㄴ link를 연결 시
   // pathname이라는 변수에 넣어줘야함
-  render() {
+  render(
+    
+  ) {
     return (
       <Wrapper>
         <StartWrapper>
@@ -70,33 +74,16 @@ class Home extends Component {
             );
           })}
         </StartWrapper>
+        
       </Wrapper>
+
     );
   }
 }
 
-const mapStateToProps = (state) => ({
-  // homeSlice
-  home: state.home,
-});
 
-// slice에 있는 actions(방찾기, 빠른 시작등등)을 사용하고 싶을 때
-// const mapDispatchToProps = (dispatch) => {
-//   return {
-//     // 빠른시작
-//     // quickStart는 import { quickStart } from './homeSlice'; 구문을 이용해서 action 가져온 것
-//     // doQuickStart: (type) => dispatch(quickStart(type)),
-//   };
-// };
-export default connect(mapStateToProps,)(Home);
+export default Home;
 
-// function Home() {
-//   return (
-//     <div>
-//       <Navbar />
-//     </div>
-//   );
-// }
 // mapStateToProps 는 컴포넌트에 props로 넣어줄 리덕스 스토어 상태에 관련된 함수
 //리덕스 스토어의 상태를 조회해서 어떤 것들을 props 로 넣어줄지 정의
 // 현재 리덕스 상태를 파라미터로 받아옴
