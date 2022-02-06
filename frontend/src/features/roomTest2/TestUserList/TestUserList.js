@@ -92,7 +92,7 @@ class TestUserList extends Component {
                             <div id="seat0"> 내 자리 </div>
 
                                 <img src={ imgA } style={tempStyle4}/>
-                                <div id="name0"> {this.props.userName} </div>
+                                <div id="name0"> {this.props.myUserName} </div>
                                 <div id="ready0" style={tempStyle5}> {this.props.ready} </div>
                                 <div>
                                 <button onClick={this.readyTest}> ready </button>

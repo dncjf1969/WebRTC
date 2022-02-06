@@ -107,10 +107,12 @@ class TestComponent extends Component {
       chatDisplay: "none",
       currentVideoDevice: undefined,
       nowUser: [],
-      customSubscriber: []
+      customSubscriber: [],
+      latestUser: undefined,
     };
     console.log("state다");
     console.log(this.state);
+    console.log(localUser)
     this.joinSession = this.joinSession.bind(this);
     this.leaveSession = this.leaveSession.bind(this);
     this.onbeforeunload = this.onbeforeunload.bind(this);
@@ -155,6 +157,7 @@ class TestComponent extends Component {
     window.addEventListener("resize", this.updateLayout);
     window.addEventListener("resize", this.checkSize);
     this.joinSession();
+
   }
 
   componentWillUnmount() {
@@ -183,23 +186,35 @@ class TestComponent extends Component {
         this.state.session.on("streamCreated", (event) => {
           console.log("스트림크리에이티드")
           console.log(event)
-          console.log(this.state.subscribers)
+          console.log(this.state.latestUser)
+          console.log(localUser)
+          this.state.session.signal({
+            data: this.state.readyState,
+            to: [this.state.latestUser],
+            type: 'new-user',
+          })
+          .then(() => {console.log("정보보냈다")})
+          .catch((error) => {});
+        })
 
-          // const temp2 = JSON.parse(event.connection.data);
-          // console.log(temp2.clientData);
-          // // 로컬 유저에 대한 정보
-          // const temp3 = {
-          //   userName: temp2.clientData,
-          //   sessionID: event.connection.connectionId,
-          //   ready: this.readyState,
-          // };
-          // console.log("event다", event);
-          // this.state.nowUser.push(temp3);
+        this.state.session.on("signal:new-user", (event) => {
+          console.log(event)
+          console.log("정보받았다")
+          const from = event.from.connectionId
+          this.state.subscribers.forEach(element => {
+            if (element.connectionId === from){
+              console.log(element)
+              element.setReady(event.data)
+              this.setState({subscribers : this.remotes})
+            }
+          });
         })
 
         this.state.session.on("connectionCreated", (event) => {
           console.log("!!! conectioncreated");
           console.log(event)
+          this.setState({latestUser: event.connection})
+          console.log(this.state.latestUser)
           // const temp = JSON.parse(event.target.options.metadata)
           // console.log(temp.clientData)
           console.log(event.target.remoteConnections);
@@ -229,11 +244,12 @@ class TestComponent extends Component {
         // 새유저가 들어왔을 때, 다른사람의 레디 정보가 반영 안됨
         this.state.session.on("signal:readyTest", (event) => {
           console.log(event.target.remoteConnections);
-
           //시그널을 보낸 세션 아이디
           var xx = event.from.connectionId;
           if (xx === localUser.connectionId) {
             this.readyStatusChanged()
+            this.setState({readyState: !this.state.readyState})
+            console.log("내 레디상태", this.state.readyState)
           }
           console.log(xx + "가 레디를 하겠대 or 레디 취소 하겠대.");
           console.log(this.state.subscribers);
