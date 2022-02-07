@@ -5,14 +5,11 @@ import DropDownMenu from './NavbarDropdown';
 import HomeRoundedIcon from '@mui/icons-material/HomeRounded';
 import IconButton from '@mui/material/IconButton';
 import styled from 'styled-components'
-
+import './navbar'
 import logo from '../../assets/logo.png'
+import Button from '@mui/material/Button'
+import { Container } from 'react-bootstrap'
 
-const HeaderBlock = styled.div`
-  position:fixed;
-  width:100%;
-  background:white;
-`;
 
 const Wrapper = styles.div`
   height: 65px;
@@ -39,31 +36,46 @@ const Links = styles.ul`
     cursor: pointer;
   } > button {
     font-size: 1rem;
-  }
+  };
+}
 `;
 
 function Navbar() {
   return (
-    <HeaderBlock>
-    <Wrapper>
-      <Logo />
-      <Links>
-
-        <Link to="/">
-          <IconButton>
-            <HomeRoundedIcon/>
-              Home
-          </IconButton>
-        </Link>
-        <Link to="/signup">회원가입</Link>
-        <Link to="/login">로그인</Link>
-        <Link to="/roomlist">방리스트</Link>
+<Navbar bg="dark" variant="dark">
+  <Container>
+      <Navbar.Brand href="/">
+        <img
+          alt=""
+          src="/logo.svg"
+          width="30"
+          height="30"
+          className="d-inline-block align-top"
+        />{' '}
+      React Bootstrap
+      </Navbar.Brand>
+    <Link id='logo' to="/">
+      <IconButton>
+        <HomeRoundedIcon/>
+          Home
+      </IconButton>
+    </Link>
+    
+    <Link id='nonline'to="/signup">회원가입</Link>
+    <Link id='nonline'to="/login">로그인</Link>
+    <Link id='nonline'to="/roomlist">방리스트</Link>
+    
+    <DropDownMenu />
+    </Container>
+  </Navbar>
+    // <Wrapper>
+    //   <Logo />
+    //   <Links>
         
-        <DropDownMenu />
-      </Links>
-      </Wrapper>
-      </HeaderBlock>
-  );
+    //   </Links>
+    // </Wrapper>
+    
+  )
 }
 
 export default Navbar;
