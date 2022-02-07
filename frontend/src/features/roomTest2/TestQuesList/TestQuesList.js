@@ -112,6 +112,7 @@ class TestQuesList extends Component {
                 <input id="input1" style={tempStyle6}></input>
                 <button onClick={this.makeQues}>질문 추가</button>
                 <div id="quesList"></div>
+                {/* <span>{this.props.questions}</span> */}
             </div>);
     }
    

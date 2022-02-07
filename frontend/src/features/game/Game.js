@@ -324,11 +324,11 @@ export default class Game extends Component {
     setTimeout(() => {
       const { state } = this.props;
       // 우리가 받아올 것 : name(방제), manager(참가자닉네임), password, type axios 요청 /room/waiting
-      const { token, roomId, nickname, gameType } = state;
-      if (roomId === "") {
+      const { token, roomId, nickname, gameType } = this.state;
+      // if (roomId === "") {
         // navigate('/')
-        this.props.history.push("/error");
-      }
+        // this.props.history.push("/error");
+      // }
       this.setState({
         token,
         mySessionId: roomId,
@@ -691,7 +691,7 @@ export default class Game extends Component {
       mySession.disconnect();
     }
     axios
-      .put("/api/room/meeting/finish", {
+      .put("/room/meeting/finish", {
         roomId: this.state.mySessionId,
       })
       .then(() => {

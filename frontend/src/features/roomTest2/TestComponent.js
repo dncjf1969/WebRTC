@@ -57,6 +57,7 @@ class TestComponent extends Component {
     this.state = {
       // 방id like key
       mySessionId: sessionName,
+      // mySessionId: window.localStorage.getItem('roomId'),
       // 방에 들어간 유저 - > nickname
       myUserName: userName,
       // session은 내가 있는 그 session 자체
@@ -112,13 +113,14 @@ class TestComponent extends Component {
       finalRank: [],
       isFliped: true,
       localUser: undefined,
-      chatDisplay: "true",
+      chatDisplay: "none",
       QuesDisplay: "none",
       currentVideoDevice: undefined,
       nowUser: [],
       imgList: imgList2,
       // isViewer: false,
       roles: [],
+      questions: [],
     };
 
     this.joinSession = this.joinSession.bind(this);
@@ -179,9 +181,9 @@ class TestComponent extends Component {
     this.leaveSession();
   }
 
-  joinSession() {
+  joinSession(e) {
     this.OV = new OpenVidu();
-    
+    e.preventDefault();
     this.setState(
       {
         session: this.OV.initSession(),
@@ -191,6 +193,13 @@ class TestComponent extends Component {
         this.connectToSession();
 
         document.getElementById("name0").innerHTML = this.state.myUserName;
+        
+        // 우철 추가
+        this.setState((prevState) => {
+          return {
+            questions: [...this.state.questions],
+          };
+        });
 
         this.state.session.on("connectionCreated", (event) => {
           // console.log("!!!");
@@ -281,9 +290,15 @@ class TestComponent extends Component {
             }
           }
           let yy = event.data;
-          // this.setState(
-          //   ...TestQuesList, this.state.TestQuesList
-          // )
+          let quesName = event.from.userName;
+          console.log("질문자: ", quesName);
+          console.log("질문: ", yy);
+          this.setState({
+            questions: [...this.state.questions, { quesName, yy }],
+          });
+          console.log("질문들", this.state.questions);
+        
+
           document.getElementById("quesList").innerHTML +=
             `<div style="border: 1px solid black; float:left; width:380px"> <div style="font-size:17pt; margin-left:3px; float:left">` +
             event.data +
@@ -792,7 +807,8 @@ class TestComponent extends Component {
           />
           <TestQuesList 
           session={this.state.session}
-          QuesDisplay={this.state.QuesDisplay} />
+          QuesDisplay={this.state.QuesDisplay}
+          questions={this.state.questions} />
           {/* {localUser !== undefined &&
             localUser.getStreamManager() !== undefined && (
               <div className="OT_root OT_publisher custom-class" id="localUser">
