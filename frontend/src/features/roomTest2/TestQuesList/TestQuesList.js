@@ -109,7 +109,13 @@ class TestQuesList extends Component {
                 <div style={tempStyle5}>사전질문</div>
                 <input id="input1" style={tempStyle6}></input>
                 <button onClick={this.makeQues}>질문 추가</button>
-                <div id="quesList"></div>
+                {this.props.questions.map((question) =>
+                <div>
+                    {question[0]}: {question[1]}
+                </div>
+                      
+                
+            )}
             </div>);
     }
    

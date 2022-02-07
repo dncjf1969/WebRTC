@@ -64,7 +64,12 @@ function Login() {
 
   async function login (userInfo) {
     try {
-      const response = await axios.post('/members/login', userInfo)
+      const response = await axios.post('/members/login', userInfo, 
+        {
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Methods': 'GET,POST',
+        }
+      )
       const {
         data: {accessToken},
       } = response;
