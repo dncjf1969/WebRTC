@@ -54,7 +54,7 @@ function Login() {
 
               {/* Page header */}
               <div className="max-w-3xl mx-auto text-center pb-12 md:pb-20">
-                <h1 className="h1">로그인해라 존말로할때</h1>
+                <h1 className="h1">로그인</h1>
               </div>
 
               {/* Form */}

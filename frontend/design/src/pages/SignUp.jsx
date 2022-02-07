@@ -206,7 +206,7 @@ function SignUp() {
 
               {/* Page header */}
               <div className="max-w-3xl mx-auto text-center pb-12 md:pb-20">
-                <h1 className="h1">WISH </h1>
+                <h1 className="h1">회원가입</h1>
               </div>
 
               {/* Form */}
@@ -215,8 +215,8 @@ function SignUp() {
                   {/* 아이디 */}
                   <div className="flex flex-wrap -mx-3 mb-4">
                     <div className="w-full px-3" >
-                      <label className="block text-gray-800 text-sm font-medium mb-1" htmlFor="name">아이디 <span className="text-red-600">*</span></label>
-                      <input  id="name" type="text" style={{width: '66%', float: 'left'}} onChange={handleID} value={ID} className="form-input w-full text-gray-800" placeholder="아이디 10자 이내로 입력" required />
+                      <label className="block text-gray-800 text-sm font-medium mb-1" htmlFor="id">아이디 <span className="text-red-600">*</span></label>
+                      <input  id="id" type="text" style={{width: '66%', float: 'left'}} onChange={handleID} value={ID} className="form-input w-full text-gray-800" placeholder="아이디 10자 이내로 입력" required />
                       <button type="button" style={{width: '30%', height: '67%', float: 'right'}} onClick={handleIDCheck} className="btn-sm text-gray-200 bg-gray-900 hover:bg-gray-800 ml-3">
                         <span>중복확인</span>
                       </button>
@@ -246,8 +246,8 @@ function SignUp() {
                   </div>
                   <div className="flex flex-wrap -mx-3 mb-4">
                     <div className="w-full px-3">
-                      <label className="block text-gray-800 text-sm font-medium mb-1" htmlFor="password">비밀번호 확인 <span className="text-red-600">*</span></label>
-                      <input id="password" type="password" onChange={(e) => setRepeatPassword(e.target.value)} value={repeatPassword} className="form-input w-full text-gray-800" placeholder="비밀번호를 다시 입력해주세요" required />
+                      <label className="block text-gray-800 text-sm font-medium mb-1" htmlFor="passwordCheck">비밀번호 확인 <span className="text-red-600">*</span></label>
+                      <input id="passwordCheck" type="password" onChange={(e) => setRepeatPassword(e.target.value)} value={repeatPassword} className="form-input w-full text-gray-800" placeholder="비밀번호를 다시 입력해주세요" required />
                     </div>
                   </div>
                   <div className="flex flex-wrap -mx-3 mt-6">
