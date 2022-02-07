@@ -21,6 +21,7 @@ import imgC from "./testImages/neo.PNG";
 import imgD from "./testImages/prodo.PNG";
 import imgE from "./testImages/prodo.PNG";
 import imgF from "./testImages/prodo.PNG";
+import { data } from "jquery";
 
 var localUser = new UserModel();
 
@@ -109,6 +110,7 @@ class TestComponent extends Component {
       nowUser: [],
       customSubscriber: [],
       latestUser: undefined,
+      questions: [],
     };
     console.log("state다");
     console.log(this.state);
@@ -188,7 +190,8 @@ class TestComponent extends Component {
           console.log(this.state.latestUser)
           console.log(localUser)
           this.state.session.signal({
-            data: this.state.readyState,
+            data: JSON.stringify({ready: this.state.readyState,
+            questions: this.state.questions}),
             to: [this.state.latestUser],
             type: 'new-user',
           })
@@ -203,10 +206,14 @@ class TestComponent extends Component {
           this.state.subscribers.forEach(element => {
             if (element.connectionId === from){
               console.log(element)
-              element.setReady(event.data)
+              element.setReady(JSON.parse(event.data).ready)
               this.setState({subscribers : this.remotes})
             }
+            console.log('지금 내 퀘션', this.state.questions)
           });
+          if (this.state.questions === []) {
+            this.setState({questions: JSON.parse(event.data).questions})
+          }
         })
 
         this.state.session.on("connectionCreated", (event) => {
@@ -242,6 +249,7 @@ class TestComponent extends Component {
         });
         // 새유저가 들어왔을 때, 다른사람의 레디 정보가 반영 안됨
         this.state.session.on("signal:readyTest", (event) => {
+          console.log(event)
           console.log(event.target.remoteConnections);
           //시그널을 보낸 세션 아이디
           var xx = event.from.connectionId;
@@ -285,7 +293,7 @@ class TestComponent extends Component {
           //시그널을 보낸 세션 아이디
           var xx = event.from.connectionId;
           console.log(xx + "가 질문 만들겠대.");
-          console.log(event.data);
+          console.log(event);
           var zz = "";
           for (var i = 0; i < this.state.nowUser.length; i++) {
             if (this.state.nowUser[i].sessionID === xx) {
@@ -293,13 +301,13 @@ class TestComponent extends Component {
               break;
             }
           }
-          var yy = event.data;
-          document.getElementById("quesList").innerHTML +=
-            `<div style="border: 1px solid black; float:left; width:380px"> <div style="font-size:17pt; margin-left:3px; float:left">` +
-            event.data +
-            `</div> <div style="float:right">` +
-            zz +
-            `</div> </div>`;
+          let yy = event.data;
+          let fromUserNickname = JSON.parse(event.from.data).clientData
+          // 
+          this.setState({
+            questions: [...this.state.questions, [fromUserNickname, yy]]
+          })
+          console.log(this.state.questions)
         });
 
       }
@@ -828,7 +836,7 @@ class TestComponent extends Component {
             ready={this.state.readyState}
             localUser={localUser}
           />
-          <TestQuesList session={this.state.session} />
+          <TestQuesList session={this.state.session} questions={this.state.questions} />
           {localUser !== undefined &&
             localUser.getStreamManager() !== undefined && (
               <div className="OT_root OT_publisher custom-class" id="localUser">
