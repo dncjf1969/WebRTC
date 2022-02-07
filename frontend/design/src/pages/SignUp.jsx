@@ -217,7 +217,7 @@ function SignUp() {
                     <div className="w-full px-3" >
                       <label className="block text-gray-800 text-sm font-medium mb-1" htmlFor="name">아이디 <span className="text-red-600">*</span></label>
                       <input  id="name" type="text" style={{width: '66%', float: 'left'}} onChange={handleID} value={ID} className="form-input w-full text-gray-800" placeholder="아이디 10자 이내로 입력" required />
-                      <button style={{width: '30%', height: '67%', float: 'right'}} onClick={handleIDCheck} className="btn-sm text-gray-200 bg-gray-900 hover:bg-gray-800 ml-3">
+                      <button type="button" style={{width: '30%', height: '67%', float: 'right'}} onClick={handleIDCheck} className="btn-sm text-gray-200 bg-gray-900 hover:bg-gray-800 ml-3">
                         <span>중복확인</span>
                       </button>
                     </div>
@@ -227,7 +227,7 @@ function SignUp() {
                     <div className="w-full px-3">
                       <label className="block text-gray-800 text-sm font-medium mb-1" htmlFor="name">닉네임 <span className="text-red-600">*</span></label>
                       <input id="name" type="text" style={{width: '66%', float: 'left'}} onChange={handleNickname} value={Nickname} className="form-input w-full text-gray-800" placeholder="닉네임 10자 이내로 입력" required />
-                      <button style={{width: '30%', height: '67%', float: 'right'}} onClick={handleNicknameCheck} className="btn-sm text-gray-200 bg-gray-900 hover:bg-gray-800 ml-3">
+                      <button type="button" style={{width: '30%', height: '67%', float: 'right'}} onClick={handleNicknameCheck} className="btn-sm text-gray-200 bg-gray-900 hover:bg-gray-800 ml-3">
                         <span>중복확인</span>
                       </button>
                     </div>  
