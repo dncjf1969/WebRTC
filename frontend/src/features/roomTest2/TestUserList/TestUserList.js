@@ -25,19 +25,7 @@ class TestUserList extends Component {
 			to: [],         // 누구한데 보낼건지. 비워있으면 모두에게 보내는거고, 만약 세션 아이디 적으면 그 세션한데만 보내진다.
 			type: 'readyTest'   // 시그널 타입.
 		})
-		.then(() => {
-            if(this.state.isReady === true){
-                this.state.isReady = false;
-                console.log("레디 해제.")
-                document.getElementById("ready0").innerHTML = "준비 중.."
-                
-            } 
-            else{
-                this.state.isReady = true;
-                console.log('레디.');
-                document.getElementById("ready0").innerHTML = "준비 완료!"
-            } 
-		})
+		.then(() => {})
 		.catch(error => {
 			console.error(error);
 		});
@@ -93,7 +81,7 @@ class TestUserList extends Component {
 
                                 <img src={ imgA } style={tempStyle4}/>
                                 <div id="name0"> {this.props.myUserName} </div>
-                                <div id="ready0" style={tempStyle5}> {this.props.ready} </div>
+                                <div id="ready0" style={tempStyle5}> {this.props.ready ? '준비 완료!!!' : '준비 중...'} </div>
                                 <div>
                                 <button onClick={this.readyTest}> ready </button>
                                 </div>

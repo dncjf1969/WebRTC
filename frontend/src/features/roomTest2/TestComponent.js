@@ -157,7 +157,6 @@ class TestComponent extends Component {
     window.addEventListener("resize", this.updateLayout);
     window.addEventListener("resize", this.checkSize);
     this.joinSession();
-
   }
 
   componentWillUnmount() {
