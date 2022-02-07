@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { actionCreators } from '../../app/store';
+import { actionCreators } from '../../store';
 
 //connect의 첫번째 인자
 function mapStateToProps(state) {

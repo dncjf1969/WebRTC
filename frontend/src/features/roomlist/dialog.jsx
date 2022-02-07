@@ -9,7 +9,7 @@ import DialogTitle from '@mui/material/DialogTitle';
 import axios from '../../common/http-common'
 import { useNavigate } from "react-router-dom";
 import { connect } from 'react-redux';
-import { actionCreators } from '../../app/store';
+import { actionCreators } from '../../store';
 
 function FormDialog({room}) {
   const [open, setOpen] = React.useState(false);

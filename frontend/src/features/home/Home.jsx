@@ -8,6 +8,13 @@ import pt from '../../assets/pt.png'
 import debate from '../../assets/debate.png'
 import { Link } from 'react-router-dom'
 import './style.css'
+import Header from '../../common/Header'; 
+import HeroHome from '../../common/HeroHome'; 
+import Footer from '../../common/Footer'; 
+import FeaturesBlocks from '../../common/FeaturesBlocks'; 
+// import FeaturesHome from '../../common/FeaturesHome'; 
+import Testimonials from '../../common/Testimonials'; 
+import Newsletter from '../../common/Newsletter'; 
 
 const Wrapper = styled.div`
   height: 100vh;
@@ -58,19 +65,27 @@ class Home extends Component {
   // pathname이라는 변수에 넣어줘야함
   render() {
     return (
-      <Wrapper>
-        <StartWrapper>
-          {interviewKinds.map((kindList) => {
-            return (
-              <Link key={kindList.title} to={{
-                pathname: `${kindList.link}`,
-              }} id='nonline'>
-                <Kind imgSrc={kindList.source} title={kindList.title}/>
-              </Link>
-            );
-          })}
-        </StartWrapper>
-      </Wrapper>
+     <div className="flex flex-col min-h-screen overflow-hidden">
+
+      {/*  Site header */}
+      <Header />
+
+      {/*  Page content */}
+      <main className="flex-grow">
+
+        {/*  Page sections */}
+        <HeroHome />
+        {/* <FeaturesHome /> */}
+        <FeaturesBlocks />
+        <Testimonials />
+        <Newsletter />
+
+      </main>
+
+      {/*  Site footer */}
+      <Footer />
+
+    </div>
     );
   }
 }
