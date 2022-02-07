@@ -59,10 +59,10 @@ import {
   IoVideocamOff,
   IoVideocam,
 } from "react-icons/io5";
-// import axios1 from "../../common/api/http-common";
-// import butimg from "../../assets/chatmsg.svg";
+import axios1 from "../../common/http-common";
+import butimg from "../../assets/chatmsg.svg";
 // import { quickStart } from '../home/homeSlice';
-// import logo from "../../assets/logo(basic).svg";
+import logo from "../../assets/logo(basic).svg";
 import "./Game.css";
 import "./UserVideo.css";
 import Messages from "./components/Messages";
@@ -80,7 +80,7 @@ import UserVideoComponent from "./UserVideoComponent";
 //   resetMyPageInfo,
 // } from '../mypage/mypageSlice';
 
-const OPENVIDU_SERVER_URL = "https://i6e201.p.ssafy.io:8443";
+const OPENVIDU_SERVER_URL = "https://i6e201.p.ssafy.io:4443";
 const OPENVIDU_SERVER_SECRET = "HOMEDONG";
 
 const Sbutton = styled.button`
@@ -139,10 +139,10 @@ const HeaderWrapper = styled.div`
   align-items: center;
 `;
 
-// const Logo = styled.img`
-//   width: 200px;
-//   height: 100px;
-// `;
+const Logo = styled.img`
+  width: 200px;
+  height: 100px;
+`;
 const Buttons = styled.ul`
   display: flex;
   justify-content: center;
@@ -324,13 +324,17 @@ export default class Game extends Component {
     setTimeout(() => {
       const { state } = this.props;
       // 우리가 받아올 것 : name(방제), manager(참가자닉네임), password, type axios 요청 /room/waiting
-      const { token, roomId, nickname, gameType } = this.state;
-      // if (roomId === "") {
-        // navigate('/')
-        // this.props.history.push("/error");
-      // }
+      // const { roomId, nickname, gameType } = state;
+      const gameType = 1;
+      const nickname = '임시닉네임';
+      const roomId = '0';
+      
+      if (roomId === "") {
+        navigate('/')
+        this.props.navigate.push("/error");
+      }
       this.setState({
-        token,
+        // token,
         mySessionId: roomId,
         myUserName: nickname,
         gametype: gameType,
@@ -672,7 +676,7 @@ export default class Game extends Component {
     let mySession = this.state.session;
     axios1
       // 방에 대한 토큰
-      .put(`/api/game/start?roomId=${this.state.mySessionId}`)
+      .put(`/room/meeting/start?roomId=${this.state.mySessionId}`)
       .then((response) => {
         mySession.signal({
           // 시그널을 보낸다는 거는 데이터와 타입을 클라이언트에 보냄
@@ -735,7 +739,7 @@ export default class Game extends Component {
     // Refer to tmImage.loadFromFiles() in the API to support files from a file picker
     // Note: the pose library adds a tmPose object to your window (window.tmPose)
     this.setState({
-      model: await tmPose.load(modelURL, metadataURL),
+      // model: await tmPose.load(modelURL, metadataURL),
     });
   }
 
@@ -979,7 +983,7 @@ export default class Game extends Component {
       <Wrapper>
         <NavWrapper>
           <HeaderWrapper>
-            {/* <Logo src={logo} /> */}
+            <Logo src={logo} />
             <LeftList>
               <span>{this.state.headerText}</span>
             </LeftList>
@@ -1028,7 +1032,7 @@ export default class Game extends Component {
                 />
               )}
 
-              {this.state.ishost && this.state.startbuttonstate ? (
+              {/* {this.state.ishost && this.state.startbuttonstate ? ( */}
                 <Sbutton
                   className={classes.button}
                   type="primary"
@@ -1036,7 +1040,7 @@ export default class Game extends Component {
                 >
                   게임시작
                 </Sbutton>
-              ) : null}
+              {/* ) : null} */}
               <Sbutton
                 className={classes.button}
                 type="primary"
@@ -1105,7 +1109,7 @@ export default class Game extends Component {
             </RankDialogActions>
           </RankDialogContent>
         </RankDialog>
-        {this.state.arrow ? (
+        {/* {this.state.arrow ? ( */}
           <div
             className={`arrow-container ${this.state.check ? "rotate" : ""}`}
           >
@@ -1113,10 +1117,10 @@ export default class Game extends Component {
             <div className="chevron" />
             <div className="chevron" />
           </div>
-        ) : null}
-        {this.state.timer ? (
+        {/* ) : null} */}
+        {/* {this.state.timer ? (
           <div className="timer-wrapper">
-            {/* <CountdownCircleTimer
+            <CountdownCircleTimer
               isPlaying
               duration={30}
               colors={[["#004777", 0.33], ["#F7B801", 0.33], ["#A30000"]]}
@@ -1159,10 +1163,10 @@ export default class Game extends Component {
               }}
             >
               {renderTime}
-            </CountdownCircleTimer> */}
+            </CountdownCircleTimer>
           </div>
-        ) : null}
-        {this.state.started ? (
+        ) : null} */}
+        {/* {this.state.started ? ( */}
           <div className="demo">
             <div
               className={
@@ -1223,8 +1227,8 @@ export default class Game extends Component {
               </svg>
             </div>
           </div>
-        ) : null}
-        {this.state.session !== undefined ? (
+        {/* ) : null} */}
+        {/* {this.state.session !== undefined ? ( */}
           <div id="session">
             <table
               id="ranking"
@@ -1233,7 +1237,7 @@ export default class Game extends Component {
               <tbody>{this.renderTableData()}</tbody>
             </table>
             <div id="video-container" className="video-container">
-              {this.state.publisher !== undefined ? (
+              {/* {this.state.publisher !== undefined ? ( */}
                 <div
                   className="stream-container"
                   onClick={() =>
@@ -1242,7 +1246,7 @@ export default class Game extends Component {
                 >
                   <UserVideoComponent streamManager={this.state.publisher} />
                 </div>
-              ) : null}
+              {/* ) : null} */}
               {this.state.subscribers.map((sub, i) => (
                 <div
                   key={i}
@@ -1258,7 +1262,7 @@ export default class Game extends Component {
                 <div className="chat chatbox__support chatbox--active">
                   <div className="chat chatbox__header" />
                   <div className="chatbox__messages" ref="chatoutput">
-                    {/* {this.displayElements} */}
+                    {this.displayElements}
                     <Messages messages={messages} />
                     <div />
                   </div>
@@ -1282,12 +1286,12 @@ export default class Game extends Component {
               ) : null}
               <div className="chatbox__button" ref={this.chatButton}>
                 <button onClick={this.chattoggle}>
-                  {/* <img src={butimg} /> */}
+                  <img src={butimg} />
                 </button>
               </div>
             </div>
           </div>
-        ) : null}
+        {/* // ) : null} */}
       </Wrapper>
     );
   }
