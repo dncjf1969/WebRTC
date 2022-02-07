@@ -26,17 +26,17 @@ class TestUserList extends Component {
 			type: 'readyTest'   // 시그널 타입.
 		})
 		.then(() => {
-            if(this.state.isReady === true){
-                this.state.isReady = false;
-                console.log("레디 해제.")
-                document.getElementById("ready0").innerHTML = "준비 중.."
+            // if(this.state.isReady === true){
+            //     this.state.isReady = false;
+            //     console.log("레디 해제.")
+            //     document.getElementById("ready0").innerHTML = "준비 중.."
                 
-            } 
-            else{
-                this.state.isReady = true;
-                console.log('레디.');
-                document.getElementById("ready0").innerHTML = "준비 완료!"
-            } 
+            // } 
+            // else{
+            //     this.state.isReady = true;
+            //     console.log('레디.');
+            //     document.getElementById("ready0").innerHTML = "준비 완료!"
+            // } 
 		})
 		.catch(error => {
 			console.error(error);
@@ -93,7 +93,7 @@ class TestUserList extends Component {
 
                                 <img src={ imgA } style={tempStyle4}/>
                                 <div id="name0"> {this.props.myUserName} </div>
-                                <div id="ready0" style={tempStyle5}> {this.props.ready} </div>
+                                <div id="ready0" style={tempStyle5}> {this.props.ready ? '준비 완료!!!' : '준비중...'} </div>
                                 <div>
                                 <button onClick={this.readyTest}> ready </button>
                                 </div>
