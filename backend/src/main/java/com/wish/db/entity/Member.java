@@ -6,9 +6,11 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 
@@ -31,7 +33,8 @@ public class Member{
     Date signUpDate;
     
     //이렇게 추가해줘야할듯.
-    List<String> role;
+    @ElementCollection(targetClass=String.class)
+    List<String> role = new ArrayList<String>();
 
     
 }
