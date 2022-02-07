@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -53,6 +54,7 @@ import springfox.documentation.annotations.ApiIgnore;
 @Api(value = "면접/대기방 관련 API", tags = {"Room"})
 @RestController
 @RequestMapping("/room")
+@CrossOrigin
 public class WaitingRoomController {
 	
 	// 방 목록을 관리할 list
