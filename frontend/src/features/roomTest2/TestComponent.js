@@ -209,10 +209,11 @@ class TestComponent extends Component {
               element.setReady(JSON.parse(event.data).ready)
               this.setState({subscribers : this.remotes})
             }
-            console.log('지금 내 퀘션', this.state.questions)
           });
-          if (this.state.questions === []) {
-            this.setState({questions: JSON.parse(event.data).questions})
+          console.log('지금 내 퀘션', this.state.questions)
+          const temp = JSON.parse(event.data).questions
+          if (!this.state.questions.includes()) {
+            this.setState({questions: temp})
           }
         })
 
@@ -287,6 +288,11 @@ class TestComponent extends Component {
           //     // break;
           //   }
           // }
+          this.state.Session.on('signal:update-host', (event) => {
+            if (this.state.myUserName === event.data) {
+              this.setState({ ishost: true });
+            }
+          });
         });
 
         this.state.session.on("signal:makeQues", (event) => {
@@ -305,11 +311,34 @@ class TestComponent extends Component {
           let fromUserNickname = JSON.parse(event.from.data).clientData
           // 
           this.setState({
-            questions: [...this.state.questions, [fromUserNickname, yy]]
+            questions: [...this.state.questions, 
+              {
+                userName:fromUserNickname,
+                content:yy
+            }]
           })
           console.log(this.state.questions)
         });
-
+        this.state.session.on('streamDestroyed', (event) => {
+          // Remove the stream from 'subscribers' array
+          this.updateHost().then((clientData) => {
+            const host = JSON.parse(clientData).clientData;
+            this.state.session
+              .signal({
+                data: host,
+                to: [],
+                type: 'update-host',
+              })
+              .then(() => {})
+              .catch((error) => {});
+          });
+          this.deleteSubscriber(event.stream.streamManager);
+        });
+        this.state.session.on('signal:update-host', (event) => {
+          if (this.state.myUserName === event.data) {
+            this.setState({ ishost: true });
+          }
+        });
       }
     );
   }
@@ -324,6 +353,7 @@ class TestComponent extends Component {
           console.log(token);
           this.connect(token);
         })
+        
         .catch((error) => {
           if (this.props.error) {
             this.props.error({
@@ -372,6 +402,12 @@ class TestComponent extends Component {
     this.state.session
       .connect(token, { clientData: this.state.myUserName })
       .then(() => {
+        this.updateHost().then((firstUser) => {
+          const host = JSON.parse(firstUser).clientData;
+
+          if (this.state.myUserName === host)
+            this.setState({ ishost: true });
+        });
         this.connectWebCam();
       })
       .catch((error) => {
@@ -441,6 +477,31 @@ class TestComponent extends Component {
     );
   }
 
+  // updateHost() {
+  //   return new Promise((resolve, reject) => {
+  //     $.ajax({
+  //       type: 'GET',
+  //       url: `${'https://i5a608.p.ssafy.io:8443/api/sessions/'}${
+  //         this.state.mySessionId
+  //       }/connection`,
+  //       headers: {
+  //         Authorization: `Basic ${btoa(
+  //           `OPENVIDUAPP:${OPENVIDU_SERVER_SECRET}`
+  //         )}`,
+  //         'Access-Control-Allow-Origin': '*',
+  //         'Access-Control-Allow-Methods': 'GET,POST',
+  //       },
+  //       success: (response) => {
+  //         let content = response.content;
+  //         content.sort((a, b) => a.createdAt - b.createdAt);
+
+  //         resolve(content[0].clientData);
+  //       },
+  //       error: (error) => reject(error),
+  //     });
+  //   });
+  // }
+  
   updateSubscribers() {
     var subscribers = this.remotes;
     this.setState(

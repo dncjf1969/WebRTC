@@ -111,7 +111,7 @@ class TestQuesList extends Component {
                 <button onClick={this.makeQues}>질문 추가</button>
                 {this.props.questions.map((question) =>
                 <div>
-                    {question[0]}: {question[1]}
+                    {question.userName}: {question.content}
                 </div>
                       
                 

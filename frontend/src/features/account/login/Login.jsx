@@ -64,12 +64,13 @@ function Login() {
 
   async function login (userInfo) {
     try {
-      const response = await axios.post('/members/login', userInfo, 
-        {
-        'Access-Control-Allow-Origin': '*',
-        'Access-Control-Allow-Methods': 'GET,POST',
+      let config = {
+        headers: {
+          'Access-Control-Allow-Origin': '*',
+          'Access-Control-Allow-Methods': 'GET,POST',
         }
-      )
+      }
+      const response = await axios.post('/members/login', userInfo, config)
       const {
         data: {accessToken},
       } = response;
