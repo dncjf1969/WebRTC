@@ -45,8 +45,7 @@ public class RoomService {
 	
 	public void deleteRoom(int roomId){
 		ValueOperations<String, String> vop2 = redisTemplate.opsForValue();
-		
-		redisTemplate.opsForHash().delete(Integer.toString(roomId));
+		redisTemplate.delete(Integer.toString(roomId));
 	}
 	
 }
