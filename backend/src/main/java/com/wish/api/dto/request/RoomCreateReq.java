@@ -12,7 +12,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 @ApiModel("WaitingroomCreateReq")
-public class WaitingroomCreateReq {
+public class RoomCreateReq {
 	@ApiModelProperty(name="방 이름", example="OO기업 인적성 면접 준비방")
 	String name;
 

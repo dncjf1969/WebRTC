@@ -9,7 +9,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.wish.api.dto.WaitingRoom;
+import com.wish.api.dto.Room;
 
 @Service
 public class RoomService {
@@ -18,7 +18,7 @@ public class RoomService {
 	RedisTemplate<String, String> redisTemplate;
 	
 	//key value에 value에 해당하는 roomInfo 리턴해준다.
-	public WaitingRoom findRoom(int roomId) throws JsonMappingException, JsonProcessingException {
+	public Room findRoom(int roomId) throws JsonMappingException, JsonProcessingException {
 		
 		ValueOperations<String, String> vop = redisTemplate.opsForValue();
 		String roomInfo = vop.get(Integer.toString(roomId));
@@ -30,11 +30,11 @@ public class RoomService {
 		String password2 = node.get("password").asText();
 		String token = node.get("token").asText();
 		
-		WaitingRoom room = new WaitingRoom(token, roomId, node.get("manager").asText(), node.get("name").asText(), node.get("type").asText(), node.get("job").asText(), memberMax, memberCount, password2, node.get("nowMeeting").asBoolean());
+		Room room = new Room(token, roomId, node.get("manager").asText(), node.get("name").asText(), node.get("type").asText(), node.get("job").asText(), memberMax, memberCount, password2, node.get("nowMeeting").asBoolean());
 		return room;
 	}
 	
-	public void setRoom(WaitingRoom room){
+	public void setRoom(Room room){
 		ValueOperations<String, String> vop2 = redisTemplate.opsForValue();
 		System.out.println("?");
 		//리스트에 다시 저장.

@@ -5,14 +5,14 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.json.JsonMapper;
-import com.wish.api.dto.WaitingRoom;
-import com.wish.api.dto.request.WaitingroomCreateReq;
-import com.wish.api.dto.request.WaitingroomManagerReq;
-import com.wish.api.dto.request.WaitingroomModifyReq;
+import com.wish.api.dto.Room;
+import com.wish.api.dto.request.RoomCreateReq;
+import com.wish.api.dto.request.RoomManagerReq;
+import com.wish.api.dto.request.RoomModifyReq;
 import com.wish.api.dto.response.BaseRes;
-import com.wish.api.dto.response.WaitingroomListRes;
-import com.wish.api.dto.response.WaitingroomSearchRes;
-import com.wish.api.dto.response.WaitingroomTokenRes;
+import com.wish.api.dto.response.RoomListRes;
+import com.wish.api.dto.response.RoomSearchRes;
+import com.wish.api.dto.response.RoomTokenRes;
 import com.wish.api.service.RoomService;
 import com.wish.common.util.SearchUtil;
 import io.openvidu.java.client.*;
@@ -41,14 +41,11 @@ import java.util.Map;
 @RestController
 @RequestMapping("/room")
 @CrossOrigin
-public class WaitingRoomController {
+public class RoomController {
 
 	@Autowired
 	RoomService roomService;
 	
-//	// 방 목록을 관리할 list
-//	private List<WaitingRoom> roomList = new LinkedList<WaitingRoom>();
-
 	// 방 id로 사용할 변수
 	private static int autoIncreament = 0;
 
@@ -66,7 +63,7 @@ public class WaitingRoomController {
 
 	private SearchUtil searchUtil = new SearchUtil();
 
-	public WaitingRoomController(@Value("${openvidu.secret}") String secret, @Value("${openvidu.url}") String openviduUrl) {
+	public RoomController(@Value("${openvidu.secret}") String secret, @Value("${openvidu.url}") String openviduUrl) {
 		this.SECRET = secret;
 		this.OPENVIDU_URL = openviduUrl;
 		this.openVidu = new OpenVidu(OPENVIDU_URL, SECRET);
@@ -81,11 +78,11 @@ public class WaitingRoomController {
         @ApiResponse(code = 500, message = "서버 에러")
     })
 	//@PreAuthorize("hasAnyRole('USER', 'ADMIN')")
-	public ResponseEntity<WaitingroomListRes> searchWaitingRoom(
+	public ResponseEntity<RoomListRes> searchWaitingRoom(
 			@ApiIgnore Authentication authentication,
 			@RequestParam @ApiParam(value="방 검색 키워드", allowEmptyValue=true) String keyword ) {
 	
-		List<WaitingroomSearchRes> res = new LinkedList<WaitingroomSearchRes>();
+		List<RoomSearchRes> res = new LinkedList<RoomSearchRes>();
 
 //		// keyword가 비어있으면 전체 리스트를 반환한다.
 //		if(keyword == null) {
@@ -98,7 +95,7 @@ public class WaitingRoomController {
 //			res = searchUtil.search(roomList, keyword);
 //		}
 
-		return ResponseEntity.status(200).body(WaitingroomListRes.of(res));
+		return ResponseEntity.status(200).body(RoomListRes.of(res));
 	}
 	
 	
@@ -111,9 +108,9 @@ public class WaitingRoomController {
         @ApiResponse(code = 500, message = "서버 에러")
     })
 	//@PreAuthorize("hasAnyRole('USER')")
-	public ResponseEntity<WaitingroomTokenRes> createWaitingRoom(
+	public ResponseEntity<RoomTokenRes> createWaitingRoom(
 			@ApiIgnore Authentication authentication,
-			@RequestBody @ApiParam(value="방 생성 정보", required = true) WaitingroomCreateReq createInfo) throws OpenViduJavaClientException, OpenViduHttpException, JsonProcessingException {
+			@RequestBody @ApiParam(value="방 생성 정보", required = true) RoomCreateReq createInfo) throws OpenViduJavaClientException, OpenViduHttpException, JsonProcessingException {
 	
 		// 로그인 검사
 		try {
@@ -146,14 +143,14 @@ public class WaitingRoomController {
 //		WaitingRoom room = WaitingRoom.of(session, token, autoIncreament++, createInfo);
 //		roomList.add(room);
 		
-		WaitingRoom room = WaitingRoom.of(token, autoIncreament++, createInfo);
+		Room room = Room.of(token, autoIncreament++, createInfo);
 		
 		System.out.println(room.toString());
 		//redis에 방 정보 추가.
 		roomService.setRoom(room);
 		
 		// 클라이언트에 토큰(주소) 전달
-		return ResponseEntity.status(201).body(WaitingroomTokenRes.of(token,room.getRoomId()));
+		return ResponseEntity.status(201).body(RoomTokenRes.of(token,room.getRoomId()));
 	}
 	
 	
@@ -169,7 +166,7 @@ public class WaitingRoomController {
 	//@PreAuthorize("hasAnyRole('USER')")
 	public ResponseEntity<BaseRes> modifyWaitingRoom(
 			@ApiIgnore Authentication authentication,
-			@RequestBody @ApiParam(value="방 설정 정보", required = true) WaitingroomModifyReq modifyInfo) throws JsonMappingException, JsonProcessingException {
+			@RequestBody @ApiParam(value="방 설정 정보", required = true) RoomModifyReq modifyInfo) throws JsonMappingException, JsonProcessingException {
 		
 		
 		//authentication에 있는 멤버id로 방장인지 비교
@@ -181,7 +178,7 @@ public class WaitingRoomController {
 		System.out.println(roomId);
 		
 		
-		WaitingRoom room = roomService.findRoom(roomId);
+		Room room = roomService.findRoom(roomId);
 		
 		System.out.println(room.toString());
 		
@@ -229,7 +226,7 @@ public class WaitingRoomController {
 		
 		//authentication에 있는 멤버id로 방장인지 비교
 		
-		WaitingRoom room;
+		Room room;
 		try {
 			room = roomService.findRoom(roomId);
 			
@@ -265,7 +262,7 @@ public class WaitingRoomController {
 			@RequestParam @ApiParam(value="방 비밀번호", allowEmptyValue=true) String password) throws JsonProcessingException {
 		
 		//redis에서 방 찾기
-		WaitingRoom room = roomService.findRoom(roomId);
+		Room room = roomService.findRoom(roomId);
 
 //		// 방장 이름으로 방 찾기
 //		//WaitingRoom room = SearchUtil.searchById(roomList, roomId);
@@ -294,7 +291,7 @@ public class WaitingRoomController {
 		}
 
 		// 주소 리턴
-		return ResponseEntity.status(200).body(WaitingroomTokenRes.of(room.getToken(),roomId));
+		return ResponseEntity.status(200).body(RoomTokenRes.of(room.getToken(),roomId));
 	}
 	
 
@@ -319,7 +316,7 @@ public class WaitingRoomController {
 		// 현재인원-1 -> 현재 인원 0이면 방을 자동 제거
 		
 		//redis에서 방 찾기
-		WaitingRoom room;
+		Room room;
 		try {
 			room = roomService.findRoom(roomId);
 			if(room.getRoomId() == roomId) {
@@ -359,14 +356,14 @@ public class WaitingRoomController {
 	//@PreAuthorize("hasAnyRole('USER')")
 	public ResponseEntity<BaseRes> changeManager(
 			@ApiIgnore Authentication authentication,
-			@RequestBody @ApiParam(value="방id, 본인id(현재방장), 바꿀 방장id", required = true) WaitingroomManagerReq managerChangeInfo ) {
+			@RequestBody @ApiParam(value="방id, 본인id(현재방장), 바꿀 방장id", required = true) RoomManagerReq managerChangeInfo ) {
 	
 		
 		//authentication에 있는 멤버id로 방장인지 비교
 		
 		int roomId = managerChangeInfo.getRoomId();
 
-		WaitingRoom room;
+		Room room;
 		try {
 			room = roomService.findRoom(roomId);
 			if(room.getRoomId() == roomId) {
@@ -412,7 +409,7 @@ public class WaitingRoomController {
 		
 		//authentication에 있는 멤버id로 방장인지 비교
 		
-		WaitingRoom room;
+		Room room;
 		try {
 			room = roomService.findRoom(roomId);
 			room.setNowMeeting(true);
@@ -443,7 +440,7 @@ public class WaitingRoomController {
 			@ApiIgnore Authentication authentication,
 			@RequestParam @ApiParam(value="대기방 id", required = true) int roomId) {
 	
-		WaitingRoom room;
+		Room room;
 		try {
 			room = roomService.findRoom(roomId);
 			room.setNowMeeting(false);

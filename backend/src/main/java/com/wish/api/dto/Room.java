@@ -2,7 +2,7 @@ package com.wish.api.dto;
 
 import java.io.Serializable;
 
-import com.wish.api.dto.request.WaitingroomCreateReq;
+import com.wish.api.dto.request.RoomCreateReq;
 
 import io.openvidu.java.client.Session;
 import lombok.AllArgsConstructor;
@@ -14,7 +14,7 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class WaitingRoom implements Serializable{		
+public class Room implements Serializable{		
 	// 세션(OpenVidu 방)
 	//Session session;
 	
@@ -51,8 +51,8 @@ public class WaitingRoom implements Serializable{
 	boolean nowMeeting;
 
 	
-	public static WaitingRoom of(String token, int roomId, WaitingroomCreateReq createInfo) {
-		WaitingRoom room = new WaitingRoom();
+	public static Room of(String token, int roomId, RoomCreateReq createInfo) {
+		Room room = new Room();
 		room.setToken(token);
 		room.setRoomId(roomId);
 		room.setManager(createInfo.getManager());
