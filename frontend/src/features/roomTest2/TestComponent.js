@@ -113,6 +113,7 @@ class TestComponent extends Component {
       customSubscriber: [],
       latestUser: undefined,
       questions: [],
+      isStart: false,
     };
     console.log("state다");
     console.log(this.state);
@@ -342,6 +343,9 @@ class TestComponent extends Component {
           if (this.state.session.connection.connectionId === event.data) {
             this.setState({ ishost: true });
           }
+        });
+        this.state.session.on('signal:start', (event) => {
+          this.setState({ isStart: true})
         });
       }
     );
