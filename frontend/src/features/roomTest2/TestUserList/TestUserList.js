@@ -8,6 +8,7 @@ class TestUserList extends Component {
     constructor(props) {
         super(props);
         this.readyTest = this.readyTest.bind(this);
+        this.start = this.start.bind(this);
 
         this.state = {
             isReady : false,
@@ -29,6 +30,17 @@ class TestUserList extends Component {
 		.catch(error => {
 			console.error(error);
 		});
+    }
+
+    start(){
+        const check = (value) => value.ready;
+        // console.log('스타트')
+        // console.log(this.props)
+        if (this.props.subscribers.every(check)) {
+            console.log('모두레디함 스타트')
+        } else {
+            console.log('아직 레디안한사람있음')
+        }
     }
 
     
@@ -80,10 +92,12 @@ class TestUserList extends Component {
                             <div id="seat0"> 내 자리 </div>
                                 <img src={ imgA } style={tempStyle4}/>
                                 <div id="name0"> {this.props.myUserName} </div>
-                                <div id="ready0" style={tempStyle5}> {this.props.ready ? '준비 완료!!!' : '준비 중...'} </div>
+                                {this.props.ishost ? null : 
+                                <div id="ready0" style={tempStyle5}> 
+                                    {this.props.ready ? '준비 완료!!!' : '준비 중...'} 
+                                </div>}
                                 <div>
-                                    {this.props.ishost ? <button>start</button> : <button onClick={this.readyTest}> ready </button>}
-                                    
+                                    {this.props.ishost ? <button onClick={this.start}>start</button> : <button onClick={this.readyTest}> ready </button>}                    
                                 </div>
                             </div>            
                         </div>
