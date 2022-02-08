@@ -38,6 +38,15 @@ class TestUserList extends Component {
         // console.log(this.props)
         if (this.props.subscribers.every(check)) {
             console.log('모두레디함 스타트')
+            this.props.session.signal({
+                data: 'HI',
+                to: [],
+                type: 'start'
+            })
+            .then(() => {})
+            .catch(error => {
+                console.error(error);
+            });
         } else {
             console.log('아직 레디안한사람있음')
         }
