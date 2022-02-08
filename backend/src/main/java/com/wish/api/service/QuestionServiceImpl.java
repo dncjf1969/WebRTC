@@ -18,8 +18,7 @@ public class QuestionServiceImpl implements QuestionService {
     @Autowired
     QuestionRepository questionRepository;
 
-    public List<Question> read20QuestionList() {
-        List<Question> questionList = questionRepository.findTop20().get();
+    public List<Question> readQuestionList() {
 
         return questionList;
     }

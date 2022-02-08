@@ -49,7 +49,7 @@ public class QuestionController {
 			@ApiParam(value="사전질문 리스트 조회할 방 id", required = true) @RequestParam String meetingroomId) {
 
 		List<CustomQuestion> customQuestionList = customQuestionService.readAllCustomQuestionList(meetingroomId);
-		List<Question> questionList = questionService.read20QuestionList();
+		List<Question> questionList = questionService.readQuestionList();
 
 		return ResponseEntity.ok(QuestionListRes.of(200, "Success", customQuestionList, questionList));
 	}
