@@ -59,26 +59,24 @@ import {
   IoVideocamOff,
   IoVideocam,
 } from 'react-icons/io5';
-import axios1 from '../../common/';
+import axios1 from '../../common/http-common';
 import butimg from '../../assets/chatmsg.svg';
-import { quickStart } from '../home/homeSlice';
-import logo from '../../assets/logo(basic).svg';
+// import { quickStart } from '../home/homeSlice';
 import './Game.css';
 import './UserVideo.css';
 import Messages from './components/Messages';
 import startsound from './sound/start.mp3';
 import gamemusic2 from './sound/gamemusic2.mp3';
-import badgeImages from '../../assets/badges/badgeImages';
 
 // features
 import UserVideoComponent from './UserVideoComponent';
 
 // actions
-import {
-  saveNewBadges,
-  loadBadgesOwned,
-  resetMyPageInfo,
-} from '../mypage/mypageSlice';
+// import {
+//   saveNewBadges,
+//   loadBadgesOwned,
+//   resetMyPageInfo,
+// } from '../mypage/mypageSlice';
 
 const OPENVIDU_SERVER_URL = 'https://i5a608.p.ssafy.io:8443';
 const OPENVIDU_SERVER_SECRET = 'HOMEDONG';

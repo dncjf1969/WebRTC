@@ -29,9 +29,10 @@ class TestComponent extends Component {
   constructor(props) {
     super(props);
 
-    this.OPENVIDU_SERVER_URL = this.props.openviduServerUrl
-      ? this.props.openviduServerUrl
-      : "https://" + "i6e201.p.ssafy.io" + ":4443";
+    // this.OPENVIDU_SERVER_URL = this.props.openviduServerUrl
+    //   ? this.props.openviduServerUrl
+    //   : "https://" + "i6e201.p.ssafy.io" + ":4443";
+    this.OPENVIDU_SERVER_URL = "https://localhost:4443"
     this.OPENVIDU_SERVER_SECRET = this.props.openviduSecret
       ? this.props.openviduSecret
       : "MY_SECRET";
@@ -212,9 +213,12 @@ class TestComponent extends Component {
           });
           console.log('지금 내 퀘션', this.state.questions)
           const temp = JSON.parse(event.data).questions
-          if (!this.state.questions.includes()) {
+          console.log('들어온 퀘션', temp )
+          if (this.state.questions.length === 0) {
             this.setState({questions: temp})
           }
+          console.log('다시 내 퀘션', this.state.questions)
+          console.log(temp === this.state.questions)
         })
 
         this.state.session.on("connectionCreated", (event) => {
@@ -319,21 +323,21 @@ class TestComponent extends Component {
           })
           console.log(this.state.questions)
         });
-        this.state.session.on('streamDestroyed', (event) => {
-          // Remove the stream from 'subscribers' array
-          this.updateHost().then((clientData) => {
-            const host = JSON.parse(clientData).clientData;
-            this.state.session
-              .signal({
-                data: host,
-                to: [],
-                type: 'update-host',
-              })
-              .then(() => {})
-              .catch((error) => {});
-          });
-          this.deleteSubscriber(event.stream.streamManager);
-        });
+        // this.state.session.on('streamDestroyed', (event) => {
+        //   // Remove the stream from 'subscribers' array
+        //   this.updateHost().then((clientData) => {
+        //     const host = JSON.parse(clientData).clientData;
+        //     this.state.session
+        //       .signal({
+        //         data: host,
+        //         to: [],
+        //         type: 'update-host',
+        //       })
+        //       .then(() => {})
+        //       .catch((error) => {});
+        //   });
+        //   this.deleteSubscriber(event.stream.streamManager);
+        // });
         this.state.session.on('signal:update-host', (event) => {
           if (this.state.myUserName === event.data) {
             this.setState({ ishost: true });
@@ -402,12 +406,12 @@ class TestComponent extends Component {
     this.state.session
       .connect(token, { clientData: this.state.myUserName })
       .then(() => {
-        this.updateHost().then((firstUser) => {
-          const host = JSON.parse(firstUser).clientData;
+        // this.updateHost().then((firstUser) => {
+        //   const host = JSON.parse(firstUser).clientData;
 
-          if (this.state.myUserName === host)
-            this.setState({ ishost: true });
-        });
+        //   if (this.state.myUserName === host)
+        //     this.setState({ ishost: true });
+        // });
         this.connectWebCam();
       })
       .catch((error) => {
