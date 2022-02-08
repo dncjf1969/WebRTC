@@ -1,5 +1,7 @@
 package com.wish.api.dto;
 
+import java.io.Serializable;
+
 import com.wish.api.dto.request.WaitingroomCreateReq;
 
 import io.openvidu.java.client.Session;
@@ -12,9 +14,9 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class WaitingRoom {		
+public class WaitingRoom implements Serializable{		
 	// 세션(OpenVidu 방)
-	Session session;
+	//Session session;
 	
 	// 토큰
 	String token;
@@ -47,10 +49,10 @@ public class WaitingRoom {
 	
 	// 미팅 시작 여부
 	boolean nowMeeting;
+
 	
-	public static WaitingRoom of(Session session, String token, int roomId, WaitingroomCreateReq createInfo) {
+	public static WaitingRoom of(String token, int roomId, WaitingroomCreateReq createInfo) {
 		WaitingRoom room = new WaitingRoom();
-		room.setSession(session);
 		room.setToken(token);
 		room.setRoomId(roomId);
 		room.setManager(createInfo.getManager());
@@ -70,5 +72,44 @@ public class WaitingRoom {
 		
 		return room;
 	}
-	
+
+//	public static WaitingRoom of(Session session, String token, int roomId, WaitingroomCreateReq createInfo) {
+//		WaitingRoom room = new WaitingRoom();
+//		room.setSession(session);
+//		room.setToken(token);
+//		room.setRoomId(roomId);
+//		room.setManager(createInfo.getManager());
+//		room.setName(createInfo.getName());
+//		room.setType(createInfo.getType());
+//		room.setJob(createInfo.getJob());
+//		room.setMemberMax(createInfo.getMemberMax());
+//		room.setMemberCount(1);
+//		room.setNowMeeting(false);
+//
+//		// 비밀번호 입력
+//		room.setPassword(createInfo.getPassword());
+//		// 비밀번호가 입력되지 않았다면  ""로 초기화
+//		if(createInfo.getPassword() == null){
+//			room.setPassword("");
+//		}
+//		
+//		return room;
+//	}
+
+	@Override
+	public String toString() {
+		return "{" +
+//				"\"session\": \"" + session + "\",\n" +
+				"\"token\":\"" + token + "\",\n" +
+				"\"roomId\":" + roomId + ",\n" +
+				"\"manager\":\"" + manager + "\",\n" +
+				"\"name\":\"" + name + "\",\n" +
+				"\"type\":\"" + type + "\",\n" +
+				"\"job\":\"" + job + "\",\n" +
+				"\"memberMax\":" + memberMax + ",\n" +
+				"\"memberCount\":" + memberCount + ",\n" +
+				"\"password\":\"" + password + "\",\n" +
+				"\"nowMeeting\":" + nowMeeting +
+				'}';
+	}
 }

@@ -197,6 +197,13 @@ dependencies {
     // https://mvnrepository.com/artifact/io.openvidu/openvidu-java-client
 	implementation group: 'io.openvidu', name: 'openvidu-java-client', version: '2.20.0'
 
+
+	// redis
+	implementation('org.springframework.boot:spring-boot-starter-data-redis')
+	
+	// https://mvnrepository.com/artifact/redis.clients/jedis
+	//implementation group: 'redis.clients', name: 'jedis', version: '2.8.0'
+	
 }
 
 // 젠킨스 배포용
