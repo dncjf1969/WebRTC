@@ -1,9 +1,13 @@
 import React, { useState, useRef, useEffect } from 'react';
 import Transition from '../utils/Transition';
-
-import FeaturesBg from '../images/features-bg.png';
-import FeaturesElement from '../images/features-element.png';
-
+// import Work from './card/Kind';
+import debate from '../images/토론.svg';
+import normal from '../images/인성.svg';
+import job from '../images/직무.svg';
+import pt from '../images/피티.svg';
+// import FeaturesElement from '../images/features-element.png';
+// import Kind from './card/Kind';
+import { Link } from 'react-router-dom';
 function Features() {
 
   const [tab, setTab] = useState(1);
@@ -22,55 +26,58 @@ function Features() {
   }, [tab])
 
   return (
-    <section className="relative">
+    <section className="relative" >
 
       {/* Section background (needs .relative class on parent and next sibling elements) */}
-      <div className="absolute inset-0 bg-gray-100 pointer-events-none mb-16" aria-hidden="true"></div>
-      <div className="absolute left-0 right-0 m-auto w-px p-px h-20 bg-gray-200 transform -translate-y-1/2"></div>
+      <div className="absolute inset-0 " aria-hidden="true" data-aos="zoom-y-out"></div>
+      <div className="absolute left-0 right-0 m-auto w-px p-px h-20 transform -translate-y-1/2"></div>
 
       <div className="relative max-w-6xl mx-auto px-4 sm:px-6">
         <div className="pt-12 md:pt-20">
 
           {/* Section header */}
-          <div className="max-w-3xl mx-auto text-center pb-12 md:pb-16">
-            <h1 className="h2 mb-4">Explore the solutions</h1>
-            <p className="text-xl text-gray-600">Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur excepteur sint occaecat cupidatat.</p>
+          <div className="max-w-3xl mx-auto text-center">
+            <h1 className="h2 mb-4  bg-clip-text text-transparent bg-gradient-to-r from-blue-500 to-teal-40">Get Study With Us</h1>
+            <p className="text-xl text-gray-600 font-bold">희망하는 면접스터디 유형을 선택해주세요🤓</p>
           </div>
-
           {/* Section content */}
           <div className="md:grid md:grid-cols-12 md:gap-6">
 
             {/* Content */}
             <div className="max-w-xl md:max-w-none md:w-full mx-auto md:col-span-7 lg:col-span-6 md:mt-6" data-aos="fade-right">
-              <div className="md:pr-4 lg:pr-12 xl:pr-16 mb-8">
-                <h3 className="h3 mb-3">Powerful suite of tools</h3>
-                <p className="text-xl text-gray-600">Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa.</p>
-              </div>
+              
               {/* Tabs buttons */}
               <div className="mb-8 md:mb-0">
                 <a
-                  className={`flex items-center text-lg p-5 rounded border transition duration-300 ease-in-out mb-3 ${tab !== 1 ? 'bg-white shadow-md border-gray-200 hover:shadow-lg' : 'bg-gray-200 border-transparent'}`}
+                  className={`flex items-center text-lg p-5 rounded border transition border-2 border-gray-200 rounded bg-white duration-300 ease-in-out mb-3 hover:scale-105 transition duration-500 shadow-lg  ${tab !== 1 ? 'bg-white shadow-md border-gray-300 hover:shadow-lg' : 'bg-gradient-to-r from-blue-200 to-teal-100 pointer'}`}
                   href="#0"
                   onClick={(e) => { e.preventDefault(); setTab(1); }}
                 >
                   <div>
-                    <div className="font-bold leading-snug tracking-tight mb-1">Building the Simple ecosystem</div>
-                    <div className="text-gray-600">Take collaboration to the next level with security and administrative features built for teams.</div>
+                    <div className="font-bold leading-snug tracking-tight mb-1">인성면접</div>
+                    <div className="text-gray-500">인성면접 스터디하러 가볼까요?</div>
                   </div>
-                  <div className="flex justify-center items-center w-8 h-8 bg-white rounded-full shadow flex-shrink-0 ml-3">
-                    <svg className="w-3 h-3 fill-current" viewBox="0 0 12 12" xmlns="http://www.w3.org/2000/svg">
-                      <path d="M11.953 4.29a.5.5 0 00-.454-.292H6.14L6.984.62A.5.5 0 006.12.173l-6 7a.5.5 0 00.379.825h5.359l-.844 3.38a.5.5 0 00.864.445l6-7a.5.5 0 00.075-.534z" />
-                    </svg>
-                  </div>
+                
                 </a>
                 <a
-                  className={`flex items-center text-lg p-5 rounded border transition duration-300 ease-in-out mb-3 ${tab !== 2 ? 'bg-white shadow-md border-gray-200 hover:shadow-lg' : 'bg-gray-200 border-transparent'}`}
+                  className={`flex items-center text-lg p-5 rounded border border-2 border-gray-200 rounded bg-white transition duration-300 ease-in-out mb-3 hover:scale-105 transition duration-500 shadow-lg ${tab !== 2 ? 'bg-white shadow-md border-gray-200 hover:shadow-lg' : 'bg-gradient-to-r from-blue-200 to-teal-100 pointer'}`}
                   href="#0"
                   onClick={(e) => { e.preventDefault(); setTab(2); }}
                 >
                   <div>
-                    <div className="font-bold leading-snug tracking-tight mb-1">Building the Simple ecosystem</div>
-                    <div className="text-gray-600">Take collaboration to the next level with security and administrative features built for teams.</div>
+                    <div className="font-bold leading-snug tracking-tight mb-1">직무면접</div>
+                    <div className="text-gray-600">직무면접 스터디하러 가볼까요?</div>
+                  </div>
+                
+                </a>
+                <a
+                  className={`flex items-center text-lg p-5 rounded border border-2 border-gray-200 rounded bg-white transition duration-300 ease-in-out mb-3 hover:scale-105 transition duration-500 shadow-lg ${tab !== 3 ? 'bg-white shadow-md border-gray-200 hover:shadow-lg' : 'bg-gradient-to-r from-blue-200 to-teal-100 pointer'}`}
+                  href="#0"
+                  onClick={(e) => { e.preventDefault(); setTab(3); }}
+                >
+                  <div>
+                    <div className="font-bold leading-snug tracking-tight mb-1">pt면접</div>
+                    <div className="text-gray-600">pt면접 스터디하러 가볼까요?</div>
                   </div>
                   <div className="flex justify-center items-center w-8 h-8 bg-white rounded-full shadow flex-shrink-0 ml-3">
                     <svg className="w-3 h-3 fill-current" viewBox="0 0 12 12" xmlns="http://www.w3.org/2000/svg">
@@ -79,13 +86,13 @@ function Features() {
                   </div>
                 </a>
                 <a
-                  className={`flex items-center text-lg p-5 rounded border transition duration-300 ease-in-out mb-3 ${tab !== 3 ? 'bg-white shadow-md border-gray-200 hover:shadow-lg' : 'bg-gray-200 border-transparent'}`}
+                  className={`flex items-center text-lg p-5 rounded border transition border-2 border-gray-200 rounded bg-white duration-300 ease-in-out mb-3 hover:scale-105 transition duration-500 shadow-lg ${tab !== 4 ? 'bg-white shadow-md border-gray-200 hover:shadow-lg' : 'bg-gradient-to-r from-blue-200 to-teal-100 pointer'}`}
                   href="#0"
-                  onClick={(e) => { e.preventDefault(); setTab(3); }}
+                  onClick={(e) => { e.preventDefault(); setTab(4); }}
                 >
                   <div>
-                    <div className="font-bold leading-snug tracking-tight mb-1">Building the Simple ecosystem</div>
-                    <div className="text-gray-600">Take collaboration to the next level with security and administrative features built for teams.</div>
+                    <div className="font-bold leading-snug tracking-tight mb-1">토론면접</div>
+                    <div className="text-gray-600">토론면접 스터디하러 가볼까요?</div>
                   </div>
                   <div className="flex justify-center items-center w-8 h-8 bg-white rounded-full shadow flex-shrink-0 ml-3">
                     <svg className="w-3 h-3 fill-current" viewBox="0 0 12 12" xmlns="http://www.w3.org/2000/svg">
@@ -93,6 +100,7 @@ function Features() {
                     </svg>
                   </div>
                 </a>
+              
               </div>
             </div>
 
@@ -111,10 +119,13 @@ function Features() {
                   leaveStart="opacity-100 translate-y-0"
                   leaveEnd="opacity-0 -translate-y-16"
                 >
+                  <Link to='/waitinglist'>
                   <div className="relative inline-flex flex-col">
-                    <img className="md:max-w-none mx-auto rounded" src={FeaturesBg} width="500" height="462" alt="Features bg" />
-                    <img className="md:max-w-none absolute w-full left-0 transform animate-float" src={FeaturesElement} width="500" height="44" alt="Element" style={{ top: '30%' }} />
+                    <img className="md:max-w-none mx-auto rounded mt-10 " src={normal} width="390" height="462" alt="Features bg" />
+                    {/* <img className="md:max-w-none mx-auto rounded" src={FeaturesBg} width="390" height="462" alt="Features bg" /> */}
+                    
                   </div>
+                  </Link>
                 </Transition>
                 {/* Item 2 */}
                 <Transition
@@ -128,10 +139,12 @@ function Features() {
                   leaveStart="opacity-100 translate-y-0"
                   leaveEnd="opacity-0 -translate-y-16"
                 >
+                    <Link to="/signup">
                   <div className="relative inline-flex flex-col">
-                    <img className="md:max-w-none mx-auto rounded" src={FeaturesBg} width="500" height="462" alt="Features bg" />
-                    <img className="md:max-w-none absolute w-full left-0 transform animate-float" src={FeaturesElement} width="500" height="44" alt="Element" style={{ top: '30%' }} />
+                    <img className="md:max-w-none mx-auto rounded mt-10" src={job} width="390" height="462" alt="Features bg" />
+                    {/* <img className="md:max-w-none absolute w-full left-0 transform animate-float" src={FeaturesElement} width="390" height="44" alt="Element" style={{ top: '30%' }} /> */}
                   </div>
+                    </Link>
                 </Transition>
                 {/* Item 3 */}
                 <Transition
@@ -146,8 +159,24 @@ function Features() {
                   leaveEnd="opacity-0 -translate-y-16"
                 >
                   <div className="relative inline-flex flex-col">
-                    <img className="md:max-w-none mx-auto rounded" src={FeaturesBg} width="500" height="462" alt="Features bg" />
-                    <img className="md:max-w-none absolute w-full left-0 transform animate-float" src={FeaturesElement} width="500" height="44" alt="Element" style={{ top: '30%' }} />
+                    <img className="md:max-w-none mx-auto rounded mt-10" src={pt} width="390" height="462" alt="Features bg" />
+                    {/* <img className="md:max-w-none absolute w-full left-0 transform animate-float" src={FeaturesElement} width="390" height="44" alt="Element" style={{ top: '30%' }} /> */}
+                  </div>
+                </Transition>
+                <Transition
+                  show={tab === 4}
+                  appear={true}
+                  className="w-full"
+                  enter="transition ease-in-out duration-700 transform order-first"
+                  enterStart="opacity-0 translate-y-16"
+                  enterEnd="opacity-100 translate-y-0"
+                  leave="transition ease-in-out duration-300 transform absolute"
+                  leaveStart="opacity-100 translate-y-0"
+                  leaveEnd="opacity-0 -translate-y-16"
+                >
+                  <div className="relative inline-flex flex-col">
+                    <img className="md:max-w-none mx-auto rounded mt-10" src={debate} width="390" height="462" alt="Features bg" />
+                    {/* <img className="md:max-w-none absolute w-full left-0 transform animate-float" src={FeaturesElement} width="390" height="44" alt="Element" style={{ top: '30%' }} /> */}
                   </div>
                 </Transition>
               </div>
