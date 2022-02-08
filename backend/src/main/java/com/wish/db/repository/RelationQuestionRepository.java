@@ -17,6 +17,8 @@ import java.util.Optional;
 public interface RelationQuestionRepository extends JpaRepository<RelationQuestion, Long> {
     // 아래와 같이, Query Method 인터페이스(반환값, 메소드명, 인자) 정의를 하면 자동으로 Query Method 구현됨.
 
+	// parentId가 일치하느 것 중 count 기준 상위 4개
+    Optional<List<RelationQuestion>> findTop4ByParentIdOrderByCount(Long parentId);
     Optional<RelationQuestion> findByParentIdAndChildId(Long parentId, Long childId);
 
 
