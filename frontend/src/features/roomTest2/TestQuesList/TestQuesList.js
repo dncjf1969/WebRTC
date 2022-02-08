@@ -56,23 +56,23 @@ class TestQuesList extends Component {
             	});
     }
 
-    onRemove(id){
-        let temp = document.getElementById("input1").value;
-        document.getElementById("input1").value = "";
-        console.log(temp);
-        this.setState(this.props.question.filter(user => user.id !== id));
-        this.props.session.signal({
-            		data: temp,  // 보내는 내용
-            		to: [],         // 누구한데 보낼건지. 비워있으면 모두에게 보내는거고, 만약 세션 아이디 적으면 그 세션한데만 보내진다.
-            		type: 'makeQues'   // 시그널 타입.
-            	})
-            	.then(() => {
-                    console.log("delete Question!");
-            	})
-            	.catch(error => {
-            		console.error(error);
-            	});
-    }
+    // deleteQues(){
+    //     let temp = document.getElementById("input1").value;
+    //     document.getElementById("input1").value = "";
+    //     console.log(temp);
+    //     this.setState(this.props.question.filter(user => user.id !== id));
+    //     this.props.session.signal({
+    //         		data: temp,  // 보내는 내용
+    //         		to: [],         // 누구한데 보낼건지. 비워있으면 모두에게 보내는거고, 만약 세션 아이디 적으면 그 세션한데만 보내진다.
+    //         		type: 'deleteQues'   // 시그널 타입.
+    //         	})
+    //         	.then(() => {
+    //                 console.log("delete Question!");
+    //         	})
+    //         	.catch(error => {
+    //         		console.error(error);
+    //         	});
+    // }
     
     render() {
         const tempStyle={
@@ -130,7 +130,7 @@ class TestQuesList extends Component {
                 {this.props.questions.map((question) =>
                 <div>
                     {question[0]}: {question[1]}
-                    {/* <span><button onClick={() => onRemove(student.id)}>삭제</button></span> */}
+                    {/* <span><button onClick={this.deleteQues}>삭제</button></span> */}
                 </div>
                       
                 

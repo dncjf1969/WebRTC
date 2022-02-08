@@ -209,11 +209,12 @@ class TestComponent extends Component {
               element.setReady(JSON.parse(event.data).ready)
               this.setState({subscribers : this.remotes})
             }
-            console.log('지금 내 퀘션', this.state.questions)
           });
-          if (!this.state.questions.includes()) {
+          console.log('지금 내 퀘션', this.state.questions)
+          if (this.state.questions.length === 0) {
             this.setState({questions: JSON.parse(event.data).questions})
           }
+          console.log(this.state.questions)
         })
 
         this.state.session.on("connectionCreated", (event) => {
