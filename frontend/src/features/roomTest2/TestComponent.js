@@ -88,6 +88,7 @@ class TestComponent extends Component {
       message: '',
       // 방장 (정의하는 기준 )
       ishost: false,
+      hostId: undefined,
       // 토론, pt 한다면 추가 
       timer: false,
       // DB저장용 게임 ID 
@@ -337,6 +338,7 @@ class TestComponent extends Component {
           this.deleteSubscriber(event.stream.streamManager);
         });
         this.state.session.on('signal:update-host', (event) => {
+          this.setState({ hostId: event.data})
           if (this.state.session.connection.connectionId === event.data) {
             this.setState({ ishost: true });
           }
@@ -408,6 +410,7 @@ class TestComponent extends Component {
         this.updateHost().then((firstUser) => {
           console.log('무야호',firstUser)
           const host = firstUser;
+          this.setState({ hostId : host})
           if (this.state.session.connection.connectionId === host){
             this.setState({ ishost: true });
           }
@@ -894,13 +897,14 @@ class TestComponent extends Component {
         /> */}
 
         <div id="layout" className="bounds">
-          
           <TestUserList
             session={this.state.session}
             subscribers={this.state.subscribers}
             myUserName={this.state.myUserName}
             ready={this.state.readyState}
             localUser={localUser}
+            ishost={this.state.ishost}
+            hostId={this.state.hostId}
           />
           <TestQuesList session={this.state.session} questions={this.state.questions} />
           {localUser !== undefined &&

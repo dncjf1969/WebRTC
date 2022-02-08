@@ -82,7 +82,8 @@ class TestUserList extends Component {
                                 <div id="name0"> {this.props.myUserName} </div>
                                 <div id="ready0" style={tempStyle5}> {this.props.ready ? '준비 완료!!!' : '준비 중...'} </div>
                                 <div>
-                                <button onClick={this.readyTest}> ready </button>
+                                    {this.props.ishost ? <button>start</button> : <button onClick={this.readyTest}> ready </button>}
+                                    
                                 </div>
                             </div>            
                         </div>
@@ -91,7 +92,8 @@ class TestUserList extends Component {
                 <div style={tempStyle3}>
                 <div>
                     <div id="seat1"> {userInfo.nickname} </div>
-                        <div>{userInfo.ready ? "준비 완료!!!" : "준비 중..."}</div>
+                        {userInfo.connectionId === this.props.hostId ? <div>방장</div> : <div>{userInfo.ready ? "준비 완료!!!" : "준비 중..."}</div>}
+                        
                     </div>   
                 </div>
             )}
