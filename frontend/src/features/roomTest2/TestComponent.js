@@ -29,9 +29,10 @@ class TestComponent extends Component {
   constructor(props) {
     super(props);
 
-    this.OPENVIDU_SERVER_URL = this.props.openviduServerUrl
-      ? this.props.openviduServerUrl
-      : "https://" + "i6e201.p.ssafy.io" + ":4443";
+    // this.OPENVIDU_SERVER_URL = this.props.openviduServerUrl
+    //   ? this.props.openviduServerUrl
+    //   : "https://" + "i6e201.p.ssafy.io" + ":4443";
+    this.OPENVIDU_SERVER_URL = "https://localhost:4443"
     this.OPENVIDU_SERVER_SECRET = this.props.openviduSecret
       ? this.props.openviduSecret
       : "MY_SECRET";
@@ -87,6 +88,7 @@ class TestComponent extends Component {
       message: '',
       // 방장 (정의하는 기준 )
       ishost: false,
+      hostId: undefined,
       // 토론, pt 한다면 추가 
       timer: false,
       // DB저장용 게임 ID 
@@ -111,6 +113,7 @@ class TestComponent extends Component {
       customSubscriber: [],
       latestUser: undefined,
       questions: [],
+      isStart: false,
     };
     console.log("state다");
     console.log(this.state);
@@ -131,6 +134,7 @@ class TestComponent extends Component {
     this.toggleChat = this.toggleChat.bind(this);
     this.checkNotification = this.checkNotification.bind(this);
     this.checkSize = this.checkSize.bind(this);
+    this.updateHost = this.updateHost.bind(this);
   }
 
   componentDidMount() {
@@ -183,6 +187,7 @@ class TestComponent extends Component {
         this.subscribeToStreamCreated();
         this.connectToSession();
         console.log(this.state.session)
+        console.log('나의 ishost:', this.state.ishost)
         
         this.state.session.on("streamCreated", (event) => {
           console.log("스트림크리에이티드")
@@ -211,10 +216,13 @@ class TestComponent extends Component {
             }
           });
           console.log('지금 내 퀘션', this.state.questions)
+          const temp = JSON.parse(event.data).questions
+          console.log('들어온 퀘션', temp )
           if (this.state.questions.length === 0) {
-            this.setState({questions: JSON.parse(event.data).questions})
+            this.setState({questions: temp})
           }
-          console.log(this.state.questions)
+          console.log('다시 내 퀘션', this.state.questions)
+          console.log(temp === this.state.questions)
         })
 
         this.state.session.on("connectionCreated", (event) => {
@@ -288,6 +296,7 @@ class TestComponent extends Component {
           //     // break;
           //   }
           // }
+          
         });
 
         this.state.session.on("signal:makeQues", (event) => {
@@ -306,11 +315,40 @@ class TestComponent extends Component {
           let fromUserNickname = JSON.parse(event.from.data).clientData
           // 
           this.setState({
-            questions: [...this.state.questions, [fromUserNickname, yy]]
+            questions: [...this.state.questions, 
+              {
+                userName:fromUserNickname,
+                content:yy
+            }]
           })
           console.log(this.state.questions)
         });
-
+        this.state.session.on('streamDestroyed', (event) => {
+          // Remove the stream from 'subscribers' array
+          this.updateHost().then((connectionid) => {
+            const host = connectionid;
+            this.state.session
+              .signal({
+                data: host,
+                to: [],
+                type: 'update-host',
+              })
+              .then(() => {})
+              .catch((error) => {});
+          });
+          this.deleteSubscriber(event.stream.streamManager);
+        });
+        this.state.session.on('signal:update-host', (event) => {
+          this.setState({ hostId: event.data})
+          if (this.state.session.connection.connectionId === event.data) {
+            this.setState({ ishost: true });
+          }
+        });
+        this.state.session.on('signal:start', (event) => {
+          console.log('원래 내 스타트상태', this.state.isStart)
+          this.setState({ isStart: true})
+          console.log('시그널받고 스타트상태', this.state.isStart)
+        });
       }
     );
   }
@@ -325,6 +363,7 @@ class TestComponent extends Component {
           console.log(token);
           this.connect(token);
         })
+        
         .catch((error) => {
           if (this.props.error) {
             this.props.error({
@@ -373,6 +412,16 @@ class TestComponent extends Component {
     this.state.session
       .connect(token, { clientData: this.state.myUserName })
       .then(() => {
+        console.log('여기사람있어요')
+        this.updateHost().then((firstUser) => {
+          console.log('무야호',firstUser)
+          const host = firstUser;
+          this.setState({ hostId : host})
+          if (this.state.session.connection.connectionId === host){
+            this.setState({ ishost: true });
+          }
+          console.log('업데이트호스트 후 나의 ishost:', this.state.ishost)
+        });
         this.connectWebCam();
       })
       .catch((error) => {
@@ -442,6 +491,31 @@ class TestComponent extends Component {
     );
   }
 
+  updateHost() {
+    return new Promise((resolve, reject) => {
+      console.log(this.OPENVIDU_SERVER_URL)
+      axios
+        .get(`${this.OPENVIDU_SERVER_URL}/openvidu/api/sessions/${this.state.mySessionId}/connection`,
+          {
+            headers: {
+              Authorization: `Basic ${btoa(
+                `OPENVIDUAPP:${this.OPENVIDU_SERVER_SECRET}`
+              )}`
+            },
+          }
+        )
+        .then((response) => {
+          console.log('업데이트호스트성공', response)
+          console.log(response.data.content)
+          let content = response.data.content;
+          content.sort((a, b) => a.createdAt - b.createdAt);
+
+          resolve(content[0].id); // connectionid
+        })
+        .catch((error) => reject(error));
+    });
+  }
+  
   updateSubscribers() {
     var subscribers = this.remotes;
     this.setState(
@@ -829,13 +903,14 @@ class TestComponent extends Component {
         /> */}
 
         <div id="layout" className="bounds">
-          
           <TestUserList
             session={this.state.session}
             subscribers={this.state.subscribers}
             myUserName={this.state.myUserName}
             ready={this.state.readyState}
             localUser={localUser}
+            ishost={this.state.ishost}
+            hostId={this.state.hostId}
           />
           <TestQuesList session={this.state.session} questions={this.state.questions} />
           {localUser !== undefined &&
@@ -896,6 +971,7 @@ class TestComponent extends Component {
 
   createSession(sessionId) {
     return new Promise((resolve, reject) => {
+      console.log(this.OPENVIDU_SERVER_URL + "/openvidu/api/sessions")
       var data = JSON.stringify({ customSessionId: sessionId });
       axios
         .post(this.OPENVIDU_SERVER_URL + "/openvidu/api/sessions", data, {
