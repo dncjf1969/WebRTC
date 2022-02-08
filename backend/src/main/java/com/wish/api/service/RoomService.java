@@ -43,12 +43,10 @@ public class RoomService {
 		vop2.set(Integer.toString(room.getRoomId()), room.toString());
 	}
 	
-//	public void deleteRoom(int roomId){
-//		ValueOperations<String, String> vop2 = redisTemplate.opsForValue();
-//		
-//		vop2.d;
-//		//리스트에 다시 저장.
-//		vop2.set(Integer.toString(room.getRoomId()), room.toString());
-//	}
-//	
+	public void deleteRoom(int roomId){
+		ValueOperations<String, String> vop2 = redisTemplate.opsForValue();
+		
+		redisTemplate.opsForHash().delete(Integer.toString(roomId));
+	}
+	
 }

@@ -81,7 +81,9 @@ public class RoomController {
 	public ResponseEntity<RoomListRes> searchWaitingRoom(
 			@ApiIgnore Authentication authentication,
 			@RequestParam @ApiParam(value="방 검색 키워드", allowEmptyValue=true) String keyword ) {
-	
+		
+		System.out.println("대기방 리스트 검색 ");
+		
 		List<RoomSearchRes> res = new LinkedList<RoomSearchRes>();
 
 //		// keyword가 비어있으면 전체 리스트를 반환한다.
@@ -98,6 +100,33 @@ public class RoomController {
 		return ResponseEntity.status(200).body(RoomListRes.of(res));
 	}
 	
+	@GetMapping("/waiting/info")
+	@ApiOperation(value = "대기방 정보 보기", notes = "<strong>roomId</strong>를 입력하여 방 정보를 반환한다") 
+    @ApiResponses({
+        @ApiResponse(code = 200, message = "성공"),
+        @ApiResponse(code = 401, message = " 실패"),
+        @ApiResponse(code = 404, message = "???"),
+        @ApiResponse(code = 500, message = "서버 에러")
+    })
+	//@PreAuthorize("hasAnyRole('USER', 'ADMIN')")
+	public ResponseEntity<?> getWaitingRoomInfo(
+			@ApiIgnore Authentication authentication,
+			@RequestParam @ApiParam(value="방 번호") Integer roomId ) {
+		
+		System.out.println("방 정보 보기");
+		
+		Room room;
+		try {
+			room = roomService.getRoom(roomId);
+			return ResponseEntity.status(200).body(RoomSearchRes.of(room));
+		} catch (JsonProcessingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return ResponseEntity.status(405).body(BaseRes.of(405, "에러요"));
+	}
+	
 	
 	@PostMapping("/waiting")
 	@ApiOperation(value = "대기방 생성", notes = "<strong>방이름, 종류, 방장, 최대인원, 비밀번호</strong>를 입력하여 방을 생성 한다.") 
@@ -112,6 +141,8 @@ public class RoomController {
 			@ApiIgnore Authentication authentication,
 			@RequestBody @ApiParam(value="방 생성 정보", required = true) RoomCreateReq createInfo) throws OpenViduJavaClientException, OpenViduHttpException, JsonProcessingException {
 	
+		System.out.println("대기방 생성 ");
+		
 		// 로그인 검사
 		try {
 //			checkUserLogged(httpSession);
@@ -168,6 +199,7 @@ public class RoomController {
 			@ApiIgnore Authentication authentication,
 			@RequestBody @ApiParam(value="방 설정 정보", required = true) RoomModifyReq modifyInfo) throws JsonMappingException, JsonProcessingException {
 		
+		System.out.println("대기방 설정 변경");
 		
 		//authentication에 있는 멤버id로 방장인지 비교
 		//String memberId = authentication.getName();
@@ -175,12 +207,7 @@ public class RoomController {
 		
 		int roomId = modifyInfo.getRoomId();		
 		
-		System.out.println(roomId);
-		
-		
 		Room room = roomService.getRoom(roomId);
-		
-		System.out.println(room.toString());
 		
 		if(room.getRoomId() == roomId) {
 			System.out.println("==========");
@@ -226,23 +253,12 @@ public class RoomController {
 		
 		//authentication에 있는 멤버id로 방장인지 비교
 		
-		Room room;
-		try {
-			room = roomService.getRoom(roomId);
-			
+		roomService.deleteRoom(roomId);
 			//룸 삭제
-			System.out.println("방 삭제");
+		System.out.println("방 삭제");
 		
-			return ResponseEntity.status(200).body(BaseRes.of(200, success));
-		} catch (JsonProcessingException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-		// OpenVidu에서 방 삭제 -> 이건 프론트에서 하는건가??
-		// 클라이언트끼리 웹소켓으로 정하고 서버에 보고할 뿐이라 검증할 필요 없음
-		
-		return ResponseEntity.status(404).body(BaseRes.of(404, fail));
+		return ResponseEntity.status(200).body(BaseRes.of(200, success));
+	
 	}
 
 
@@ -327,18 +343,21 @@ public class RoomController {
 					
 				// 인원수 -1
 				room.setMemberCount(room.getMemberCount()-1);
-				// 인원수 0이면 목록에서 방 제거
-				if(room.getMemberCount() == 0) this.deleteWaitingRoom(authentication, roomId);
 				
 				roomService.setRoom(room);
+				
+				// 인원수 0이면 목록에서 방 제거
+				if(room.getMemberCount() == 0) 
+				{
+					this.deleteWaitingRoom(authentication, roomId);
+					roomService.deleteRoom(roomId);
+				}
 			}
 			
 		} catch (JsonProcessingException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
-		
 		
 		return ResponseEntity.status(200).body(BaseRes.of(200, success));
 	}
