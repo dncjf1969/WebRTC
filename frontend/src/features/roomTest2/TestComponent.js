@@ -185,6 +185,7 @@ class TestComponent extends Component {
         this.subscribeToStreamCreated();
         this.connectToSession();
         console.log(this.state.session)
+        console.log('나의 ishost:', this.state.ishost)
         
         this.state.session.on("streamCreated", (event) => {
           console.log("스트림크리에이티드")
@@ -224,7 +225,6 @@ class TestComponent extends Component {
 
         this.state.session.on("connectionCreated", (event) => {
           console.log("!!! conectioncreated");
-          console.log('나의 ishost:', this.state.ishost)
           console.log(event)
           this.setState({latestUser: event.connection})
           console.log(this.state.latestUser)
@@ -408,8 +408,10 @@ class TestComponent extends Component {
         this.updateHost().then((firstUser) => {
           console.log('무야호',firstUser)
           const host = firstUser;
-          if (this.state.session.connection.connectionId === host)
+          if (this.state.session.connection.connectionId === host){
             this.setState({ ishost: true });
+          }
+          console.log('업데이트호스트 후 나의 ishost:', this.state.ishost)
         });
         this.connectWebCam();
       })
@@ -482,14 +484,9 @@ class TestComponent extends Component {
 
   updateHost() {
     return new Promise((resolve, reject) => {
+      console.log(this.OPENVIDU_SERVER_URL)
       axios
-        .get(
-          `${this.OPENVIDU_SERVER_URL}
-            /openvidu/api/sessions/
-            ${
-              this.state.mySessionId
-            } 
-            /connection`,
+        .get(`${this.OPENVIDU_SERVER_URL}/openvidu/api/sessions/${this.state.mySessionId}/connection`,
           {
             headers: {
               Authorization: `Basic ${btoa(
@@ -500,7 +497,8 @@ class TestComponent extends Component {
         )
         .then((response) => {
           console.log('업데이트호스트성공', response)
-          let content = response.content;
+          console.log(response.data.content)
+          let content = response.data.content;
           content.sort((a, b) => a.createdAt - b.createdAt);
 
           resolve(content[0].id); // connectionid
