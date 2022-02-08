@@ -30,7 +30,7 @@ public class QuestionServiceImpl implements QuestionService {
         
         if(ques.isPresent()){
             Question ques2 = ques.get();
-            int temp = ques2.getCount();
+            double temp = ques2.getCount();
             temp++;
             ques2.setCount(temp);
             questionRepository.save(ques2);

@@ -35,7 +35,7 @@ public class RelationQuestionServiceImpl implements RelationQuestionService {
         else { 
         	//update
             RelationQuestion relationQuestion2 = relation_ques.get();
-            int temp = relationQuestion2.getCount();
+            double temp = relationQuestion2.getCount();
             temp++;
             relationQuestion2.setCount(temp);
 
