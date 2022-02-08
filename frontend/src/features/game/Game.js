@@ -78,8 +78,8 @@ import UserVideoComponent from './UserVideoComponent';
 //   resetMyPageInfo,
 // } from '../mypage/mypageSlice';
 
-const OPENVIDU_SERVER_URL = 'https://i5a608.p.ssafy.io:8443';
-const OPENVIDU_SERVER_SECRET = 'HOMEDONG';
+const OPENVIDU_SERVER_URL = 'https://localhost:4443';
+const OPENVIDU_SERVER_SECRET = "MY_SECRET";
 
 const Sbutton = styled.button`
   background: linear-gradient(45deg, #ff859f 30%, #ffa87a 70%);
@@ -254,7 +254,7 @@ class Game extends Component {
     super(props);
 
     this.state = {
-      mySessionId: undefined,
+      mySessionId: '0',
       myUserName: undefined,
       session: undefined,
       mainStreamManager: undefined,
@@ -313,7 +313,7 @@ class Game extends Component {
   }
 
   componentDidMount() {
-    this.props.doResetMyPageInfo();
+    // this.props.doResetMyPageInfo();
     window.addEventListener('beforeunload', () => {
       this.componentWillUnmount();
     });
@@ -344,7 +344,7 @@ class Game extends Component {
           break;
       }
 
-      this.setmodel();
+      // this.setmodel();
       this.joinSession();
     }, 500);
   }
@@ -589,13 +589,14 @@ class Game extends Component {
     );
   }
 
+  
   // 오픈비두 API를 사용해 현재 방의 참가자 정보 획득(session 필요)
   // 일단은 CORS 때문에 'Access-Control-Allow-Origin'으로 해결했으나 실제로 구현할 땐..?
   updateHost() {
     return new Promise((resolve, reject) => {
       $.ajax({
         type: 'GET',
-        url: `${'https://i5a608.p.ssafy.io:8443/api/sessions/'}${
+        url: `${'https://localhost:4443/api/sessions/'}${
           this.state.mySessionId
         }/connection`,
         headers: {
@@ -876,30 +877,43 @@ class Game extends Component {
 
   createSession(sessionId) {
     return new Promise((resolve, reject) => {
-      let data = JSON.stringify({ customSessionId: sessionId });
+      var data = JSON.stringify({ customSessionId: sessionId });
       axios
-        .post(`${OPENVIDU_SERVER_URL}/openvidu/api/sessions`, data, {
+        .post(OPENVIDU_SERVER_URL + "/openvidu/api/sessions", data, {
           headers: {
-            Authorization: `Basic ${btoa(
-              `OPENVIDUAPP:${OPENVIDU_SERVER_SECRET}`
-            )}`,
-            'Content-Type': 'application/json',
+            Authorization:
+              "Basic " + btoa("OPENVIDUAPP:" + OPENVIDU_SERVER_SECRET),
+            "Content-Type": "application/json",
           },
         })
         .then((response) => {
+          console.log("CREATE SESION", response);
           resolve(response.data.id);
         })
         .catch((response) => {
-          let error = { ...response };
-          if (error?.response?.status === 409) {
+          var error = Object.assign({}, response);
+          if (error.response && error.response.status === 409) {
             resolve(sessionId);
-          } else if (
-            window.confirm(
-              `No connection to OpenVidu Server. This may be a certificate error at "${OPENVIDU_SERVER_URL}"\n\nClick OK to navigate and accept it. ` +
-                `If no certificate warning is shown, then check that your OpenVidu Server is up and running at "${OPENVIDU_SERVER_URL}"`
-            )
-          ) {
-            window.location.assign(`${OPENVIDU_SERVER_URL}/accept-certificate`);
+          } else {
+            console.log(error);
+            console.warn(
+              "No connection to OpenVidu Server. This may be a certificate error at " +
+                OPENVIDU_SERVER_URL
+            );
+            if (
+              window.confirm(
+                'No connection to OpenVidu Server. This may be a certificate error at "' +
+                  OPENVIDU_SERVER_URL +
+                  '"\n\nClick OK to navigate and accept it. ' +
+                  'If no certificate warning is shown, then check that your OpenVidu Server is up and running at "' +
+                  OPENVIDU_SERVER_URL +
+                  '"'
+              )
+            ) {
+              window.location.assign(
+                OPENVIDU_SERVER_URL + "/accept-certificate"
+              );
+            }
           }
         });
     });
@@ -949,14 +963,12 @@ class Game extends Component {
     };
     const messages = this.state.messages;
     const bull = <span className={classes.bullet}>•</span>;
-    const { mypage } = this.props;
-    const { badgesOwned } = mypage;
+   
 
     return (
       <Wrapper>
         <NavWrapper>
           <HeaderWrapper>
-            <Logo src={logo} />
             <LeftList>
               <span>{this.state.headerText}</span>
             </LeftList>
@@ -1073,7 +1085,7 @@ class Game extends Component {
                 </TableBody>
               </Table>
             </TableContainer>
-            <BadgesContainer>
+            {/* <BadgesContainer>
               {badgesOwned.length !== 0 && (
                 <Title>뱃지를 획득하셨습니다! 🏆</Title>
               )}
@@ -1093,7 +1105,7 @@ class Game extends Component {
                     );
                   })}
               </Badges>
-            </BadgesContainer>
+            </BadgesContainer> */}
             <RankDialogActions>
               <CancelButton
                 onClick={() => {
@@ -1314,26 +1326,26 @@ class Game extends Component {
    */
 }
 // authSlice, homeSlice 같이 redux(중앙집중 관리형)에서 전달받은 값을 사용하는 경우
-const mapStateToProps = (state) => ({
-  // homeSlice
-  home: state.home,
-  mypage: state.mypage,
-});
+// const mapStateToProps = (state) => ({
+//   // homeSlice
+//   home: state.home,
+//   mypage: state.mypage,
+// });
 
 // slice에 있는 actions(방찾기, 빠른 시작등등)을 사용하고 싶을 때
-const mapDispatchToProps = (dispatch) => {
-  return {
-    // 빠른시작
-    // quickStart는 import { quickStart } from './homeSlice'; 구문을 이용해서 action 가져온 것
-    doQuickStart: (type) => dispatch(quickStart(type)),
-    doSaveNewBadges: (resData) => dispatch(saveNewBadges(resData)),
-    doLoadBadgesOwned: () => dispatch(loadBadgesOwned()),
-    doResetMyPageInfo: () => dispatch(resetMyPageInfo()),
-  };
-};
+// const mapDispatchToProps = (dispatch) => {
+//   return {
+//     // 빠른시작
+//     // quickStart는 import { quickStart } from './homeSlice'; 구문을 이용해서 action 가져온 것
+//     doQuickStart: (type) => dispatch(quickStart(type)),
+//     doSaveNewBadges: (resData) => dispatch(saveNewBadges(resData)),
+//     doLoadBadgesOwned: () => dispatch(loadBadgesOwned()),
+//     doResetMyPageInfo: () => dispatch(resetMyPageInfo()),
+//   };
+// };
 
-export default connect(mapStateToProps, mapDispatchToProps)(Game);
-
+// export default connect(mapStateToProps, mapDispatchToProps)(Game);
+export default Game;
 //                   // return ( // <Order>{index + 1}위</Order>
 // <Nickname>닉네임:{item.nickname}</Nickname>
 // <Count>갯수:{item.count}</Count>

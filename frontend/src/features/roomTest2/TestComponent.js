@@ -345,7 +345,9 @@ class TestComponent extends Component {
           }
         });
         this.state.session.on('signal:start', (event) => {
+          console.log('원래 내 스타트상태', this.state.isStart)
           this.setState({ isStart: true})
+          console.log('시그널받고 스타트상태', this.state.isStart)
         });
       }
     );
@@ -969,6 +971,7 @@ class TestComponent extends Component {
 
   createSession(sessionId) {
     return new Promise((resolve, reject) => {
+      console.log(this.OPENVIDU_SERVER_URL + "/openvidu/api/sessions")
       var data = JSON.stringify({ customSessionId: sessionId });
       axios
         .post(this.OPENVIDU_SERVER_URL + "/openvidu/api/sessions", data, {
