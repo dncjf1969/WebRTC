@@ -11,6 +11,8 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.wish.api.dto.Room;
 
+
+//Redis에 방생성 , 조회, 삭제 등 
 @Service
 public class RoomService {
 	
@@ -18,7 +20,7 @@ public class RoomService {
 	RedisTemplate<String, String> redisTemplate;
 	
 	//key value에 value에 해당하는 roomInfo 리턴해준다.
-	public Room findRoom(int roomId) throws JsonMappingException, JsonProcessingException {
+	public Room getRoom(int roomId) throws JsonMappingException, JsonProcessingException {
 		
 		ValueOperations<String, String> vop = redisTemplate.opsForValue();
 		String roomInfo = vop.get(Integer.toString(roomId));

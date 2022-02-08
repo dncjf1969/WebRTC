@@ -178,7 +178,7 @@ public class RoomController {
 		System.out.println(roomId);
 		
 		
-		Room room = roomService.findRoom(roomId);
+		Room room = roomService.getRoom(roomId);
 		
 		System.out.println(room.toString());
 		
@@ -228,7 +228,7 @@ public class RoomController {
 		
 		Room room;
 		try {
-			room = roomService.findRoom(roomId);
+			room = roomService.getRoom(roomId);
 			
 			//룸 삭제
 			System.out.println("방 삭제");
@@ -262,7 +262,7 @@ public class RoomController {
 			@RequestParam @ApiParam(value="방 비밀번호", allowEmptyValue=true) String password) throws JsonProcessingException {
 		
 		//redis에서 방 찾기
-		Room room = roomService.findRoom(roomId);
+		Room room = roomService.getRoom(roomId);
 
 //		// 방장 이름으로 방 찾기
 //		//WaitingRoom room = SearchUtil.searchById(roomList, roomId);
@@ -318,7 +318,7 @@ public class RoomController {
 		//redis에서 방 찾기
 		Room room;
 		try {
-			room = roomService.findRoom(roomId);
+			room = roomService.getRoom(roomId);
 			if(room.getRoomId() == roomId) {
 				// 나가려는게 방장이면 클라이언트에서 지정된 다음 방장으로 변경
 				if(memberId.equals(room.getManager())) {
@@ -365,7 +365,7 @@ public class RoomController {
 
 		Room room;
 		try {
-			room = roomService.findRoom(roomId);
+			room = roomService.getRoom(roomId);
 			if(room.getRoomId() == roomId) {
 				// 현재 방장아이디와 입력받은 현재방장 아이디 같아야함.
 				// manager토큰에서 아이디 꺼내긱
@@ -411,7 +411,7 @@ public class RoomController {
 		
 		Room room;
 		try {
-			room = roomService.findRoom(roomId);
+			room = roomService.getRoom(roomId);
 			room.setNowMeeting(true);
 			roomService.setRoom(room);
 			
@@ -442,7 +442,7 @@ public class RoomController {
 	
 		Room room;
 		try {
-			room = roomService.findRoom(roomId);
+			room = roomService.getRoom(roomId);
 			room.setNowMeeting(false);
 			roomService.setRoom(room);
 			
