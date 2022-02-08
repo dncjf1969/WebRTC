@@ -31,6 +31,7 @@ import springfox.documentation.annotations.ApiIgnore;
 @Api(value = "유저 관련 API", tags = {"Member"})
 @RestController
 @RequestMapping("/members")
+@CrossOrigin
 public class MemberController {
 	
 	@Autowired

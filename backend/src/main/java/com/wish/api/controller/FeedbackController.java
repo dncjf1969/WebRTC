@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -30,6 +31,7 @@ import springfox.documentation.annotations.ApiIgnore;
 @Api(value = "피드백 관련 API", tags = {"Feedback"})
 @RestController
 @RequestMapping("/feedback")
+@CrossOrigin
 public class FeedbackController {
 
 	@Autowired

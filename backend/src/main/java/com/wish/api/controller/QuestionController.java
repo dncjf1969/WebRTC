@@ -23,6 +23,7 @@ import java.util.List;
 @Api(value = "질문 관련 API", tags = {"Question"})
 @RestController
 @RequestMapping("/question")
+@CrossOrigin
 public class QuestionController {
 	
 	@Autowired

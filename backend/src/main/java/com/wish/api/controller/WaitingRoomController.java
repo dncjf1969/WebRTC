@@ -40,6 +40,7 @@ import java.util.Map;
 @Api(value = "면접/대기방 관련 API", tags = {"Room"})
 @RestController
 @RequestMapping("/room")
+@CrossOrigin
 public class WaitingRoomController {
 
 	@Autowired
