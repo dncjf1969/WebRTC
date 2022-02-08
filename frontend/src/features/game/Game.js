@@ -80,8 +80,8 @@ import UserVideoComponent from "./UserVideoComponent";
 //   resetMyPageInfo,
 // } from '../mypage/mypageSlice';
 
-const OPENVIDU_SERVER_URL = "https://i6e201.p.ssafy.io:4443";
-const OPENVIDU_SERVER_SECRET = "HOMEDONG";
+// const OPENVIDU_SERVER_URL = "http://localhost:4443";
+// const OPENVIDU_SERVER_SECRET = "HOMEDONG";
 
 const Sbutton = styled.button`
   background: linear-gradient(45deg, #ff859f 30%, #ffa87a 70%);
@@ -254,7 +254,15 @@ const music = new Audio(gamemusic2);
 export default class Game extends Component {
   constructor(props) {
     super(props);
-
+    
+    this.OPENVIDU_SERVER_URL = this.props.openviduServerUrl
+    ? this.props.openviduServerUrl
+    : "https://" + "i6e201.p.ssafy.io" + ":4443";
+    // : "https://" + "localhost" + ":4443";
+  this.OPENVIDU_SERVER_SECRET = this.props.openviduSecret
+    ? this.props.openviduSecret
+    : "MY_SECRET";
+    
     this.state = {
       mySessionId: undefined,
       myUserName: undefined,
@@ -613,13 +621,14 @@ export default class Game extends Component {
     return new Promise((resolve, reject) => {
       $.ajax({
         type: "GET",
-        url: `${"https://i6e201.p.ssafy.io:8443/room/waiting/"}${
+        url: `${"https://localhost:4443/room/waiting/"}${
           this.state.mySessionId
+        // url: `${"https://i6e201.p.ssafy.io:4443/room/waiting/"}${
+        //   this.state.mySessionId
         }/connection`,
         headers: {
-          Authorization: `Basic ${btoa(
-            `OPENVIDUAPP:${OPENVIDU_SERVER_SECRET}`
-          )}`,
+          Authorization: "Basic " + btoa("OPENVIDUAPP:" + this.OPENVIDU_SERVER_SECRET),
+          "Content-Type": "application/json",
           "Access-Control-Allow-Origin": "*",
           "Access-Control-Allow-Methods": "GET,POST",
         },
@@ -900,11 +909,10 @@ export default class Game extends Component {
     return new Promise((resolve, reject) => {
       let data = JSON.stringify({ customSessionId: sessionId });
       axios
-        .post(`${OPENVIDU_SERVER_URL}/openvidu/api/sessions`, data, {
+        .post(this.OPENVIDU_SERVER_URL + "/openvidu/api/sessions", data, {
           headers: {
-            Authorization: `Basic ${btoa(
-              `OPENVIDUAPP:${OPENVIDU_SERVER_SECRET}`
-            )}`,
+            Authorization:
+            "Basic " + btoa("OPENVIDUAPP:" + this.OPENVIDU_SERVER_SECRET),
             "Content-Type": "application/json",
           },
         })
@@ -932,17 +940,16 @@ export default class Game extends Component {
       let data = {};
       axios
         .post(
-          // 이 주소로 포스트요청하겠4다 ㅇㅇ
-          `${OPENVIDU_SERVER_URL}/openvidu/api/sessions/${sessionId}/connection`,
-          // data -> 내가 요청할때 필요한 정보를 담아서 보낸다
+          this.OPENVIDU_SERVER_URL +
+            "/openvidu/api/sessions/" +
+            sessionId +
+            "/connection",
           data,
-          // 헤더 담아서 보냄 (서버한테 요청보낼때 담아서 보냄)
           {
             headers: {
-              Authorization: `Basic ${btoa(
-                `OPENVIDUAPP:${OPENVIDU_SERVER_SECRET}`
-              )}`,
-              "Content-Type": "application/json",
+              Authorization:
+              "Basic " + btoa("OPENVIDUAPP:" + this.OPENVIDU_SERVER_SECRET),
+            "Content-Type": "application/json",
             },
           }
         )
