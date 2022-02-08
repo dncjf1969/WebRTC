@@ -1244,13 +1244,13 @@ class Game extends Component {
               <tbody>{this.renderTableData()}</tbody>
             </table>
             <div id="video-container" className="video-container">
-              {this.state.mainStreamManager !== undefined ? (
+              {/* {this.state.mainStreamManager !== undefined ? (
                 <div
                   className="stream-container"
                 >
                   <UserVideoComponent streamManager={this.state.mainStreamManager} />
                 </div>
-              ) : null}
+              ) : null} */}
 
               {this.state.publisher !== undefined ? (
                 

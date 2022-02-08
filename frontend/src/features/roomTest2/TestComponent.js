@@ -63,6 +63,7 @@ class TestComponent extends Component {
       subscribers: [],
       started: false,
       readyState: false,
+      viewerState: undefined,
       // gametype: 인성,직무 면접 
       gametype: 'pushUp',
       // 우리한테 필요없음
@@ -114,6 +115,7 @@ class TestComponent extends Component {
       latestUser: undefined,
       questions: [],
       isStart: false,
+      allReady: false,
     };
     console.log("state다");
     console.log(this.state);
@@ -194,9 +196,13 @@ class TestComponent extends Component {
           console.log(event)
           console.log(this.state.latestUser)
           console.log(localUser)
+          this.setState({allReady: false})
           this.state.session.signal({
-            data: JSON.stringify({ready: this.state.readyState,
-            questions: this.state.questions}),
+            data: JSON.stringify({
+              ready: this.state.readyState,
+              questions: this.state.questions,
+              viewer: this.state.viewerState
+          }),
             to: [this.state.latestUser],
             type: 'new-user',
           })
@@ -212,6 +218,7 @@ class TestComponent extends Component {
             if (element.connectionId === from){
               console.log(element)
               element.setReady(JSON.parse(event.data).ready)
+              element.setViewer(JSON.parse(event.data).viewer)
               this.setState({subscribers : this.remotes})
             }
           });
@@ -252,9 +259,6 @@ class TestComponent extends Component {
           console.log("event다", event);
           this.state.nowUser.push(temp3);
 
-          if (this.state.readyState === true) {
-            // 레디했다
-          }
         });
         // 새유저가 들어왔을 때, 다른사람의 레디 정보가 반영 안됨
         this.state.session.on("signal:readyTest", (event) => {
@@ -266,6 +270,15 @@ class TestComponent extends Component {
             this.readyStatusChanged()
             this.setState({readyState: !this.state.readyState})
             console.log("내 레디상태", this.state.readyState)
+            if (event.data === 'true') {
+              localUser.setViewer(true)
+              this.setState({ viewerState: true })
+            } else {
+              localUser.setViewer(false)
+              this.setState({ viewerState: false })
+            }
+            this.sendSignalUserChanged({ viewerState: localUser.isViewer() })
+            this.setState({ localUser: localUser });
           }
           console.log(xx + "가 레디를 하겠대 or 레디 취소 하겠대.");
           console.log(this.state.subscribers);
@@ -273,30 +286,22 @@ class TestComponent extends Component {
             if (element.connectionId === xx){
               console.log(element)
               element.setReady(!element.ready)
+              if (event.data === 'true') {
+                element.setViewer(true)
+              } else {
+                element.setViewer(false)
+              }
               this.setState({subscribers : this.remotes})
             }
           });
-          // for (let i = 0; i < this.state.subscribers.length; i++) {
-          //   console.log(this.state.subscribers[i].connectionId)
-          //   if (this.state.subscribers[i].connectionId === xx) {
-          //     // console.log(this.state)
-          //     // this.state.subscribers[i].ready = !this.state.subscribers[i].ready
-          //     // // 레디. 이렇게 나오는게 맞는가?
-          //     // var temp3 = "ready" + i;
-
-          //     // // 이거 작동 원리 한 번 봐야함
-          //     // if (document.getElementById(temp3).innerHTML != "준비 완료!") {
-          //     //   document.getElementById(temp3).innerHTML = "준비 완료!";
-          //     //   console.log(this.state.nowUser[i]);
-          //     //   this.state.nowUser[i].readyState = true;
-          //     // } else {
-          //     //   document.getElementById(temp3).innerHTML = "준비 중..";
-          //     //   this.state.nowUser[i].readyState = false;
-          //     // }
-          //     // break;
-          //   }
-          // }
-          
+          const check = (value) => value.ready;
+          // console.log('스타트')
+          // console.log(this.props)
+          if (this.state.subscribers.every(check) && this.state.readyState) {
+            this.setState({allReady: true})
+          } else {
+            this.setState({allReady: false})
+          }
         });
 
         this.state.session.on("signal:makeQues", (event) => {
@@ -472,6 +477,7 @@ class TestComponent extends Component {
     localUser.setScreenShareActive(false);
     localUser.setStreamManager(publisher);
     localUser.setReady(false);
+    localUser.setViewer(null)
     this.subscribeToUserChanged();
     this.subscribeToStreamDestroyed();
     this.sendSignalUserChanged({
@@ -529,7 +535,8 @@ class TestComponent extends Component {
             isVideoActive: this.state.localUser.isVideoActive(),
             nickname: this.state.localUser.getNickname(),
             isScreenShareActive: this.state.localUser.isScreenShareActive(),
-            ready: this.state.localUser.isReady()
+            ready: this.state.localUser.isReady(),
+            viewer: this.state.localUser.isViewer()
           });
         }
         this.updateLayout();
@@ -631,6 +638,7 @@ class TestComponent extends Component {
       
       newUser.setNickname(JSON.parse(nickname).clientData);
       newUser.setReady(false)
+      newUser.setViewer(null)
       this.remotes.push(newUser);
       if (this.localUserAccessAllowed) {
         this.updateSubscribers();
@@ -908,11 +916,17 @@ class TestComponent extends Component {
             subscribers={this.state.subscribers}
             myUserName={this.state.myUserName}
             ready={this.state.readyState}
+            viewer={this.state.viewerState}
             localUser={localUser}
             ishost={this.state.ishost}
             hostId={this.state.hostId}
+            allReady={this.state.allReady}
           />
-          <TestQuesList session={this.state.session} questions={this.state.questions} />
+          <TestQuesList 
+            session={this.state.session} 
+            questions={this.state.questions}
+            ready={this.state.readyState}
+          />
           {localUser !== undefined &&
             localUser.getStreamManager() !== undefined && (
               <div className="OT_root OT_publisher custom-class" id="localUser">
