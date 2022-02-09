@@ -2,7 +2,7 @@ package com.wish.api.dto.response;
 
 import java.util.List;
 
-import com.wish.api.dto.WaitingRoom;
+import com.wish.api.dto.Room;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -16,12 +16,12 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 @ApiModel("WaitingroomResponse")
-public class WaitingroomListRes extends BaseRes{
+public class RoomListRes extends BaseRes{
 	@ApiModelProperty(name="WaitingRoom 객체 : 방제목, 종류, 최대인원, 현재인원", example="")
-	List<WaitingroomSearchRes> list;
+	List<RoomSearchRes> list;
 
-	public static WaitingroomListRes of(List<WaitingroomSearchRes> list) {
-		WaitingroomListRes res = new WaitingroomListRes();
+	public static RoomListRes of(List<RoomSearchRes> list) {
+		RoomListRes res = new RoomListRes();
 		res.setList(list);
 		return res;
 	}

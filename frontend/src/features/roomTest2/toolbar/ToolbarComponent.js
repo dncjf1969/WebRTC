@@ -75,6 +75,10 @@ export default class ToolbarComponent extends Component {
         this.props.toggleChat();
     }
 
+    toggleQues(){
+        this.props.toggleQues();
+    }
+
     render() {
         const mySessionId = this.props.sessionId;
         const localUser = this.props.user;
@@ -154,6 +158,7 @@ export default class ToolbarComponent extends Component {
                                 <QuestionAnswer />
                             </Tooltip>
                         </IconButton>
+                        
                     </div>
                 </Toolbar>
             </AppBar>

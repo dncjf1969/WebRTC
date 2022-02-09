@@ -1,6 +1,6 @@
 package com.wish.api.dto.response;
 
-import com.wish.api.dto.WaitingRoom;
+import com.wish.api.dto.Room;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -20,7 +20,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 @ApiModel("WaitingroomSearchRes")
-public class WaitingroomSearchRes extends BaseRes{
+public class RoomSearchRes extends BaseRes{
 	@ApiModelProperty(name="방 id", example="12")
 	int roomId;
 	
@@ -45,8 +45,8 @@ public class WaitingroomSearchRes extends BaseRes{
 	@ApiModelProperty(name="비밀번호 여부", example="true")
 	boolean exitPassword;
 	
-	public static WaitingroomSearchRes of(WaitingRoom input) {
-		WaitingroomSearchRes room = new WaitingroomSearchRes();
+	public static RoomSearchRes of(Room input) {
+		RoomSearchRes room = new RoomSearchRes();
 		room.setRoomId(input.getRoomId());
 		room.setName(input.getName());
 		room.setManager(input.getManager());

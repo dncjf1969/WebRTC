@@ -12,7 +12,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 @ApiModel("WaitingroomManagerReq")
-public class WaitingroomManagerReq {
+public class RoomManagerReq {
 	@ApiModelProperty(name="방 id", example="12")
 	int roomId; 
 	

@@ -6,6 +6,11 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 
@@ -24,5 +29,12 @@ public class Member{
     @JsonIgnore
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     String password;
-     
+    
+    Date signUpDate;
+    
+    //이렇게 추가해줘야할듯.
+    @ElementCollection(targetClass=String.class)
+    List<String> role = new ArrayList<String>();
+
+    
 }

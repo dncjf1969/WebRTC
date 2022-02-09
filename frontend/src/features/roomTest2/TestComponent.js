@@ -876,6 +876,24 @@ class TestComponent extends Component {
     this.updateLayout();
   }
 
+
+  toggleQues(property) {
+    let display = property;
+
+    if (display === undefined) {
+      display = this.state.quesDisplay === "none" ? "block" : "none";
+    }
+    if (display === "block") {
+      this.setState({ quesDisplay: display, messageReceived: false });
+    } else {
+      console.log("chat", display);
+      this.setState({ quesDisplay: display });
+    }
+    this.updateLayout();
+  }
+
+
+
   checkNotification(event) {
     this.setState({
       messageReceived: this.state.chatDisplay === "none",
@@ -925,6 +943,7 @@ class TestComponent extends Component {
           switchCamera={this.switchCamera}
           leaveSession={this.leaveSession}
           toggleChat={this.toggleChat}
+          toggleQues={this.toggleQues}
         />
 
         {/* <DialogExtensionComponent

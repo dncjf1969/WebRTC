@@ -10,7 +10,7 @@ import java.util.List;
 
 public interface QuestionService {
 
-    List<Question> read20QuestionList();
+    List<Question> readQuestionList(long preQuestionId);
 
     int selectedQuestionAddCnt1(QuestionSelectReq questionSelectReq);
 
