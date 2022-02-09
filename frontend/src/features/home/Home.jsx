@@ -7,19 +7,13 @@ import pt from '../../assets/pt.png'
 import debate from '../../assets/debate.png'
 import { Link } from 'react-router-dom'
 import './style.css'
-<<<<<<< HEAD
-import Header from '../../common/Header'; 
-import HeroHome from '../../common/HeroHome'; 
-import Footer from '../../common/Footer'; 
-import FeaturesBlocks from '../../common/FeaturesBlocks'; 
-// import FeaturesHome from '../../common/FeaturesHome'; 
-import Testimonials from '../../common/Testimonials'; 
-import Newsletter from '../../common/Newsletter'; 
-=======
-import { Card } from 'antd';
-
-const { Meta } = Card;
->>>>>>> 6bb442624f89852349c802d672bd2c42ec83b8df
+// import Header from '../../common/Header'; 
+// import HeroHome from '../../common/HeroHome'; 
+// import Footer from '../../common/Footer'; 
+// import FeaturesBlocks from '../../common/FeaturesBlocks'; 
+// // import FeaturesHome from '../../common/FeaturesHome'; 
+// import Testimonials from '../../common/Testimonials'; 
+// import Newsletter from '../../common/Newsletter'; 
 
 const Wrapper = styled.div`
   height: 100vh;
@@ -72,29 +66,6 @@ class Home extends Component {
     
   ) {
     return (
-<<<<<<< HEAD
-     <div className="flex flex-col min-h-screen overflow-hidden">
-
-      {/*  Site header */}
-      <Header />
-
-      {/*  Page content */}
-      <main className="flex-grow">
-
-        {/*  Page sections */}
-        <HeroHome />
-        {/* <FeaturesHome /> */}
-        <FeaturesBlocks />
-        <Testimonials />
-        <Newsletter />
-
-      </main>
-
-      {/*  Site footer */}
-      <Footer />
-
-    </div>
-=======
       <Wrapper>
         <StartWrapper>
           {interviewKinds.map((kindList) => {
@@ -110,7 +81,6 @@ class Home extends Component {
         
       </Wrapper>
 
->>>>>>> 6bb442624f89852349c802d672bd2c42ec83b8df
     );
   }
 }

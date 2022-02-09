@@ -175,7 +175,7 @@ function Features() {
                   leaveEnd="opacity-0 -translate-y-16"
                 >
                   <div className="relative inline-flex flex-col">
-                    <img className="md:max-w-none mx-auto rounded mt-10" src={debate} width="390" height="462" alt="Features bg" />
+                    <img className="md:max-w-none mx-auto rounded mt-10 cursor-not-allowed" src={debate} width="390" height="462" alt="Features bg" />
                     {/* <img className="md:max-w-none absolute w-full left-0 transform animate-float" src={FeaturesElement} width="390" height="44" alt="Element" style={{ top: '30%' }} /> */}
                   </div>
                 </Transition>

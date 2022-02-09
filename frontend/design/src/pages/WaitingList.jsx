@@ -146,7 +146,7 @@ function CustomizedInputBase() {
     search('')
   }
     
-  const color = lightBlue[300]; 
+  // const color = lightBlue[300]; 
   return (
     <>
       <div >
