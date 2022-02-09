@@ -20,6 +20,6 @@ public class RelationQuestion extends BaseEntity{
 
 	Long parentId;	// 부모질문
 	Long childId;	// 자식질문
-	int count;		// 횟수
+	double count;		// 횟수
      
 }

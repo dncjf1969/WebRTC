@@ -4,7 +4,9 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -17,7 +19,7 @@ import com.wish.api.dto.request.FeedbackCreateReq;
 import com.wish.api.dto.response.BaseRes;
 import com.wish.api.dto.response.FeedbackRes;
 import com.wish.api.service.FeedbackService;
-import com.wish.common.auth.SsafyUserDetails;
+import com.wish.common.auth.WishUserDetails;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -29,6 +31,7 @@ import springfox.documentation.annotations.ApiIgnore;
 @Api(value = "피드백 관련 API", tags = {"Feedback"})
 @RestController
 @RequestMapping("/feedback")
+@CrossOrigin
 public class FeedbackController {
 
 	@Autowired
@@ -47,12 +50,11 @@ public class FeedbackController {
         @ApiResponse(code = 404, message = "사용자 없음"),
         @ApiResponse(code = 500, message = "서버 오류")
     })
+	@PreAuthorize("hasAnyRole('USER')")
 	public ResponseEntity<List<FeedbackRes>> getMyFeedback(
 			@ApiIgnore Authentication authentication) {
 		
-		SsafyUserDetails userDetail = (SsafyUserDetails)authentication.getDetails();
-		
-		String memberId = userDetail.getUsername();
+		String memberId = authentication.getName();
 				
 		List<FeedbackRes> res = feedbackService.getMyFeedback(memberId);
 
@@ -67,7 +69,9 @@ public class FeedbackController {
         @ApiResponse(code = 404, message = "사용자 없음"),
         @ApiResponse(code = 500, message = "서버 오류")
     })
+	@PreAuthorize("hasAnyRole('USER')")
 	public ResponseEntity<BaseRes> createFeedback(
+			@ApiIgnore Authentication authentication,
 			@RequestBody @ApiParam(value="멤버Id")FeedbackCreateReq info) {
 		
 		if(feedbackService.createFeedback(info)) return ResponseEntity.status(200).body(BaseRes.of(201, success));
@@ -82,11 +86,11 @@ public class FeedbackController {
         @ApiResponse(code = 404, message = "사용자 없음"),
         @ApiResponse(code = 500, message = "서버 오류")
     })
+	@PreAuthorize("hasAnyRole('USER')")
 	public ResponseEntity<BaseRes> deleteFeedback(
 			@ApiIgnore Authentication authentication,
 			@RequestParam @ApiParam(value="피드백 Id")Long feedbackId) {
 		
-		SsafyUserDetails userDetail = (SsafyUserDetails)authentication.getDetails();
 		//ToDO
 		//유저 디테일이 안 생긴다면 수행 불가.로 해야함.
 		
