@@ -11,7 +11,7 @@ import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
-import com.wish.common.util.JwtTokenUtil;
+import com.wish.common.jwt.JwtUtil;
 
 import javax.servlet.Filter;
 
@@ -24,7 +24,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
         configuration.addAllowedOriginPattern("*");
         configuration.addAllowedMethod("*");
         configuration.addAllowedHeader("*");
-        configuration.addExposedHeader(JwtTokenUtil.HEADER_KEY);
+        configuration.addExposedHeader(JwtUtil.HEADER_KEY);
         configuration.setAllowCredentials(true);
         configuration.setMaxAge(3600L);
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();

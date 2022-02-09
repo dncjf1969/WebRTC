@@ -9,7 +9,7 @@ import lombok.Setter;
 @Setter
 @ApiModel("CustomQuestionCreateReq")
 public class CustomQuestionCreateReq {
-    @ApiModelProperty(name="대기방 id", example="abcd123")
+    @ApiModelProperty(name="대기방 id", example="1")
     String meetingroomId;
     @ApiModelProperty(name="질문 내용", example="자기소개해보세요")
     String content;

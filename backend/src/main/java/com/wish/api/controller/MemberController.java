@@ -1,8 +1,9 @@
 package com.wish.api.controller;
 
-import com.wish.common.auth.JwtAuthenticationFilter;
+//import com.wish.common.auth.JwtAuthenticationFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -15,9 +16,8 @@ import com.wish.api.dto.response.BaseRes;
 import com.wish.api.dto.response.MemberLoginRes;
 import com.wish.api.dto.response.MemberRes;
 import com.wish.api.service.MemberService;
-import com.wish.common.auth.SsafyUserDetails;
-import com.wish.common.auth.TestFilter;
-import com.wish.common.util.JwtTokenUtil;
+import com.wish.common.auth.WishUserDetails;
+import com.wish.common.jwt.JwtUtil;
 import com.wish.db.entity.Member;
 
 import io.swagger.annotations.Api;
@@ -31,10 +31,13 @@ import springfox.documentation.annotations.ApiIgnore;
 @Api(value = "유저 관련 API", tags = {"Member"})
 @RestController
 @RequestMapping("/members")
+@CrossOrigin
 public class MemberController {
 	
 	@Autowired
 	MemberService memberService;
+	
+	
 
 	// 응답 메세지
 	private static final String success = "Success";
@@ -69,11 +72,12 @@ public class MemberController {
     })
 	public ResponseEntity<? extends BaseRes> login(
 			@RequestBody @ApiParam(value="로그인 정보", required = true) MemberLoginReq loginInfo) {
-		System.out.println(loginInfo.toString());
-		String userId = loginInfo.getId();
+		
+		String memberId = loginInfo.getId();
+		
 
 		if(memberService.loginMember(loginInfo)) {
-			return ResponseEntity.ok(MemberLoginRes.of(200, "Success", JwtTokenUtil.createJwtToken(userId)));
+			return ResponseEntity.ok(MemberLoginRes.of(200, "Success", JwtUtil.createJwt(memberId)));
 		}
 
 		else return ResponseEntity.status(401).body(BaseRes.of(401, "Fail"));
@@ -87,6 +91,7 @@ public class MemberController {
 			@ApiResponse(code = 404, message = "사용자 없음"),
 			@ApiResponse(code = 500, message = "서버 오류")
 	})
+	@PreAuthorize("hasAnyRole('USER')")
 	public ResponseEntity<? extends BaseRes> updateMember(@ApiIgnore Authentication authentication,
 			@RequestBody @ApiParam(value="회원수정 정보", required = true) MemberUpdateReq updateInfo) {
 
@@ -105,12 +110,11 @@ public class MemberController {
 			@ApiResponse(code = 404, message = "사용자 없음"),
 			@ApiResponse(code = 500, message = "서버 오류")
 	})
+	@PreAuthorize("hasAnyRole('USER')")
 	public ResponseEntity<? extends BaseRes> deleteMember(
 			@ApiIgnore Authentication authentication) {
-
-		SsafyUserDetails userDetails = (SsafyUserDetails)authentication.getDetails();
-
-		String memberDeleteId = userDetails.getUsername();
+		
+		String memberDeleteId = authentication.getName();
 		
 		int results_num = memberService.deleteMember(memberDeleteId);
 
@@ -148,6 +152,7 @@ public class MemberController {
         @ApiResponse(code = 404, message = "사용자 없음"),
         @ApiResponse(code = 500, message = "서버 오류")
     })
+	@PreAuthorize("hasAnyRole('USER')")
 	public ResponseEntity<MemberRes> getUserInfo(@ApiIgnore Authentication authentication) {
 
 		/**
@@ -155,10 +160,14 @@ public class MemberController {
 		 * 액세스 토큰이 없이 요청하는 경우, 403 에러({"error": "Forbidden", "message": "Access Denied"}) 발생.
 		 */
 
-		SsafyUserDetails userDetails = (SsafyUserDetails)authentication.getDetails();
-
-		String id = userDetails.getUsername();
-		Member member = memberService.getMemberById(id);
+//		WishUserDetails userDetails = (WishUserDetails)authentication.getDetails();
+//
+//		String id = userDetails.getUsername();
+		
+		String memberId = authentication.getName();
+		Member member = memberService.getMemberById(memberId);
+		
+		//멤버 정보 리스폰스에 담기
 		
 		return ResponseEntity.status(200).body(MemberRes.of(member));
 	}
@@ -202,14 +211,4 @@ public class MemberController {
 	
 }
 
-//http
-//.httpBasic().disable() // Http basic Auth  기반으로 로그인 인증창이 뜸.  disable 시에 인증창 뜨지 않음. 
-//.csrf().disable()  // rest api이므로 csrf 보안이 필요없으므로 disable처리.
-//.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS) // 토큰 기반 인증이므로 세션 사용 하지않음 // jwt token으로 인증하므로 stateless 하도록 처리.
-//.and()
-////.addFilter(new JwtFilter( authenticationManager(), memberService)) //HTTP 요청에 JWT 토큰 인증 필터를 거치도록 필터를 추가
-//.addFilter(new TestFilter(authenticationManager(), memberService))
-//.authorizeRequests()
-//.antMatchers("/members/me").authenticated() //인증이 필요한 URL
-//.anyRequest().permitAll()    // 나머지 모든 요청 허용
-//.and().cors();
+

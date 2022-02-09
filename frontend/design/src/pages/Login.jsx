@@ -40,10 +40,11 @@ function Login() {
     }
   };
   return (
+    <div>
+    <Header/>
     <div className="flex flex-col min-h-screen overflow-hidden">
 
       {/*  Site header */}
-      <Header />
 
       {/*  Page content */}
       <main className="flex-grow">
@@ -63,7 +64,7 @@ function Login() {
                   <div className="flex flex-wrap -mx-3 mb-4">
                     <div className="w-full px-3">
                       <label className="block text-gray-800 text-sm font-medium mb-1" htmlFor="ID">아이디</label>
-                      <input id="ID" type="text" onChange={(e) => setID(e.target.value)} value={ID} autoFocus className="form-input w-full text-gray-800" placeholder="아이디를 입력해주세요." required />
+                      <input id="ID" type="text" onChange={(e) => setID(e.target.value)} value={ID} autoFocus className="rounded-lg form-input w-full text-gray-800" placeholder="아이디를 입력해주세요." required />
                     </div>
                   </div>
                   <div className="flex flex-wrap -mx-3 mb-4">
@@ -72,14 +73,14 @@ function Login() {
                         <label className="block text-gray-800 text-sm font-medium mb-1" htmlFor="password">비밀번호</label>
                         <Link to="reset-password" className="text-sm font-medium text-blue-600 hover:underline">Having trouble Loging in?</Link>
                       </div>
-                      <input id="password" type="password" className="form-input w-full text-gray-800" onChange={(e) => setPassword(e.target.value)}
+                      <input id="password" type="password" className="rounded-lg form-input w-full text-gray-800" onChange={(e) => setPassword(e.target.value)}
             value={password} placeholder="비밀번호를 입력해주세요." required />
                     </div>
                   </div>
                   
                   <div className="flex flex-wrap -mx-3 mt-6">
                     <div className="w-full px-3">
-                      <button className="btn text-white bg-blue-600 hover:bg-blue-700 w-full" >로그인</button>
+                      <button className="btn text-white bg-blue-500 hover:bg-blue-600 w-full text-white font-semibold rounded-lg" >로그인</button>
                     </div>
                   </div>
                 </form>
@@ -95,7 +96,8 @@ function Login() {
 
       </main>
 
-    </div>
+      </div>
+      </div>
   );
 }
 
