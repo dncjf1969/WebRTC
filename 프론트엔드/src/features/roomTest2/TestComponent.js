@@ -117,6 +117,9 @@ class TestComponent extends Component {
       questions: [],
       isStart: false,
       allReady: false,
+      allUsers: [],
+      viewers: [],
+      viewees: []
     };
     console.log("state다");
     console.log(this.state);
@@ -361,8 +364,31 @@ class TestComponent extends Component {
         });
         this.state.session.on('signal:start', (event) => {
           console.log('원래 내 스타트상태', this.state.isStart)
-          this.setState({ isStart: true})
-          console.log('시그널받고 스타트상태', this.state.isStart)
+          setTimeout(() => {
+            let allUsers = [localUser, ...this.state.subscribers]
+            let viewees = []
+            let viewers = []
+            
+            allUsers.forEach((element) => {
+              if (element.viewer) {
+                viewers.push(element)
+              } else if (!localUser.viewer) {
+                viewees.push(element)
+              }
+            })
+            this.setState({ 
+              isStart: true, 
+              allUsers: allUsers,
+              viewees: viewees,
+              viewers: viewers
+            })
+            console.log('시그널받고 스타트상태', this.state.isStart)
+            console.log('면접관 ', this.state.viewers)
+            console.log('면접자 ', this.state.viewees)
+            console.log('모든유저 ', this.state.allUsers)
+          }, 1000);
+          
+
         });
       }
     );
@@ -930,7 +956,8 @@ class TestComponent extends Component {
         /> */}
 
         <div id="layout" className="bounds">
-          {/* {this.state.isStart ? null : 
+          
+          {this.state.isStart ? null : 
           <TestUserList
             session={this.state.session}
             subscribers={this.state.subscribers}
@@ -952,9 +979,10 @@ class TestComponent extends Component {
             localUser={localUser}
           />
           }
-          {this.state.isStart ? <h1>START</h1> : null} */}
+          {this.state.isStart ? <h1>START</h1> : null}
           {/* 여기까지가 대기방 */}
 
+          {this.state.isStart && 
           <div id="video-container" className="video-container">
               {/* {this.state.mainStreamManager !== undefined ? (
                 <div
@@ -974,9 +1002,9 @@ class TestComponent extends Component {
                 >
                   <UserVideoComponent streamManager={this.state.publisher} />
                 </div>
-              ) : null} */}
+              ) : null}
               
-              {/* {this.state.subscribers.map((sub, i) => (
+              {this.state.subscribers.map((sub, i) => (
                 <div
                   key={i}
                   className="stream-container"
@@ -986,25 +1014,24 @@ class TestComponent extends Component {
                 </div>
               ))} */}
               {localUser !== undefined &&
-            localUser.getStreamManager() !== undefined && (
-              <div className="stream-container" id="localUser">
-                
-                {
-                  <StreamComponent
-                    user={localUser}
-                    handleNickname={this.nicknameChanged}
-                  />
-                }
-              </div>
-            )}
-            {this.state.subscribers.map((sub, i) => (
-                <div key={i} className="stream-container" id="remoteUsers">
-                  
-                    { <StreamComponent user={sub} handleNickname={this.nicknameChanged} /> }
-
+              localUser.getStreamManager() !== undefined && (
+                <div className="stream-container" id="localUser">
+                    <StreamComponent
+                      user={localUser}
+                      handleNickname={this.nicknameChanged}
+                    />
                 </div>
-            ))}
+              )}
+              {this.state.subscribers.map((sub, i) => (
+                  <div key={i} className="stream-container" id="remoteUsers">
+                      <StreamComponent user={sub} handleNickname={this.nicknameChanged} />
+                  </div>
+              ))}
             </div>
+          }
+          
+            
+          
           
           {localUser !== undefined &&
             localUser.getStreamManager() !== undefined && (
