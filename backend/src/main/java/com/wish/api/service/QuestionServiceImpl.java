@@ -13,6 +13,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
+import java.util.Random;
 
 
 @Service
@@ -29,9 +30,10 @@ public class QuestionServiceImpl implements QuestionService {
 
     public List<Question> readQuestionList(long parentId) {
     	List<Question> resList;
+    	
     	if(parentId != -1) {    
-        	// 기출질문에서 count기준 4개 뽑는다.
-    		resList = questionRepository.findOrderByCountTop4().get();
+        	// 기출질문에서 count기준 2개 뽑는다.
+    		resList = questionRepository.findOrderByCountTop2().get();
     		// 가중치 곱하기
     		for (Question question : resList) {
 				question.setCount(question.getCount() + weightQuestion);
@@ -42,6 +44,9 @@ public class QuestionServiceImpl implements QuestionService {
 
     		// Question타입으로 변환해서 resList에 추가
     		for (RelationQuestion relationQuestion : relationList) {
+    			// 기출질문에서 뽑은 것과 번호가 겹치면 패스한다.
+    			if(resList.get(0).getId() == relationQuestion.getChildId() 
+    					|| resList.get(1).getId() == relationQuestion.getChildId()) continue;
     			Question now = new Question();
     			now.setId(relationQuestion.getChildId());
     			now.setCount(relationQuestion.getCount() * weightRelation);
@@ -56,12 +61,40 @@ public class QuestionServiceImpl implements QuestionService {
 				}
 			});
     		
-    		return resList.subList(0, 4);
+    		// 상위 두개만 남긴다.
+    		resList = resList.subList(0, 2);
+    		
+    		// 연관질문에서 뽑은 질문은 id만 있는 상태라서 id기준으로 기출테이블에서 조회해 빠진 부분을 채운다.
+    		for (Question question : resList) {
+				if(question.getContent()==null || question.getContent().isEmpty()) {
+					Question data = questionRepository.findById(question.getId()).get();
+					question.setContent(data.getContent());
+					question.setType(data.getType());
+					question.setJob(data.getJob());
+				}
+			}
+    		
     		
     	}else {	// parentId가 없는 경우 : 첫질문
-        	// 기출질문에서 count기준 4개 뽑는다.
-    		return questionRepository.findOrderByCountTop4().get();
+        	// 기출질문에서 count기준 2개 뽑는다.
+    		resList = questionRepository.findOrderByCountTop2().get();
     	}
+    	
+    	// 기출 질문 중 랜덤 1개 선정
+    	int size = (int) questionRepository.count() + 1;
+    	Random rand = new Random();
+    	int randomId = rand.nextInt(size);
+    	
+    	while(true) {
+    		if(resList.get(0).getId() != randomId && resList.get(1).getId() != randomId) break;
+    		else randomId = rand.nextInt(size);
+    	}
+    	
+    	
+    	Question question = questionRepository.findById((long) randomId).get();
+    	resList.add(question);
+    	
+    	return resList;
     }
 
     public int selectedQuestionAddCnt1(QuestionSelectReq questionSelectReq){

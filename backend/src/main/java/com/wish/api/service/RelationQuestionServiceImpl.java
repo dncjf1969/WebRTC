@@ -28,7 +28,7 @@ public class RelationQuestionServiceImpl implements RelationQuestionService {
             RelationQuestion relationQuestion2 = new RelationQuestion();
             relationQuestion2.setParentId(parentId);
             relationQuestion2.setChildId(childId);
-            relationQuestion2.setCount(1);
+            relationQuestion2.setCount(100);
 
             relationQuestionRepository.save(relationQuestion2);
         }
@@ -36,7 +36,7 @@ public class RelationQuestionServiceImpl implements RelationQuestionService {
         	//update
             RelationQuestion relationQuestion2 = relation_ques.get();
             double temp = relationQuestion2.getCount();
-            temp++;
+            temp += 3;
             relationQuestion2.setCount(temp);
 
             relationQuestionRepository.save(relationQuestion2);
