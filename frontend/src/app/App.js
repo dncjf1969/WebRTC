@@ -11,9 +11,9 @@ import Login from "../features/account/login/Login";
 import Home from "../features/home/Home";
 import RoomList from "../features/roomlist/Roomlist";
 import MyPage from "../features/mypage/Mypage";
+import CheckPassword from '../features/account/modify/CheckPassword';
+import ModifyUserInfo from '../features/account/modify/ModifyUserInfo';
 import DataTable from "../features/roomlist/roomarray2";
-// import Game from '../features/meetingroom/Game';
-// import Room from '../features/interview/Room';
 import VideoRoomComponent from "../features/roomTest/VideoRoomComponent";
 import TestComponent from "../features/roomTest2/TestComponent";
 import Navbar from "../common/navbar/navbar";
@@ -49,6 +49,8 @@ function App() {
           <Route path="/roomTest2" element={<TestComponent />}></Route>
           <Route path="/test" element={<Test/>}></Route>
           <Route path='/game' element={<Game/>}></Route>
+          <Route path="/checkpassword" element={<CheckPassword/>}></Route>
+          <Route path="/modifyuserinfo" element={<ModifyUserInfo/>}></Route>
         </Routes>
       </Router>
     </Wrapper>

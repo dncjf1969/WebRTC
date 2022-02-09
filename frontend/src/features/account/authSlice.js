@@ -116,6 +116,65 @@ export const loadUser = createAsyncThunk(
   }
 );
 
+// 비밀번호 확인
+export const checkPassword = createAsyncThunk(
+  'CHECK_PASSWORD',
+  async (password, { rejectWithValue }) => {
+    try {
+      const response = await axios.post('/api/user/check_password', password);
+      return response;
+    } catch (err) {
+      return rejectWithValue(err.response);
+    }
+  }
+);
+
+// 닉네임 변경
+export const modifyNickname = createAsyncThunk(
+  'MODIFY_NICKNAME',
+  async ({ newNickname }, { rejectWithValue }) => {
+    const data = {
+      changeNickname: newNickname,
+    };
+    try {
+      const response = await axios.put('/api/user/nickname', data);
+      return response;
+    } catch (err) {
+      return rejectWithValue(err.response);
+    }
+  }
+);
+
+// 비밀번호 변경
+export const modifyPassword = createAsyncThunk(
+  'MODIFY_PASSWORD',
+  async ({ newPassword }, { rejectWithValue }) => {
+    const data = {
+      changePassword: newPassword,
+    };
+    try {
+      const response = await axios.put('/api/user/password', data);
+      return response;
+    } catch (err) {
+      return rejectWithValue(err.response);
+    }
+  }
+);
+
+// 회원탈퇴
+export const deleteUser = createAsyncThunk(
+  'DELETE_USER',
+  async (arg, { rejectWithValue }) => {
+    try {
+      const response = await axios.delete('/api/user');
+      return response;
+    } catch (err) {
+      return rejectWithValue(err.response);
+    }
+  }
+);
+
+
 const initialState = {
   user: {},
   isNicknameChecked: false,
