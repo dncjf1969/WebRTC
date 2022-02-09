@@ -18,6 +18,10 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.servlet.NoHandlerFoundException;
 
+import com.wish.api.dto.response.BaseRes;
+import com.wish.common.exception.ErrorCode;
+import com.wish.common.exception.custom.RoomException;
+
 /*
  * 
  * SPA처리를 위한 ControllerAdvice.
@@ -47,4 +51,14 @@ public class NotFoundHandler {
 			}
 		}
 	}
+	
+	
+	
+	@ExceptionHandler(RoomException.class)
+    protected ResponseEntity<BaseRes> handleBusinessException(final RoomException e) {
+        //log.error("handleBusinessException", e);
+        final ErrorCode errorCode = e.getErrorCode();
+        final BaseRes response = BaseRes.of(errorCode);
+        return new ResponseEntity<>(response, HttpStatus.valueOf(errorCode.getStatus()));
+    }
 }
