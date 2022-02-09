@@ -316,18 +316,27 @@ class TestComponent extends Component {
               break;
             }
           }
-          let yy = event.data;
+          let yy = JSON.parse(event.data);
           let fromUserNickname = JSON.parse(event.from.data).clientData
           // 
           this.setState({
             questions: [...this.state.questions, 
               {
                 userName:fromUserNickname,
-                content:yy
+                connectionId: xx, 
+                content:yy.question,
+                questionId:yy.questionId
             }]
           })
           console.log(this.state.questions)
         });
+        this.state.session.on('signal:deleteQues', (event) => {
+          console.log(event)
+          const temp = this.state.questions
+          const newQuestions = temp.filter(question => question.questionId !== event.data)
+          this.setState({questions: newQuestions})
+        });
+
         this.state.session.on('streamDestroyed', (event) => {
           // Remove the stream from 'subscribers' array
           this.updateHost().then((connectionid) => {
@@ -911,6 +920,7 @@ class TestComponent extends Component {
         /> */}
 
         <div id="layout" className="bounds">
+          {this.state.isStart ? null : 
           <TestUserList
             session={this.state.session}
             subscribers={this.state.subscribers}
@@ -922,11 +932,18 @@ class TestComponent extends Component {
             hostId={this.state.hostId}
             allReady={this.state.allReady}
           />
+          }
+
+          {this.state.isStart ? null :
           <TestQuesList 
             session={this.state.session} 
             questions={this.state.questions}
             ready={this.state.readyState}
+            localUser={localUser}
           />
+          }
+          {this.state.isStart ? <h1>START</h1> : null}
+          
           {localUser !== undefined &&
             localUser.getStreamManager() !== undefined && (
               <div className="OT_root OT_publisher custom-class" id="localUser">
