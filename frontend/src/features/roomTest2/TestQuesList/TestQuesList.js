@@ -5,7 +5,7 @@ class TestQuesList extends Component {
         super(props);
 
         this.makeQues = this.makeQues.bind(this);
-
+        this.handleEnter = this.handleEnter.bind(this);
         this.state = {
         };
     }
@@ -74,6 +74,12 @@ class TestQuesList extends Component {
     //         	});
     // }
     
+    handleEnter(event) {
+        if (event.keyCode === 13 && !this.props.ready) {
+            this.makeQues()
+        }
+    }
+
     render() {
         const tempStyle={
             display:"inline-block",
@@ -125,8 +131,8 @@ class TestQuesList extends Component {
         return (
             <div style={tempStyle2}>
                 <div style={tempStyle5}>사전질문</div>
-                <input id="input1" style={tempStyle6}></input>
-                <button onClick={this.makeQues}>질문 추가</button>
+                <input onKeyDown={this.handleEnter} id="input1" style={tempStyle6}></input>
+                <button onClick={this.makeQues} disabled={this.props.ready ? true : false}>질문 추가</button>
                 {this.props.questions.map((question) =>
                 <div>
                     {question.userName}: {question.content}

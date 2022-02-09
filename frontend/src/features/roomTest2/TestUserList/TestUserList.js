@@ -13,30 +13,40 @@ class TestUserList extends Component {
         this.state = {
             isReady : false,
             userReadyState: [],
+            viewerCheck : false,
         };
     }
 
     
     readyTest(){
-		//signal을 보낸다.
-		//이 signal을 받는 것은 200번째줄부터
-        console.log(this.props);
-		this.props.session.signal({
-			data: 'hello',  // 보내는 내용
-			to: [],         // 누구한데 보낼건지. 비워있으면 모두에게 보내는거고, 만약 세션 아이디 적으면 그 세션한데만 보내진다.
-			type: 'readyTest'   // 시그널 타입.
-		})
-		.then(() => {})
-		.catch(error => {
-			console.error(error);
-		});
+        const Select = document.getElementById("role");
+        if (Select.value !== "") {
+            //signal을 보낸다.
+            //이 signal을 받는 것은 200번째줄부터
+            console.log(this.props);
+            this.props.session.signal({
+                data: Select.value,  // 보내는 내용
+                to: [],         // 누구한데 보낼건지. 비워있으면 모두에게 보내는거고, 만약 세션 아이디 적으면 그 세션한데만 보내진다.
+                type: 'readyTest'   // 시그널 타입.
+            })
+            .then(() => {})
+            .catch(error => {
+                console.error(error);
+            });
+        } else {
+            alert("역할을 정해주세요")
+        }
+
+
+
+		
     }
 
     start(){
         const check = (value) => value.ready;
         // console.log('스타트')
         // console.log(this.props)
-        if (this.props.subscribers.every(check)) {
+        if (this.props.subscribers.every(check) && this.props.ready) {
             console.log('모두레디함 스타트')
             this.props.session.signal({
                 data: 'HI',
@@ -100,14 +110,23 @@ class TestUserList extends Component {
                             <div>
                             <div id="seat0"> 내 자리 </div>
                                 <img src={ imgA } style={tempStyle4}/>
-                                <div id="name0"> {this.props.myUserName} </div>
-                                {this.props.ishost ? null : 
+                                <div id="name0"> {this.props.myUserName} {this.props.ishost ? "방장" : null} </div>
+                                <div>
+                                <label for="role">역할: </label>
+                                    <select id="role" name="role" required disabled={this.props.ready ? true : false}>
+                                        <option value="">선택안함</option>
+                                        <option value="true">면접관</option>
+                                        <option value="false">면접자</option>
+                                    </select>
+                                </div>
+   
                                 <div id="ready0" style={tempStyle5}> 
                                     {this.props.ready ? '준비 완료!!!' : '준비 중...'} 
-                                </div>}
-                                <div>
-                                    {this.props.ishost ? <button onClick={this.start}>start</button> : <button onClick={this.readyTest}> ready </button>}                    
                                 </div>
+                                <button onClick={this.readyTest}> ready </button>
+                                
+                                {this.props.ishost && this.props.allReady ? <button onClick={this.start}>start</button> : null}                    
+                                
                             </div>            
                         </div>
                         <div>
@@ -115,6 +134,7 @@ class TestUserList extends Component {
                 <div style={tempStyle3}>
                 <div>
                     <div id="seat1"> {userInfo.nickname} </div>
+                        {userInfo.ready ? <div>{userInfo.viewer ? "면접관" : "면접자"}</div>  : null}
                         {userInfo.connectionId === this.props.hostId ? <div>방장</div> : <div>{userInfo.ready ? "준비 완료!!!" : "준비 중..."}</div>}
                         
                     </div>   
