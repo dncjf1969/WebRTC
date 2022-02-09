@@ -7,7 +7,8 @@ class UserModel {
     streamManager;
     type; // 'remote' | 'local'
     isReady;
-    viewer
+    viewer;
+    stream;
 
     constructor() {
         this.connectionId = '';

@@ -5,6 +5,7 @@ import { OpenVidu } from "openvidu-browser";
 import StreamComponent from "./stream/StreamComponent";
 // import DialogExtensionComponent from "./dialog-extension/DialogExtension";
 import ChatComponent from "./chat/ChatComponent";
+import UserVideoComponent from "./UserVideoComponent";
 
 import OpenViduLayout from "../layout/openvidu-layout";
 import UserModel from "../models/user-model";
@@ -494,7 +495,7 @@ class TestComponent extends Component {
     });
 
     this.setState(
-      { currentVideoDevice: videoDevices[0], localUser: localUser },
+      { currentVideoDevice: videoDevices[0], localUser: localUser, publisher: publisher},
       () => {
         this.state.localUser.getStreamManager().on("streamPlaying", (e) => {
           this.updateLayout();
@@ -775,6 +776,7 @@ class TestComponent extends Component {
           this.setState({
             currentVideoDevice: newVideoDevice,
             localUser: localUser,
+            publisher: newPublisher
           });
         }
       }
@@ -892,6 +894,14 @@ class TestComponent extends Component {
     }
   }
 
+  handleMainVideoStream(stream) {
+    if (this.state.mainStreamManager !== stream) {
+      this.setState({
+        mainStreamManager: stream,
+      });
+    }
+  }
+
   render() {
     const mySessionId = this.state.mySessionId;
     const localUser = this.state.localUser;
@@ -920,7 +930,7 @@ class TestComponent extends Component {
         /> */}
 
         <div id="layout" className="bounds">
-          {this.state.isStart ? null : 
+          {/* {this.state.isStart ? null : 
           <TestUserList
             session={this.state.session}
             subscribers={this.state.subscribers}
@@ -942,12 +952,43 @@ class TestComponent extends Component {
             localUser={localUser}
           />
           }
-          {this.state.isStart ? <h1>START</h1> : null}
-          
-          {localUser !== undefined &&
+          {this.state.isStart ? <h1>START</h1> : null} */}
+          {/* 여기까지가 대기방 */}
+
+          <div id="video-container" className="video-container">
+              {/* {this.state.mainStreamManager !== undefined ? (
+                <div
+                  className="stream-container"
+                >
+                  <UserVideoComponent streamManager={this.state.mainStreamManager} />
+                </div>
+              ) : null} */}
+
+              {/* {this.state.publisher !== undefined ? (
+                
+                <div
+                  className="stream-container"
+                  onClick={() =>
+                    this.handleMainVideoStream(this.state.publisher)
+                  }
+                >
+                  <UserVideoComponent streamManager={this.state.publisher} />
+                </div>
+              ) : null} */}
+              
+              {/* {this.state.subscribers.map((sub, i) => (
+                <div
+                  key={i}
+                  className="stream-container"
+                  onClick={() => this.handleMainVideoStream(sub)}
+                >
+                  <UserVideoComponent streamManager={sub.streamManager.stream} />
+                </div>
+              ))} */}
+              {localUser !== undefined &&
             localUser.getStreamManager() !== undefined && (
-              <div className="OT_root OT_publisher custom-class" id="localUser">
-                {<TestCharacter />}
+              <div className="stream-container" id="localUser">
+                
                 {
                   <StreamComponent
                     user={localUser}
@@ -956,13 +997,15 @@ class TestComponent extends Component {
                 }
               </div>
             )}
-          {/* {this.state.subscribers.map((sub, i) => (
-                        <div key={i} className="OT_root OT_publisher custom-class" id="remoteUsers">
-                            { <TestCharacter/> }
-                            { <StreamComponent user={localUser} handleNickname={this.nicknameChanged} /> }
+            {this.state.subscribers.map((sub, i) => (
+                <div key={i} className="stream-container" id="remoteUsers">
+                  
+                    { <StreamComponent user={sub} handleNickname={this.nicknameChanged} /> }
 
-                        </div>
-                    ))} */}
+                </div>
+            ))}
+            </div>
+          
           {localUser !== undefined &&
             localUser.getStreamManager() !== undefined && (
               <div
