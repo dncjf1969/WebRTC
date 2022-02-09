@@ -73,6 +73,7 @@ class TestQuesList extends Component {
             border: '1px solid black',
             marginLeft:"250px",
             marginTop:"50px",
+            display: this.props.quesDisplay,
         }
         const tempStyle3={
             display:"inline-block",
@@ -103,6 +104,7 @@ class TestQuesList extends Component {
         const tempStyle7={
             fontSize: "30pt",
         }
+
 
         return (
             <div style={tempStyle2}>

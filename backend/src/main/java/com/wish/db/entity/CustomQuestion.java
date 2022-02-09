@@ -1,13 +1,9 @@
 package com.wish.db.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
 
 import lombok.Getter;
 import lombok.Setter;
 
-import java.sql.Date;
-import java.sql.Time;
 
 import javax.persistence.Entity;
 

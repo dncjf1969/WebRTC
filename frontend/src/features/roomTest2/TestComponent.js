@@ -73,6 +73,7 @@ class TestComponent extends Component {
       currentVideoDevice: undefined,
       nowUser: [],
       imgList: imgList2,
+      quesDisplay : "none"
     };
 
     this.joinSession = this.joinSession.bind(this);
@@ -90,6 +91,8 @@ class TestComponent extends Component {
     this.toggleChat = this.toggleChat.bind(this);
     this.checkNotification = this.checkNotification.bind(this);
     this.checkSize = this.checkSize.bind(this);
+
+    this.toggleQues = this.toggleQues.bind(this);
   }
 
   componentDidMount() {
@@ -660,6 +663,24 @@ class TestComponent extends Component {
     this.updateLayout();
   }
 
+
+  toggleQues(property) {
+    let display = property;
+
+    if (display === undefined) {
+      display = this.state.quesDisplay === "none" ? "block" : "none";
+    }
+    if (display === "block") {
+      this.setState({ quesDisplay: display, messageReceived: false });
+    } else {
+      console.log("chat", display);
+      this.setState({ quesDisplay: display });
+    }
+    this.updateLayout();
+  }
+
+
+
   checkNotification(event) {
     this.setState({
       messageReceived: this.state.chatDisplay === "none",
@@ -700,6 +721,7 @@ class TestComponent extends Component {
           switchCamera={this.switchCamera}
           leaveSession={this.leaveSession}
           toggleChat={this.toggleChat}
+          toggleQues={this.toggleQues}
         />
 
         <DialogExtensionComponent
@@ -712,7 +734,10 @@ class TestComponent extends Component {
             session={this.state.session}
             nowUser={this.state.nowUser}
           />
-          <TestQuesList session={this.state.session} />
+          <TestQuesList 
+          session={this.state.session}
+          quesDisplay={this.state.quesDisplay} 
+          />
           {localUser !== undefined &&
             localUser.getStreamManager() !== undefined && (
               <div className="OT_root OT_publisher custom-class" id="localUser">

@@ -18,6 +18,10 @@ public class MemberLoginRes extends BaseRes{
 		res.setStatusCode(statusCode);
 		res.setMessage(message);
 		res.setAccessToken(accessToken);
+		
+		//TODO
+		//멤버정보 추가
+		
 		return res;
 	}
 }
