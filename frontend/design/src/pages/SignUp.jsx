@@ -206,11 +206,7 @@ function SignUp() {
 
               {/* Page header */}
               <div className="max-w-3xl mx-auto text-center pb-12 md:pb-20">
-<<<<<<< HEAD
                 <h1 className="h1">WISH </h1>
-=======
-                <h1 className="h1">회원가입</h1>
->>>>>>> jang
               </div>
 
               {/* Form */}
@@ -218,72 +214,41 @@ function SignUp() {
                 <form onSubmit={handleSubmit}>
                   {/* 아이디 */}
                   <div className="flex flex-wrap -mx-3 mb-4">
-<<<<<<< HEAD
                     <div className="w-full px-3">
                       <label className="block text-gray-800 text-sm font-medium mb-1" htmlFor="name">아이디 <span className="text-red-600">*</span></label>
                       <input id="name" type="text" onChange={handleID} value={ID} className="form-input w-full text-gray-800" placeholder="아이디 10자 이내로 입력" required />
                       <button onClick={handleIDCheck}>중복확인</button>
-=======
-                    <div className="w-full px-3" >
-                      <label className="block text-gray-800 text-sm font-medium mb-1" htmlFor="id">아이디 <span className="text-red-600">*</span></label>
-                      <input  id="id" type="text" style={{width: '66%', float: 'left'}} onChange={handleID} value={ID} className="form-input w-full text-gray-800" placeholder="아이디 10자 이내로 입력" required />
-                      <button type="button" style={{width: '30%', height: '67%', float: 'right'}} onClick={handleIDCheck} className="btn-sm text-gray-200 bg-gray-900 hover:bg-gray-800 ml-3">
-                        <span>중복확인</span>
-                      </button>
->>>>>>> jang
                     </div>
                   </div>
                   {/* 닉네임 */}
                   <div className="flex flex-wrap -mx-3 mb-4">
                     <div className="w-full px-3">
                       <label className="block text-gray-800 text-sm font-medium mb-1" htmlFor="name">닉네임 <span className="text-red-600">*</span></label>
-<<<<<<< HEAD
                       <input id="name" type="text" onChange={handleNickname} value={Nickname} className="form-input w-full text-gray-800" placeholder="Enter your name" required />
                       <button onClick={handleNicknameCheck}>중복확인</button>
-=======
-                      <input id="name" type="text" style={{width: '66%', float: 'left'}} onChange={handleNickname} value={Nickname} className="form-input w-full text-gray-800" placeholder="닉네임 10자 이내로 입력" required />
-                      <button type="button" style={{width: '30%', height: '67%', float: 'right'}} onClick={handleNicknameCheck} className="btn-sm text-gray-200 bg-gray-900 hover:bg-gray-800 ml-3">
-                        <span>중복확인</span>
-                      </button>
->>>>>>> jang
                     </div>  
                   </div>
                   <div className="flex flex-wrap -mx-3 mb-4">
                     <div className="w-full px-3">
                       <label className="block text-gray-800 text-sm font-medium mb-1" htmlFor="email">이메일 <span className="text-red-600">*</span></label>
-<<<<<<< HEAD
                       <input id="email" type="email" onChange={(e) => setEmail(e.target.value)} value={email} className="form-input w-full text-gray-800" placeholder="Enter your email address" required />
-=======
-                      <input id="email" type="email" onChange={(e) => setEmail(e.target.value)} value={email} className="form-input w-full text-gray-800" placeholder="이메일 주소를 입력해주세요" required />
->>>>>>> jang
                     </div>
                   </div>
                   <div className="flex flex-wrap -mx-3 mb-4">
                     <div className="w-full px-3">
-<<<<<<< HEAD
                       <label className="block text-gray-800 text-sm font-medium mb-1" htmlFor="password">Password <span className="text-red-600">*</span></label>
                       <input id="password" type="password" onChange={(e) => setPassword(e.target.value)} value={password} className="form-input w-full text-gray-800" placeholder="Enter your password" required />
-=======
-                      <label className="block text-gray-800 text-sm font-medium mb-1" htmlFor="password">비밀번호 <span className="text-red-600">*</span></label>
-                      <input id="password" type="password" onChange={(e) => setPassword(e.target.value)} value={password} className="form-input w-full text-gray-800" placeholder="비밀번호를 입력해주세요" required />
->>>>>>> jang
                     </div>
                   </div>
                   <div className="flex flex-wrap -mx-3 mb-4">
                     <div className="w-full px-3">
-<<<<<<< HEAD
                       <label className="block text-gray-800 text-sm font-medium mb-1" htmlFor="password">Password <span className="text-red-600">*</span></label>
                       <input id="password" type="password" onChange={(e) => setRepeatPassword(e.target.value)} value={repeatPassword} className="form-input w-full text-gray-800" placeholder="Enter your password" required />
-=======
-                      <label className="block text-gray-800 text-sm font-medium mb-1" htmlFor="passwordCheck">비밀번호 확인 <span className="text-red-600">*</span></label>
-                      <input id="passwordCheck" type="password" onChange={(e) => setRepeatPassword(e.target.value)} value={repeatPassword} className="form-input w-full text-gray-800" placeholder="비밀번호를 다시 입력해주세요" required />
->>>>>>> jang
                     </div>
                   </div>
                   <div className="flex flex-wrap -mx-3 mt-6">
 
                     <div className="w-full px-3">
-<<<<<<< HEAD
                       <button className="btn text-white bg-blue-600 hover:bg-blue-700 w-full">Sign up</button>
                     </div>
 
@@ -321,17 +286,6 @@ function SignUp() {
                 </form>
                 <div className="text-gray-600 text-center mt-6">
                   Already using Simple? <Link to="/login" className="text-blue-600 hover:underline transition duration-150 ease-in-out">Sign in</Link>
-=======
-                      <button className="btn text-white bg-blue-600 hover:bg-blue-700 w-full">회원가입</button>
-                    </div>
-
-                  </div>
-                  
-                </form>
-
-                <div className="text-gray-600 text-center mt-6">
-                  이미 회원이신가요? <Link to="/login" className="text-blue-600 hover:underline transition duration-150 ease-in-out">지금 바로 로그인하세요!</Link>
->>>>>>> jang
                 </div>
               </div>
 

@@ -23,11 +23,7 @@ function Home() {
         <FeaturesHome />
         <FeaturesBlocks />
         <Testimonials />
-<<<<<<< HEAD
         <Newsletter />
-=======
-        {/* <Newsletter /> */}
->>>>>>> jang
 
       </main>
 

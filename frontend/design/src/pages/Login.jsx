@@ -54,11 +54,7 @@ function Login() {
 
               {/* Page header */}
               <div className="max-w-3xl mx-auto text-center pb-12 md:pb-20">
-<<<<<<< HEAD
                 <h1 className="h1">로그인해라 존말로할때</h1>
-=======
-                <h1 className="h1">로그인</h1>
->>>>>>> jang
               </div>
 
               {/* Form */}
@@ -77,7 +73,6 @@ function Login() {
                         <Link to="reset-password" className="text-sm font-medium text-blue-600 hover:underline">Having trouble Loging in?</Link>
                       </div>
                       <input id="password" type="password" className="form-input w-full text-gray-800" onChange={(e) => setPassword(e.target.value)}
-<<<<<<< HEAD
             value={password} placeholder="Enter your password" required />
                     </div>
                   </div>
@@ -91,19 +86,12 @@ function Login() {
                       </div>
                     </div>
                   </div>
-=======
-            value={password} placeholder="비밀번호를 입력해주세요." required />
-                    </div>
-                  </div>
-                  
->>>>>>> jang
                   <div className="flex flex-wrap -mx-3 mt-6">
                     <div className="w-full px-3">
                       <button className="btn text-white bg-blue-600 hover:bg-blue-700 w-full" >로그인</button>
                     </div>
                   </div>
                 </form>
-<<<<<<< HEAD
                 <div className="flex items-center my-6">
                   <div className="border-t border-gray-300 flex-grow mr-3" aria-hidden="true"></div>
                   <div className="text-gray-600 italic">Or</div>
@@ -133,11 +121,6 @@ function Login() {
                 </form>
                 <div className="text-gray-600 text-center mt-6">
                   Don’t you have an account? <Link to="/signup" className="text-blue-600 hover:underline transition duration-150 ease-in-out">Sign up</Link>
-=======
-              
-                <div className="text-gray-600 text-center mt-6">
-                  WISH 회원이 아니신가요? <Link to="/signup" className="text-blue-600 hover:underline transition duration-150 ease-in-out">지금 가입하세요</Link>
->>>>>>> jang
                 </div>
               </div>
 

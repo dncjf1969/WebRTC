@@ -3,7 +3,7 @@ import axios from "axios";
 import "./TestComponent.css";
 import { OpenVidu } from "openvidu-browser";
 import StreamComponent from "./stream/StreamComponent";
-import DialogExtensionComponent from "./dialog-extension/DialogExtension";
+// import DialogExtensionComponent from "./dialog-extension/DialogExtension";
 import ChatComponent from "./chat/ChatComponent";
 
 import OpenViduLayout from "../layout/openvidu-layout";
@@ -12,7 +12,7 @@ import ToolbarComponent from "./toolbar/ToolbarComponent";
 
 //
 import TestCharacter from "./Testcharacter/Testcharacter";
-import Users from "./TestUserList/Users";
+import TestUserList from "./TestUserList/TestUserList";
 import TestQuesList from "./TestQuesList/TestQuesList";
 
 import imgA from "./testImages/rion.PNG";
@@ -23,7 +23,7 @@ import imgE from "./testImages/prodo.PNG";
 import imgF from "./testImages/prodo.PNG";
 import { data } from "jquery";
 
-let localUser = new UserModel();
+var localUser = new UserModel();
 
 class TestComponent extends Component {
   constructor(props) {
@@ -51,7 +51,6 @@ class TestComponent extends Component {
     this.state = {
       // 방id like key
       mySessionId: sessionName,
-      // mySessionId: window.localStorage.getItem('roomId'),
       // 방에 들어간 유저 - > nickname
       myUserName: userName,
       // session은 내가 있는 그 session 자체
@@ -110,7 +109,6 @@ class TestComponent extends Component {
       isFliped: true,
       localUser: undefined,
       chatDisplay: "none",
-      QuesDisplay: "none",
       currentVideoDevice: undefined,
       nowUser: [],
       customSubscriber: [],
@@ -141,26 +139,28 @@ class TestComponent extends Component {
     this.updateHost = this.updateHost.bind(this);
   }
 
-  // 렌더링 될때마다 실행
   componentDidMount() {
     console.log('마운트됐다');
     const openViduLayoutOptions = {
       maxRatio: 3 / 2, // The narrowest ratio that will be used (default 2x3)
       minRatio: 9 / 16, // The widest ratio that will be used (default 16x9)
-      fixedRatio: true, // If this is true then the aspect ratio of the video is maintained and minRatio and maxRatio are ignored (default false)
+      fixedRatio: false, // If this is true then the aspect ratio of the video is maintained and minRatio and maxRatio are ignored (default false)
       bigClass: "OV_big", // The class to add to elements that should be sized bigger
       bigPercentage: 0.8, // The maximum percentage of space the big ones should take up
-      bigFixedRatio: true, // fixedRatio for the big ones
+      bigFixedRatio: false, // fixedRatio for the big ones
       bigMaxRatio: 3 / 2, // The narrowest ratio to use for the big elements (default 2x3)
       bigMinRatio: 9 / 16, // The widest ratio to use for the big elements (default 16x9)
       bigFirst: true, // Whether to place the big one in the top left (true) or bottom right
       animate: true, // Whether you want to animate the transitions
     };
 
+    // 레이아웃
     this.layout.initLayoutContainer(
       document.getElementById("layout"),
       openViduLayoutOptions
     );
+
+    // 사용자가 페이지를 떠날 때 정말 떠날것인지 확인하는 대화상자 팝업
     window.addEventListener("beforeunload", this.onbeforeunload);
     window.addEventListener("resize", this.updateLayout);
     window.addEventListener("resize", this.checkSize);
@@ -178,9 +178,9 @@ class TestComponent extends Component {
     this.leaveSession();
   }
 
-  joinSession(e) {
+  joinSession() {
     this.OV = new OpenVidu();
-    e.preventDefault();
+
     this.setState(
       {
         session: this.OV.initSession(),
@@ -263,25 +263,7 @@ class TestComponent extends Component {
           //   // 레디했다
           // }
         });
-
-        this.state.session.on("signal:roleChangeButton", (event) => {
-          // let role = event.data;
-          console.log(event);
-          let role = event.data;
-          let rolechanger = event.from.connectionId;
-          console.log("역할이다잉", role);
-          // 사전질문 삭제 -> 배열에서 걔를 찾아가지고 삭제하고 다시 setState
-          // 사전질문  -> 배열에서 걔를 찾아가지고 삭제하고 다시 setState
-          // for (let i = 0; i < this.state.roles.length, i++) {
-          //   if this.state.roles
-          // }
-          this.setState({
-            roles: [...this.state.roles, { rolechanger, role }],
-          });
-
-          console.log("역할들이다잉", this.state.roles);
-        });
-
+        // 새유저가 들어왔을 때, 다른사람의 레디 정보가 반영 안됨
         this.state.session.on("signal:readyTest", (event) => {
           console.log(event)
           console.log(event.target.remoteConnections);
@@ -327,7 +309,7 @@ class TestComponent extends Component {
 
         this.state.session.on("signal:makeQues", (event) => {
           //시그널을 보낸 세션 아이디
-          let xx = event.from.connectionId;
+          var xx = event.from.connectionId;
           console.log(xx + "가 질문 만들겠대.");
           console.log(event);
           var zz = "";
@@ -410,8 +392,9 @@ class TestComponent extends Component {
     } else {
       this.getToken()
         .then((token) => {
+          // console.log("token received: ", this.props.token);
           console.log(token);
-          this.connect(token)
+          this.connect(token);
         })
         .catch((error) => {
           if (this.props.error) {
@@ -423,7 +406,8 @@ class TestComponent extends Component {
             });
           }
           console.log(
-            "There was an error getting the token:",
+            "There was an error getting the token: 333",
+            this.props.token,
             error.code,
             error.message
           );
@@ -452,7 +436,7 @@ class TestComponent extends Component {
         if (this.props.error) {
           this.props.error({
             error: error.error,
-            messgae: error.message,
+            message: error.message,
             code: error.code,
             status: error.status,
           });
@@ -467,8 +451,8 @@ class TestComponent extends Component {
   }
 
   async connectWebCam() {
-    let devices = await this.OV.getDevices();
-    let videoDevices = devices.filter((device) => device.kind === "videoinput");
+    var devices = await this.OV.getDevices();
+    var videoDevices = devices.filter((device) => device.kind === "videoinput");
 
     let publisher = this.OV.initPublisher(undefined, {
       audioSource: undefined,
@@ -542,7 +526,7 @@ class TestComponent extends Component {
   }
   
   updateSubscribers() {
-    let subscribers = this.remotes;
+    var subscribers = this.remotes;
     this.setState(
       {
         subscribers: subscribers,
@@ -577,9 +561,18 @@ class TestComponent extends Component {
       subscribers: [],
       mySessionId: "SessionA",
       tempNamelist: [
+        "이정정",
+        "우처리",
+        "young남",
+        "조소히",
+        "hyuna55",
+        "동준은쌈디",
+        "나는우철",
+        "용남",
+        "소힝",
+        "현아입니다",
       ],
-      myUserName:this.myUserName,
-      // myUserName: this.tempNamelist[Math.floor(Math.random() * 10)],
+      myUserName: this.tempNamelist[Math.floor(Math.random() * 10)],
       localUser: undefined,
     });
     if (this.props.leaveSession) {
@@ -633,7 +626,7 @@ class TestComponent extends Component {
     this.state.session.on("streamCreated", (event) => {
       console.log(event)
       const subscriber = this.state.session.subscribe(event.stream, undefined);
-      // let subscribers = this.state.subscribers;
+      // var subscribers = this.state.subscribers;
       subscriber.on("streamPlaying", (e) => {
         this.checkSomeoneShareScreen();
         subscriber.videos[0].video.parentElement.classList.remove(
@@ -702,7 +695,7 @@ class TestComponent extends Component {
   updateLayout() {
     setTimeout(() => {
       this.layout.updateLayout();
-    }, 1);
+    }, 20);
   }
 
   sendSignalUserChanged(data) {
@@ -747,19 +740,19 @@ class TestComponent extends Component {
   async switchCamera() {
     try {
       const devices = await this.OV.getDevices();
-      let videoDevices = devices.filter(
+      var videoDevices = devices.filter(
         (device) => device.kind === "videoinput"
       );
 
       if (videoDevices && videoDevices.length > 1) {
-        let newVideoDevice = videoDevices.filter(
+        var newVideoDevice = videoDevices.filter(
           (device) => device.deviceId !== this.state.currentVideoDevice.deviceId
         );
 
         if (newVideoDevice.length > 0) {
           // Creating a new publisher with specific videoSource
           // In mobile devices the default and first camera is the front one
-          let newPublisher = this.OV.initPublisher(undefined, {
+          var newPublisher = this.OV.initPublisher(undefined, {
             audioSource: undefined,
             videoSource: newVideoDevice[0].deviceId,
             publishAudio: localUser.isAudioActive(),
@@ -856,36 +849,20 @@ class TestComponent extends Component {
     this.layout.setLayoutOptions(openviduLayoutOptions);
     this.updateLayout();
   }
-  toggleQues(property) {
-    let toggleQuesdisplay = property;
-
-    if (toggleQuesdisplay === undefined) {
-      toggleQuesdisplay = this.state.QuesDisplay === "none" ? "block" : "none";
-    }
-    if (toggleQuesdisplay === "block") {
-      this.setState({ QuesDisplay: toggleQuesdisplay, messageReceived: false });
-    } else {
-      console.log("ques", toggleQuesdisplay);
-      this.setState({ QuesDisplay: toggleQuesdisplay });
-    }
-    // this.updateLayout();
-  }
 
   toggleChat(property) {
-    let toggleChatdisplay = property;
+    let display = property;
 
-    if (toggleChatdisplay === undefined) {
-      console.log("gggg", toggleChatdisplay);
-      toggleChatdisplay = this.state.chatDisplay === "none" ? "block" : "none";
+    if (display === undefined) {
+      display = this.state.chatDisplay === "none" ? "block" : "none";
     }
-
-    if (toggleChatdisplay === "block") {
-      this.setState({ chatDisplay: toggleChatdisplay, messageReceived: false });
+    if (display === "block") {
+      this.setState({ chatDisplay: display, messageReceived: false });
     } else {
-      console.log("chat", toggleChatdisplay);
-      this.setState({ chatDisplay: toggleChatdisplay });
+      console.log("chat", display);
+      this.setState({ chatDisplay: display });
     }
-    // this.updateLayout();
+    this.updateLayout();
   }
 
   checkNotification(event) {
@@ -894,29 +871,25 @@ class TestComponent extends Component {
     });
   }
   checkSize() {
-    // if (
-    //   document.getElementById("layout").offsetWidth <= 700 &&
-    //   !this.hasBeenUpdated
-    // ) {
-    //   this.toggleChat("none");
-    //   this.hasBeenUpdated = false;
-    // }
-    // if (
-    //   document.getElementById("layout").offsetWidth > 700 &&
-    //   this.hasBeenUpdated
-    // ) {
-    //   this.hasBeenUpdated = false;
-    // }
+    if (
+      document.getElementById("layout").offsetWidth <= 700 &&
+      !this.hasBeenUpdated
+    ) {
+      this.toggleChat("none");
+      this.hasBeenUpdated = true;
+    }
+    if (
+      document.getElementById("layout").offsetWidth > 700 &&
+      this.hasBeenUpdated
+    ) {
+      this.hasBeenUpdated = false;
+    }
   }
-  changeChatting = () => {
-    this.setState({
-      text: "변경 성공!",
-    });
-  };
+
   render() {
     const mySessionId = this.state.mySessionId;
     const localUser = this.state.localUser;
-    let chatDisplay = { display: this.state.chatDisplay };
+    var chatDisplay = { display: this.state.chatDisplay };
 
     return (
       <div className="container" id="container">
@@ -929,18 +902,17 @@ class TestComponent extends Component {
           micStatusChanged={this.micStatusChanged}
           screenShare={this.screenShare}
           stopScreenShare={this.stopScreenShare}
-          // toggleFullscreen={this.toggleFullscreen}
+          toggleFullscreen={this.toggleFullscreen}
           switchCamera={this.switchCamera}
           leaveSession={this.leaveSession}
           toggleChat={this.toggleChat}
-          toggleQues={this.toggleQues}
         />
 
-        <DialogExtensionComponent
-          showDialog={this.state.showExtensionDialog} 
+        {/* <DialogExtensionComponent
+          showDialog={this.state.showExtensionDialog}
           cancelClicked={this.closeDialogExtension}
-        />
-        
+        /> */}
+
         <div id="layout" className="bounds">
           <TestUserList
             session={this.state.session}
@@ -961,27 +933,33 @@ class TestComponent extends Component {
           {localUser !== undefined &&
             localUser.getStreamManager() !== undefined && (
               <div className="OT_root OT_publisher custom-class" id="localUser">
-                { <StreamComponent user={localUser} handleNickname={this.nicknameChanged} /> }
+                {<TestCharacter />}
+                {
+                  <StreamComponent
+                    user={localUser}
+                    handleNickname={this.nicknameChanged}
+                  />
+                }
               </div>
             )}
-          {this.state.subscribers.map((sub, i) => (
-              <div key={i} className="OT_root OT_publisher custom-class" id="remoteUsers">
-                { <StreamComponent user={localUser} handleNickname={this.nicknameChanged} /> }
-              </div>
-            ))} */}
-            
+          {/* {this.state.subscribers.map((sub, i) => (
+                        <div key={i} className="OT_root OT_publisher custom-class" id="remoteUsers">
+                            { <TestCharacter/> }
+                            { <StreamComponent user={localUser} handleNickname={this.nicknameChanged} /> }
+
+                        </div>
+                    ))} */}
           {localUser !== undefined &&
             localUser.getStreamManager() !== undefined && (
               <div
                 className="OT_root OT_publisher custom-class"
                 style={chatDisplay}
-              >     
+              >
                 <ChatComponent
                   user={localUser}
                   chatDisplay={this.state.chatDisplay}
                   close={this.toggleChat}
                   messageReceived={this.checkNotification}
-                  
                 />
               </div>
             )}
@@ -1016,7 +994,7 @@ class TestComponent extends Component {
         .post(this.OPENVIDU_SERVER_URL + "/openvidu/api/sessions", data, {
           headers: {
             Authorization:
-            "Basic " + btoa("OPENVIDUAPP:" + this.OPENVIDU_SERVER_SECRET),
+              "Basic " + btoa("OPENVIDUAPP:" + this.OPENVIDU_SERVER_SECRET),
             "Content-Type": "application/json",
           },
         })
@@ -1025,7 +1003,7 @@ class TestComponent extends Component {
           resolve(response.data.id);
         })
         .catch((response) => {
-          let error = Object.assign({}, response);
+          var error = Object.assign({}, response);
           if (error.response && error.response.status === 409) {
             resolve(sessionId);
           } else {
@@ -1055,7 +1033,7 @@ class TestComponent extends Component {
 
   createToken(sessionId) {
     return new Promise((resolve, reject) => {
-      let data = JSON.stringify({});
+      var data = JSON.stringify({});
       axios
         .post(
           this.OPENVIDU_SERVER_URL +
