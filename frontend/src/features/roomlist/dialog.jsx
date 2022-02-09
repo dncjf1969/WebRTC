@@ -10,6 +10,8 @@ import axios from '../../common/http-common'
 import { useNavigate } from "react-router-dom";
 import { connect } from 'react-redux';
 import { actionCreators } from '../../app/store';
+import { render } from 'react-dom';
+import TestComponent from '../roomTest2/TestComponent';
 
 function FormDialog({room}) {
   const [open, setOpen] = React.useState(false);
@@ -24,20 +26,20 @@ function FormDialog({room}) {
     setOpen(false);
   };
   
-  const navigate = useNavigate()
+  let navigate = useNavigate()
 
   const handleEnter = async () => {
     await axios
       .get(`/room/waiting/enter?password=${password !== null ? password : ''}&roomId=${parseInt(roomId)}`)
       .then((res) => {
-        console.log(res)
-        const token = res.data.token
+        // console.log(res)
+        // const token = res.data.token
         
-        console.log(token)
+        // console.log(token)
         
-        window.localStorage.setItem('ovToken', token);
-        
-        // navigate('/test')
+        // window.localStorage.setItem('ovToken', token);
+        // render(TestComponent)
+        // navigate('/roomtest2')
 
         return res.data;
       })
@@ -46,6 +48,8 @@ function FormDialog({room}) {
         console.log(err)
         return err;
       });
+    window.localStorage.setItem('roomId', roomId);
+    navigate('/roomtest2')
   };
 
 
@@ -100,4 +104,4 @@ function mapDispatchToProps(dispatch, ownProps) {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps) (FormDialog);
+export default connect(mapStateToProps, mapDispatchToProps)(FormDialog);

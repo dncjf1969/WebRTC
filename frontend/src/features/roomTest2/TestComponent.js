@@ -5,6 +5,7 @@ import { OpenVidu } from "openvidu-browser";
 import StreamComponent from "./stream/StreamComponent";
 // import DialogExtensionComponent from "./dialog-extension/DialogExtension";
 import ChatComponent from "./chat/ChatComponent";
+import UserVideoComponent from "./UserVideoComponent";
 
 import OpenViduLayout from "../layout/openvidu-layout";
 import UserModel from "../models/user-model";
@@ -21,67 +22,110 @@ import imgC from "./testImages/neo.PNG";
 import imgD from "./testImages/prodo.PNG";
 import imgE from "./testImages/prodo.PNG";
 import imgF from "./testImages/prodo.PNG";
+import { data } from "jquery";
 
 var localUser = new UserModel();
 
 class TestComponent extends Component {
   constructor(props) {
     super(props);
-    this.OPENVIDU_SERVER_URL = this.props.openviduServerUrl
-      ? this.props.openviduServerUrl
-      : "https://" + "i6e201.p.ssafy.io" + ":4443";
+
+    // this.OPENVIDU_SERVER_URL = this.props.openviduServerUrl
+    //   ? this.props.openviduServerUrl
+    //   : "https://" + "i6e201.p.ssafy.io" + ":4443";
+    this.OPENVIDU_SERVER_URL = "https://localhost:4443"
     this.OPENVIDU_SERVER_SECRET = this.props.openviduSecret
       ? this.props.openviduSecret
       : "MY_SECRET";
     this.hasBeenUpdated = false;
     this.layout = new OpenViduLayout();
-    let sessionName = this.props.sessionName
-      ? this.props.sessionName
-      : "SessionA";
-    //let userName = this.props.user ? this.props.user : 'OpenVidu_User' + Math.floor(Math.random() * 100);
-    // let tempNamelist = [
-    //   "이정123",
-    //   "우처리",
-    //   "young남",
-    //   "조소히",
-    //   "현아짱99",
-    //   "동준은쌈디",
-    //   "나는우철",
-    //   "나는용남",
-    //   "소힝",
-    //   "현아입니다",
-    //   "",
-    // ];
-    // let userName = tempNamelist[Math.floor(Math.random() * 10)];
+    // let sessionName = this.props.sessionName
+    //   ? this.props.sessionName
+    //   : "SessionA";
+    let sessionName = window.localStorage.getItem('roomId')
     let userName = this.props.user
       ? this.props.user
       : "OpenVidu_User" + Math.floor(Math.random() * 100);
-    // let imgList2 = [
-    //   require("./testImages/muzi.PNG"),
-    //   require("./testImages/muzi.PNG"),
-    //   require("./testImages/neo.PNG"),
-    //   require("./testImages/prodo.PNG"),
-    //   require("./testImages/prodo.PNG"),
-    // ];
+   
     this.remotes = [];
     this.localUserAccessAllowed = false;
     this.state = {
+      // 방id like key
       mySessionId: sessionName,
+      // 방에 들어간 유저 - > nickname
       myUserName: userName,
+      // session은 내가 있는 그 session 자체
       session: undefined,
-      localUser: undefined,
+      // 메인 카메라 화면사람 지정
+      mainStreamManager: undefined,
+      // 나
+      publisher: undefined,
+      // 나를 제외한 유저들
       subscribers: [],
+      started: false,
+      readyState: false,
+      viewerState: undefined,
+      // gametype: 인성,직무 면접 
+      gametype: 'pushUp',
+      // 우리한테 필요없음
+      status: 'up',
+      // TM에 필요했던거 
+      check: false,
+      // 카운트세는거 필요ㄴㄴ
+      count: 0,
+      // TM에 필요했던거
+      webcam: undefined,
+      // TM에 필요했던거
+      model: undefined,
+      // TM에 필요했던거
+      URL: undefined,
+      // [닉네임, 갯수] 배열
+      ranking: new Map(),
+      // 랭킹정하는 배열 
+      sortedrank: new Map(),
+      // 최종 등수를 인덱스 순으로 정렬된 데이터
+      rankdata: undefined,
+      messages: [],
+      chaton: false,
+      message: '',
+      // 방장 (정의하는 기준 )
+      ishost: false,
+      hostId: undefined,
+      // 토론, pt 한다면 추가 
+      timer: false,
+      // DB저장용 게임 ID 
+      gameId: undefined,
+      // 높은 확률로 jwt토큰인데 여기서 사용안했음 
+      token: undefined,
+      audiostate: false,
+      videostate: true,
+      // 방제목 결정 
+      headerText: '',
+      // 
+      arrow: false,
+      leaved: false,
+      isRankModalOpen: false,
+      startbuttonstate: true,
+      finalRank: [],
+      isFliped: true,
+      localUser: undefined,
       chatDisplay: "none",
       currentVideoDevice: undefined,
       nowUser: [],
-      // imgList: imgList2,
+      customSubscriber: [],
+      latestUser: undefined,
+      questions: [],
+      isStart: false,
+      allReady: false,
     };
     console.log("state다");
     console.log(this.state);
+    console.log(localUser)
     this.joinSession = this.joinSession.bind(this);
     this.leaveSession = this.leaveSession.bind(this);
     this.onbeforeunload = this.onbeforeunload.bind(this);
     this.updateLayout = this.updateLayout.bind(this);
+    this.readyStatusChanged = this.readyStatusChanged.bind(this);
     this.camStatusChanged = this.camStatusChanged.bind(this);
     this.micStatusChanged = this.micStatusChanged.bind(this);
     this.nicknameChanged = this.nicknameChanged.bind(this);
@@ -93,9 +137,11 @@ class TestComponent extends Component {
     this.toggleChat = this.toggleChat.bind(this);
     this.checkNotification = this.checkNotification.bind(this);
     this.checkSize = this.checkSize.bind(this);
+    this.updateHost = this.updateHost.bind(this);
   }
 
   componentDidMount() {
+    console.log('마운트됐다');
     const openViduLayoutOptions = {
       maxRatio: 3 / 2, // The narrowest ratio that will be used (default 2x3)
       minRatio: 9 / 16, // The widest ratio that will be used (default 16x9)
@@ -108,11 +154,13 @@ class TestComponent extends Component {
       bigFirst: true, // Whether to place the big one in the top left (true) or bottom right
       animate: true, // Whether you want to animate the transitions
     };
+
     // 레이아웃
     this.layout.initLayoutContainer(
       document.getElementById("layout"),
       openViduLayoutOptions
     );
+
     // 사용자가 페이지를 떠날 때 정말 떠날것인지 확인하는 대화상자 팝업
     window.addEventListener("beforeunload", this.onbeforeunload);
     window.addEventListener("resize", this.updateLayout);
@@ -141,80 +189,119 @@ class TestComponent extends Component {
       () => {
         this.subscribeToStreamCreated();
         this.connectToSession();
+        console.log(this.state.session)
+        console.log('나의 ishost:', this.state.ishost)
+        
+        this.state.session.on("streamCreated", (event) => {
+          console.log("스트림크리에이티드")
+          console.log(event)
+          console.log(this.state.latestUser)
+          console.log(localUser)
+          this.setState({allReady: false})
+          this.state.session.signal({
+            data: JSON.stringify({
+              ready: this.state.readyState,
+              questions: this.state.questions,
+              viewer: this.state.viewerState
+          }),
+            to: [this.state.latestUser],
+            type: 'new-user',
+          })
+          .then(() => {console.log("정보보냈다")})
+          .catch((error) => {});
+        })
 
-        document.getElementById("name0").innerHTML = this.state.myUserName;
+        this.state.session.on("signal:new-user", (event) => {
+          console.log(event)
+          console.log("정보받았다")
+          const from = event.from.connectionId
+          this.state.subscribers.forEach(element => {
+            if (element.connectionId === from){
+              console.log(element)
+              element.setReady(JSON.parse(event.data).ready)
+              element.setViewer(JSON.parse(event.data).viewer)
+              this.setState({subscribers : this.remotes})
+            }
+          });
+          console.log('지금 내 퀘션', this.state.questions)
+          const temp = JSON.parse(event.data).questions
+          console.log('들어온 퀘션', temp )
+          if (this.state.questions.length === 0) {
+            this.setState({questions: temp})
+          }
+          console.log('다시 내 퀘션', this.state.questions)
+          console.log(temp === this.state.questions)
+        })
 
         this.state.session.on("connectionCreated", (event) => {
           console.log("!!! conectioncreated");
+          console.log(event)
+          this.setState({latestUser: event.connection})
+          console.log(this.state.latestUser)
+          // const temp = JSON.parse(event.target.options.metadata)
+          // console.log(temp.clientData)
           console.log(event.target.remoteConnections);
           // event-connection-data는 me
           // event-target-remoteConnections는 참여자들(나 포함)
           //this.state.nowUser = event.target.remoteConnections;
           // 참여자 전체 정보
-          var temp = event.target.remoteConnections;
+          // const temp = event.target.remoteConnections;
           //this.state.nowUser = [];
 
           //temp.forEach(element => {
-          var temp2 = JSON.parse(event.connection.data);
-          console.log(temp2);
+          const temp2 = JSON.parse(event.connection.data);
+          console.log(temp2.clientData);
           // 로컬 유저에 대한 정보
-          var temp = {
+          const temp3 = {
             userName: temp2.clientData,
             sessionID: event.connection.connectionId,
-            ReadyState: false,
+            ready: this.readyState,
           };
           console.log("event다", event);
-          this.state.nowUser.push(temp);
-          //});
-          console.log("!?!");
-          console.log(this.state.nowUser);
-          for (var i = 1; i < this.state.nowUser.length; i++) {
-            var temp3 = "name" + i;
-            var tempHtml =
-              `<img src= "` +
-              this.state.imgList[i] +
-              `" style="float: left;
-                        width:100px;
-                        height:100px"/>` +
-              `<div>` +
-              this.state.nowUser[i].userName +
-              `</div>` +
-              `<div id="ready` +
-              i +
-              `" style="font-size:14pt"> 준비 중.. </div>`;
+          this.state.nowUser.push(temp3);
 
-            document.getElementById(temp3).innerHTML = tempHtml;
-          }
-
-          if (this.state.isReady === true) {
-            // 레디했다
-          }
         });
         // 새유저가 들어왔을 때, 다른사람의 레디 정보가 반영 안됨
         this.state.session.on("signal:readyTest", (event) => {
+          console.log(event)
           console.log(event.target.remoteConnections);
-
           //시그널을 보낸 세션 아이디
           var xx = event.from.connectionId;
-          console.log(xx + "가 레디를 하겠대 or 레디 취소 하겠대.");
-          console.log(this.state.nowUser);
-          for (var i = 0; i < this.state.nowUser.length; i++) {
-            if (this.state.nowUser[i].sessionID === xx) {
-              // 레디. 이렇게 나오는게 맞는가?
-              var temp3 = "ready" + i;
-
-              //                            document.getElementById(temp3).innerHTML = "준비!";
-              // 이거 작동 원리 한 번 봐야함
-              if (document.getElementById(temp3).innerHTML != "준비 완료!") {
-                document.getElementById(temp3).innerHTML = "준비 완료!";
-                console.log(this.state.nowUser[i]);
-                this.state.nowUser[i].ReadyState = true;
-              } else {
-                document.getElementById(temp3).innerHTML = "준비 중..";
-                this.state.nowUser[i].ReadyState = false;
-              }
-              break;
+          if (xx === localUser.connectionId) {
+            this.readyStatusChanged()
+            this.setState({readyState: !this.state.readyState})
+            console.log("내 레디상태", this.state.readyState)
+            if (event.data === 'true') {
+              localUser.setViewer(true)
+              this.setState({ viewerState: true })
+            } else {
+              localUser.setViewer(false)
+              this.setState({ viewerState: false })
             }
+            this.sendSignalUserChanged({ viewerState: localUser.isViewer() })
+            this.setState({ localUser: localUser });
+          }
+          console.log(xx + "가 레디를 하겠대 or 레디 취소 하겠대.");
+          console.log(this.state.subscribers);
+          this.state.subscribers.forEach(element => {
+            if (element.connectionId === xx){
+              console.log(element)
+              element.setReady(!element.ready)
+              if (event.data === 'true') {
+                element.setViewer(true)
+              } else {
+                element.setViewer(false)
+              }
+              this.setState({subscribers : this.remotes})
+            }
+          });
+          const check = (value) => value.ready;
+          // console.log('스타트')
+          // console.log(this.props)
+          if (this.state.subscribers.every(check) && this.state.readyState) {
+            this.setState({allReady: true})
+          } else {
+            this.setState({allReady: false})
           }
         });
 
@@ -222,37 +309,97 @@ class TestComponent extends Component {
           //시그널을 보낸 세션 아이디
           var xx = event.from.connectionId;
           console.log(xx + "가 질문 만들겠대.");
-          // event는 어떻게 찍으면 나오나?
-          console.log(event.data);
+          console.log(event);
           var zz = "";
           for (var i = 0; i < this.state.nowUser.length; i++) {
             if (this.state.nowUser[i].sessionID === xx) {
-              // zz는 userName
               zz = this.state.nowUser[i].userName;
-              console.log(this.state);
               break;
             }
           }
+          let yy = JSON.parse(event.data);
+          let fromUserNickname = JSON.parse(event.from.data).clientData
+          // 
+          this.setState({
+            questions: [...this.state.questions, 
+              {
+                userName:fromUserNickname,
+                connectionId: xx, 
+                content:yy.question,
+                questionId:yy.questionId
+            }]
+          })
+          console.log(this.state.questions)
+        });
+        this.state.session.on('signal:deleteQues', (event) => {
+          console.log(event)
+          const temp = this.state.questions
+          const newQuestions = temp.filter(question => question.questionId !== event.data)
+          this.setState({questions: newQuestions})
+        });
 
-          document.getElementById("quesList").innerHTML +=
-            `<div style="border: 1px solid black; float:left; width:380px"> <div style="font-size:17pt; margin-left:3px; float:left">` +
-            event.data +
-            `</div> <div style="float:right">` +
-            zz +
-            `</div> </div>`;
+        this.state.session.on('streamDestroyed', (event) => {
+          // Remove the stream from 'subscribers' array
+          this.updateHost().then((connectionid) => {
+            const host = connectionid;
+            this.state.session
+              .signal({
+                data: host,
+                to: [],
+                type: 'update-host',
+              })
+              .then(() => {})
+              .catch((error) => {});
+          });
+          this.deleteSubscriber(event.stream.streamManager);
+        });
+        this.state.session.on('signal:update-host', (event) => {
+          this.setState({ hostId: event.data})
+          if (this.state.session.connection.connectionId === event.data) {
+            this.setState({ ishost: true });
+          }
+        });
+        this.state.session.on('signal:start', (event) => {
+          console.log('원래 내 스타트상태', this.state.isStart)
+          this.setState({ isStart: true})
+          console.log('시그널받고 스타트상태', this.state.isStart)
         });
       }
     );
   }
 
   connectToSession() {
-    // 서버를 꺼서 로직 확인 안됨
-    if (this.props.token !== undefined) {
-      console.log("token received: ", this.props.token);
-      this.connect(this.props.token);
+    if (this.sessionName !== undefined) {
+      // console.log("token received: 111 ", ovToken);
+      // console.log("proptoken", this.props.token)
+      this.getToken()
+        .then((token) => {
+          // console.log("token received: ", this.props.token);
+          console.log(token);
+          this.connect(token);
+        })
+        
+        .catch((error) => {
+          if (this.props.error) {
+            this.props.error({
+              error: error.error,
+              messgae: error.message,
+              code: error.code,
+              status: error.status,
+            });
+          }
+          console.log(
+            "There was an error getting the token: 333",
+            this.props.token,
+            error.code,
+            error.message
+          );
+          alert("There was an error getting the token:", error.message);
+        });
     } else {
       this.getToken()
         .then((token) => {
+          // console.log("token received: ", this.props.token);
           console.log(token);
           this.connect(token);
         })
@@ -266,7 +413,8 @@ class TestComponent extends Component {
             });
           }
           console.log(
-            "There was an error getting the token:",
+            "There was an error getting the token: 333",
+            this.props.token,
             error.code,
             error.message
           );
@@ -279,13 +427,23 @@ class TestComponent extends Component {
     this.state.session
       .connect(token, { clientData: this.state.myUserName })
       .then(() => {
+        console.log('여기사람있어요')
+        this.updateHost().then((firstUser) => {
+          console.log('무야호',firstUser)
+          const host = firstUser;
+          this.setState({ hostId : host})
+          if (this.state.session.connection.connectionId === host){
+            this.setState({ ishost: true });
+          }
+          console.log('업데이트호스트 후 나의 ishost:', this.state.ishost)
+        });
         this.connectWebCam();
       })
       .catch((error) => {
         if (this.props.error) {
           this.props.error({
             error: error.error,
-            messgae: error.message,
+            message: error.message,
             code: error.code,
             status: error.status,
           });
@@ -312,11 +470,9 @@ class TestComponent extends Component {
       frameRate: 30,
       insertMode: "APPEND",
     });
-    // publisher에 대한 호가인
+
     if (this.state.session.capabilities.publish) {
-      // 장치에 대한 권한 허용을 받는다
       publisher.on("accessAllowed", () => {
-        console.log("session이다", this.state.session);
         this.state.session.publish(publisher).then(() => {
           this.updateSubscribers();
           this.localUserAccessAllowed = true;
@@ -326,11 +482,12 @@ class TestComponent extends Component {
         });
       });
     }
-    // local유저가 기기에 대한 권한을 다 받고 한 다음 정보재정의
     localUser.setNickname(this.state.myUserName);
     localUser.setConnectionId(this.state.session.connection.connectionId);
     localUser.setScreenShareActive(false);
     localUser.setStreamManager(publisher);
+    localUser.setReady(false);
+    localUser.setViewer(null)
     this.subscribeToUserChanged();
     this.subscribeToStreamDestroyed();
     this.sendSignalUserChanged({
@@ -338,7 +495,7 @@ class TestComponent extends Component {
     });
 
     this.setState(
-      { currentVideoDevice: videoDevices[0], localUser: localUser },
+      { currentVideoDevice: videoDevices[0], localUser: localUser, publisher: publisher},
       () => {
         this.state.localUser.getStreamManager().on("streamPlaying", (e) => {
           this.updateLayout();
@@ -350,6 +507,31 @@ class TestComponent extends Component {
     );
   }
 
+  updateHost() {
+    return new Promise((resolve, reject) => {
+      console.log(this.OPENVIDU_SERVER_URL)
+      axios
+        .get(`${this.OPENVIDU_SERVER_URL}/openvidu/api/sessions/${this.state.mySessionId}/connection`,
+          {
+            headers: {
+              Authorization: `Basic ${btoa(
+                `OPENVIDUAPP:${this.OPENVIDU_SERVER_SECRET}`
+              )}`
+            },
+          }
+        )
+        .then((response) => {
+          console.log('업데이트호스트성공', response)
+          console.log(response.data.content)
+          let content = response.data.content;
+          content.sort((a, b) => a.createdAt - b.createdAt);
+
+          resolve(content[0].id); // connectionid
+        })
+        .catch((error) => reject(error));
+    });
+  }
+  
   updateSubscribers() {
     var subscribers = this.remotes;
     this.setState(
@@ -363,6 +545,8 @@ class TestComponent extends Component {
             isVideoActive: this.state.localUser.isVideoActive(),
             nickname: this.state.localUser.getNickname(),
             isScreenShareActive: this.state.localUser.isScreenShareActive(),
+            ready: this.state.localUser.isReady(),
+            viewer: this.state.localUser.isViewer()
           });
         }
         this.updateLayout();
@@ -402,9 +586,13 @@ class TestComponent extends Component {
       this.props.leaveSession();
     }
   }
+
+  readyStatusChanged() {
+    localUser.setReady(!localUser.isReady())
+    this.sendSignalUserChanged({ ready: localUser.isReady() })
+    this.setState({ localUser: localUser });
+  }
   camStatusChanged() {
-    // 스타트가 아닐때는 isVideoActive를 false
-    // 스타트면은 isVideoActive true
     localUser.setVideoActive(!localUser.isVideoActive());
     localUser.getStreamManager().publishVideo(localUser.isVideoActive());
     this.sendSignalUserChanged({ isVideoActive: localUser.isVideoActive() });
@@ -417,7 +605,7 @@ class TestComponent extends Component {
     this.sendSignalUserChanged({ isAudioActive: localUser.isAudioActive() });
     this.setState({ localUser: localUser });
   }
-  // 없애도됨
+
   nicknameChanged(nickname) {
     let localUser = this.state.localUser;
     localUser.setNickname(nickname);
@@ -426,7 +614,6 @@ class TestComponent extends Component {
       nickname: this.state.localUser.getNickname(),
     });
   }
-  // 없애도됨
 
   deleteSubscriber(stream) {
     const remoteUsers = this.state.subscribers;
@@ -444,6 +631,7 @@ class TestComponent extends Component {
 
   subscribeToStreamCreated() {
     this.state.session.on("streamCreated", (event) => {
+      console.log(event)
       const subscriber = this.state.session.subscribe(event.stream, undefined);
       // var subscribers = this.state.subscribers;
       subscriber.on("streamPlaying", (e) => {
@@ -457,7 +645,10 @@ class TestComponent extends Component {
       newUser.setConnectionId(event.stream.connection.connectionId);
       newUser.setType("remote");
       const nickname = event.stream.connection.data.split("%")[0];
+      
       newUser.setNickname(JSON.parse(nickname).clientData);
+      newUser.setReady(false)
+      newUser.setViewer(null)
       this.remotes.push(newUser);
       if (this.localUserAccessAllowed) {
         this.updateSubscribers();
@@ -479,33 +670,33 @@ class TestComponent extends Component {
   }
 
   subscribeToUserChanged() {
-    this.state.session.on("signal:userChanged", (event) => {
-      let remoteUsers = this.state.subscribers;
-      remoteUsers.forEach((user) => {
-        if (user.getConnectionId() === event.from.connectionId) {
-          const data = JSON.parse(event.data);
-          console.log("EVENTO REMOTE: ", event.data);
-          if (data.isAudioActive !== undefined) {
-            user.setAudioActive(data.isAudioActive);
-          }
-          if (data.isVideoActive !== undefined) {
-            user.setVideoActive(data.isVideoActive);
-          }
-          if (data.nickname !== undefined) {
-            user.setNickname(data.nickname);
-          }
-          if (data.isScreenShareActive !== undefined) {
-            user.setScreenShareActive(data.isScreenShareActive);
-          }
-        }
-      });
-      this.setState(
-        {
-          subscribers: remoteUsers,
-        },
-        () => this.checkSomeoneShareScreen()
-      );
-    });
+    // this.state.session.on('signal:userChanged', (event) => {
+    //     let remoteUsers = this.state.subscribers;
+    //     remoteUsers.forEach((user) => {
+    //         if (user.getConnectionId() === event.from.connectionId) {
+    //             const data = JSON.parse(event.data);
+    //             console.log('EVENTO REMOTE: ', event.data);
+    //             if (data.isAudioActive !== undefined) {
+    //                 user.setAudioActive(data.isAudioActive);
+    //             }
+    //             if (data.isVideoActive !== undefined) {
+    //                 user.setVideoActive(data.isVideoActive);
+    //             }
+    //             if (data.nickname !== undefined) {
+    //                 user.setNickname(data.nickname);
+    //             }
+    //             if (data.isScreenShareActive !== undefined) {
+    //                 user.setScreenShareActive(data.isScreenShareActive);
+    //             }
+    //         }
+    //     });
+    //     this.setState(
+    //         {
+    //             subscribers: remoteUsers,
+    //         },
+    //         () => this.checkSomeoneShareScreen(),
+    //     );
+    // });
   }
 
   updateLayout() {
@@ -521,7 +712,7 @@ class TestComponent extends Component {
     };
     this.state.session.signal(signalOptions);
   }
-  // 없애도됨
+
   toggleFullscreen() {
     const document = window.document;
     const fs = document.getElementById("container");
@@ -552,7 +743,7 @@ class TestComponent extends Component {
       }
     }
   }
-  // 없애도됨
+
   async switchCamera() {
     try {
       const devices = await this.OV.getDevices();
@@ -585,6 +776,7 @@ class TestComponent extends Component {
           this.setState({
             currentVideoDevice: newVideoDevice,
             localUser: localUser,
+            publisher: newPublisher
           });
         }
       }
@@ -592,7 +784,7 @@ class TestComponent extends Component {
       console.error(e);
     }
   }
-  // 없애도됨
+
   screenShare() {
     const videoSource =
       navigator.userAgent.indexOf("Firefox") !== -1 ? "window" : "screen";
@@ -634,16 +826,16 @@ class TestComponent extends Component {
       publisher.videos[0].video.parentElement.classList.remove("custom-class");
     });
   }
-  // 없애도됨
+
   closeDialogExtension() {
     this.setState({ showExtensionDialog: false });
   }
-  // 없애도됨
+
   stopScreenShare() {
     this.state.session.unpublish(localUser.getStreamManager());
     this.connectWebCam();
   }
-  // 없애도됨
+
   checkSomeoneShareScreen() {
     let isScreenShared;
     // return true if at least one passes the test
@@ -680,14 +872,12 @@ class TestComponent extends Component {
     }
     this.updateLayout();
   }
-  // 메세지 알림 기능
+
   checkNotification(event) {
     this.setState({
       messageReceived: this.state.chatDisplay === "none",
     });
   }
-  // 이거 뭔지 모르겠다
-
   checkSize() {
     if (
       document.getElementById("layout").offsetWidth <= 700 &&
@@ -704,6 +894,14 @@ class TestComponent extends Component {
     }
   }
 
+  handleMainVideoStream(stream) {
+    if (this.state.mainStreamManager !== stream) {
+      this.setState({
+        mainStreamManager: stream,
+      });
+    }
+  }
+
   render() {
     const mySessionId = this.state.mySessionId;
     const localUser = this.state.localUser;
@@ -711,10 +909,10 @@ class TestComponent extends Component {
 
     return (
       <div className="container" id="container">
+        <h1>{this.state.myUserName}</h1>
         <ToolbarComponent
           sessionId={mySessionId}
           user={localUser}
-          // 메세지 받음
           showNotification={this.state.messageReceived}
           camStatusChanged={this.camStatusChanged}
           micStatusChanged={this.micStatusChanged}
@@ -732,15 +930,65 @@ class TestComponent extends Component {
         /> */}
 
         <div id="layout" className="bounds">
+          {/* {this.state.isStart ? null : 
           <TestUserList
             session={this.state.session}
-            nowUser={this.state.nowUser}
+            subscribers={this.state.subscribers}
+            myUserName={this.state.myUserName}
+            ready={this.state.readyState}
+            viewer={this.state.viewerState}
+            localUser={localUser}
+            ishost={this.state.ishost}
+            hostId={this.state.hostId}
+            allReady={this.state.allReady}
           />
-          <TestQuesList session={this.state.session} />
-          {localUser !== undefined &&
+          }
+
+          {this.state.isStart ? null :
+          <TestQuesList 
+            session={this.state.session} 
+            questions={this.state.questions}
+            ready={this.state.readyState}
+            localUser={localUser}
+          />
+          }
+          {this.state.isStart ? <h1>START</h1> : null} */}
+          {/* 여기까지가 대기방 */}
+
+          <div id="video-container" className="video-container">
+              {/* {this.state.mainStreamManager !== undefined ? (
+                <div
+                  className="stream-container"
+                >
+                  <UserVideoComponent streamManager={this.state.mainStreamManager} />
+                </div>
+              ) : null} */}
+
+              {/* {this.state.publisher !== undefined ? (
+                
+                <div
+                  className="stream-container"
+                  onClick={() =>
+                    this.handleMainVideoStream(this.state.publisher)
+                  }
+                >
+                  <UserVideoComponent streamManager={this.state.publisher} />
+                </div>
+              ) : null} */}
+              
+              {/* {this.state.subscribers.map((sub, i) => (
+                <div
+                  key={i}
+                  className="stream-container"
+                  onClick={() => this.handleMainVideoStream(sub)}
+                >
+                  <UserVideoComponent streamManager={sub.streamManager.stream} />
+                </div>
+              ))} */}
+              {localUser !== undefined &&
             localUser.getStreamManager() !== undefined && (
-              <div className="OT_root OT_publisher custom-class" id="localUser">
-                {<TestCharacter />}
+              <div className="stream-container" id="localUser">
+                
                 {
                   <StreamComponent
                     user={localUser}
@@ -749,13 +997,15 @@ class TestComponent extends Component {
                 }
               </div>
             )}
-          {/* {this.state.subscribers.map((sub, i) => (
-                        <div key={i} className="OT_root OT_publisher custom-class" id="remoteUsers">
-                            { <TestCharacter/> }
-                            { <StreamComponent user={localUser} handleNickname={this.nicknameChanged} /> }
+            {this.state.subscribers.map((sub, i) => (
+                <div key={i} className="stream-container" id="remoteUsers">
+                  
+                    { <StreamComponent user={sub} handleNickname={this.nicknameChanged} /> }
 
-                        </div>
-                    ))} */}
+                </div>
+            ))}
+            </div>
+          
           {localUser !== undefined &&
             localUser.getStreamManager() !== undefined && (
               <div
@@ -795,6 +1045,7 @@ class TestComponent extends Component {
 
   createSession(sessionId) {
     return new Promise((resolve, reject) => {
+      console.log(this.OPENVIDU_SERVER_URL + "/openvidu/api/sessions")
       var data = JSON.stringify({ customSessionId: sessionId });
       axios
         .post(this.OPENVIDU_SERVER_URL + "/openvidu/api/sessions", data, {
