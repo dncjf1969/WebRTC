@@ -46,10 +46,11 @@ public class QuestionController {
 	//@PreAuthorize("hasAnyRole('USER')")
 	public ResponseEntity<? extends BaseRes> readQuestion(
 			@ApiIgnore Authentication authentication,
-			@ApiParam(value="사전질문 리스트 조회할 방 id", required = true) @RequestParam String meetingroomId) {
+			@ApiParam(value="사전질문 리스트 조회할 방 id", required = true, example="1") @RequestParam String meetingroomId, 
+			@ApiParam(value="이전 질문 id", required = true, example="-1") @RequestParam Long parentId) {
 
 		List<CustomQuestion> customQuestionList = customQuestionService.readAllCustomQuestionList(meetingroomId);
-		List<Question> questionList = questionService.read20QuestionList();
+		List<Question> questionList = questionService.readQuestionList(parentId);
 
 		return ResponseEntity.ok(QuestionListRes.of(200, "Success", customQuestionList, questionList));
 	}

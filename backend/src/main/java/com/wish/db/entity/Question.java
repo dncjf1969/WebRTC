@@ -21,6 +21,6 @@ public class Question extends BaseEntity{
 
 	String job;
 
-	int count;	// 선택 횟수
+	double count;	// 선택 횟수
      
 }
