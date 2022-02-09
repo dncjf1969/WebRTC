@@ -16,7 +16,7 @@ public class RoomCreateReq {
 	@ApiModelProperty(name="방 이름", example="OO기업 인적성 면접 준비방")
 	String name;
 
-	@ApiModelProperty(name="면접 종류", example="인적성")
+	@ApiModelProperty(name="면접 종류", example="인성")
 	String type;
 
 	@ApiModelProperty(name="직무 종류", example="IT")

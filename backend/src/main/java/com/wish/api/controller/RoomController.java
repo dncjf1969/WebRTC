@@ -27,6 +27,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import springfox.documentation.annotations.ApiIgnore;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -69,8 +70,16 @@ public class RoomController {
 		this.openVidu = new OpenVidu(OPENVIDU_URL, SECRET);
 	}
 	
-	@GetMapping("/waiting")
-	@ApiOperation(value = "대기방 검색", notes = "<strong>검색 키워드</strong>를 입력하여 방 목록을 반환한다") 
+	@GetMapping("/waiting/{roomType}")
+	@ApiOperation(value = "대기방 검색", notes = "<strong>검색 키워드와 검색 방법</strong>를 입력하여 방 목록을 반환한다<br><br>"
+			+ "url의 roomType<br>"
+			+ "0 : 인성<br>"
+			+ "1 : 직무<br>"
+			+ "--------<br>"
+			+ "검색 방법 searchType<br>"
+			+ "-1 : default<br>"
+			+ "0 : 방ID로 검색<br>"
+			+ "1 : 방이름으로 검색(초성으로도 검색됨.)<br>") 
     @ApiResponses({
         @ApiResponse(code = 200, message = "성공"),
         @ApiResponse(code = 401, message = "생성 실패"),
@@ -80,22 +89,17 @@ public class RoomController {
 	//@PreAuthorize("hasAnyRole('USER', 'ADMIN')")
 	public ResponseEntity<RoomListRes> searchWaitingRoom(
 			@ApiIgnore Authentication authentication,
-			@RequestParam @ApiParam(value="방 검색 키워드", allowEmptyValue=true) String keyword ) {
+			@PathVariable("roomType") int roomType,
+			@RequestParam @ApiParam(value="방 검색 키워드") String keyword,
+			@RequestParam @ApiParam(value="검색 방법") int searchType ) {
+		
 		
 		System.out.println("대기방 리스트 검색 ");
 		
-		List<RoomSearchRes> res = new LinkedList<RoomSearchRes>();
-
-//		// keyword가 비어있으면 전체 리스트를 반환한다.
-//		if(keyword == null) {
-//			for (WaitingRoom now : roomList) {
-//				WaitingroomSearchRes searchRes = WaitingroomSearchRes.of(now);
-//				res.add(searchRes);
-//			}
-//		}else {
-//			// 현재는 방 제목 기준으로만 검색됨.
-//			res = searchUtil.search(roomList, keyword);
-//		}
+		List<Room> roomList= roomService.getRoomList(roomType);
+	
+		List<RoomSearchRes> res = searchUtil.searchFunc(roomList, keyword, searchType);
+		
 
 		return ResponseEntity.status(200).body(RoomListRes.of(res));
 	}
@@ -253,8 +257,12 @@ public class RoomController {
 		
 		//authentication에 있는 멤버id로 방장인지 비교
 		
+		
+		//룸 삭제
 		roomService.deleteRoom(roomId);
-			//룸 삭제
+		
+		//리스트에서도 지워야하낟.
+		
 		System.out.println("방 삭제");
 		
 		return ResponseEntity.status(200).body(BaseRes.of(200, success));
