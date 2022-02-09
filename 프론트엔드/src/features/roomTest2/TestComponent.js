@@ -15,6 +15,7 @@ import ToolbarComponent from "./toolbar/ToolbarComponent";
 import TestCharacter from "./Testcharacter/Testcharacter";
 import TestUserList from "./TestUserList/TestUserList";
 import TestQuesList from "./TestQuesList/TestQuesList";
+import EvaluationSheet from "./evaluationSheet/evaluationSheet";
 
 import imgA from "./testImages/rion.PNG";
 import imgB from "./testImages/muzi.PNG";
@@ -372,7 +373,7 @@ class TestComponent extends Component {
             allUsers.forEach((element) => {
               if (element.viewer) {
                 viewers.push(element)
-              } else if (!localUser.viewer) {
+              } else if (!element.viewer) {
                 viewees.push(element)
               }
             })
@@ -939,6 +940,7 @@ class TestComponent extends Component {
         <ToolbarComponent
           sessionId={mySessionId}
           user={localUser}
+          isStart={this.state.isStart}
           showNotification={this.state.messageReceived}
           camStatusChanged={this.camStatusChanged}
           micStatusChanged={this.micStatusChanged}
@@ -1036,6 +1038,9 @@ class TestComponent extends Component {
                   </div>
               ))}
             </div>
+          }
+          {this.state.isStart && localUser.viewer &&
+            <EvaluationSheet />
           }
           
             

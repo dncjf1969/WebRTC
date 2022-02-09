@@ -1,0 +1,86 @@
+import React, { Component } from 'react';
+
+class EvaluationSheet extends Component {
+    constructor(props) {
+        super(props);
+
+        this.handleNextBtn = this.handleNextBtn.bind(this);
+        this.handleEnter = this.handleEnter.bind(this);
+
+        this.state = {
+        };
+    }
+
+
+    handleNextBtn(event) {
+
+    }
+
+    handleEnter(event) {
+        if (event.keyCode === 13 && !this.props.ready) {
+            
+        }
+    }
+    
+
+    render() {
+        const tempStyle={
+            display:"inline-block",
+            width:"400px",
+            height:"400px",
+            marginLeft:"50px",
+        }
+
+        const tempStyle2={
+            display:"inline-block",
+            width:"800px",
+            height:"100px",
+            marginLeft:"200px",
+            backgroundColor : 'white',
+            border: '1px solid black',
+            marginLeft:"250px",
+            marginTop:"50px",
+        }
+        const tempStyle3={
+            display:"inline-block",
+            width:"500px",
+            height:"100px",
+            marginLeft:"200px",
+            backgroundColor : 'white',
+            border: '1px solid black',
+        }
+
+        const tempStyle4={
+            float: "left",
+            width:"100px",
+            height:"100px",
+        }
+
+        const tempStyle5={
+            width:"700px",
+            marginLeft:"10px",
+            marginTop:"10px",
+            fontSize: "17pt",
+        }
+        
+        const tempStyle6={
+            marginLeft:"10px",
+        }
+
+        const tempStyle7={
+            fontSize: "30pt",
+        }
+
+        return (
+            <div style={tempStyle2}>
+                <div style={tempStyle5}>평가지</div>
+                <input onKeyDown={this.handleEnter} id="input1" style={tempStyle6} placeholder="질문선택"></input>
+                <input onKeyDown={this.handleEnter} id="input1" style={tempStyle6} placeholder="평점"></input>
+                <input onKeyDown={this.handleEnter} id="input1" style={tempStyle6} placeholder="코멘트"></input>
+                <button onClick={this.handleNextBtn} disabled={this.props.ready ? true : false}>NEXT</button>
+            </div>);
+    }
+   
+}
+
+export default EvaluationSheet;

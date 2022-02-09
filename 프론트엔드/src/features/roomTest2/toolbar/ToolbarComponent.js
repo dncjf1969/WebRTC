@@ -101,38 +101,46 @@ export default class ToolbarComponent extends Component {
                     </div>
 
                     <div className="buttonsContent">
-                        {/* <IconButton color="inherit" className="navButton" id="navMicButton" onClick={this.micStatusChanged}>
+                        {this.props.isStart && 
+                        <IconButton color="inherit" className="navButton" id="navMicButton" onClick={this.micStatusChanged}>
                             {localUser !== undefined && localUser.isAudioActive() ? <Mic /> : <MicOff color="secondary" />}
-                        </IconButton>
-
+                        </IconButton>}
+                        
+                        {this.props.isStart && 
                         <IconButton color="inherit" className="navButton" id="navCamButton" onClick={this.camStatusChanged}>
                             {localUser !== undefined && localUser.isVideoActive() ? (
                                 <Videocam />
                             ) : (
                                 <VideocamOff color="secondary" />
                             )}
-                        </IconButton>
-
+                        </IconButton>}
+                        
+                        {this.props.isStart && 
                         <IconButton color="inherit" className="navButton" onClick={this.screenShare}>
                             {localUser !== undefined && localUser.isScreenShareActive() ? <PictureInPicture /> : <ScreenShare />}
-                        </IconButton>
-
-                        {localUser !== undefined &&
+                        </IconButton>}
+                        
+                        
+                        {this.props.isStart && localUser !== undefined &&
                             localUser.isScreenShareActive() && (
                                 <IconButton onClick={this.stopScreenShare} id="navScreenButton">
                                     <StopScreenShare color="secondary" />
                                 </IconButton>
                             )}
-
+                        {this.props.isStart && 
                         <IconButton color="inherit" className="navButton" onClick={this.switchCamera}>
                             <SwitchVideoIcon />
-                        </IconButton>
+                        </IconButton>}
+                        
+                        {this.props.isStart && 
                         <IconButton color="inherit" className="navButton" onClick={this.toggleFullscreen}>
                             {localUser !== undefined && this.state.fullscreen ? <FullscreenExit /> : <Fullscreen />}
-                        </IconButton>
+                        </IconButton>}
+                        
                         <IconButton color="secondary" className="navButton" onClick={this.leaveSession} id="navLeaveButton">
                             <PowerSettingsNew />
-                        </IconButton> */}
+                        </IconButton>
+                        
                          <IconButton color="inherit" onClick={this.toggleChat} id="navChatButton">
                             {this.props.showNotification && <div id="point" className="" />}
                             <Tooltip title="Chat">
