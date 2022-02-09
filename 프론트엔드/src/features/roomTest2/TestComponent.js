@@ -5,6 +5,7 @@ import { OpenVidu } from "openvidu-browser";
 import StreamComponent from "./stream/StreamComponent";
 // import DialogExtensionComponent from "./dialog-extension/DialogExtension";
 import ChatComponent from "./chat/ChatComponent";
+import UserVideoComponent from "./UserVideoComponent";
 
 import OpenViduLayout from "../layout/openvidu-layout";
 import UserModel from "../models/user-model";
@@ -248,20 +249,17 @@ class TestComponent extends Component {
           //this.state.nowUser = [];
 
           //temp.forEach(element => {
-          // const temp2 = JSON.parse(event.connection.data);
-          // console.log(temp2.clientData);
-          // // 로컬 유저에 대한 정보
-          // const temp3 = {
-          //   userName: temp2.clientData,
-          //   sessionID: event.connection.connectionId,
-          //   ready: this.readyState,
-          // };
-          // console.log("event다", event);
-          // this.state.nowUser.push(temp3);
+          const temp2 = JSON.parse(event.connection.data);
+          console.log(temp2.clientData);
+          // 로컬 유저에 대한 정보
+          const temp3 = {
+            userName: temp2.clientData,
+            sessionID: event.connection.connectionId,
+            ready: this.readyState,
+          };
+          console.log("event다", event);
+          this.state.nowUser.push(temp3);
 
-          // if (this.state.readyState === true) {
-          //   // 레디했다
-          // }
         });
         // 새유저가 들어왔을 때, 다른사람의 레디 정보가 반영 안됨
         this.state.session.on("signal:readyTest", (event) => {
@@ -319,18 +317,27 @@ class TestComponent extends Component {
               break;
             }
           }
-          let yy = event.data;
+          let yy = JSON.parse(event.data);
           let fromUserNickname = JSON.parse(event.from.data).clientData
           // 
           this.setState({
             questions: [...this.state.questions, 
               {
                 userName:fromUserNickname,
-                content:yy
+                connectionId: xx, 
+                content:yy.question,
+                questionId:yy.questionId
             }]
           })
           console.log(this.state.questions)
         });
+        this.state.session.on('signal:deleteQues', (event) => {
+          console.log(event)
+          const temp = this.state.questions
+          const newQuestions = temp.filter(question => question.questionId !== event.data)
+          this.setState({questions: newQuestions})
+        });
+
         this.state.session.on('streamDestroyed', (event) => {
           // Remove the stream from 'subscribers' array
           this.updateHost().then((connectionid) => {
@@ -488,7 +495,7 @@ class TestComponent extends Component {
     });
 
     this.setState(
-      { currentVideoDevice: videoDevices[0], localUser: localUser },
+      { currentVideoDevice: videoDevices[0], localUser: localUser, publisher: publisher},
       () => {
         this.state.localUser.getStreamManager().on("streamPlaying", (e) => {
           this.updateLayout();
@@ -769,6 +776,7 @@ class TestComponent extends Component {
           this.setState({
             currentVideoDevice: newVideoDevice,
             localUser: localUser,
+            publisher: newPublisher
           });
         }
       }
@@ -886,6 +894,14 @@ class TestComponent extends Component {
     }
   }
 
+  handleMainVideoStream(stream) {
+    if (this.state.mainStreamManager !== stream) {
+      this.setState({
+        mainStreamManager: stream,
+      });
+    }
+  }
+
   render() {
     const mySessionId = this.state.mySessionId;
     const localUser = this.state.localUser;
@@ -914,6 +930,7 @@ class TestComponent extends Component {
         /> */}
 
         <div id="layout" className="bounds">
+          {/* {this.state.isStart ? null : 
           <TestUserList
             session={this.state.session}
             subscribers={this.state.subscribers}
@@ -925,15 +942,53 @@ class TestComponent extends Component {
             hostId={this.state.hostId}
             allReady={this.state.allReady}
           />
+          }
+
+          {this.state.isStart ? null :
           <TestQuesList 
             session={this.state.session} 
             questions={this.state.questions}
             ready={this.state.readyState}
+            localUser={localUser}
           />
-          {localUser !== undefined &&
+          }
+          {this.state.isStart ? <h1>START</h1> : null} */}
+          {/* 여기까지가 대기방 */}
+
+          <div id="video-container" className="video-container">
+              {/* {this.state.mainStreamManager !== undefined ? (
+                <div
+                  className="stream-container"
+                >
+                  <UserVideoComponent streamManager={this.state.mainStreamManager} />
+                </div>
+              ) : null} */}
+
+              {/* {this.state.publisher !== undefined ? (
+                
+                <div
+                  className="stream-container"
+                  onClick={() =>
+                    this.handleMainVideoStream(this.state.publisher)
+                  }
+                >
+                  <UserVideoComponent streamManager={this.state.publisher} />
+                </div>
+              ) : null} */}
+              
+              {/* {this.state.subscribers.map((sub, i) => (
+                <div
+                  key={i}
+                  className="stream-container"
+                  onClick={() => this.handleMainVideoStream(sub)}
+                >
+                  <UserVideoComponent streamManager={sub.streamManager.stream} />
+                </div>
+              ))} */}
+              {localUser !== undefined &&
             localUser.getStreamManager() !== undefined && (
-              <div className="OT_root OT_publisher custom-class" id="localUser">
-                {<TestCharacter />}
+              <div className="stream-container" id="localUser">
+                
                 {
                   <StreamComponent
                     user={localUser}
@@ -942,13 +997,15 @@ class TestComponent extends Component {
                 }
               </div>
             )}
-          {/* {this.state.subscribers.map((sub, i) => (
-                        <div key={i} className="OT_root OT_publisher custom-class" id="remoteUsers">
-                            { <TestCharacter/> }
-                            { <StreamComponent user={localUser} handleNickname={this.nicknameChanged} /> }
+            {this.state.subscribers.map((sub, i) => (
+                <div key={i} className="stream-container" id="remoteUsers">
+                  
+                    { <StreamComponent user={sub} handleNickname={this.nicknameChanged} /> }
 
-                        </div>
-                    ))} */}
+                </div>
+            ))}
+            </div>
+          
           {localUser !== undefined &&
             localUser.getStreamManager() !== undefined && (
               <div
