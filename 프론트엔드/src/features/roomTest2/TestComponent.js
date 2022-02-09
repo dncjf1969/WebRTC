@@ -1026,17 +1026,27 @@ class TestComponent extends Component {
                 </div>
               )}
               {this.state.viewers.map((sub, i) => (
-                  <div key={i} className="stream-container" id="remoteUsers">
+                  <div key={i} className="stream-container" id="remoteUsers" onClick={() =>
+                    this.handleMainVideoStream(sub)
+                  }>
                       <div>면접관</div>
                       <StreamComponent user={sub} handleNickname={this.nicknameChanged} />
                   </div>
               ))}
               {this.state.viewees.map((sub, i) => (
-                  <div key={i} className="stream-container" id="remoteUsers">
+                  <div key={i} className="stream-container" id="remoteUsers" onClick={() =>
+                    this.handleMainVideoStream(sub)
+                  }>
                       <div>면접자</div>
                       <StreamComponent user={sub} handleNickname={this.nicknameChanged} />
                   </div>
               ))}
+              {this.state.mainStreamManager && 
+              <div className="stream-container" id="remoteUsers" >
+                  <div>선택된화면</div>
+                  <StreamComponent user={this.state.mainStreamManager} />
+              </div>}
+              
             </div>
           }
           {this.state.isStart && localUser.viewer &&
