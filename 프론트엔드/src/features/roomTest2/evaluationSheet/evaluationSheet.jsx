@@ -13,7 +13,29 @@ class EvaluationSheet extends Component {
 
 
     handleNextBtn(event) {
+      let question = document.getElementById("question").value;
+      let rate = document.getElementById("rate").value;
+      let comment = document.getElementById("comment").value;
+      document.getElementById("question").value = "";
+      document.getElementById("question").value = "";
+      document.getElementById("question").value = "";
+      
+      // 이부분에서 axios요청 보냄 //
 
+      const viewers = this.props.viewers.map((viewer) => viewer.streamManager.stream.connection)
+      
+      // 면접관들에게 평가했다고 알림
+      this.props.session.signal({
+              data: '',  
+              to: viewers,        
+              type: 'next'   
+            })
+            .then(() => {
+                  console.log('평가완료')
+            })
+            .catch(error => {
+              console.error(error);
+            });
     }
 
     handleEnter(event) {
@@ -74,10 +96,10 @@ class EvaluationSheet extends Component {
         return (
             <div style={tempStyle2}>
                 <div style={tempStyle5}>평가지</div>
-                <input onKeyDown={this.handleEnter} id="input1" style={tempStyle6} placeholder="질문선택"></input>
-                <input onKeyDown={this.handleEnter} id="input1" style={tempStyle6} placeholder="평점"></input>
-                <input onKeyDown={this.handleEnter} id="input1" style={tempStyle6} placeholder="코멘트"></input>
-                <button onClick={this.handleNextBtn} disabled={this.props.ready ? true : false}>NEXT</button>
+                <input onKeyDown={this.handleEnter} id="question" style={tempStyle6} placeholder="질문선택"></input>
+                <input onKeyDown={this.handleEnter} id="rate" style={tempStyle6} placeholder="평점"></input>
+                <input onKeyDown={this.handleEnter} id="comment" style={tempStyle6} placeholder="코멘트"></input>
+                <button onClick={this.handleNextBtn}>NEXT</button>
             </div>);
     }
    

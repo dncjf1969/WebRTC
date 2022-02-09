@@ -120,11 +120,14 @@ class TestComponent extends Component {
       allReady: false,
       allUsers: [],
       viewers: [],
-      viewees: []
+      viewees: [],
+      // 면접관이 질문당 평가하고 이벤트 보낼때 몇명이 평가했는지 보기위해
+      evalnum: 0,
     };
     console.log("state다");
     console.log(this.state);
     console.log(localUser)
+    this.nextViewee = this.nextViewee.bind(this);
     this.joinSession = this.joinSession.bind(this);
     this.leaveSession = this.leaveSession.bind(this);
     this.onbeforeunload = this.onbeforeunload.bind(this);
@@ -357,12 +360,16 @@ class TestComponent extends Component {
           });
           this.deleteSubscriber(event.stream.streamManager);
         });
+
+        // 방장 업데이트
         this.state.session.on('signal:update-host', (event) => {
           this.setState({ hostId: event.data})
           if (this.state.session.connection.connectionId === event.data) {
             this.setState({ ishost: true });
           }
         });
+
+        // 게임시작
         this.state.session.on('signal:start', (event) => {
           console.log('원래 내 스타트상태', this.state.isStart)
           setTimeout(() => {
@@ -381,7 +388,8 @@ class TestComponent extends Component {
               isStart: true, 
               allUsers: allUsers,
               viewees: viewees,
-              viewers: viewers
+              viewers: viewers,
+              gameId: event.data
             })
             console.log('시그널받고 스타트상태', this.state.isStart)
             console.log('면접관 ', this.state.viewers)
@@ -389,10 +397,27 @@ class TestComponent extends Component {
             console.log('모든유저 ', this.state.allUsers)
           }, 20);
           
+          // 면접관이 평가완료 하고 버튼눌렀을때
+          this.state.session.on('signal:next', (event) => {
+              console.log(event)
+              let evalnum = this.state.evalnum + 1
+              // 모두평가완료
+              if (evalnum === this.state.viewers.length) {
+                this.setState({evalnum: 0})
+                this.nextViewee();
+              } else {
+                this. setState({evalnum: evalnum})
+              }
+            }
+          );
 
         });
       }
     );
+  }
+
+  nextViewee() {
+    console.log('다음참가자 들어오세요')
   }
 
   connectToSession() {
@@ -1050,7 +1075,11 @@ class TestComponent extends Component {
             </div>
           }
           {this.state.isStart && localUser.viewer &&
-            <EvaluationSheet />
+            <EvaluationSheet 
+              viewers={this.state.viewers}
+              viewee={this.state.mainStreamManager}
+              session={this.state.session}
+            />
           }
           
             

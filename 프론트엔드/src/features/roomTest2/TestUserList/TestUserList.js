@@ -49,7 +49,7 @@ class TestUserList extends Component {
         if (this.props.subscribers.every(check) && this.props.ready) {
             console.log('모두레디함 스타트')
             this.props.session.signal({
-                data: 'HI',
+                data: Date.now(),
                 to: [],
                 type: 'start'
             })
