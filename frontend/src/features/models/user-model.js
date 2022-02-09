@@ -6,6 +6,8 @@ class UserModel {
     nickname;
     streamManager;
     type; // 'remote' | 'local'
+    isReady;
+    viewer
 
     constructor() {
         this.connectionId = '';
@@ -15,6 +17,16 @@ class UserModel {
         this.nickname = '';
         this.streamManager = null;
         this.type = 'local';
+        this.ready = false;
+        this.viewer = null;
+    }
+
+    isReady() {
+        return this.ready;
+    }
+
+    isViewer() {
+        return this.Viewer;
     }
 
     isAudioActive() {
@@ -47,6 +59,15 @@ class UserModel {
     isRemote() {
         return !this.isLocal();
     }
+
+    setReady(isReady) {
+        this.ready = isReady
+    }
+
+    setViewer(isViewer) {
+        this.viewer = isViewer
+    }
+
     setAudioActive(isAudioActive) {
         this.audioActive = isAudioActive;
     }

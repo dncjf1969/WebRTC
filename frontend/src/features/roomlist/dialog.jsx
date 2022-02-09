@@ -30,6 +30,7 @@ function FormDialog({room}) {
     await axios
       .get(`/room/waiting/enter?password=${password !== null ? password : ''}&roomId=${parseInt(roomId)}`)
       .then((res) => {
+<<<<<<< HEAD
         console.log(res)
         const token = res.data.token
         
@@ -38,6 +39,16 @@ function FormDialog({room}) {
         window.localStorage.setItem('ovToken', token);
         
         // navigate('/test')
+=======
+        // console.log(res)
+        // const token = res.data.token
+        
+        // console.log(token)
+        
+        // window.localStorage.setItem('ovToken', token);
+        // render(TestComponent)
+        // navigate('/roomtest2')
+>>>>>>> jang
 
         return res.data;
       })
@@ -46,6 +57,11 @@ function FormDialog({room}) {
         console.log(err)
         return err;
       });
+<<<<<<< HEAD
+=======
+    window.localStorage.setItem('roomId', roomId);
+    navigate('/roomtest2')
+>>>>>>> jang
   };
 
 

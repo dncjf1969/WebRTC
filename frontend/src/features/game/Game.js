@@ -27,51 +27,49 @@
 /* eslint-disable react/no-access-state-in-setstate */
 /* eslint-disable react/destructuring-assignment */
 /* eslint-disable react/sort-comp */
-import React, { Component, createRef, forwardRef } from "react";
-import { connect } from "react-redux";
-import { Link } from "react-router-dom";
-import axios from "axios";
-import { OpenVidu } from "openvidu-browser";
-// import { CountdownCircleTimer } from "react-countdown-circle-timer";
+import React, { Component, createRef, forwardRef } from 'react';
+import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
+import axios from 'axios';
+import { OpenVidu } from 'openvidu-browser';
+import { CountdownCircleTimer } from 'react-countdown-circle-timer';
 
 // style
-import styled from "styled-components";
-import { CgClose } from "react-icons/cg";
-import Dialog from "@material-ui/core/Dialog";
-import DialogActions from "@material-ui/core/DialogActions";
-import DialogContent from "@material-ui/core/DialogContent";
-import DialogContentText from "@material-ui/core/DialogContentText";
-import DialogTitle from "@material-ui/core/DialogTitle";
-import Zoom from "@material-ui/core/Zoom";
-import { Button, makeStyles } from "@material-ui/core";
-import Card from "@material-ui/core/Card";
-import CardContent from "@material-ui/core/CardContent";
-import Typography from "@material-ui/core/Typography";
-import Table from "@material-ui/core/Table";
-import TableBody from "@material-ui/core/TableBody";
-import TableCell from "@material-ui/core/TableCell";
-import TableContainer from "@material-ui/core/TableContainer";
-import TableHead from "@material-ui/core/TableHead";
-import TableRow from "@material-ui/core/TableRow";
+import styled from 'styled-components';
+import { CgClose } from 'react-icons/cg';
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import Zoom from '@material-ui/core/Zoom';
+import { Button, makeStyles } from '@material-ui/core';
+import Card from '@material-ui/core/Card';
+import CardContent from '@material-ui/core/CardContent';
+import Typography from '@material-ui/core/Typography';
+import Table from '@material-ui/core/Table';
+import TableBody from '@material-ui/core/TableBody';
+import TableCell from '@material-ui/core/TableCell';
+import TableContainer from '@material-ui/core/TableContainer';
+import TableHead from '@material-ui/core/TableHead';
+import TableRow from '@material-ui/core/TableRow';
 import {
   IoMicSharp,
   IoMicOffSharp,
   IoVideocamOff,
   IoVideocam,
-} from "react-icons/io5";
-import axios1 from "../../common/http-common";
-import butimg from "../../assets/chatmsg.svg";
+} from 'react-icons/io5';
+import axios1 from '../../common/http-common';
+import butimg from '../../assets/chatmsg.svg';
 // import { quickStart } from '../home/homeSlice';
-import logo from "../../assets/logo(basic).svg";
-import "./Game.css";
-import "./UserVideo.css";
-import Messages from "./components/Messages";
-import startsound from "./sound/start.mp3";
-import gamemusic2 from "./sound/gamemusic2.mp3";
-// import badgeImages from "../../assets/badges/badgeImages";
+import './Game.css';
+import './UserVideo.css';
+import Messages from './components/Messages';
+import startsound from './sound/start.mp3';
+import gamemusic2 from './sound/gamemusic2.mp3';
 
 // features
-import UserVideoComponent from "./UserVideoComponent";
+import UserVideoComponent from './UserVideoComponent';
 
 // actions
 // import {
@@ -80,8 +78,8 @@ import UserVideoComponent from "./UserVideoComponent";
 //   resetMyPageInfo,
 // } from '../mypage/mypageSlice';
 
-// const OPENVIDU_SERVER_URL = "http://localhost:4443";
-// const OPENVIDU_SERVER_SECRET = "HOMEDONG";
+const OPENVIDU_SERVER_URL = 'https://localhost:4443';
+const OPENVIDU_SERVER_SECRET = "MY_SECRET";
 
 const Sbutton = styled.button`
   background: linear-gradient(45deg, #ff859f 30%, #ffa87a 70%);
@@ -102,9 +100,9 @@ const useStyles = makeStyles({
     minWidth: 50,
   },
   bullet: {
-    display: "inline-block",
-    margin: "0 2px",
-    transform: "scale(0.8)",
+    display: 'inline-block',
+    margin: '0 2px',
+    transform: 'scale(0.8)',
   },
   title: {
     fontSize: 14,
@@ -251,29 +249,21 @@ const Transition = forwardRef(function Transition(props, ref) {
 });
 
 const music = new Audio(gamemusic2);
-export default class Game extends Component {
+class Game extends Component {
   constructor(props) {
     super(props);
-    
-    this.OPENVIDU_SERVER_URL = this.props.openviduServerUrl
-    ? this.props.openviduServerUrl
-    : "https://" + "i6e201.p.ssafy.io" + ":4443";
-    // : "https://" + "localhost" + ":4443";
-  this.OPENVIDU_SERVER_SECRET = this.props.openviduSecret
-    ? this.props.openviduSecret
-    : "MY_SECRET";
-    
+
     this.state = {
-      mySessionId: undefined,
+      mySessionId: '0',
       myUserName: undefined,
       session: undefined,
       mainStreamManager: undefined,
       publisher: undefined,
       subscribers: [],
       started: false,
-      readystate: "null",
-      gametype: "pushUp",
-      status: "up",
+      readystate: 'ready',
+      gametype: 'pushUp',
+      status: 'up',
       check: false,
       count: 0,
       webcam: undefined,
@@ -284,14 +274,14 @@ export default class Game extends Component {
       rankdata: undefined,
       messages: [],
       chaton: false,
-      message: "",
+      message: '',
       ishost: false,
       timer: false,
       gameId: undefined,
       token: undefined,
       audiostate: false,
       videostate: true,
-      headerText: "",
+      headerText: '',
       arrow: false,
       leaved: false,
       isRankModalOpen: false,
@@ -324,44 +314,37 @@ export default class Game extends Component {
 
   componentDidMount() {
     // this.props.doResetMyPageInfo();
-    // 창 닫을려고 하면 componentwillunmount
-    window.addEventListener("beforeunload", () => {
+    window.addEventListener('beforeunload', () => {
       this.componentWillUnmount();
     });
     music.currentTime = 0;
     setTimeout(() => {
-      const { state } = this.props;
-      // 우리가 받아올 것 : name(방제), manager(참가자닉네임), password, type axios 요청 /room/waiting
-      // const { roomId, nickname, gameType } = state;
+      // const { home } = this.props;
+      // const { roomId, nickname, gameType } = home;
       const gameType = 1;
       const nickname = '임시닉네임';
-      const roomId = '0';
-      
-      if (roomId === "") {
-        navigate('/')
-        this.props.navigate.push("/error");
+      const roomId = '0'
+      if (roomId === '') {
+        this.props.history.push('/error');
       }
       this.setState({
-        // token,
         mySessionId: roomId,
         myUserName: nickname,
         gametype: gameType,
       });
-      // url 파람스 추가
-      // this.setState({headerText: name })
       switch (gameType) {
         case 1:
-          this.setState({ headerText: roomId + "/스쿼트" });
+          this.setState({ headerText: roomId + '/스쿼트' });
           break;
         case 3:
-          this.setState({ headerText: roomId + "/버피" });
+          this.setState({ headerText: roomId + '/버피' });
           break;
         case 2:
-          this.setState({ headerText: roomId + "/팔굽혀펴기" });
+          this.setState({ headerText: roomId + '/팔굽혀펴기' });
           break;
       }
 
-      this.setmodel();
+      // this.setmodel();
       this.joinSession();
     }, 500);
   }
@@ -399,7 +382,7 @@ export default class Game extends Component {
         {
           userName: this.state.myUserName,
           text: this.state.message,
-          chatClass: "messages__item--operator",
+          chatClass: 'messages__item--operator',
         },
       ],
     });
@@ -408,23 +391,23 @@ export default class Game extends Component {
     mySession.signal({
       data: `${this.state.myUserName},${this.state.message}`,
       to: [],
-      type: "chat",
+      type: 'chat',
     });
 
     this.setState({
-      message: "",
+      message: '',
     });
   }
 
   sendmessageByEnter(e) {
-    if (e.key === "Enter") {
+    if (e.key === 'Enter') {
       this.setState({
         messages: [
           ...this.state.messages,
           {
             userName: this.state.myUserName,
             text: this.state.message,
-            chatClass: "messages__item--operator",
+            chatClass: 'messages__item--operator',
           },
         ],
       });
@@ -433,11 +416,11 @@ export default class Game extends Component {
       mySession.signal({
         data: `${this.state.myUserName},${this.state.message}`,
         to: [],
-        type: "chat",
+        type: 'chat',
       });
 
       this.setState({
-        message: "",
+        message: '',
       });
     }
   }
@@ -484,8 +467,7 @@ export default class Game extends Component {
         // --- 3) Specify the actions when events take place in the session ---
 
         // On every new Stream received...
-        // 새로운 스트림이 발생할때마다 받아서 subscribers에 저장함
-        mySession.on("streamCreated", (event) => {
+        mySession.on('streamCreated', (event) => {
           // Subscribe to the Stream to receive it. Second parameter is undefined
           // so OpenVidu doesn't create an HTML video by its own
           let subscriber = mySession.subscribe(event.stream, undefined);
@@ -497,17 +479,14 @@ export default class Game extends Component {
             subscribers,
           });
         });
-        // 아까 start타입으로 시그널 트리거
-        mySession.on("signal:start", (event) => {
+        mySession.on('signal:start', (event) => {
           this.setState({ gameId: event.data });
           this.start();
         });
-        mySession.on("signal:count", (event) => {
-          let countdata = event.data.split(",");
-
+        mySession.on('signal:count', (event) => {
+          let countdata = event.data.split(',');
           this.state.ranking.set(countdata[0], countdata[1]);
           this.setState({
-            // 키와 밸류가 한 쌍인
             sortedrank: new Map(
               [...this.state.ranking.entries()].sort((a, b) => b[1] - a[1])
             ),
@@ -521,11 +500,8 @@ export default class Game extends Component {
           });
           this.renderTableData();
         });
-        // 누군가 chat 시그널 보냈을 때 반응
-        // 사전질문 리스트에 저장하고 누가 들어오면 그 리스트를 [클라이언트 ]보내줘라 누군가 연결이 됐어 그럼 걔한테 시그널 타입 A를 보내면 그 타입 A에는 사전질문 리스트를 담아서 보내
-        // 그럼 유저는 타입 A라는 시그널이 들어오면 사전질문 리스트 받으니까 그거를 setstate로 갱신
-        mySession.on("signal:chat", (event) => {
-          let chatdata = event.data.split(",");
+        mySession.on('signal:chat', (event) => {
+          let chatdata = event.data.split(',');
           if (chatdata[0] !== this.state.myUserName) {
             this.setState({
               messages: [
@@ -533,53 +509,52 @@ export default class Game extends Component {
                 {
                   userName: chatdata[0],
                   text: chatdata[1],
-                  chatClass: "messages__item--visitor",
+                  chatClass: 'messages__item--visitor',
                 },
               ],
             });
           }
         });
         // On every Stream destroyed...
-        mySession.on("streamDestroyed", (event) => {
+        mySession.on('streamDestroyed', (event) => {
           // Remove the stream from 'subscribers' array
           this.updateHost().then((clientData) => {
             const host = JSON.parse(clientData).clientData;
-
             mySession
               .signal({
                 data: host,
                 to: [],
-                type: "update-host",
+                type: 'update-host',
               })
               .then(() => {})
               .catch((error) => {});
           });
           this.deleteSubscriber(event.stream.streamManager);
         });
-        mySession.on("signal:update-host", (event) => {
+        mySession.on('signal:update-host', (event) => {
           if (this.state.myUserName === event.data) {
             this.setState({ ishost: true });
           }
         });
         // On every asynchronous exception...
-        mySession.on("exception", (exception) => {});
+        mySession.on('exception', (exception) => {});
 
-        // --- 4) 유효한 사용자 토큰으로 세션에 연결 ---
+        // --- 4) Connect to the session with a valid user token ---
 
-        // 'getToken' 메소드는 서버 측에서 수행해야 할 작업을 시뮬레이션하는 것
-        // 백엔드에서 'token'파라미터가 검색되고 반환되어야함
+        // 'getToken' method is simulating what your server-side should do.
+        // 'token' parameter should be retrieved and returned by your own backend
 
+        // First param is the token got from OpenVidu Server. Second param can be retrieved by every user on event
         // 'streamCreated' (property Stream.connection.data), and will be appended to DOM as the user's nickname
         this.getToken().then((token) => {
-          // 첫 번째 매개 변수는 OpenVidu Server에서 가져온 토큰. 두번째 매개 변수는 이벤트에 대한 모든 유저로부터 검색됨
+          // First param is the token got from OpenVidu Server. Second param can be retrieved by every user on event
           // 'streamCreated' (property Stream.connection.data), and will be appended to DOM as the user's nickname
           mySession
             .connect(token, { clientData: this.state.myUserName })
             .then(() => {
-              // updataHost 이벤트로 해당 리스트의 첫 번째 유저를 받아와서 방장(호스트)으로 지정
               this.updateHost().then((firstUser) => {
                 const host = JSON.parse(firstUser).clientData;
-                // ishost는 각 유저들 state 구분해서 t/f 가림 나 === host이면, 나의 ishost state는 true
+
                 if (this.state.myUserName === host)
                   this.setState({ ishost: true });
               });
@@ -588,14 +563,13 @@ export default class Game extends Component {
               // Init a publisher passing undefined as targetElement (we don't want OpenVidu to insert a video
               // element: we will manage it on our own) and with the desired properties
               let publisher = this.OV.initPublisher(undefined, {
-                // 카메라랑 오디오 소스를 false 혹은 null로 하면 안켜짐
                 audioSource: undefined, // The source of audio. If undefined default microphone
                 videoSource: undefined, // The source of video. If undefined default webcam
                 publishAudio: false, // Whether you want to start publishing with your audio unmuted or not
                 publishVideo: true, // Whether you want to start publishing with your video enabled or not
-                resolution: "640x480", // The resolution of your video
+                resolution: '640x480', // The resolution of your video
                 frameRate: 30, // The frame rate of your video
-                insertMode: "APPEND", // How the video is insertㄴed in the target element 'video-container'
+                insertMode: 'APPEND', // How the video is inserted in the target element 'video-container'
                 mirror: false, // Whether to mirror your local video or not
               });
 
@@ -615,22 +589,22 @@ export default class Game extends Component {
     );
   }
 
+  
   // 오픈비두 API를 사용해 현재 방의 참가자 정보 획득(session 필요)
   // 일단은 CORS 때문에 'Access-Control-Allow-Origin'으로 해결했으나 실제로 구현할 땐..?
   updateHost() {
     return new Promise((resolve, reject) => {
       $.ajax({
-        type: "GET",
-        url: `${"https://localhost:4443/room/waiting/"}${
+        type: 'GET',
+        url: `${'https://localhost:4443/api/sessions/'}${
           this.state.mySessionId
-        // url: `${"https://i6e201.p.ssafy.io:4443/room/waiting/"}${
-        //   this.state.mySessionId
         }/connection`,
         headers: {
-          Authorization: "Basic " + btoa("OPENVIDUAPP:" + this.OPENVIDU_SERVER_SECRET),
-          "Content-Type": "application/json",
-          "Access-Control-Allow-Origin": "*",
-          "Access-Control-Allow-Methods": "GET,POST",
+          Authorization: `Basic ${btoa(
+            `OPENVIDUAPP:${OPENVIDU_SERVER_SECRET}`
+          )}`,
+          'Access-Control-Allow-Origin': '*',
+          'Access-Control-Allow-Methods': 'GET,POST',
         },
         success: (response) => {
           let content = response.content;
@@ -651,11 +625,10 @@ export default class Game extends Component {
         started: false,
         timer: true,
         count: 0,
-        status: "up",
-        // SKWN
+        status: 'up',
         ranking: new Map(),
         sortedrank: new Map(),
-        readystate: "ready",
+        readystate: 'ready',
       });
       music.loop = true;
       music.play();
@@ -666,7 +639,7 @@ export default class Game extends Component {
     }, 5000);
     setTimeout(() => {
       this.setState({
-        readystate: "start",
+        readystate: 'start',
         rankdata: [],
       });
       this.renderTableData();
@@ -680,31 +653,28 @@ export default class Game extends Component {
   chattoggle() {
     this.setState({ chaton: !this.state.chaton });
   }
-// 시작버튼
+
   startButton() {
     let mySession = this.state.session;
     axios1
-      // 방에 대한 토큰
-      .put(`/room/meeting/start?roomId=${this.state.mySessionId}`)
+      .put(`/api/game/start?roomId=${this.state.mySessionId}`)
       .then((response) => {
         mySession.signal({
-          // 시그널을 보낸다는 거는 데이터와 타입을 클라이언트에 보냄
-          // start라는 시그널을 받은 클라이언트들은 실행
           data: response.data.gameId,
-          type: "start",
+          type: 'start',
         });
       });
   }
 
-
+  // 시작버튼
   leaveSession() {
     // --- 7) Leave the session by calling 'disconnect' method over the Session object ---
     const mySession = this.state.session;
     if (mySession) {
       mySession.disconnect();
     }
-    axios
-      .put("/room/meeting/finish", {
+    axios1
+      .put('/api/rooms', {
         roomId: this.state.mySessionId,
       })
       .then(() => {
@@ -712,15 +682,15 @@ export default class Game extends Component {
         this.OV = null;
         this.setState({
           leaved: true,
-          session: "",
+          session: '',
           subscribers: [],
-          mySessionId: "SessionA",
+          mySessionId: 'SessionA',
           myUserName: `Participant${Math.floor(Math.random() * 100)}`,
           mainStreamManager: undefined,
           publisher: undefined,
         });
 
-        this.props.history.push("/");
+        this.props.history.push('/');
       });
   }
 
@@ -728,17 +698,17 @@ export default class Game extends Component {
     switch (this.state.gametype) {
       case 2: // 푸쉬업
         this.setState({
-          URL: "https://teachablemachine.withgoogle.com/models/2XrVxIc_1/",
+          URL: 'https://teachablemachine.withgoogle.com/models/2XrVxIc_1/',
         });
         break;
       case 3: // 버피
         this.setState({
-          URL: "https://teachablemachine.withgoogle.com/models/j1ifbpLKk/",
+          URL: 'https://teachablemachine.withgoogle.com/models/j1ifbpLKk/',
         });
         break;
       case 1: // 스쿼트
         this.setState({
-          URL: "https://teachablemachine.withgoogle.com/models/JCxTWXNy4/",
+          URL: 'https://teachablemachine.withgoogle.com/models/JCxTWXNy4/',
         });
         break;
     }
@@ -748,7 +718,7 @@ export default class Game extends Component {
     // Refer to tmImage.loadFromFiles() in the API to support files from a file picker
     // Note: the pose library adds a tmPose object to your window (window.tmPose)
     this.setState({
-      // model: await tmPose.load(modelURL, metadataURL),
+      model: await tmPose.load(modelURL, metadataURL),
     });
   }
 
@@ -797,16 +767,16 @@ export default class Game extends Component {
           .signal({
             data: `${this.state.myUserName},${this.state.count}`, // Any string (optional)
             to: [], // Array of Connection objects (optional. Broadcast to everyone if empty)
-            type: "count", // The type of message (optional)
+            type: 'count', // The type of message (optional)
           })
           .then(() => {
             this.setState({ check: false });
           })
           .catch((error) => {});
       }
-      this.setState({ status: "up" });
+      this.setState({ status: 'up' });
     } else if (prediction[1].probability.toFixed(2) > 0.99) {
-      this.setState({ status: "down" });
+      this.setState({ status: 'down' });
       this.setState({ check: true });
     }
   }
@@ -828,16 +798,16 @@ export default class Game extends Component {
           .signal({
             data: `${this.state.myUserName},${this.state.count}`, // Any string (optional)
             to: [], // Array of Connection objects (optional. Broadcast to everyone if empty)
-            type: "count", // The type of message (optional)
+            type: 'count', // The type of message (optional)
           })
           .then(() => {
             this.setState({ check: false });
           })
           .catch(() => {});
       }
-      this.setState({ status: "up" });
+      this.setState({ status: 'up' });
     } else if (prediction[1].probability.toFixed(2) > 0.99) {
-      this.setState({ status: "down" });
+      this.setState({ status: 'down' });
       this.setState({ check: true });
     }
   }
@@ -859,16 +829,16 @@ export default class Game extends Component {
           .signal({
             data: `${this.state.myUserName},${this.state.count}`, // Any string (optional)
             to: [], // Array of Connection objects (optional. Broadcast to everyone if empty)
-            type: "count", // The type of message (optional)
+            type: 'count', // The type of message (optional)
           })
           .then(() => {
             this.setState({ check: false });
           })
           .catch(() => {});
       }
-      this.setState({ status: "up" });
+      this.setState({ status: 'up' });
     } else if (prediction[1].probability.toFixed(2) > 0.99) {
-      this.setState({ status: "down" });
+      this.setState({ status: 'down' });
       this.setState({ check: true });
     }
   }
@@ -880,11 +850,11 @@ export default class Game extends Component {
         const { nickname, count } = rank; // destructuring
         let finalRanking;
         if (index === 0) {
-          finalRanking = "🥇";
+          finalRanking = '🥇';
         } else if (index === 1) {
-          finalRanking = "🥈";
+          finalRanking = '🥈';
         } else if (index === 2) {
-          finalRanking = "🥉";
+          finalRanking = '🥉';
         }
         if (index < 3) {
           return (
@@ -907,29 +877,43 @@ export default class Game extends Component {
 
   createSession(sessionId) {
     return new Promise((resolve, reject) => {
-      let data = JSON.stringify({ customSessionId: sessionId });
+      var data = JSON.stringify({ customSessionId: sessionId });
       axios
-        .post(this.OPENVIDU_SERVER_URL + "/openvidu/api/sessions", data, {
+        .post(OPENVIDU_SERVER_URL + "/openvidu/api/sessions", data, {
           headers: {
             Authorization:
-            "Basic " + btoa("OPENVIDUAPP:" + this.OPENVIDU_SERVER_SECRET),
+              "Basic " + btoa("OPENVIDUAPP:" + OPENVIDU_SERVER_SECRET),
             "Content-Type": "application/json",
           },
         })
         .then((response) => {
+          console.log("CREATE SESION", response);
           resolve(response.data.id);
         })
         .catch((response) => {
-          let error = { ...response };
-          if (error?.response?.status === 409) {
+          var error = Object.assign({}, response);
+          if (error.response && error.response.status === 409) {
             resolve(sessionId);
-          } else if (
-            window.confirm(
-              `No connection to OpenVidu Server. This may be a certificate error at "${OPENVIDU_SERVER_URL}"\n\nClick OK to navigate and accept it. ` +
-                `If no certificate warning is shown, then check that your OpenVidu Server is up and running at "${OPENVIDU_SERVER_URL}"`
-            )
-          ) {
-            window.location.assign(`${OPENVIDU_SERVER_URL}/accept-certificate`);
+          } else {
+            console.log(error);
+            console.warn(
+              "No connection to OpenVidu Server. This may be a certificate error at " +
+                OPENVIDU_SERVER_URL
+            );
+            if (
+              window.confirm(
+                'No connection to OpenVidu Server. This may be a certificate error at "' +
+                  OPENVIDU_SERVER_URL +
+                  '"\n\nClick OK to navigate and accept it. ' +
+                  'If no certificate warning is shown, then check that your OpenVidu Server is up and running at "' +
+                  OPENVIDU_SERVER_URL +
+                  '"'
+              )
+            ) {
+              window.location.assign(
+                OPENVIDU_SERVER_URL + "/accept-certificate"
+              );
+            }
           }
         });
     });
@@ -940,23 +924,19 @@ export default class Game extends Component {
       let data = {};
       axios
         .post(
-          this.OPENVIDU_SERVER_URL +
-            "/openvidu/api/sessions/" +
-            sessionId +
-            "/connection",
+          `${OPENVIDU_SERVER_URL}/openvidu/api/sessions/${sessionId}/connection`,
           data,
           {
             headers: {
-              Authorization:
-              "Basic " + btoa("OPENVIDUAPP:" + this.OPENVIDU_SERVER_SECRET),
-            "Content-Type": "application/json",
+              Authorization: `Basic ${btoa(
+                `OPENVIDUAPP:${OPENVIDU_SERVER_SECRET}`
+              )}`,
+              'Content-Type': 'application/json',
             },
           }
         )
-        // 서버로부터 응답 -> 그럼 여기에 유저네임이라던가 면접유형들이 아하 그럼 이게 이제 우리 스테이트에 어디에 담겨? 토큰에? 응응 아하 아하
         .then((response) => {
           resolve(response.data.token);
-          // respons2.sessionID
         })
         .catch((error) => reject(error));
     });
@@ -983,14 +963,12 @@ export default class Game extends Component {
     };
     const messages = this.state.messages;
     const bull = <span className={classes.bullet}>•</span>;
-    // const { mypage } = this.props;
-    // const { badgesOwned } = mypage;
+   
 
     return (
       <Wrapper>
         <NavWrapper>
           <HeaderWrapper>
-            <Logo src={logo} />
             <LeftList>
               <span>{this.state.headerText}</span>
             </LeftList>
@@ -1039,7 +1017,7 @@ export default class Game extends Component {
                 />
               )}
 
-              {/* {this.state.ishost && this.state.startbuttonstate ? ( */}
+              {this.state.ishost && this.state.startbuttonstate ? (
                 <Sbutton
                   className={classes.button}
                   type="primary"
@@ -1047,7 +1025,7 @@ export default class Game extends Component {
                 >
                   게임시작
                 </Sbutton>
-              {/* ) : null} */}
+              ) : null}
               <Sbutton
                 className={classes.button}
                 type="primary"
@@ -1090,9 +1068,9 @@ export default class Game extends Component {
                           scope="row"
                           align="center"
                         >
-                          {index + 1 === 1 && "🥇"}
-                          {index + 1 === 2 && "🥈"}
-                          {index + 1 === 3 && "🥉"}
+                          {index + 1 === 1 && '🥇'}
+                          {index + 1 === 2 && '🥈'}
+                          {index + 1 === 3 && '🥉'}
                           {index + 1 >= 4 && index + 1}
                         </BodyTableCell>
                         <BodyTableCell align="center">
@@ -1107,6 +1085,27 @@ export default class Game extends Component {
                 </TableBody>
               </Table>
             </TableContainer>
+            {/* <BadgesContainer>
+              {badgesOwned.length !== 0 && (
+                <Title>뱃지를 획득하셨습니다! 🏆</Title>
+              )}
+              <Badges>
+                {badgesOwned &&
+                  badgesOwned.map((badge) => {
+                    const [kind, level] = badge;
+
+                    return (
+                      <BadgeContainer key={[kind, level]}>
+                        <Badge
+                          key={[kind, level]}
+                          src={badgeImages[kind][level][0]}
+                        />
+                        <span>{badgeImages[kind][level][2]}</span>
+                      </BadgeContainer>
+                    );
+                  })}
+              </Badges>
+            </BadgesContainer> */}
             <RankDialogActions>
               <CancelButton
                 onClick={() => {
@@ -1116,21 +1115,21 @@ export default class Game extends Component {
             </RankDialogActions>
           </RankDialogContent>
         </RankDialog>
-        {/* {this.state.arrow ? ( */}
+        {this.state.arrow ? (
           <div
-            className={`arrow-container ${this.state.check ? "rotate" : ""}`}
+            className={`arrow-container ${this.state.check ? 'rotate' : ''}`}
           >
             <div className="chevron" />
             <div className="chevron" />
             <div className="chevron" />
           </div>
-        {/* ) : null} */}
-        {/* {this.state.timer ? (
+        ) : null}
+        {this.state.timer ? (
           <div className="timer-wrapper">
             <CountdownCircleTimer
               isPlaying
               duration={30}
-              colors={[["#004777", 0.33], ["#F7B801", 0.33], ["#A30000"]]}
+              colors={[['#004777', 0.33], ['#F7B801', 0.33], ['#A30000']]}
               onComplete={() => {
                 setTimeout(() => {
                   if (this.state.rankdata) {
@@ -1144,7 +1143,7 @@ export default class Game extends Component {
                     rankdata: [],
                     timer: false,
                     arrow: false,
-                    status: "up",
+                    status: 'up',
                     startbuttonstate: true,
                   });
                   setTimeout(() => {
@@ -1152,41 +1151,42 @@ export default class Game extends Component {
                       isRankModalOpen: true,
                     });
                   }, 700);
-                  axios1.post("/api/game/end", {
-                    count: this.state.count,
-                    gameId: this.state.gameId,
-                  });
-                  // .then((res) => {
-                  //   this.props.doSaveNewBadges(res.data);
-                  //   this.props.doLoadBadgesOwned();
-                  // });
+                  axios1
+                    .post('/api/game/end', {
+                      count: this.state.count,
+                      gameId: this.state.gameId,
+                    })
+                    .then((res) => {
+                      this.props.doSaveNewBadges(res.data);
+                      this.props.doLoadBadgesOwned();
+                    });
                   music.pause();
                   this.renderTableData();
                   this.setState({
                     rankdata: [],
                   });
-                  // this.props.doResetMyPageInfo();
+                  this.props.doResetMyPageInfo();
                 }, 300);
               }}
             >
               {renderTime}
             </CountdownCircleTimer>
           </div>
-        ) : null} */}
-        {/* {this.state.started ? ( */}
+        ) : null}
+        {this.state.started ? (
           <div className="demo">
             <div
               className={
                 this.state.started
-                  ? "demo__colored-blocks"
-                  : "demo__colored-blocks"
+                  ? 'demo__colored-blocks'
+                  : 'demo__colored-blocks'
               }
             >
               <div
                 className={
                   this.state.started
-                    ? "demo__colored-blocks-rotater"
-                    : "demo__colored-blocks-rotater1"
+                    ? 'demo__colored-blocks-rotater'
+                    : 'demo__colored-blocks-rotater1'
                 }
               >
                 <div className="demo__colored-block" />
@@ -1194,7 +1194,7 @@ export default class Game extends Component {
                 <div className="demo__colored-block" />
               </div>
               <div className="demo__colored-blocks-inner" />
-              <div className={this.state.started ? "demo__text" : "demo_text1"}>
+              <div className={this.state.started ? 'demo__text' : 'demo_text1'}>
                 {this.state.readystate}
               </div>
             </div>
@@ -1222,8 +1222,8 @@ export default class Game extends Component {
                 <path
                   className={
                     this.state.started
-                      ? "demo__numbers-path"
-                      : "demo__numbers-path1"
+                      ? 'demo__numbers-path'
+                      : 'demo__numbers-path1'
                   }
                   d="M-10,20 60,20 40,50 a18,15 0 1,1 -12,19 
                        Q25,44 34.4,27.4
@@ -1234,17 +1234,26 @@ export default class Game extends Component {
               </svg>
             </div>
           </div>
-        {/* ) : null} */}
-        {/* {this.state.session !== undefined ? ( */}
+        ) : null}
+        {this.state.session !== undefined ? (
           <div id="session">
             <table
               id="ranking"
-              className={`table ${this.state.arrow ? null : "invisible"}`}
+              className={`table ${this.state.arrow ? null : 'invisible'}`}
             >
               <tbody>{this.renderTableData()}</tbody>
             </table>
             <div id="video-container" className="video-container">
-              {/* {this.state.publisher !== undefined ? ( */}
+              {/* {this.state.mainStreamManager !== undefined ? (
+                <div
+                  className="stream-container"
+                >
+                  <UserVideoComponent streamManager={this.state.mainStreamManager} />
+                </div>
+              ) : null} */}
+
+              {this.state.publisher !== undefined ? (
+                
                 <div
                   className="stream-container"
                   onClick={() =>
@@ -1253,7 +1262,8 @@ export default class Game extends Component {
                 >
                   <UserVideoComponent streamManager={this.state.publisher} />
                 </div>
-              {/* ) : null} */}
+              ) : null}
+              
               {this.state.subscribers.map((sub, i) => (
                 <div
                   key={i}
@@ -1269,7 +1279,7 @@ export default class Game extends Component {
                 <div className="chat chatbox__support chatbox--active">
                   <div className="chat chatbox__header" />
                   <div className="chatbox__messages" ref="chatoutput">
-                    {this.displayElements}
+                    {/* {this.displayElements} */}
                     <Messages messages={messages} />
                     <div />
                   </div>
@@ -1298,7 +1308,7 @@ export default class Game extends Component {
               </div>
             </div>
           </div>
-        {/* // ) : null} */}
+        ) : null}
       </Wrapper>
     );
   }
@@ -1318,7 +1328,7 @@ export default class Game extends Component {
 // authSlice, homeSlice 같이 redux(중앙집중 관리형)에서 전달받은 값을 사용하는 경우
 // const mapStateToProps = (state) => ({
 //   // homeSlice
-//   // home: state.home,
+//   home: state.home,
 //   mypage: state.mypage,
 // });
 
@@ -1328,14 +1338,14 @@ export default class Game extends Component {
 //     // 빠른시작
 //     // quickStart는 import { quickStart } from './homeSlice'; 구문을 이용해서 action 가져온 것
 //     doQuickStart: (type) => dispatch(quickStart(type)),
-//     // doSaveNewBadges: (resData) => dispatch(saveNewBadges(resData)),
-//     // doLoadBadgesOwned: () => dispatch(loadBadgesOwned()),
-//     // doResetMyPageInfo: () => dispatch(resetMyPageInfo()),
+//     doSaveNewBadges: (resData) => dispatch(saveNewBadges(resData)),
+//     doLoadBadgesOwned: () => dispatch(loadBadgesOwned()),
+//     doResetMyPageInfo: () => dispatch(resetMyPageInfo()),
 //   };
 // };
 
 // export default connect(mapStateToProps, mapDispatchToProps)(Game);
-
+export default Game;
 //                   // return ( // <Order>{index + 1}위</Order>
 // <Nickname>닉네임:{item.nickname}</Nickname>
 // <Count>갯수:{item.count}</Count>

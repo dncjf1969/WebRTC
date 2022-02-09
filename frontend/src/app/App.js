@@ -20,13 +20,12 @@ import Navbar from "../common/navbar/navbar";
 import Error404 from '../common/error/Error404';
 import Error500 from '../common/error/Error500';
 import Test from "../features/roomlist/test";
+import Game from "../features/game/Game";
 
 // // routes
 import PrivateRoute from '../common/routes/PrivateRoute';
 import PublicRoute from '../common/routes/PublicRoute';
 
-
-import Game from "../features/game/Game";
 const Wrapper = styled.div`
   background-color: white;
   height: 100vh;
@@ -48,8 +47,8 @@ function App() {
           <Route path="/mypage" element={<MyPage />} />
           <Route path="/roomTest" element={<VideoRoomComponent />}></Route>
           <Route path="/roomTest2" element={<TestComponent />}></Route>
-          <Route path="/test" element={<Test />}></Route>
-          <Route path="/game" element={<Game />}></Route>
+          <Route path="/test" element={<Test/>}></Route>
+          <Route path='/game' element={<Game/>}></Route>
         </Routes>
       </Router>
     </Wrapper>

@@ -6,7 +6,7 @@ class TestQuesList extends Component {
         super(props);
 
         this.makeQues = this.makeQues.bind(this);
-
+        this.handleEnter = this.handleEnter.bind(this);
         this.state = {
         };
     }
@@ -56,7 +56,31 @@ class TestQuesList extends Component {
             		console.error(error);
             	});
     }
+
+    // deleteQues(){
+    //     let temp = document.getElementById("input1").value;
+    //     document.getElementById("input1").value = "";
+    //     console.log(temp);
+    //     this.setState(this.props.question.filter(user => user.id !== id));
+    //     this.props.session.signal({
+    //         		data: temp,  // 보내는 내용
+    //         		to: [],         // 누구한데 보낼건지. 비워있으면 모두에게 보내는거고, 만약 세션 아이디 적으면 그 세션한데만 보내진다.
+    //         		type: 'deleteQues'   // 시그널 타입.
+    //         	})
+    //         	.then(() => {
+    //                 console.log("delete Question!");
+    //         	})
+    //         	.catch(error => {
+    //         		console.error(error);
+    //         	});
+    // }
     
+    handleEnter(event) {
+        if (event.keyCode === 13 && !this.props.ready) {
+            this.makeQues()
+        }
+    }
+
     render() {
         // const tempStyle={
         //     display:"inline-block",
@@ -109,10 +133,15 @@ class TestQuesList extends Component {
         return (
             <div style={tempStyle2}>
                 <div style={tempStyle5}>사전질문</div>
-                <input id="input1" style={tempStyle6}></input>
-                <button onClick={this.makeQues}>질문 추가</button>
-                <div id="quesList"></div>
-                {/* <span>{this.props.questions}</span> */}
+                <input onKeyDown={this.handleEnter} id="input1" style={tempStyle6}></input>
+                <button onClick={this.makeQues} disabled={this.props.ready ? true : false}>질문 추가</button>
+                {this.props.questions.map((question) =>
+                <div>
+                    {question.userName}: {question.content}
+                </div>
+                      
+                
+            )}
             </div>);
     }
    

@@ -1,8 +1,8 @@
 /* eslint-disable react/destructuring-assignment */
-import React, { Component } from "react";
-import styled from "styled-components";
-import OpenViduVideoComponent from "./OvVideo";
-import "./UserVideo.css";
+import React, { Component } from 'react';
+import styled from 'styled-components';
+import OpenViduVideoComponent from './OvVideo';
+import './UserVideo.css';
 
 const StreamComponent = styled.div`
   display: flex;
@@ -38,3 +38,21 @@ export default class UserVideoComponent extends Component {
     );
   }
 }
+
+// .videocontainer
+
+// display: flex;
+// justify-content: center;
+// flex-wrap: wrap;
+// /* height: 33vh; */
+
+// .session
+
+// display: flex;
+// justify-content: center;
+
+// .stream container
+
+// display: flex;
+// justify-content: center;
+// width: 33%;
