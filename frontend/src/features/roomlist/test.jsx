@@ -15,13 +15,13 @@ function mapDispatchToProps(dispatch, ownProps) {
   }
 }
 
-function Test({token}) {
+function Test() {
   // saveToken('~~')
   // const token = window.localStorage.getItem('ovToken');
   return (
     <div>
       <h1>hi</h1>
-      <p>{token}</p>
+      
     </div>
   )
 }

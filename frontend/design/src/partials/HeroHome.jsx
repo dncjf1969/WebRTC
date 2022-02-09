@@ -8,7 +8,11 @@ function HeroHome() {
   const [videoModalOpen, setVideoModalOpen] = useState(false);
 
   return (
+<<<<<<< HEAD
+    <section className="relative">
+=======
     <section  className="relative">
+>>>>>>> jang
 
       {/* Illustration behind hero content */}
       <div className="absolute left-1/2 transform -translate-x-1/2 bottom-0 pointer-events-none" aria-hidden="true">
@@ -33,6 +37,12 @@ function HeroHome() {
         <div className="pt-32 pb-12 md:pt-40 md:pb-20">
 
           {/* Section header */}
+<<<<<<< HEAD
+          <div className="text-center pb-12 md:pb-16">
+            <h1 className="text-5xl md:text-6xl font-extrabold leading-tighter tracking-tighter mb-4" data-aos="zoom-y-out">Make your website <p className="bg-clip-text text-transparent bg-gradient-to-r from-blue-500 to-teal-400">WISH</p></h1>
+            <div className="max-w-3xl mx-auto">
+              <p className="text-xl text-gray-600 mb-8" data-aos="zoom-y-out" data-aos-delay="150">Our landing page template works on all devices, so you only have to set it up once, and get beautiful results forever.</p>
+=======
           <div style={{fontFamily: 'Noto Sans CJK KR'}} className="text-center pb-12 md:pb-16">
             <h1 className="text-5xl md:text-6xs font-extrabold leading-tighter tracking-tighter mb-4" data-aos="zoom-y-out">
               <span className="bg-clip-text text-transparent bg-gradient-to-r from-blue-500 to-teal-400">WISH</span>
@@ -45,6 +55,7 @@ function HeroHome() {
                 <span className="bg-clip-text text-transparent bg-gradient-to-r from-blue-700 to-teal-600">WISH</span>
                 는 여러분들의 비대면 화상면접을 위해 <p>시간과 장소에 구애받지 않는 면접대비 서비스를 제공합니다</p>
               </p>
+>>>>>>> jang
               <div className="max-w-xs mx-auto sm:max-w-none sm:flex sm:justify-center" data-aos="zoom-y-out" data-aos-delay="300">
                 <div>
                   <a className="btn text-white bg-blue-600 hover:bg-blue-700 w-full mb-4 sm:w-auto sm:mb-0" href="#0">Start free trial</a>
@@ -102,7 +113,11 @@ function HeroHome() {
             {/* Modal */}
             <Modal id="modal" ariaLabel="modal-headline" show={videoModalOpen} handleClose={() => setVideoModalOpen(false)}>
               <div className="relative pb-9/16">
+<<<<<<< HEAD
+                <iframe className="absolute w-full h-full" src="https://player.vimeo.com/video/174002812" title="Video" allowFullScreen></iframe>
+=======
                 <iframe className="absolute w-full h-full" src="https://player.vimeo.com/video/674524235?h=741272f65a&amp;badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479" title="Video" allowFullScreen></iframe>
+>>>>>>> jang
               </div>
             </Modal>
 

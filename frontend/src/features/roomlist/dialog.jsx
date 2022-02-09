@@ -10,8 +10,6 @@ import axios from '../../common/http-common'
 import { useNavigate } from "react-router-dom";
 import { connect } from 'react-redux';
 import { actionCreators } from '../../app/store';
-import { render } from 'react-dom';
-import TestComponent from '../roomTest2/TestComponent';
 
 function FormDialog({room}) {
   const [open, setOpen] = React.useState(false);
@@ -26,7 +24,7 @@ function FormDialog({room}) {
     setOpen(false);
   };
   
-  let navigate = useNavigate()
+  const navigate = useNavigate()
 
   const handleEnter = async () => {
     await axios

@@ -1,3 +1,4 @@
+import zIndex from '@material-ui/core/styles/zIndex';
 import React, { Component } from 'react';
 
 class TestQuesList extends Component {
@@ -59,6 +60,24 @@ class TestQuesList extends Component {
             		console.error(error);
             	});
     }
+
+    // deleteQues(){
+    //     let temp = document.getElementById("input1").value;
+    //     document.getElementById("input1").value = "";
+    //     console.log(temp);
+    //     this.setState(this.props.question.filter(user => user.id !== id));
+    //     this.props.session.signal({
+    //         		data: temp,  // 보내는 내용
+    //         		to: [],         // 누구한데 보낼건지. 비워있으면 모두에게 보내는거고, 만약 세션 아이디 적으면 그 세션한데만 보내진다.
+    //         		type: 'deleteQues'   // 시그널 타입.
+    //         	})
+    //         	.then(() => {
+    //                 console.log("delete Question!");
+    //         	})
+    //         	.catch(error => {
+    //         		console.error(error);
+    //         	});
+    // }
     
     handleEnter(event) {
         if (event.keyCode === 13 && !this.props.ready) {
@@ -82,22 +101,23 @@ class TestQuesList extends Component {
     }
 
     render() {
-        const tempStyle={
-            display:"inline-block",
-            width:"400px",
-            height:"400px",
-            marginLeft:"50px",
-        }
+        // const tempStyle={
+        //     display:"inline-block",
+        //     width:"700px",
+        //     height:"400px",
+        //     marginLeft:"50px",
+        // }
 
         const tempStyle2={
             display:"inline-block",
             width:"800px",
             height:"100px",
-            marginLeft:"200px",
+            
             backgroundColor : 'white',
             border: '1px solid black',
-            marginLeft:"250px",
-            marginTop:"50px",
+            marginLeft:"0px",
+            marginTop:"0px",
+            display:this.props.QuesDisplay,
         }
         const tempStyle3={
             display:"inline-block",

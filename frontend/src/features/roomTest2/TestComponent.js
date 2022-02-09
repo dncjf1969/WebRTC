@@ -249,17 +249,20 @@ class TestComponent extends Component {
           //this.state.nowUser = [];
 
           //temp.forEach(element => {
-          const temp2 = JSON.parse(event.connection.data);
-          console.log(temp2.clientData);
-          // 로컬 유저에 대한 정보
-          const temp3 = {
-            userName: temp2.clientData,
-            sessionID: event.connection.connectionId,
-            ready: this.readyState,
-          };
-          console.log("event다", event);
-          this.state.nowUser.push(temp3);
+          // const temp2 = JSON.parse(event.connection.data);
+          // console.log(temp2.clientData);
+          // // 로컬 유저에 대한 정보
+          // const temp3 = {
+          //   userName: temp2.clientData,
+          //   sessionID: event.connection.connectionId,
+          //   ready: this.readyState,
+          // };
+          // console.log("event다", event);
+          // this.state.nowUser.push(temp3);
 
+          // if (this.state.readyState === true) {
+          //   // 레디했다
+          // }
         });
         // 새유저가 들어왔을 때, 다른사람의 레디 정보가 반영 안됨
         this.state.session.on("signal:readyTest", (event) => {
