@@ -1,21 +1,31 @@
-import { PieChart } from "react-minimal-pie-chart";
-
-const Chart = () => {
-  const data = [
-    { title: "One", value: 30, dataEntry:2, color: "#F6CB44" },
-    { title: "Two", value: 15, color: "#E3A454" },
-    { title: "Three", value: 20, color: "#76BEE3" },
-  ];
-
-  
-
-  return (
-      <PieChart
-        data={data}
-        label={({ dataEntry }) => dataEntry.value}
-        animate
-      />
-  );
+import React from 'react';
+import {Doughnut} from 'react-chartjs-2';
+const data = {
+  labels: [
+    'Red',
+    'Green',
+    'Yellow'
+  ],
+  datasets: [{
+    data: [300, 50, 100],
+    backgroundColor: [
+    '#FF6384',
+    '#36A2EB',
+    '#FFCE56'
+    ],
+    hoverBackgroundColor: [
+    '#FF6384',
+    '#36A2EB',
+    '#FFCE56'
+    ]
+  }]
 };
-
-export default Chart;
+function App() {
+  return (
+    <div>
+        <h2>Doughnut Example</h2>
+        <Doughnut data={data} />
+    </div>
+  );
+}
+export default App;
