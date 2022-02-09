@@ -386,7 +386,7 @@ class TestComponent extends Component {
             console.log('면접관 ', this.state.viewers)
             console.log('면접자 ', this.state.viewees)
             console.log('모든유저 ', this.state.allUsers)
-          }, 1000);
+          }, 20);
           
 
         });
@@ -1016,14 +1016,22 @@ class TestComponent extends Component {
               {localUser !== undefined &&
               localUser.getStreamManager() !== undefined && (
                 <div className="stream-container" id="localUser">
+                    <div>내캠</div>
                     <StreamComponent
                       user={localUser}
                       handleNickname={this.nicknameChanged}
                     />
                 </div>
               )}
-              {this.state.subscribers.map((sub, i) => (
+              {this.state.viewers.map((sub, i) => (
                   <div key={i} className="stream-container" id="remoteUsers">
+                      <div>면접관</div>
+                      <StreamComponent user={sub} handleNickname={this.nicknameChanged} />
+                  </div>
+              ))}
+              {this.state.viewees.map((sub, i) => (
+                  <div key={i} className="stream-container" id="remoteUsers">
+                      <div>면접자</div>
                       <StreamComponent user={sub} handleNickname={this.nicknameChanged} />
                   </div>
               ))}
