@@ -67,6 +67,10 @@ export default class ToolbarComponent extends Component {
         this.props.leaveSession();
     }
 
+    toggleQues() {
+        this.props.toggleQues();
+    }
+
     toggleChat() {
         this.props.toggleChat();
     }
@@ -106,7 +110,7 @@ export default class ToolbarComponent extends Component {
                     </div>
 
                     <div className="buttonsContent">
-                        {/* <IconButton color="inherit" className="navButton" id="navMicButton" onClick={this.micStatusChanged}>
+                        <IconButton color="inherit" className="navButton" id="navMicButton" onClick={this.micStatusChanged}>
                             {localUser !== undefined && localUser.isAudioActive() ? <Mic /> : <MicOff color="secondary" />}
                         </IconButton>
 
@@ -132,17 +136,28 @@ export default class ToolbarComponent extends Component {
                         <IconButton color="inherit" className="navButton" onClick={this.switchCamera}>
                             <SwitchVideoIcon />
                         </IconButton>
+                        
                         <IconButton color="inherit" className="navButton" onClick={this.toggleFullscreen}>
                             {localUser !== undefined && this.state.fullscreen ? <FullscreenExit /> : <Fullscreen />}
                         </IconButton>
+
                         <IconButton color="secondary" className="navButton" onClick={this.leaveSession} id="navLeaveButton">
                             <PowerSettingsNew />
+<<<<<<< HEAD
                         </IconButton> */}
 
                         <IconButton color="inherit" onClick={this.toggleQues} id="navQuesButton">
                             {this.props.showNotification && <div id="point" className="" />}
                             <Tooltip title="Ques">
                                 <QuestionAnswer />
+=======
+                        </IconButton>
+
+                        <IconButton color="inherit" onClick={this.toggleQues} id="navQuesButton">
+                            {this.props.showNotification && <div id="point" className="" />}
+                            <Tooltip title="">
+                                <button />
+>>>>>>> frontend
                             </Tooltip>
                         </IconButton>
 

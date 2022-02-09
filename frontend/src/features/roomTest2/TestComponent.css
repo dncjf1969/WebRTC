@@ -35,6 +35,10 @@
 	width : 40px !important;
 }
 
+#navQuestionButton{
+  position: absolute;
+  right: 5%;
+}
 #navChatButton{
   position: absolute;
   right: 0;
