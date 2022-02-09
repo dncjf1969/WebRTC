@@ -1,8 +1,8 @@
-import React, { Component } from "react";
-import imgA from "./testImages/rion.PNG";
-import imgB from "./testImages/muzi.PNG";
-import imgC from "./testImages/neo.PNG";
-import imgD from "./testImages/prodo.PNG";
+import React, { Component } from 'react';
+import imgA from './testImages/rion.PNG';
+import imgB from './testImages/muzi.PNG';
+import imgC from './testImages/neo.PNG';
+import imgD from './testImages/prodo.PNG';
 
 class TestUserList extends Component {
     constructor(props) {
@@ -71,47 +71,34 @@ class TestUserList extends Component {
             height:"400px",
             marginLeft:"50px",
         }
-      })
-      .catch((error) => {
-        console.error(error);
-      });
-  }
 
-  render() {
-    const tempStyle = {
-      display: "inline-block",
-      width: "400px",
-      height: "400px",
-      marginLeft: "50px",
-    };
+        const tempStyle2={
+            display:"inline-block",
+            width:"500px",
+            height:"400px",
+            marginLeft:"200px",
+            backgroundColor : 'white',
+            border: '1px solid black',
 
-    const tempStyle2 = {
-      display: "inline-block",
-      width: "500px",
-      height: "400px",
-      marginLeft: "200px",
-      backgroundColor: "white",
-      border: "1px solid black",
-    };
-    const tempStyle3 = {
-      display: "inline-block",
-      width: "500px",
-      height: "100px",
-      marginLeft: "200px",
-      backgroundColor: "white",
-      border: "1px solid black",
-    };
+        }
+        const tempStyle3={
+            display:"inline-block",
+            width:"500px",
+            height:"100px",
+            marginLeft:"200px",
+            backgroundColor : 'white',
+            border: '1px solid black',
+        }
 
-    const tempStyle4 = {
-      float: "left",
-      width: "100px",
-      height: "100px",
-    };
+        const tempStyle4={
+            float: "left",
+            width:"100px",
+            height:"100px",
+        }
 
-    const tempStyle5 = {
-      fontSize: "14pt",
-    };
-    const { role } = this.state;
+        const tempStyle5={
+            fontSize: "14pt"
+        }
 
         
         
