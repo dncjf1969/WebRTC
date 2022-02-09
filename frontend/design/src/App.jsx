@@ -14,6 +14,8 @@ import Login from './pages/Login';
 import SignUp from './pages/SignUp';
 import ResetPassword from './pages/ResetPassword';
 import WaitingList from './pages/WaitingList';
+import Game from './pages/Openvidu/Game';
+
 function App() {
 
   const location = useLocation();
@@ -40,7 +42,8 @@ function App() {
         <Route path="/Login" element={<Login />} />
         <Route path="/signup" element={<SignUp />} />
         <Route path="/reset-password" element={<ResetPassword />} />
-        <Route path="/waitinglist:id" element={<WaitingList />} />
+        <Route path="/waitinglist" element={<WaitingList />} />
+        <Route path="/waitingroom" element={<Game />} />
       </Routes>
     </>
   );

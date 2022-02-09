@@ -75,20 +75,20 @@ function CustomizedInputBase() {
     };
     console.log(data)
     
-    // // console.log("아이디 버튼 활성화", ID);
-    // await axios
-    //   .post(`/room/waiting`, data)
-    //   .then((res) => {
-    //     console.log(res)
-    //     const roomId = res.data.roomId
-    //     window.localStorage.setItem('roomId', roomId);
-    //     navigate('/roomtest2')
-    //     return res.data;
-    //   })
-    //   .catch((err) => {
-    //     console.log(err)
-    //     return err;
-    //   });
+    // console.log("아이디 버튼 활성화", ID);
+    await axios
+      .post(`/room/waiting`, data)
+      .then((res) => {
+        console.log(res)
+        const roomId = res.data.roomId
+        window.localStorage.setItem('roomId', roomId);
+        navigate('/roomtest2')
+        return res.data;
+      })
+      .catch((err) => {
+        console.log(err)
+        return err;
+      });
       
     
   };
