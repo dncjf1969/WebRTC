@@ -930,7 +930,7 @@ class TestComponent extends Component {
         /> */}
 
         <div id="layout" className="bounds">
-          {/* {this.state.isStart ? null : 
+          {this.state.isStart ? null : 
           <TestUserList
             session={this.state.session}
             subscribers={this.state.subscribers}
@@ -952,7 +952,7 @@ class TestComponent extends Component {
             localUser={localUser}
           />
           }
-          {this.state.isStart ? <h1>START</h1> : null} */}
+          {this.state.isStart ? <h1>START</h1> : null}
           {/* 여기까지가 대기방 */}
 
           <div id="video-container" className="video-container">
