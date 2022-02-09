@@ -123,6 +123,8 @@ class TestComponent extends Component {
       viewees: [],
       // 면접관이 질문당 평가하고 이벤트 보낼때 몇명이 평가했는지 보기위해
       evalnum: 0,
+      // 다른 면접관이 모두 평가하길 기다리는 상태
+      evalWaiting: false,
     };
     console.log("state다");
     console.log(this.state);
@@ -399,14 +401,19 @@ class TestComponent extends Component {
           
           // 면접관이 평가완료 하고 버튼눌렀을때
           this.state.session.on('signal:next', (event) => {
+              // 내가보낸신호면
+              if (event.from.connectionId === localUser.connectionId) {
+                this.setState({evalWaiting: true})
+              }
               console.log(event)
               let evalnum = this.state.evalnum + 1
-              // 모두평가완료
+              // 모두평가완료했다면
               if (evalnum === this.state.viewers.length) {
-                this.setState({evalnum: 0})
+                this.setState({evalnum: 0, evalWaiting: false})
                 this.nextViewee();
+
               } else {
-                this. setState({evalnum: evalnum})
+                this.setState({evalnum: evalnum})
               }
             }
           );
@@ -954,6 +961,7 @@ class TestComponent extends Component {
     }
   }
 
+
   render() {
     const mySessionId = this.state.mySessionId;
     const localUser = this.state.localUser;
@@ -1079,6 +1087,7 @@ class TestComponent extends Component {
               viewers={this.state.viewers}
               viewee={this.state.mainStreamManager}
               session={this.state.session}
+              evalWaiting={this.state.evalWaiting}
             />
           }
           

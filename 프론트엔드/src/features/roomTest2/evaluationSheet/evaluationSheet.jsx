@@ -19,7 +19,6 @@ class EvaluationSheet extends Component {
       document.getElementById("question").value = "";
       document.getElementById("question").value = "";
       document.getElementById("question").value = "";
-      
       // 이부분에서 axios요청 보냄 //
 
       const viewers = this.props.viewers.map((viewer) => viewer.streamManager.stream.connection)
@@ -99,7 +98,7 @@ class EvaluationSheet extends Component {
                 <input onKeyDown={this.handleEnter} id="question" style={tempStyle6} placeholder="질문선택"></input>
                 <input onKeyDown={this.handleEnter} id="rate" style={tempStyle6} placeholder="평점"></input>
                 <input onKeyDown={this.handleEnter} id="comment" style={tempStyle6} placeholder="코멘트"></input>
-                <button onClick={this.handleNextBtn}>NEXT</button>
+                <button onClick={this.handleNextBtn} disabled={this.props.evalWaiting?true:false}>NEXT</button>
             </div>);
     }
    
