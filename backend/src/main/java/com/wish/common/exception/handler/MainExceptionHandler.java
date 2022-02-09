@@ -30,27 +30,10 @@ import com.wish.common.exception.custom.RoomException;
  */
 
 @ControllerAdvice
-public class NotFoundHandler {
-	@Value("${spa.default-file}")
-	String defaultFile;
+public class MainExceptionHandler {
+//	@Value("${spa.default-file}")
+//	String defaultFile;
 	 
-	@ExceptionHandler(NoHandlerFoundException.class)
-	public ResponseEntity<String> renderDefaultPage(NoHandlerFoundException ex) {
-		String url = ex.getRequestURL();
-		if(url.startsWith("/api/")) {
-			return ResponseEntity.notFound().build();
-		}else {
-			try {
-				ClassPathResource classPathResource = new ClassPathResource(defaultFile);
-				InputStream inputStream = classPathResource.getInputStream();
-    				String body = StreamUtils.copyToString(inputStream, Charset.defaultCharset());
-			    return ResponseEntity.ok().contentType(MediaType.TEXT_HTML).body(body);
-			} catch (IOException e) {
-				e.printStackTrace();
-				return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("There was an error completing the action.");
-			}
-		}
-	}
 	
 	
 	
@@ -59,6 +42,7 @@ public class NotFoundHandler {
         //log.error("handleBusinessException", e);
         final ErrorCode errorCode = e.getErrorCode();
         final BaseRes response = BaseRes.of(errorCode);
-        return new ResponseEntity<>(response, HttpStatus.valueOf(errorCode.getStatus()));
+        return new ResponseEntity<>(response, HttpStatus.valueOf(errorCode.getStatusCode()));
     }
+	
 }

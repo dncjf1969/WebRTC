@@ -6,14 +6,13 @@ public class RoomException extends RuntimeException{
 
 	private ErrorCode errorCode;
 	
-	public RoomException(ErrorCode errorCode) {
+	public RoomException(int roomId, ErrorCode errorCode) {
 		// TODO Auto-generated constructor stub
-		super(errorCode.getMessage());
+		super(roomId + errorCode.getMessage());
 		this.errorCode = errorCode;
 	}
 	
 	public ErrorCode getErrorCode() {
 		return errorCode;
 	}
-	
 }

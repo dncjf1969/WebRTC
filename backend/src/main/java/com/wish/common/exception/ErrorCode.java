@@ -2,11 +2,14 @@ package com.wish.common.exception;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
+import lombok.Getter;
+
+@Getter
 @JsonFormat(shape = JsonFormat.Shape.OBJECT)
 public enum ErrorCode {
 	
 	//ROOM
-	NOT_FOUND_ROOM(599, "R001", "Room is not Found");
+	NOT_FOUND_ROOM(501, "R001", " Room is not Found");
 		
 	
 	private final int statusCode;
@@ -20,16 +23,5 @@ public enum ErrorCode {
 		this.message = message;
 	}
 
-	public int getStatusCode() {
-		return statusCode;
-	}
-
-	public String getErrorCode() {
-		return errorCode;
-	}
-
-	public String getMessage() {
-		return message;
-	}
 	
 }

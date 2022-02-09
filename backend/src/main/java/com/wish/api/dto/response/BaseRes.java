@@ -2,6 +2,8 @@ package com.wish.api.dto.response;
 
 import org.springframework.http.HttpStatus;
 
+import com.wish.common.exception.ErrorCode;
+
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
@@ -36,4 +38,12 @@ public class BaseRes {
 		body.statusCode = statusCode;
 		return body;
 	}
+	
+	public static BaseRes of(ErrorCode errorCode) {
+		BaseRes body = new BaseRes();
+		body.message = errorCode.getMessage();
+		body.statusCode = errorCode.getStatusCode();
+		return body;
+	}
+	
 }
