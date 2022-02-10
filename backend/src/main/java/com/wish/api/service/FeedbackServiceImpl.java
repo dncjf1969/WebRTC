@@ -5,8 +5,10 @@ import com.wish.api.dto.response.FeedbackRes;
 import com.wish.common.exception.custom.feedback.CreateFeedbackException;
 import com.wish.common.exception.custom.feedback.DeleteFeedbackException;
 import com.wish.common.exception.custom.feedback.ReadFeedbackException;
+import com.wish.api.dto.response.MeetingCountRes;
 import com.wish.db.entity.Feedback;
 import com.wish.db.repository.FeedbackRepository;
+import com.wish.db.repository.FeedbackRepositorySupport;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -20,6 +22,8 @@ public class FeedbackServiceImpl implements FeedbackService {
 
 	@Autowired
 	FeedbackRepository feedbackRepository;
+	@Autowired
+	FeedbackRepositorySupport feedbackRepositorySupport;
 
 	// 사용자 아이디에 해당하는 피드백 가져오기
 	@Override
@@ -64,5 +68,23 @@ public class FeedbackServiceImpl implements FeedbackService {
 		} catch (DeleteFeedbackException e) {
 			e.printStackTrace();
 		}
+	}
+
+	@Override
+	public List<MeetingCountRes> getMyMeetingCounts(String memberId) {
+		List<Long> countList = feedbackRepositorySupport.countById(memberId).get();
+		List<MeetingCountRes> res = new ArrayList<MeetingCountRes>();
+		
+		long count = countList.get(0);
+		int cnt = (int) count;
+		res.add(MeetingCountRes.of("인성",cnt));
+		
+
+		count = countList.get(1);
+		cnt = (int) count;
+		res.add(MeetingCountRes.of("직무",cnt));
+		
+		return res;
+		
 	}
 }

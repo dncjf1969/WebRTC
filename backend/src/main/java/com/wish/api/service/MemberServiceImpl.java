@@ -56,7 +56,7 @@ public class MemberServiceImpl implements MemberService {
 			member.setPassword(passwordEncoder.encode(memberSignupInfo.getPassword()));
 			member.setName(memberSignupInfo.getName());
 			member.setEmail(memberSignupInfo.getEmail());
-			member.setSignUpDate( new Date());
+			member.setSignUpDate(member.getSignUpDate());
 			
 //				List<String> temp = member.getRole();
 //				temp.add("USER");
