@@ -36,7 +36,6 @@ import InterviewList from './interviewList';
 // action
 import { deleteToken } from '../../common/JWT-common';
 // import RatingStats from './ratingStats';
-import { loadUser } from './mypageSlice';
 
 // 전체 컨테이너
 const Wrapper = styled(Container)`
@@ -168,6 +167,19 @@ const ProfileTooltip = withStyles(() => ({
   },
 }))(Tooltip);
 
+// 유저 정보 불러오기
+export const loadUser = createAsyncThunk(
+  'LOAD_USER',
+  async (arg, { rejectWithValue }) => {
+    try {
+      const response = await axios.get('api/user/me');
+      return response.data;
+    } catch (err) {
+      return rejectWithValue(err.response);
+    }
+  }
+);
+
 //slice
 const changeUserProfile = createAsyncThunk(
   'CHANGE_USER_PROFILE',
@@ -281,6 +293,7 @@ export default function MyPage() {
       const response = await axios.get(`/feedback/count?memberId=${userInfo}`)
       console.log(response)
       setPersonality(response.data.filter(info => info.type === '인성')[0].count)
+      // backend 팀에 말해서 추가해달라고 요청 => 인성/직무 , 토론, PT
       setDebate(response.data.filter(info => info.type === '인성')[0].count)
       setPT(response.data.filter(info => info.type === '인성')[0].count)
 
@@ -421,10 +434,10 @@ export default function MyPage() {
               오늘도 즐거운 면접 연습!!!!!!😀
             </Message>
           <InterviewList/>
-          <Chart />
+          <Chart Personality={Personality} Debate={Debate} PT={PT} />
           {/* <RatingStats /> */}
           <Footer>
-            {/* <DeleteModal /> */}
+            <DeleteModal nickname={nickname} />
           </Footer>
         </Main>
       </Wrapper>
