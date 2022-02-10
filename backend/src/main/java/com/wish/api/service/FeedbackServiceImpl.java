@@ -9,6 +9,7 @@ import com.wish.api.dto.response.MeetingCountRes;
 import com.wish.db.entity.Feedback;
 import com.wish.db.repository.FeedbackRepository;
 import com.wish.db.repository.FeedbackRepositorySupport;
+import com.wish.db.repository.MeetingRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -24,6 +25,8 @@ public class FeedbackServiceImpl implements FeedbackService {
 	FeedbackRepository feedbackRepository;
 	@Autowired
 	FeedbackRepositorySupport feedbackRepositorySupport;
+	@Autowired
+	MeetingRepository meetingRepository;
 
 	// 사용자 아이디에 해당하는 피드백 가져오기
 	@Override

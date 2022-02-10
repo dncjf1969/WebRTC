@@ -37,6 +37,7 @@ public class FeedbackRes{
 		FeedbackRes res = new FeedbackRes();
 		res.setId(feedback.getId());
 		res.setMeetingId(feedback.getMeetingId());
+		res.setMeetingName(feedback.getMeetingName());
 		res.setQuestion(feedback.getQuestion());
 		res.setComment(feedback.getComment());
 		res.setRate(feedback.getRate());

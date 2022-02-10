@@ -19,6 +19,7 @@ public class Feedback  extends BaseEntity{
 
     Long meetingId;
     String memberId;
+    String meetingName;
     String question;
     String type;
     float rate;
