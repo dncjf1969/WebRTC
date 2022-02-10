@@ -123,7 +123,7 @@ class TestUserList extends Component {
                                 <div id="ready0" style={tempStyle5}> 
                                     {this.props.ready ? '준비 완료!!!' : '준비 중...'} 
                                 </div>
-                                <button onClick={this.readyTest}> ready </button>
+                                <button onClick={this.readyTest}> {this.props.ready ? "레디 해제": "레디"}</button>
                                 
                                 {this.props.ishost && this.props.allReady ? <button onClick={this.start}>start</button> : null}                    
                                 

@@ -125,6 +125,8 @@ class TestComponent extends Component {
       evalnum: 0,
       // 다른 면접관이 모두 평가하길 기다리는 상태
       evalWaiting: false,
+      // 면접관이 평가완료 누를때마다 다음 면접자로 넘어가기위해 설정한 면접자idx
+      vieweeIdx: 0, 
     };
     console.log("state다");
     console.log(this.state);
@@ -386,12 +388,16 @@ class TestComponent extends Component {
                 viewees.push(element)
               }
             })
+            // 모든로컬에서 면접자들 똑같은순서로 진행되도록
+            viewees.sort()
+            viewees.sort((a, b) => a.connectionId < b.connectionId ? -1 : 1);
             this.setState({ 
               isStart: true, 
               allUsers: allUsers,
               viewees: viewees,
               viewers: viewers,
-              gameId: event.data
+              gameId: event.data,
+              mainStreamManager: viewees[0]
             })
             console.log('시그널받고 스타트상태', this.state.isStart)
             console.log('면접관 ', this.state.viewers)
@@ -425,6 +431,16 @@ class TestComponent extends Component {
 
   nextViewee() {
     console.log('다음참가자 들어오세요')
+    const vieweesNum = this.state.viewees.length - 1
+    let vieweeIdx = this.state.vieweeIdx
+    if (vieweeIdx === vieweesNum) {
+      vieweeIdx = 0
+    } else {
+      vieweeIdx++
+    }
+    this.handleMainVideoStream(this.state.viewees[vieweeIdx])
+    this.setState({vieweeIdx: vieweeIdx})
+
   }
 
   connectToSession() {
@@ -1059,17 +1075,13 @@ class TestComponent extends Component {
                 </div>
               )}
               {this.state.viewers.map((sub, i) => (
-                  <div key={i} className="stream-container" id="remoteUsers" onClick={() =>
-                    this.handleMainVideoStream(sub)
-                  }>
+                  <div key={i} className="stream-container" id="remoteUsers">
                       <div>면접관</div>
                       <StreamComponent user={sub} handleNickname={this.nicknameChanged} />
                   </div>
               ))}
               {this.state.viewees.map((sub, i) => (
-                  <div key={i} className="stream-container" id="remoteUsers" onClick={() =>
-                    this.handleMainVideoStream(sub)
-                  }>
+                  <div key={i} className="stream-container" id="remoteUsers">
                       <div>면접자</div>
                       <StreamComponent user={sub} handleNickname={this.nicknameChanged} />
                   </div>
