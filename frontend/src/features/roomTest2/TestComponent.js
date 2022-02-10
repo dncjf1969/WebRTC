@@ -128,6 +128,7 @@ class TestComponent extends Component {
       evalWaiting: false,
       // 면접관이 평가완료 누를때마다 다음 면접자로 넘어가기위해 설정한 면접자idx
       vieweeIdx: 0, 
+      chosenQues: '',
     };
     console.log("state다");
     console.log(this.state);
@@ -150,6 +151,7 @@ class TestComponent extends Component {
     this.checkNotification = this.checkNotification.bind(this);
     this.checkSize = this.checkSize.bind(this);
     this.updateHost = this.updateHost.bind(this);
+    this.handleChoiceQues = this.handleChoiceQues.bind(this);
   }
 
   componentDidMount() {
@@ -407,30 +409,34 @@ class TestComponent extends Component {
           }, 20);
 
           // 면접관이 평가완료 하고 버튼눌렀을때
-          this.state.session.on('signal:next', (event) => {
-              // 내가보낸신호면
-              if (event.from.connectionId === localUser.connectionId) {
-                this.setState({evalWaiting: true})
-              }
-              console.log(event)
-              let evalnum = this.state.evalnum + 1
-              // 모두평가완료했다면
-              if (evalnum === this.state.viewers.length) {
-                this.setState({evalnum: 0, evalWaiting: false})
-                this.nextViewee();
-
-              } else {
-                this.setState({evalnum: evalnum})
-              }
-            }
-          );
-
+        this.state.session.on('signal:next', (event) => {
+          // 내가보낸신호면
+          if (event.from.connectionId === localUser.connectionId) {
+            this.setState({evalWaiting: true})
+          }
+          console.log(event)
+          let evalnum = this.state.evalnum + 1
+          // 모두평가완료했다면
+          if (evalnum === this.state.viewers.length) {
+            this.setState({evalnum: 0, evalWaiting: false})
+            this.setState({chosenQues: ''})
+            this.nextViewee();
+          } else {
+            this.setState({evalnum: evalnum})
+          }
         });
-      }
-    );
+
+        this.state.session.on('signal:choiceQues', (event) => {
+          console.log(event.data)
+          this.setState({chosenQues: event.data})
+          // 내가보낸신호면
+        });
+      });
+    });
   }
 
   nextViewee() {
+    // 이부분에서 axios요청보내서 추천질문 3개 가져와서 RecommendationQues컴포넌트로 프롭 //
     console.log('다음참가자 들어오세요')
     const vieweesNum = this.state.viewees.length - 1
     let vieweeIdx = this.state.vieweeIdx
@@ -583,6 +589,7 @@ class TestComponent extends Component {
     );
   }
 
+  
   updateHost() {
     return new Promise((resolve, reject) => {
       console.log(this.OPENVIDU_SERVER_URL)
@@ -643,18 +650,6 @@ class TestComponent extends Component {
       session: undefined,
       subscribers: [],
       mySessionId: "SessionA",
-      tempNamelist: [
-        "이정정",
-        "우처리",
-        "young남",
-        "조소히",
-        "hyuna55",
-        "동준은쌈디",
-        "나는우철",
-        "용남",
-        "소힝",
-        "현아입니다",
-      ],
       myUserName: this.tempNamelist[Math.floor(Math.random() * 10)],
       localUser: undefined,
     });
@@ -979,7 +974,14 @@ class TestComponent extends Component {
     }
   }
 
-
+  handleChoiceQues(question) {
+    console.log(question)
+    setTimeout(() => {
+      this.setState({chosenQues: question})
+      console.log('핸들초이스퀘스에서 바꾼 스테이트: ', this.state.chosenQues)
+    }, 20);
+    // this.props(this.setState({chosenQues: event.target.value}))
+  }
   render() {
     const mySessionId = this.state.mySessionId;
     const localUser = this.state.localUser;
@@ -1035,6 +1037,9 @@ class TestComponent extends Component {
           {this.state.isStart ? <h1>START</h1> : null}
           {/* 여기까지가 대기방 */}
 
+          {this.state.isStart && 
+            <h1>{this.state.chosenQues}</h1>
+          }
           {this.state.isStart && 
           <div id="video-container" className="video-container">
               {/* {this.state.mainStreamManager !== undefined ? (
@@ -1102,6 +1107,8 @@ class TestComponent extends Component {
               session={this.state.session}
               questions={this.state.questions}
               mainStreamManager={this.state.mainStreamManager}
+              setState={this.setState}
+              handleChoiceQues={e => this.handleChoiceQues(e)}
             />
           }
 
@@ -1111,6 +1118,7 @@ class TestComponent extends Component {
               viewee={this.state.mainStreamManager}
               session={this.state.session}
               evalWaiting={this.state.evalWaiting}
+              chosenQues={this.state.chosenQues}
             />
           }
 
@@ -1160,8 +1168,8 @@ class TestComponent extends Component {
           headers: {
             Authorization:
               "Basic " + btoa("OPENVIDUAPP:" + this.OPENVIDU_SERVER_SECRET),
-            "Content-Type": "application/json",
-          },
+              "Content-Type": "application/json",
+            },
         })
         .then((response) => {
           console.log("CREATE SESION", response);

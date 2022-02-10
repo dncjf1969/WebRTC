@@ -7,38 +7,11 @@ class TestQuesList extends Component {
         this.makeQues = this.makeQues.bind(this);
         this.handleEnter = this.handleEnter.bind(this);
         this.handleDeleteBtn = this.handleDeleteBtn.bind(this);
+
         this.state = {
         };
     }
 
-    
-
-    // readyTest(){
-	// 	//signal을 보낸다.
-	// 	//이 signal을 받는 것은 200번째줄부터
-    //     console.log(this.props);
-	// 	this.props.session.signal({
-	// 		data: 'hello',  // 보내는 내용
-	// 		to: [],         // 누구한데 보낼건지. 비워있으면 모두에게 보내는거고, 만약 세션 아이디 적으면 그 세션한데만 보내진다.
-	// 		type: 'readyTest'   // 시그널 타입.
-	// 	})
-	// 	.then(() => {
-    //         if(this.state.isReady === true){
-    //             this.state.isReady = false;
-    //             console.log("레디 해제.")
-    //             document.getElementById("ready0").innerHTML = "준비 중.."
-                
-    //         } 
-    //         else{
-    //             this.state.isReady = true;
-    //             console.log('레디.');
-    //             document.getElementById("ready0").innerHTML = "준비 완료!"
-    //         } 
-	// 	})
-	// 	.catch(error => {
-	// 		console.error(error);
-	// 	});
-    // }
 
     makeQues(){
         let temp = document.getElementById("input1").value;
@@ -60,6 +33,9 @@ class TestQuesList extends Component {
             	});
     }
     
+
+
+
     handleEnter(event) {
         if (event.keyCode === 13 && !this.props.ready) {
             this.makeQues()
