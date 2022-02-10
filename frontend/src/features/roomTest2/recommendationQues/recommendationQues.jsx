@@ -1,10 +1,9 @@
 import React, { Component } from 'react';
 
-class recommendationQues extends Component {
+class RecommendationQues extends Component {
     constructor(props) {
         super(props);
 
-        this.makeQues = this.makeQues.bind(this);
         this.handleEnter = this.handleEnter.bind(this);
         this.handleDeleteBtn = this.handleDeleteBtn.bind(this);
         this.state = {
@@ -14,7 +13,6 @@ class recommendationQues extends Component {
     
     handleEnter(event) {
         if (event.keyCode === 13 && !this.props.ready) {
-            this.makeQues()
         }
     }
     handleDeleteBtn(event) {
@@ -83,6 +81,11 @@ class recommendationQues extends Component {
 
         return (
             <div style={tempStyle2}>
+                {this.props.questions.map((question) => 
+                <div id={question.questionId} key={question.questionId}>
+                    {question.userName} : {question.content}
+                </div>
+                )}
             
 
             </div>);
@@ -90,4 +93,4 @@ class recommendationQues extends Component {
    
 }
 
-export default recommendationQues;
+export default RecommendationQues;

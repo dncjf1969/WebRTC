@@ -16,6 +16,7 @@ import TestCharacter from "./Testcharacter/Testcharacter";
 import TestUserList from "./TestUserList/TestUserList";
 import TestQuesList from "./TestQuesList/TestQuesList";
 import EvaluationSheet from "./evaluationSheet/evaluationSheet";
+import RecommendationQues from "./RecommendationQues/RecommendationQues"
 
 import imgA from "./testImages/rion.PNG";
 import imgB from "./testImages/muzi.PNG";
@@ -1095,6 +1096,15 @@ class TestComponent extends Component {
               
             </div>
           }
+
+          {this.state.isStart && localUser.viewer &&
+            <RecommendationQues
+              session={this.state.session}
+              questions={this.state.questions}
+              mainStreamManager={this.state.mainStreamManager}
+            />
+          }
+
           {this.state.isStart && localUser.viewer &&
             <EvaluationSheet 
               viewers={this.state.viewers}
@@ -1103,10 +1113,7 @@ class TestComponent extends Component {
               evalWaiting={this.state.evalWaiting}
             />
           }
-          
-            
-          
-          
+
           {localUser !== undefined &&
             localUser.getStreamManager() !== undefined && (
               <div

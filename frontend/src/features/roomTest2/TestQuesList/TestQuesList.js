@@ -139,8 +139,6 @@ class TestQuesList extends Component {
                     {question.userName}: {question.content}
                     {question.connectionId === this.props.localUser.connectionId ? <button disabled={this.props.ready ? true : false} onClick={this.handleDeleteBtn}>X</button> : null}
                 </div>
-                      
-                
             )}
             </div>);
     }
