@@ -2,6 +2,11 @@ package com.wish.api.service;
 
 import com.wish.api.dto.request.CustomQuestionCreateReq;
 import com.wish.api.dto.request.CustomQuestionUpdateReq;
+import com.wish.common.exception.custom.question.CreateCustomQuestionException;
+import com.wish.common.exception.custom.question.DeleteAllCustomQuestionException;
+import com.wish.common.exception.custom.question.DeleteCustomQuestionException;
+import com.wish.common.exception.custom.question.ReadAllCustomQuestionException;
+import com.wish.common.exception.custom.question.UpdateCustomQuestionException;
 import com.wish.db.entity.CustomQuestion;
 import com.wish.db.repository.CustomQuestionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,50 +23,69 @@ public class CustomQuestionServiceImpl implements CustomQuestionService {
 
 	@Override
 	public List<CustomQuestion> readAllCustomQuestionList(String meetingroomId){
-		List<CustomQuestion> temp_list = customQuestionRepository.findByMeetingroomId(meetingroomId);
+		
+		List<CustomQuestion> temp_list = null;
+		try {
+			temp_list = customQuestionRepository.findByMeetingroomId(meetingroomId);
+			
+		} catch (ReadAllCustomQuestionException e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
 
 		return temp_list;
 	}
 
 	@Override
-	public int createCustomQuestion(CustomQuestionCreateReq customQuestionCreateReq){
+	public void createCustomQuestion(CustomQuestionCreateReq customQuestionCreateReq){
+		
+		try {
+			CustomQuestion customQuestion = new CustomQuestion();
+			customQuestion.setMeetingroomId(customQuestionCreateReq.getMeetingroomId());
+			customQuestion.setContent(customQuestionCreateReq.getContent());
 
-
-		CustomQuestion customQuestion = new CustomQuestion();
-		customQuestion.setMeetingroomId(customQuestionCreateReq.getMeetingroomId());
-		customQuestion.setContent(customQuestionCreateReq.getContent());
-
-		customQuestionRepository.save(customQuestion);
-
-		return 0;
+			customQuestionRepository.save(customQuestion);
+		} catch ( CreateCustomQuestionException e) {
+			e.printStackTrace();
+		}
 	}
 
 	@Override
-	public int updateCustomQuestion(CustomQuestionUpdateReq customQuestionUpdateReq){
+	public void updateCustomQuestion(CustomQuestionUpdateReq customQuestionUpdateReq){
+		
+		try {
+			CustomQuestion customQuestion = customQuestionRepository.findById(customQuestionUpdateReq.getId()).get();
+			customQuestion.setContent(customQuestionUpdateReq.getContent());
 
-		CustomQuestion customQuestion = customQuestionRepository.findById(customQuestionUpdateReq.getId()).get();
-		customQuestion.setContent(customQuestionUpdateReq.getContent());
-
-		customQuestionRepository.save(customQuestion);
-
-		return 0;
+			customQuestionRepository.save(customQuestion);
+		} catch (UpdateCustomQuestionException e) {
+			e.printStackTrace();
+		}
 	}
 
 	@Override
-	public int deleteCustomQuestion(Long id){
+	public void deleteCustomQuestion(Long id){
 
-		CustomQuestion customQuestion = customQuestionRepository.findById(id).get();
-		customQuestionRepository.delete(customQuestion);
+		try {
+			CustomQuestion customQuestion = customQuestionRepository.findById(id).get();
+			customQuestionRepository.delete(customQuestion);
 
-		return 0;
+		} catch (DeleteCustomQuestionException e) {
+			e.printStackTrace();
+		}
+
 	}
 
 	@Override
-	public int deleteAllCustomQuestion(String meetingroomId){
+	public void deleteAllCustomQuestion(String meetingroomId){
 
-		List<CustomQuestion> temp_list = customQuestionRepository.findByMeetingroomId(meetingroomId);
+		try {
+			List<CustomQuestion> temp_list = customQuestionRepository.findByMeetingroomId(meetingroomId);
+			customQuestionRepository.deleteAll(temp_list);
+			
+		} catch (DeleteAllCustomQuestionException e) {
+			e.printStackTrace();
+		}
 
-		customQuestionRepository.deleteAll(temp_list);
-		return 0;
 	}
 }

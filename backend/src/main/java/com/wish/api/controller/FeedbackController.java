@@ -57,7 +57,7 @@ public class FeedbackController {
 		
 //		String memberId = authentication.getName();
 				
-		List<FeedbackRes> res = feedbackService.getMyFeedback(memberId);
+		List<FeedbackRes> res = feedbackService.getMyFeedback(authentication.getName());
 
 		return ResponseEntity.status(200).body(res);
 	}
@@ -75,8 +75,10 @@ public class FeedbackController {
 			@ApiIgnore Authentication authentication,
 			@RequestBody @ApiParam(value="멤버Id")FeedbackCreateReq info) {
 		
-		if(feedbackService.createFeedback(info)) return ResponseEntity.status(200).body(BaseRes.of(201, success));
-		return ResponseEntity.status(401).body(BaseRes.of(401, fail));
+		feedbackService.createFeedback(info);
+		
+		return ResponseEntity.status(201).body(BaseRes.of(201, success));
+		
 	}
 	
 	@DeleteMapping
@@ -95,8 +97,9 @@ public class FeedbackController {
 		//ToDO
 		//유저 디테일이 안 생긴다면 수행 불가.로 해야함.
 		
-		if(feedbackService.deleteFeedback(feedbackId)) return ResponseEntity.status(200).body(BaseRes.of(201, success));
-		return ResponseEntity.status(401).body(BaseRes.of(401, fail));
+		feedbackService.deleteFeedback(feedbackId);
+
+		return ResponseEntity.status(201).body(BaseRes.of(201, success));
 	}
 	
 }

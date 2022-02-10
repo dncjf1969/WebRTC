@@ -1,4 +1,4 @@
-package com.wish.common.exception.handler;
+package com.wish.common.exception;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -19,7 +19,9 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.servlet.NoHandlerFoundException;
 
 import com.wish.api.dto.response.BaseRes;
-import com.wish.common.exception.ErrorCode;
+import com.wish.common.exception.custom.FeedbackException;
+import com.wish.common.exception.custom.MemberException;
+import com.wish.common.exception.custom.QuestionException;
 import com.wish.common.exception.custom.RoomException;
 
 /*
@@ -35,10 +37,32 @@ public class MainExceptionHandler {
 //	String defaultFile;
 	 
 	
-	
-	
 	@ExceptionHandler(RoomException.class)
     protected ResponseEntity<BaseRes> handleBusinessException(final RoomException e) {
+        //log.error("handleBusinessException", e);
+        final ErrorCode errorCode = e.getErrorCode();
+        final BaseRes response = BaseRes.of(errorCode);
+        return new ResponseEntity<>(response, HttpStatus.valueOf(errorCode.getStatusCode()));
+    }
+	
+	@ExceptionHandler(MemberException.class)
+    protected ResponseEntity<BaseRes> handleBusinessException(final MemberException e) {
+        //log.error("handleBusinessException", e);
+        final ErrorCode errorCode = e.getErrorCode();
+        final BaseRes response = BaseRes.of(errorCode);
+        return new ResponseEntity<>(response, HttpStatus.valueOf(errorCode.getStatusCode()));
+    }
+	
+	@ExceptionHandler(FeedbackException.class)
+    protected ResponseEntity<BaseRes> handleBusinessException(final FeedbackException e) {
+        //log.error("handleBusinessException", e);
+        final ErrorCode errorCode = e.getErrorCode();
+        final BaseRes response = BaseRes.of(errorCode);
+        return new ResponseEntity<>(response, HttpStatus.valueOf(errorCode.getStatusCode()));
+    }
+	
+	@ExceptionHandler(QuestionException.class)
+    protected ResponseEntity<BaseRes> handleBusinessException(final QuestionException e) {
         //log.error("handleBusinessException", e);
         final ErrorCode errorCode = e.getErrorCode();
         final BaseRes response = BaseRes.of(errorCode);
