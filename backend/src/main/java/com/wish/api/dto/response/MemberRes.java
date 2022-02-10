@@ -19,9 +19,6 @@ public class MemberRes{
 	@ApiModelProperty(name="아이디")
 	String userId;
 	
-	@ApiModelProperty(name="패스워드")
-	String password;
-	
 	@ApiModelProperty(name="이름")
 	String name;
 	
@@ -35,7 +32,6 @@ public class MemberRes{
 	public static MemberRes of(Member member) {
 		MemberRes res = new MemberRes();
 		res.setUserId(member.getId());
-		res.setPassword(member.getPassword());
 		res.setName(member.getName());
 		res.setEmail(member.getEmail());
 		res.setSignUpDate(member.getSignUpDate());
