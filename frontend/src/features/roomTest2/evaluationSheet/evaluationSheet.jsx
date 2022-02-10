@@ -26,8 +26,8 @@ class EvaluationSheet extends Component {
       // 면접관들에게 평가했다고 알림
       this.props.session.signal({
               data: '',  
-              to: [],        
-              type: 'next'   
+              to: [],
+              type: 'next'
             })
             .then(() => {
                   console.log('평가완료')

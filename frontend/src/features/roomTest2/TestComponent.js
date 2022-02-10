@@ -392,7 +392,7 @@ class TestComponent extends Component {
             viewees.sort()
             viewees.sort((a, b) => a.connectionId < b.connectionId ? -1 : 1);
             this.setState({ 
-              isStart: true, 
+              isStart: true,
               allUsers: allUsers,
               viewees: viewees,
               viewers: viewers,
@@ -404,7 +404,7 @@ class TestComponent extends Component {
             console.log('면접자 ', this.state.viewees)
             console.log('모든유저 ', this.state.allUsers)
           }, 20);
-          
+
           // 면접관이 평가완료 하고 버튼눌렀을때
           this.state.session.on('signal:next', (event) => {
               // 내가보낸신호면
@@ -1006,7 +1006,7 @@ class TestComponent extends Component {
           cancelClicked={this.closeDialogExtension}
         /> */}
 
-        <div id="layout" className="bounds">
+        <div className="bounds">
           
           {this.state.isStart ? null : 
           <TestUserList

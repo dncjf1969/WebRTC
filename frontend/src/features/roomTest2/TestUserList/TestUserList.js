@@ -75,7 +75,7 @@ class TestUserList extends Component {
         const tempStyle2={
             display:"inline-block",
             width:"500px",
-            height:"400px",
+            height:"200px",
             marginLeft:"200px",
             backgroundColor : 'white',
             border: '1px solid black',
@@ -125,8 +125,7 @@ class TestUserList extends Component {
                                 </div>
                                 <button onClick={this.readyTest}> {this.props.ready ? "레디 해제": "레디"}</button>
                                 
-                                {this.props.ishost && this.props.allReady ? <button onClick={this.start}>start</button> : null}                    
-                                
+                                {this.props.ishost && this.props.allReady ? <button onClick={this.start}>start</button> : null}                       
                             </div>            
                         </div>
                         <div>
