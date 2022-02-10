@@ -16,7 +16,7 @@ import ModifyUserInfo from '../features/account/modify/ModifyUserInfo';
 import TestComponent from "../features/roomTest2/TestComponent";
 import Navbar from "../common/navbar/navbar";
 import Test from "../features/roomlist/test";
-
+// import RatingStats from "../features/mypage/ratingStats";
 
 
 const Wrapper = styled.div`
@@ -42,7 +42,7 @@ function App() {
           <Route path="/test" element={<Test/>}></Route>
           <Route path="/checkpassword" element={<CheckPassword/>}></Route>
           <Route path="/modifyuserinfo" element={<ModifyUserInfo/>}></Route>
-         
+          {/* <Route path="/ratingStats" element={<RatingStats/>}></Route> */}
         </Routes>
       </Router>
     </Wrapper>

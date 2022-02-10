@@ -29,13 +29,14 @@ import profileImages from '../../assets/logo.png';
 // component
 import MyTable from './Mytable';
 import DeleteModal from './DeleteModal';
-// import Graph from './graph'
 import Chart from './chart';
+import InterviewList from './interviewList';
 
 
 // action
 import { deleteToken } from '../../common/JWT-common';
-// import { loadUser } from '../account/authSlice';
+// import RatingStats from './ratingStats';
+import { loadUser } from './mypageSlice';
 
 // 전체 컨테이너
 const Wrapper = styled(Container)`
@@ -180,32 +181,38 @@ const changeUserProfile = createAsyncThunk(
   }
 );
 
-// 유저 정보 불러오기
-export const loadUser = createAsyncThunk(
-  'LOAD_USER',
-  async (arg, { rejectWithValue }) => {
-    try {
-      const response = await axios.get('api/user/me');
-      return response.data;
-    } catch (err) {
-      return rejectWithValue(err.response);
-    }
-  }
-);
 
 export default function MyPage() {
   // const { nickname, email, img } = useSelector((state) => state.auth.user);
-  const nickname = 'lee';
-  const email = 'dncjf1969@naver.com';
-  const img = null;
-
+  const ID = window.localStorage.getItem('ID');
+  
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
+// 유저 정보
+  const [nickname, setNickname] = useState('');
+  const [email, setEmail] = useState('');
+  const [id, setId] = useState('');
+  const [signUpDate, setSignUpDate] = useState('');
+  const img = null;
+
+//방 정보
+  const [Personality, setPersonality] = useState([]);
+  const [Debate, setDebate] = useState([]);
+  const [PT, setPT] = useState([]);
+
+// 피드백 정보
+  const [meetingName, setMeetingName] = useState('');
+  const [meetingId, setMeetingId] = useState('');
+  const [rate, setRate] = useState('');
+  const [question, setQuestion] = useState('');
+  const [comment, setComment] = useState('');
 
   const [open, setOpen] = useState(false);
   const [currentImage, setCurrentImage] = useState(0);
   const [mouseState, setMouseState] = useState(false);
   const [isFlipped, setIsFlipped] = useState(false);
+
 
   const handleClick = () => {
     setIsFlipped(!isFlipped);
@@ -255,6 +262,50 @@ export default function MyPage() {
     setMouseState(false);
   };
   
+  async function myInfo (userInfo) {
+    try {
+      const response = await axios.get(`/members/me?id=${userInfo}`)
+      console.log(response)
+      setId(response.data.userId)
+      setNickname(response.data.name)
+      setEmail(response.data.email)
+      return response;
+    } catch (err) {
+      return(err.response)
+    }
+  };
+  myInfo(ID)
+
+  async function roomInfo (userInfo) {
+    try {
+      const response = await axios.get(`/feedback/count?memberId=${userInfo}`)
+      console.log(response)
+      setPersonality(response.data.filter(info => info.type === '인성')[0].count)
+      setDebate(response.data.filter(info => info.type === '인성')[0].count)
+      setPT(response.data.filter(info => info.type === '인성')[0].count)
+
+      return response;
+    } catch (err) {
+      return(err.response)
+    }
+  };
+  roomInfo(ID)
+
+  async function feedback (userInfo) {
+    try {
+      const response = await axios.get(`/feedback?memberId=${userInfo}`)
+      console.log(response)
+      setMeetingName(response.data.meetingName)
+      setMeetingId(response.data.meetingId)
+      setRate(response.data.rate)
+      setQuestion(response.data.question)
+      setComment(response.data.comment)
+      return response;
+    } catch (err) {
+      return(err.response)
+    }
+  };
+  feedback(ID)
 
   return (
     <>
@@ -350,15 +401,17 @@ export default function MyPage() {
                 </Link>
               </ContentContainer>
             </Nickname>
+            <br />
             <Email>
               <Title>이메일: </Title>
-              <Content>{email}</Content>
+              <div><Content>{email}</Content></div>
             </Email>
+            <br />
           </BasicInfo>
           
           <Record>
             <Title getMoreMB>내 기록</Title>
-            <MyTable />
+            <MyTable Personality={Personality} Debate={Debate} PT={PT} />
           </Record>
 
           <Title getMoreMB getMoreMT>
@@ -367,9 +420,9 @@ export default function MyPage() {
           <Message>
               오늘도 즐거운 면접 연습!!!!!!😀
             </Message>
-       
+          <InterviewList/>
           <Chart />
-        
+          {/* <RatingStats /> */}
           <Footer>
             {/* <DeleteModal /> */}
           </Footer>
