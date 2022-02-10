@@ -151,7 +151,7 @@ public class MemberController {
         @ApiResponse(code = 500, message = "서버 오류")
     })
 //	@PreAuthorize("hasAnyRole('USER')")
-	public ResponseEntity<MypageRes> getUserInfo(
+	public ResponseEntity<MemberRes> getUserInfo(
 		//@ApiIgnore Authentication authentication,
 		@ApiParam(value="마이페이지를 볼 회원 id", required = true)String id
 		) {
@@ -169,13 +169,7 @@ public class MemberController {
 
 		if(member == null) throw new NotFoundMemberException();
 		
-		// 아이디로 피드백 조회
-		List<FeedbackRes> feedback = feedbackService.getMyFeedback(id);
-		// 아이디로 횟수 조회
-		List<MeetingCountRes> count = feedbackService.getMyMeetingCounts(id);
-		//멤버 정보 리스폰스에 담기
-		
-		return ResponseEntity.status(200).body(MypageRes.of(member, feedback, count));
+		return ResponseEntity.status(200).body(MemberRes.of(member));
 	}
 	
 	@GetMapping("/check/id")

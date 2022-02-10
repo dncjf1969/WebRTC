@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.wish.api.dto.request.FeedbackCreateReq;
 import com.wish.api.dto.response.BaseRes;
 import com.wish.api.dto.response.FeedbackRes;
+import com.wish.api.dto.response.MeetingCountRes;
 import com.wish.api.service.FeedbackService;
 import com.wish.common.auth.WishUserDetails;
 
@@ -43,7 +44,7 @@ public class FeedbackController {
 	
 	
 	@GetMapping
-	@ApiOperation(value = "본인 피드백 조회") 
+	@ApiOperation(value = "본인이 받은 전체 피드백 조회") 
     @ApiResponses({
         @ApiResponse(code = 200, message = "성공"),
         @ApiResponse(code = 401, message = "인증 실패"),
@@ -59,6 +60,27 @@ public class FeedbackController {
 				
 //		List<FeedbackRes> res = feedbackService.getMyFeedback(authentication.getName());
 		List<FeedbackRes> res = feedbackService.getMyFeedback(memberId);
+
+		return ResponseEntity.status(200).body(res);
+	}
+	
+	@GetMapping("/count")
+	@ApiOperation(value = "본인의 면접 종류별 횟수 얻기") 
+    @ApiResponses({
+        @ApiResponse(code = 200, message = "성공"),
+        @ApiResponse(code = 401, message = "인증 실패"),
+        @ApiResponse(code = 404, message = "사용자 없음"),
+        @ApiResponse(code = 500, message = "서버 오류")
+    })
+//	@PreAuthorize("hasAnyRole('USER')")
+	public ResponseEntity<List<MeetingCountRes>> getMeetingCount(
+//			@ApiIgnore Authentication authentication,
+			@ApiParam(value="마이페이지를 볼 회원 id", required = true)String memberId) {
+		
+//		String memberId = authentication.getName();
+				
+//		List<FeedbackRes> res = feedbackService.getMyFeedback(authentication.getName());
+		List<MeetingCountRes> res = feedbackService.getMyMeetingCounts(memberId);
 
 		return ResponseEntity.status(200).body(res);
 	}
