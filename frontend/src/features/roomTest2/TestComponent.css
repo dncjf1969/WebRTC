@@ -40,7 +40,14 @@
   right: 0;
 }
 .stream-container {
-    padding: 0;
+  width: calc(100% / 3);
+  padding-bottom: 30px;
+}
+.video-container {
+  justify-content: center;
+  display: flex;
+  flex-wrap: wrap;
+  margin-bottom: 50px;
 }
 
 
