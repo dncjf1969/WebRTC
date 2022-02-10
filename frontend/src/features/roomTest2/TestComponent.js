@@ -34,10 +34,10 @@ class TestComponent extends Component {
     // this.OPENVIDU_SERVER_URL = this.props.openviduServerUrl
     //   ? this.props.openviduServerUrl
     //   : "https://" + "i6e201.p.ssafy.io" + ":4443";
-    this.OPENVIDU_SERVER_URL = "https://localhost:4443"
+    this.OPENVIDU_SERVER_URL = "https://i6e201.p.ssafy.io"
     this.OPENVIDU_SERVER_SECRET = this.props.openviduSecret
       ? this.props.openviduSecret
-      : "MY_SECRET";
+      : "WISH";
     this.hasBeenUpdated = false;
     this.layout = new OpenViduLayout();
     // let sessionName = this.props.sessionName
@@ -535,7 +535,7 @@ class TestComponent extends Component {
   async connectWebCam() {
     var devices = await this.OV.getDevices();
     var videoDevices = devices.filter((device) => device.kind === "videoinput");
-
+    console.log(videoDevices)
     let publisher = this.OV.initPublisher(undefined, {
       audioSource: undefined,
       videoSource: videoDevices[0].deviceId,
@@ -825,12 +825,12 @@ class TestComponent extends Component {
       var videoDevices = devices.filter(
         (device) => device.kind === "videoinput"
       );
-
+      console.log(videoDevices)
       if (videoDevices && videoDevices.length > 1) {
         var newVideoDevice = videoDevices.filter(
           (device) => device.deviceId !== this.state.currentVideoDevice.deviceId
         );
-
+        console.log(newVideoDevice)
         if (newVideoDevice.length > 0) {
           // Creating a new publisher with specific videoSource
           // In mobile devices the default and first camera is the front one
@@ -842,6 +842,7 @@ class TestComponent extends Component {
             mirror: true,
           });
 
+
           //newPublisher.once("accessAllowed", () => {
           await this.state.session.unpublish(
             this.state.localUser.getStreamManager()
@@ -849,7 +850,7 @@ class TestComponent extends Component {
           await this.state.session.publish(newPublisher);
           this.state.localUser.setStreamManager(newPublisher);
           this.setState({
-            currentVideoDevice: newVideoDevice,
+            currentVideoDevice: newVideoDevice[0],
             localUser: localUser,
             publisher: newPublisher
           });
@@ -1006,7 +1007,7 @@ class TestComponent extends Component {
           cancelClicked={this.closeDialogExtension}
         /> */}
 
-        <div className="bounds">
+        <div id="layout" className="bounds">
           
           {this.state.isStart ? null : 
           <TestUserList
