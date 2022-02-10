@@ -10,8 +10,8 @@ public interface FeedbackService {
 
 	List<FeedbackRes> getMyFeedback(String memberId); 
 	
-	boolean createFeedback(FeedbackCreateReq info);
-	boolean deleteFeedback(Long feedbackId);
+	void createFeedback(FeedbackCreateReq info);
+	void deleteFeedback(Long feedbackId);
 
 }
 

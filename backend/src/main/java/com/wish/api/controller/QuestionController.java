@@ -69,13 +69,9 @@ public class QuestionController {
 			@ApiIgnore Authentication authentication,
 			@RequestBody @ApiParam(value="사전질문 생성 정보", required = true) CustomQuestionCreateReq customQuestionCreateReq) {
 
-		int results_num = customQuestionService.createCustomQuestion(customQuestionCreateReq);
+		customQuestionService.createCustomQuestion(customQuestionCreateReq);
 
-		if(results_num == 0) return ResponseEntity.status(200).body(BaseRes.of(200, "사전 질문 생성 성공."));
-//		else if(results_num == 1) return ResponseEntity.status(401).body(BaseRes.of(401, "이미 가입된 아이디입니다."));
-//		else return ResponseEntity.status(401).body(BaseRes.of(401, "예상치 못한 결과입니다."));
-
-		return ResponseEntity.status(401).body(BaseRes.of(401, "예상치 못한 결과입니다."));
+		return ResponseEntity.status(200).body(BaseRes.of(200, "사전 질문 생성 성공."));
 	}
 
 
@@ -92,13 +88,9 @@ public class QuestionController {
 			@ApiIgnore Authentication authentication,
 			@RequestBody @ApiParam(value="사전질문 수정 정보", required = true)CustomQuestionUpdateReq customQuestionUpdateReq) {
 
-		int results_num = customQuestionService.updateCustomQuestion(customQuestionUpdateReq);
+		customQuestionService.updateCustomQuestion(customQuestionUpdateReq);
 
-		if(results_num == 0) return ResponseEntity.status(200).body(BaseRes.of(200, "사전 질문 수정 성공."));
-		//else if(results_num == 1) return ResponseEntity.status(401).body(BaseRes.of(401, "등록되지 않은 아이디입니다."));
-		// else return ResponseEntity.status(401).body(BaseRes.of(401, "예상치 못한 결과입니다."));
-
-		return ResponseEntity.status(401).body(BaseRes.of(401, "예상치 못한 결과입니다."));
+		return ResponseEntity.status(200).body(BaseRes.of(200, "사전 질문 수정 성공."));
 	}
 
 	@DeleteMapping("/custom")
@@ -114,12 +106,9 @@ public class QuestionController {
 			@ApiIgnore Authentication authentication,
 			@ApiParam(value="삭제할 사전질문 id", required = true) @RequestParam Long id) {
 
-		int results_num = customQuestionService.deleteCustomQuestion(id);
+		customQuestionService.deleteCustomQuestion(id);
 
-		if(results_num==0) return ResponseEntity.status(200).body(BaseRes.of(200, "사전질문 삭제 성공."));
-		//else if(results_num==1) return ResponseEntity.status(401).body(BaseRes.of(401, "등록되지 않은 아이디입니다."));
-		//else return ResponseEntity.status(401).body(BaseRes.of(401, "예상치 못한 결과입니다."));
-		return ResponseEntity.status(401).body(BaseRes.of(401, "예상치 못한 결과입니다."));
+		return ResponseEntity.status(200).body(BaseRes.of(200, "사전질문 삭제 성공."));
 	}
 
 	@DeleteMapping("/custom/all")
@@ -135,12 +124,9 @@ public class QuestionController {
 			@ApiIgnore Authentication authentication,
 			@ApiParam(value="사전질문을 모두 삭제할 방 id", required = true) @RequestParam String meetingroomId) {
 
-		int results_num = customQuestionService.deleteAllCustomQuestion(meetingroomId);
+		customQuestionService.deleteAllCustomQuestion(meetingroomId);
 
-		if(results_num==0) return ResponseEntity.status(200).body(BaseRes.of(200, "해당 방 사전질문 모두 삭제 성공."));
-		//else if(results_num==1) return ResponseEntity.status(401).body(BaseRes.of(401, "등록되지 않은 아이디입니다."));
-		//else return ResponseEntity.status(401).body(BaseRes.of(401, "예상치 못한 결과입니다."));
-		return ResponseEntity.status(401).body(BaseRes.of(401, "예상치 못한 결과입니다."));
+		return ResponseEntity.status(200).body(BaseRes.of(200, "해당 방 사전질문 모두 삭제 성공."));
 	}
 
 	@PutMapping("/past")
@@ -156,11 +142,9 @@ public class QuestionController {
 			@ApiIgnore Authentication authentication,
 			@RequestBody @ApiParam(value="선택된 질문 id", required = true)  QuestionSelectReq questionSelectReq){
 
-		int results_num = questionService.selectedQuestionAddCnt1(questionSelectReq);
+		questionService.selectedQuestionAddCnt1(questionSelectReq);
 
-		if(results_num==0) return ResponseEntity.status(200).body(BaseRes.of(200, "선택된 질문 카운트 +1."));
-
-		return ResponseEntity.status(401).body(BaseRes.of(401, "예상치 못한 결과입니다."));
+		return ResponseEntity.status(200).body(BaseRes.of(200, "선택된 질문 카운트 +1."));
 	}
 
 	@PutMapping("/relation")
@@ -176,11 +160,10 @@ public class QuestionController {
 			@ApiIgnore Authentication authentication,
 			@RequestBody @ApiParam(value="연관 부모, 자식 질문 id", required = true) RelationQuestionUpdateReq relationQuestionUpdateReq){
 
-		int results_num = relationQuestionService.relationQuestionAddCnt1(relationQuestionUpdateReq);
+		relationQuestionService.relationQuestionAddCnt1(relationQuestionUpdateReq);
 
-		if(results_num==0) return ResponseEntity.status(200).body(BaseRes.of(200, "연관 질문 카운트 +1."));
+		return ResponseEntity.status(200).body(BaseRes.of(200, "연관 질문 카운트 +1."));
 		
-		return ResponseEntity.status(401).body(BaseRes.of(401, "예상치 못한 결과입니다."));
 	}
 
 }

@@ -12,7 +12,7 @@ public interface QuestionService {
 
     List<Question> readQuestionList(long preQuestionId);
 
-    int selectedQuestionAddCnt1(QuestionSelectReq questionSelectReq);
+    void selectedQuestionAddCnt1(QuestionSelectReq questionSelectReq);
 
 }
 

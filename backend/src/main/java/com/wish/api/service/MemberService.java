@@ -8,13 +8,12 @@ import com.wish.db.entity.Member;
 
 public interface MemberService {
 	
-	int signupMember(MemberSignupReq memberSignupInfo);
-	boolean loginMember(MemberLoginReq memberLoginInfo);
+	void signupMember(MemberSignupReq memberSignupInfo);
+	void loginMember(MemberLoginReq memberLoginInfo);
 
-	int updateMember(MemberUpdateReq memberUpdateInfo);
-	int deleteMember(String memberDeleteId);
-
-	int findPassword(String memberId, String memberEmail);
+	void updateMember(MemberUpdateReq memberUpdateInfo);
+	void deleteMember(String memberDeleteId);
+	void findPassword(String memberId, String memberEmail);
 
 	Member getMemberById(String id);
 	

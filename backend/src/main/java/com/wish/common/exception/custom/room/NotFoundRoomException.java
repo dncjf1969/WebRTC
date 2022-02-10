@@ -1,6 +1,7 @@
-package com.wish.common.exception.custom;
+package com.wish.common.exception.custom.room;
 
 import com.wish.common.exception.ErrorCode;
+import com.wish.common.exception.custom.RoomException;
 
 public class NotFoundRoomException extends RoomException{
 	

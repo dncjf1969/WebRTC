@@ -2,6 +2,9 @@ package com.wish.api.service;
 
 import com.wish.api.dto.request.FeedbackCreateReq;
 import com.wish.api.dto.response.FeedbackRes;
+import com.wish.common.exception.custom.feedback.CreateFeedbackException;
+import com.wish.common.exception.custom.feedback.DeleteFeedbackException;
+import com.wish.common.exception.custom.feedback.ReadFeedbackException;
 import com.wish.db.entity.Feedback;
 import com.wish.db.repository.FeedbackRepository;
 
@@ -22,17 +25,24 @@ public class FeedbackServiceImpl implements FeedbackService {
 	@Override
 	public List<FeedbackRes> getMyFeedback(String memberId) {
 		List<FeedbackRes> res = new ArrayList<FeedbackRes>();
-		List<Feedback> list = feedbackRepository.findByMemberId(memberId);
 		
-		for (Feedback feedback : list) {
-			res.add(FeedbackRes.of(feedback));
+		try {
+			List<Feedback> list = feedbackRepository.findByMemberId(memberId);
+			
+			for (Feedback feedback : list) {
+				res.add(FeedbackRes.of(feedback));
+			}
+			
+		} catch (ReadFeedbackException e) {
+			// TODO: handle exception
+			e.printStackTrace();
 		}
 		
 		return res;
 	}
 
 	@Override
-	public boolean createFeedback(FeedbackCreateReq info) {
+	public void createFeedback(FeedbackCreateReq info) {
 		try {
 			Feedback feedback = new Feedback();
 			feedback.setMemberId(info.getMemberId());
@@ -42,19 +52,17 @@ public class FeedbackServiceImpl implements FeedbackService {
 			feedback.setRate(info.getRate());
 			
 			feedbackRepository.save(feedback);
-			return true;
-		} catch (Exception e) {
-			return false;
+		} catch ( CreateFeedbackException e) {
+			e.printStackTrace();
 		}
 	}
 
 	@Override
-	public boolean deleteFeedback(Long feedbackId) {
+	public void deleteFeedback(Long feedbackId) {
 		try {
 			feedbackRepository.deleteById(feedbackId);
-			return true;
-		} catch (Exception e) {
-			return false;
+		} catch (DeleteFeedbackException e) {
+			e.printStackTrace();
 		}
 	}
 }
