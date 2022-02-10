@@ -19,6 +19,7 @@ import TestComponent from "../features/roomTest2/TestComponent";
 import Navbar from "../common/navbar/navbar";
 import Test from "../features/roomlist/test";
 
+
 const Wrapper = styled.div`
   background-color: white;
   height: 100vh;
@@ -39,7 +40,11 @@ function App() {
           <Route path="/roomlist" element={<RoomList />}></Route>
           <Route path="/mypage" element={<MyPage />} />
           <Route path="/roomTest2" element={<TestComponent />}></Route>
-          <Route path="/test" element={<Test />}></Route>
+          <Route path="/test" element={<Test/>}></Route>
+<<<<<<< HEAD:frontend/src/app/App.js
+=======
+
+>>>>>>> ec53734d69a05e16f6d60f9f3b2f234b168c977c:프론트엔드/src/app/App.js
         </Routes>
       </Router>
     </Wrapper>

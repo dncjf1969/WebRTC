@@ -25,31 +25,6 @@ import imgE from "./testImages/prodo.PNG";
 import imgF from "./testImages/prodo.PNG";
 import { data } from "jquery";
 
-// material
-import { styled } from "@mui/material/styles";
-import { Box, Card, Stack, Link, Container, Typography } from "@mui/material";
-import { bgcolor } from "@mui/system";
-import { deepPurple, teal } from '@mui/material/colors';
-import { blue } from "@material-ui/core/colors";
-// ----------------------------------------------------------------------
-
-const RootStyle = styled("div")(({ theme }) => ({
-  [theme.breakpoints.up("sm")]: {
-    display: "flex",
-    
-  },
-}));
-
-const SectionStyle = styled("div")(({ theme }) => ({
-  width: "100%",
-  // maxWidth: 464,
-  display: "flex",
-  flexDirection: "column",
-  justifyContent: "center",
-  margin: theme.spacing(0, 0, 0, 0),
-}));
-// ----------------------------------------------------------------------
-
 var localUser = new UserModel();
 
 class TestComponent extends Component {
@@ -59,14 +34,10 @@ class TestComponent extends Component {
     // this.OPENVIDU_SERVER_URL = this.props.openviduServerUrl
     //   ? this.props.openviduServerUrl
     //   : "https://" + "i6e201.p.ssafy.io" + ":4443";
-<<<<<<< HEAD:frontend/src/features/roomTest2/TestComponent.jsx
-    this.OPENVIDU_SERVER_URL = "https://i6e201.p.ssafy.io";
-=======
     this.OPENVIDU_SERVER_URL = "https://localhost:4443";
->>>>>>> bbe30a54994b5d202f0a222c967d9c0e4eff2bb0:frontend/src/features/roomTest2/TestComponent.js
     this.OPENVIDU_SERVER_SECRET = this.props.openviduSecret
       ? this.props.openviduSecret
-      : "WISH";
+      : "MY_SECRET";
     this.hasBeenUpdated = false;
     this.layout = new OpenViduLayout();
     // let sessionName = this.props.sessionName
@@ -1013,17 +984,14 @@ class TestComponent extends Component {
     }
   }
 
-  // ----------------------------------------------------------------------
-
   render() {
     const mySessionId = this.state.mySessionId;
     const localUser = this.state.localUser;
-    const color = teal[50];
     var chatDisplay = { display: this.state.chatDisplay };
 
     return (
-      <div>
-        {/* <h1>{this.state.myUserName}</h1> */}
+      <div className="container" id="container">
+        <h1>{this.state.myUserName}</h1>
         <ToolbarComponent
           sessionId={mySessionId}
           user={localUser}
@@ -1039,72 +1007,68 @@ class TestComponent extends Component {
           toggleChat={this.toggleChat}
         />
 
-        {/* <div className="bounds"> */}
-        <div>
-          <RootStyle
-            title="waitingProfile"
-            sx={{
-              height: '600px',
-              margin: '10px',
-              padding: '10px',
-              borderColor: 'grey.300',
-              borderRadius: 8,
-              backgroundColor: color,
-                  
-            }}>
-            <Container>
-              <SectionStyle>
-                <Typography variant="h3" sx={{
-                
-                  px: 5, mt: 10, mb: 5,
-                  color : 'white'
-                }}>
-                  Hi, Welcome Back
-                </Typography>
-                {/* <img src="/logo512.png" alt="login" /> */}
-              </SectionStyle>
-              ddd
-            </Container>
-          {/* 유저 리스트 */}
-            <Container>
-              {this.state.isStart ? null : (
-                <TestUserList
-                  session={this.state.session}
-                  subscribers={this.state.subscribers}
-                  myUserName={this.state.myUserName}
-                  ready={this.state.readyState}
-                  viewer={this.state.viewerState}
-                  localUser={localUser}
-                  ishost={this.state.ishost}
-                  hostId={this.state.hostId}
-                  allReady={this.state.allReady}
-                />
-              )}
-              {this.state.isStart ? <h1>START</h1> : null}
-            </Container>
-            {/* 채팅 */}
-            <Container maxWidth="sm" >
-              {localUser !== undefined &&
-                localUser.getStreamManager() !== undefined && (
-                  <div
-                    className="OT_root OT_publisher custom-class"
-                    style={chatDisplay}
-                  >
-                    <ChatComponent 
-                      user={localUser}
-                      chatDisplay={this.state.chatDisplay}
-                      close={this.toggleChat}
-                      messageReceived={this.checkNotification}
-                    />
-                  </div>
-                )}
-            </Container>
-          </RootStyle>
+        {/* <DialogExtensionComponent
+          showDialog={this.state.showExtensionDialog}
+          cancelClicked={this.closeDialogExtension}
+        /> */}
+
+        <div id="layout" className="bounds">
+          {this.state.isStart ? null : (
+            <TestUserList
+              session={this.state.session}
+              subscribers={this.state.subscribers}
+              myUserName={this.state.myUserName}
+              ready={this.state.readyState}
+              viewer={this.state.viewerState}
+              localUser={localUser}
+              ishost={this.state.ishost}
+              hostId={this.state.hostId}
+              allReady={this.state.allReady}
+            />
+          )}
+
+          {this.state.isStart ? null : (
+            <TestQuesList
+              session={this.state.session}
+              questions={this.state.questions}
+              ready={this.state.readyState}
+              localUser={localUser}
+            />
+          )}
           {this.state.isStart ? <h1>START</h1> : null}
           {/* 여기까지가 대기방 */}
 
           {this.state.isStart && (
             <div id="video-container" className="video-container">
+              {/* {this.state.mainStreamManager !== undefined ? (
+                <div
+                  className="stream-container"
+                >
+                  <UserVideoComponent streamManager={this.state.mainStreamManager} />
+                </div>
+              ) : null} */}
+
+              {/* {this.state.publisher !== undefined ? (
+                
+                <div
+                  className="stream-container"
+                  onClick={() =>
+                    this.handleMainVideoStream(this.state.publisher)
+                  }
+                >
+                  <UserVideoComponent streamManager={this.state.publisher} />
+                </div>
+              ) : null}
+              
+              {this.state.subscribers.map((sub, i) => (
+                <div
+                  key={i}
+                  className="stream-container"
+                  onClick={() => this.handleMainVideoStream(sub)}
+                >
+                  <UserVideoComponent streamManager={sub.streamManager.stream} />
+                </div>
+              ))} */}
               {localUser !== undefined &&
                 localUser.getStreamManager() !== undefined && (
                   <div className="stream-container" id="localUser">
@@ -1149,6 +1113,21 @@ class TestComponent extends Component {
               evalWaiting={this.state.evalWaiting}
             />
           )}
+
+          {localUser !== undefined &&
+            localUser.getStreamManager() !== undefined && (
+              <div
+                className="OT_root OT_publisher custom-class"
+                style={chatDisplay}
+              >
+                <ChatComponent
+                  user={localUser}
+                  chatDisplay={this.state.chatDisplay}
+                  close={this.toggleChat}
+                  messageReceived={this.checkNotification}
+                />
+              </div>
+            )}
         </div>
       </div>
     );

@@ -100,7 +100,29 @@ class TestUserList extends Component {
         return (
             <div>
                 <div>
-                    <div id="named0" style={tempStyle1}>
+                        <div id="named0" style={tempStyle2}>
+                            <div>
+                            <div id="seat0"> 내 자리 </div>
+                                <img src={ imgA } style={tempStyle4}/>
+                                <div id="name0"> {this.props.myUserName} {this.props.ishost ? "방장" : null} </div>
+                                <div>
+                                <label for="role">역할: </label>
+                                    <select id="role" name="role" required disabled={this.props.ready ? true : false}>
+                                        <option value="">선택안함</option>
+                                        <option value="true">면접관</option>
+                                        <option value="false">면접자</option>
+                                    </select>
+                                </div>
+   
+                                <div id="ready0" style={tempStyle5}> 
+                                    {this.props.ready ? '준비 완료!!!' : '준비 중...'} 
+                                </div>
+                                <button onClick={this.readyTest}> {this.props.ready ? "레디 해제": "레디"}</button>
+                                
+                                {this.props.ishost && this.props.allReady ? <button onClick={this.start}>start</button> : null}                    
+                                
+                            </div>            
+                        </div>
                         <div>
                         <div id="seat0"> 내 자리 </div>
                             <img src={ imgA } style={tempStyle3}/>

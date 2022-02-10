@@ -24,7 +24,7 @@ import Typography from '@material-ui/core/Typography';
 
 // image
 import defaultImage from '../../assets/pt.png';
-import profileImages from '../../assets/logo.png';
+import profileImages from '../../assets/normal.png';
 
 // component
 import MyTable from './Mytable';
