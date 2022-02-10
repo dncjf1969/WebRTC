@@ -43,7 +43,6 @@ display: flex;
 padding: 100px 0px 0px 0px;
 height: auto;
 `;
-
 // 사이드바
 const Sidebar = styled.aside`
 display: flex;
@@ -260,7 +259,7 @@ export default function MyPage() {
   return (
     <>
       <Wrapper>
-        <Sidebar>
+        {/* <Sidebar>
             {profileImages.map((profileImage, index) => {
               if (index + 1 === Number(img)) {
                 return (
@@ -330,7 +329,7 @@ export default function MyPage() {
                 </DialogActions>
               </Dialog>
             </div>
-        </Sidebar>
+        </Sidebar> */}
           <br />
           <br />
         <Main>
@@ -368,7 +367,6 @@ export default function MyPage() {
           <Message>
               오늘도 즐거운 면접 연습!!!!!!😀
             </Message>
-            {/* <Graph />        */}
        
           <Chart />
         
