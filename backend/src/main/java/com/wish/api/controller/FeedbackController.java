@@ -50,11 +50,12 @@ public class FeedbackController {
         @ApiResponse(code = 404, message = "사용자 없음"),
         @ApiResponse(code = 500, message = "서버 오류")
     })
-	@PreAuthorize("hasAnyRole('USER')")
+//	@PreAuthorize("hasAnyRole('USER')")
 	public ResponseEntity<List<FeedbackRes>> getMyFeedback(
-			@ApiIgnore Authentication authentication) {
+//			@ApiIgnore Authentication authentication,
+			@ApiParam(value="마이페이지를 볼 회원 id", required = true)String memberId) {
 		
-		String memberId = authentication.getName();
+//		String memberId = authentication.getName();
 				
 		List<FeedbackRes> res = feedbackService.getMyFeedback(memberId);
 
