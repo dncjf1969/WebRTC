@@ -19,12 +19,11 @@ import javax.persistence.Entity;
 @Setter
 public class MeetingRoom extends BaseEntity{
 	// 고유id는 baseEntity에
-	// 면접타입, 전체인원, 면접관 수, 면접 날짜, 면접 시작시간, 면접 걸린 시간
+	// 면접타입, 전체인원, 면접 날짜, 면접 시작시간, 면접 걸린 시간
 	String type;
 	int numberMember;
-	int numberInterviewer;
 	Date date;
 	Time startTime;
 	Time takenTime;
-     
+    
 }

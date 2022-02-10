@@ -1,5 +1,7 @@
 package com.wish.api.dto.response;
 
+import java.sql.Date;
+
 import com.wish.db.entity.Member;
 
 import io.swagger.annotations.ApiModel;
@@ -14,12 +16,29 @@ import lombok.Setter;
 @Setter
 @ApiModel("MemberResponse")
 public class MemberRes{
-	@ApiModelProperty(name="User ID")
+	@ApiModelProperty(name="아이디")
 	String userId;
+	
+	@ApiModelProperty(name="패스워드")
+	String password;
+	
+	@ApiModelProperty(name="이름")
+	String name;
+	
+	@ApiModelProperty(name="이메일")
+	String email;
+
+	@ApiModelProperty(name="가입날짜")
+	Date signUpDate;
+	
 	
 	public static MemberRes of(Member member) {
 		MemberRes res = new MemberRes();
 		res.setUserId(member.getId());
+		res.setPassword(member.getPassword());
+		res.setName(member.getName());
+		res.setEmail(member.getEmail());
+		res.setSignUpDate(member.getSignUpDate());
 		return res;
 	}
 }

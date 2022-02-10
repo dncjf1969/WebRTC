@@ -1,5 +1,7 @@
 package com.wish.api.controller;
 
+import java.util.List;
+
 //import com.wish.common.auth.JwtAuthenticationFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -13,11 +15,17 @@ import com.wish.api.dto.request.MemberLoginReq;
 import com.wish.api.dto.request.MemberSignupReq;
 import com.wish.api.dto.request.MemberUpdateReq;
 import com.wish.api.dto.response.BaseRes;
+import com.wish.api.dto.response.FeedbackRes;
+import com.wish.api.dto.response.MeetingCountRes;
 import com.wish.api.dto.response.MemberLoginRes;
 import com.wish.api.dto.response.MemberRes;
+import com.wish.api.dto.response.MypageRes;
+import com.wish.api.service.FeedbackService;
+import com.wish.api.service.MeetingService;
 import com.wish.api.service.MemberService;
 import com.wish.common.auth.WishUserDetails;
 import com.wish.common.jwt.JwtUtil;
+import com.wish.db.entity.Feedback;
 import com.wish.db.entity.Member;
 
 import io.swagger.annotations.Api;
@@ -36,6 +44,10 @@ public class MemberController {
 	
 	@Autowired
 	MemberService memberService;
+	@Autowired
+	FeedbackService feedbackService;
+	@Autowired
+	MeetingService meetingService;
 	
 	
 
@@ -152,8 +164,8 @@ public class MemberController {
         @ApiResponse(code = 404, message = "사용자 없음"),
         @ApiResponse(code = 500, message = "서버 오류")
     })
-	@PreAuthorize("hasAnyRole('USER')")
-	public ResponseEntity<MemberRes> getUserInfo(@ApiIgnore Authentication authentication) {
+//	@PreAuthorize("hasAnyRole('USER')")
+	public ResponseEntity<MypageRes> getUserInfo(@ApiParam(value="마이페이지를 볼 회원 id", required = true)String id) {
 
 		/**
 		 * 요청 헤더 액세스 토큰이 포함된 경우에만 실행되는 인증 처리이후, 리턴되는 인증 정보 객체(authentication) 통해서 요청한 유저 식별.
@@ -164,12 +176,15 @@ public class MemberController {
 //
 //		String id = userDetails.getUsername();
 		
-		String memberId = authentication.getName();
-		Member member = memberService.getMemberById(memberId);
-		
+		// 아이디로 회원정보 조회
+		Member member = memberService.getMemberById(id);
+		// 아이디로 피드백 조회
+		List<FeedbackRes> feedback = feedbackService.getMyFeedback(id);
+		// 아이디로 횟수 조회
+		List<MeetingCountRes> count = feedbackService.getMyMeetingCounts(id);
 		//멤버 정보 리스폰스에 담기
 		
-		return ResponseEntity.status(200).body(MemberRes.of(member));
+		return ResponseEntity.status(200).body(MypageRes.of(member, feedback, count));
 	}
 	
 	@GetMapping("/check/id")
