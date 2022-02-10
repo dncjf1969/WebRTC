@@ -13,7 +13,9 @@ import com.wish.api.dto.response.BaseRes;
 import com.wish.api.dto.response.RoomListRes;
 import com.wish.api.dto.response.RoomSearchRes;
 import com.wish.api.dto.response.RoomTokenRes;
-import com.wish.api.service.RoomService;
+import com.wish.api.service.RoomServiceImpl;
+import com.wish.common.exception.custom.NotFoundRoomException;
+import com.wish.common.exception.custom.RoomException;
 import com.wish.common.util.SearchUtil;
 import io.openvidu.java.client.*;
 import io.swagger.annotations.*;
@@ -45,7 +47,7 @@ import java.util.Map;
 public class RoomController {
 
 	@Autowired
-	RoomService roomService;
+	RoomServiceImpl roomService;
 	
 	// 방 id로 사용할 변수
 	private static int autoIncreament = 0;
@@ -119,14 +121,7 @@ public class RoomController {
 		
 		System.out.println("방 정보 보기");
 		
-		Room room;
-		try {
-			room = roomService.getRoom(roomId);
-			return ResponseEntity.status(200).body(RoomSearchRes.of(room));
-		} catch (JsonProcessingException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		Room room= roomService.getRoom(roomId);
 		
 		return ResponseEntity.status(405).body(BaseRes.of(405, "에러요"));
 	}
@@ -141,9 +136,9 @@ public class RoomController {
         @ApiResponse(code = 500, message = "서버 에러")
     })
 	//@PreAuthorize("hasAnyRole('USER')")
-	public ResponseEntity<RoomTokenRes> createWaitingRoom(
+	public ResponseEntity<?> createWaitingRoom(
 			@ApiIgnore Authentication authentication,
-			@RequestBody @ApiParam(value="방 생성 정보", required = true) RoomCreateReq createInfo) throws OpenViduJavaClientException, OpenViduHttpException, JsonProcessingException {
+			@RequestBody @ApiParam(value="방 생성 정보", required = true) RoomCreateReq createInfo) throws OpenViduJavaClientException, OpenViduHttpException {
 	
 		System.out.println("대기방 생성 ");
 		
@@ -172,11 +167,11 @@ public class RoomController {
 		
 		// 방 생성
 		Session session = this.openVidu.createSession();
-		String token = session.createConnection(connectionProperties).getToken();	// 주소가 들어간다 wss://192.~
+		String token = session.createConnection(connectionProperties).getToken();	// 주소가 들어간다 wss://192.~	
 		
 		// 방목록에 새로 만든 방 추가
-//		WaitingRoom room = WaitingRoom.of(session, token, autoIncreament++, createInfo);
-//		roomList.add(room);
+//			WaitingRoom room = WaitingRoom.of(session, token, autoIncreament++, createInfo);
+//			roomList.add(room);
 		
 		Room room = Room.of(token, autoIncreament++, createInfo);
 		
@@ -201,7 +196,7 @@ public class RoomController {
 	//@PreAuthorize("hasAnyRole('USER')")
 	public ResponseEntity<BaseRes> modifyWaitingRoom(
 			@ApiIgnore Authentication authentication,
-			@RequestBody @ApiParam(value="방 설정 정보", required = true) RoomModifyReq modifyInfo) throws JsonMappingException, JsonProcessingException {
+			@RequestBody @ApiParam(value="방 설정 정보", required = true) RoomModifyReq modifyInfo){
 		
 		System.out.println("대기방 설정 변경");
 		
@@ -212,7 +207,7 @@ public class RoomController {
 		int roomId = modifyInfo.getRoomId();		
 		
 		Room room = roomService.getRoom(roomId);
-		
+			
 		if(room.getRoomId() == roomId) {
 			System.out.println("==========");
 			// 현재 참여자가 6인데 최대 참여인원을 5로 바꾸면 에러
@@ -234,10 +229,10 @@ public class RoomController {
 			System.out.println(room.toString());
 			roomService.setRoom(room);
 			
-			return ResponseEntity.status(201).body(BaseRes.of(201, success));
 		}
+		
+		return ResponseEntity.status(201).body(BaseRes.of(201, success));
 
-		return ResponseEntity.status(404).body(BaseRes.of(404, fail));
 	}
 	
 	
@@ -287,31 +282,23 @@ public class RoomController {
 		
 		//redis에서 방 찾기
 		Room room = roomService.getRoom(roomId);
-
-//		// 방장 이름으로 방 찾기
-//		//WaitingRoom room = SearchUtil.searchById(roomList, roomId);
 //		
-		if(room != null) {
-			// 최대인원 확인
-			if(room.getMemberCount()< room.getMemberMax()) {
-				// 비밀번호 일치여부 확인
-				if( room.getPassword().equals(password)) {
-					
-					int nowMemberCnt = room.getMemberCount();
-					room.setMemberCount(nowMemberCnt+1);
-					roomService.setRoom(room);
+		// 최대인원 확인
+		if(room.getMemberCount()< room.getMemberMax()) {
+			// 비밀번호 일치여부 확인
+			if( room.getPassword().equals(password)) {
+				
+				int nowMemberCnt = room.getMemberCount();
+				room.setMemberCount(nowMemberCnt+1);
+				roomService.setRoom(room);
 
-				}else {
-					// 비밀번호 틀림
-					return ResponseEntity.status(401).body(BaseRes.of(401, fail));
-				}
 			}else {
-				// 이미 최대인원만큼 참가함
-				return ResponseEntity.status(400).body(BaseRes.of(400, fail));
+				// 비밀번호 틀림
+				return ResponseEntity.status(401).body(BaseRes.of(401, fail));
 			}
-		}else {	
-			// roomId가 일치하는 방 없음
-			return ResponseEntity.status(404).body(BaseRes.of(404, fail));
+		}else {
+			// 이미 최대인원만큼 참가함
+			return ResponseEntity.status(400).body(BaseRes.of(400, fail));
 		}
 
 		// 주소 리턴
@@ -340,31 +327,24 @@ public class RoomController {
 		// 현재인원-1 -> 현재 인원 0이면 방을 자동 제거
 		
 		//redis에서 방 찾기
-		Room room;
-		try {
-			room = roomService.getRoom(roomId);
-			if(room.getRoomId() == roomId) {
-				// 나가려는게 방장이면 클라이언트에서 지정된 다음 방장으로 변경
-				if(memberId.equals(room.getManager())) {
-					room.setManager(nextManager);
-				}
-					
-				// 인원수 -1
-				room.setMemberCount(room.getMemberCount()-1);
-				
-				roomService.setRoom(room);
-				
-				// 인원수 0이면 목록에서 방 제거
-				if(room.getMemberCount() == 0) 
-				{
-					this.deleteWaitingRoom(authentication, roomId);
-					roomService.deleteRoom(roomId);
-				}
+		Room room = roomService.getRoom(roomId);
+		if(room.getRoomId() == roomId) {
+			// 나가려는게 방장이면 클라이언트에서 지정된 다음 방장으로 변경
+			if(memberId.equals(room.getManager())) {
+				room.setManager(nextManager);
 			}
+				
+			// 인원수 -1
+			room.setMemberCount(room.getMemberCount()-1);
 			
-		} catch (JsonProcessingException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			roomService.setRoom(room);
+			
+			// 인원수 0이면 목록에서 방 제거
+			if(room.getMemberCount() == 0) 
+			{
+				this.deleteWaitingRoom(authentication, roomId);
+				roomService.deleteRoom(roomId);
+			}
 		}
 		
 		return ResponseEntity.status(200).body(BaseRes.of(200, success));
@@ -390,29 +370,20 @@ public class RoomController {
 		
 		int roomId = managerChangeInfo.getRoomId();
 
-		Room room;
-		try {
-			room = roomService.getRoom(roomId);
-			if(room.getRoomId() == roomId) {
-				// 현재 방장아이디와 입력받은 현재방장 아이디 같아야함.
-				// manager토큰에서 아이디 꺼내긱
+		Room room = roomService.getRoom(roomId);
+		if(room.getRoomId() == roomId) {
+			// 현재 방장아이디와 입력받은 현재방장 아이디 같아야함.
+			// manager토큰에서 아이디 꺼내긱
 //				String payload= JwtTokenUtil.createDecodedJWT(managerChangeInfo.getManagerToken()).getPayload();
 //				String managerId = payload에서 파싱
-				if(true) {
-					room.setManager(managerChangeInfo.getNextManagerId());
-					
-					roomService.setRoom(room);
-					
-					return ResponseEntity.status(201).body(BaseRes.of(201, success));
-				}
+			if(true) {
+				room.setManager(managerChangeInfo.getNextManagerId());
+				
+				roomService.setRoom(room);
+				
+				return ResponseEntity.status(201).body(BaseRes.of(201, success));
 			}
-		} catch (JsonProcessingException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
 		}
-		
-		
-			
 		
 		return ResponseEntity.status(401).body(BaseRes.of(401, fail));
 	}	
@@ -436,21 +407,11 @@ public class RoomController {
 		
 		//authentication에 있는 멤버id로 방장인지 비교
 		
-		Room room;
-		try {
-			room = roomService.getRoom(roomId);
-			room.setNowMeeting(true);
-			roomService.setRoom(room);
-			
-			return ResponseEntity.status(200).body(BaseRes.of(200, success));
-		} catch (JsonProcessingException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		Room room = roomService.getRoom(roomId);
+		room.setNowMeeting(true);
+		roomService.setRoom(room);
 		
-		// DB에 넣어서 db에서 사용하는 id를 프론트로 반환
-		
-		return ResponseEntity.status(401).body(BaseRes.of(401, fail));
+		return ResponseEntity.status(200).body(BaseRes.of(200, success));
 	}
 	
 	@GetMapping("/meeting/finish")
@@ -467,19 +428,11 @@ public class RoomController {
 			@ApiIgnore Authentication authentication,
 			@RequestParam @ApiParam(value="대기방 id", required = true) int roomId) {
 	
-		Room room;
-		try {
-			room = roomService.getRoom(roomId);
-			room.setNowMeeting(false);
-			roomService.setRoom(room);
-			
-			return ResponseEntity.status(200).body(BaseRes.of(200, success));
-		} catch (JsonProcessingException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		Room room = roomService.getRoom(roomId);
+		room.setNowMeeting(false);
+		roomService.setRoom(room);
 		
-		return ResponseEntity.status(401).body(BaseRes.of(401, fail));
+		return ResponseEntity.status(200).body(BaseRes.of(200, success));
 	}
 	
 
