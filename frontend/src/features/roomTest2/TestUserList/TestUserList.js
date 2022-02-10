@@ -49,7 +49,7 @@ class TestUserList extends Component {
         if (this.props.subscribers.every(check) && this.props.ready) {
             console.log('모두레디함 스타트')
             this.props.session.signal({
-                data: 'HI',
+                data: Date.now(),
                 to: [],
                 type: 'start'
             })
@@ -123,7 +123,7 @@ class TestUserList extends Component {
                                 <div id="ready0" style={tempStyle5}> 
                                     {this.props.ready ? '준비 완료!!!' : '준비 중...'} 
                                 </div>
-                                <button onClick={this.readyTest}> ready </button>
+                                <button onClick={this.readyTest}> {this.props.ready ? "레디 해제": "레디"}</button>
                                 
                                 {this.props.ishost && this.props.allReady ? <button onClick={this.start}>start</button> : null}                    
                                 
