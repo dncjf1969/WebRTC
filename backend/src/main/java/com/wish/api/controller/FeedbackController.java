@@ -57,7 +57,8 @@ public class FeedbackController {
 		
 //		String memberId = authentication.getName();
 				
-		List<FeedbackRes> res = feedbackService.getMyFeedback(authentication.getName());
+//		List<FeedbackRes> res = feedbackService.getMyFeedback(authentication.getName());
+		List<FeedbackRes> res = feedbackService.getMyFeedback(memberId);
 
 		return ResponseEntity.status(200).body(res);
 	}
