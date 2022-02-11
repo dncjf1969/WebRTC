@@ -1,9 +1,16 @@
 package com.wish.api.service;
 
+import com.querydsl.core.Tuple;
 import com.wish.api.dto.request.FeedbackCreateReq;
 import com.wish.api.dto.response.FeedbackRes;
+import com.wish.common.exception.custom.feedback.CreateFeedbackException;
+import com.wish.common.exception.custom.feedback.DeleteFeedbackException;
+import com.wish.common.exception.custom.feedback.ReadFeedbackException;
+import com.wish.api.dto.response.MeetingCountRes;
 import com.wish.db.entity.Feedback;
 import com.wish.db.repository.FeedbackRepository;
+import com.wish.db.repository.FeedbackRepositorySupport;
+import com.wish.db.repository.MeetingRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,22 +24,33 @@ public class FeedbackServiceImpl implements FeedbackService {
 
 	@Autowired
 	FeedbackRepository feedbackRepository;
+	@Autowired
+	FeedbackRepositorySupport feedbackRepositorySupport;
+	@Autowired
+	MeetingRepository meetingRepository;
 
 	// 사용자 아이디에 해당하는 피드백 가져오기
 	@Override
 	public List<FeedbackRes> getMyFeedback(String memberId) {
 		List<FeedbackRes> res = new ArrayList<FeedbackRes>();
-		List<Feedback> list = feedbackRepository.findByMemberId(memberId);
 		
-		for (Feedback feedback : list) {
-			res.add(FeedbackRes.of(feedback));
+		try {
+			List<Feedback> list = feedbackRepository.findByMemberId(memberId);
+			
+			for (Feedback feedback : list) {
+				res.add(FeedbackRes.of(feedback));
+			}
+			
+		} catch (ReadFeedbackException e) {
+			// TODO: handle exception
+			e.printStackTrace();
 		}
 		
 		return res;
 	}
 
 	@Override
-	public boolean createFeedback(FeedbackCreateReq info) {
+	public void createFeedback(FeedbackCreateReq info) {
 		try {
 			Feedback feedback = new Feedback();
 			feedback.setMemberId(info.getMemberId());
@@ -42,19 +60,35 @@ public class FeedbackServiceImpl implements FeedbackService {
 			feedback.setRate(info.getRate());
 			
 			feedbackRepository.save(feedback);
-			return true;
-		} catch (Exception e) {
-			return false;
+		} catch ( CreateFeedbackException e) {
+			e.printStackTrace();
 		}
 	}
 
 	@Override
-	public boolean deleteFeedback(Long feedbackId) {
+	public void deleteFeedback(Long feedbackId) {
 		try {
 			feedbackRepository.deleteById(feedbackId);
-			return true;
-		} catch (Exception e) {
-			return false;
+		} catch (DeleteFeedbackException e) {
+			e.printStackTrace();
 		}
+	}
+
+	@Override
+	public List<MeetingCountRes> getMyMeetingCounts(String memberId) {
+		List<MeetingCountRes> res = feedbackRepositorySupport.countById(memberId).get();
+//		List<MeetingCountRes> res = new ArrayList<MeetingCountRes>();
+//		
+//		long count = countList.get(0);
+//		int cnt = (int) count;
+//		res.add(MeetingCountRes.of("인성",cnt));
+//		
+//
+//		count = countList.get(1);
+//		cnt = (int) count;
+//		res.add(MeetingCountRes.of("직무",cnt));
+		
+		return res;
+		
 	}
 }

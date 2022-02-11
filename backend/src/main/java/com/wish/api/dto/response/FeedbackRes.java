@@ -21,6 +21,9 @@ public class FeedbackRes{
 	@ApiModelProperty(name="스터디 id", example="chris1225")
 	Long meetingId;
 
+	@ApiModelProperty(name="스터디 이름", example="SSAFY 코치 면접 준비")
+	String meetingName;
+	
 	@ApiModelProperty(name="질문 내용", example="00기업 인턴을 했다고 하셨는데 거기서 어떤 업무를 하셨죠?")
 	String question;
 
@@ -34,6 +37,7 @@ public class FeedbackRes{
 		FeedbackRes res = new FeedbackRes();
 		res.setId(feedback.getId());
 		res.setMeetingId(feedback.getMeetingId());
+		res.setMeetingName(feedback.getMeetingName());
 		res.setQuestion(feedback.getQuestion());
 		res.setComment(feedback.getComment());
 		res.setRate(feedback.getRate());

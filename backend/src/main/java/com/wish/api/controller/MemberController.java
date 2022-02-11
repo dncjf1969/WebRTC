@@ -1,5 +1,7 @@
 package com.wish.api.controller;
 
+import java.util.List;
+
 //import com.wish.common.auth.JwtAuthenticationFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -13,11 +15,19 @@ import com.wish.api.dto.request.MemberLoginReq;
 import com.wish.api.dto.request.MemberSignupReq;
 import com.wish.api.dto.request.MemberUpdateReq;
 import com.wish.api.dto.response.BaseRes;
+import com.wish.api.dto.response.FeedbackRes;
+import com.wish.api.dto.response.MeetingCountRes;
 import com.wish.api.dto.response.MemberLoginRes;
 import com.wish.api.dto.response.MemberRes;
+import com.wish.api.dto.response.MypageRes;
+import com.wish.api.service.FeedbackService;
+import com.wish.api.service.MeetingService;
 import com.wish.api.service.MemberService;
 import com.wish.common.auth.WishUserDetails;
+import com.wish.common.exception.custom.member.MemberAlreadyExistsException;
+import com.wish.common.exception.custom.member.NotFoundMemberException;
 import com.wish.common.jwt.JwtUtil;
+import com.wish.db.entity.Feedback;
 import com.wish.db.entity.Member;
 
 import io.swagger.annotations.Api;
@@ -36,7 +46,10 @@ public class MemberController {
 	
 	@Autowired
 	MemberService memberService;
-	
+	@Autowired
+	FeedbackService feedbackService;
+	@Autowired
+	MeetingService meetingService;
 	
 
 	// 응답 메세지
@@ -54,12 +67,9 @@ public class MemberController {
 	public ResponseEntity<? extends BaseRes> signup(
 			@RequestBody @ApiParam(value="회원가입 정보", required = true) MemberSignupReq signupInfo) {
 
-		int results_num = memberService.signupMember(signupInfo);
+		memberService.signupMember(signupInfo);
 
-		if(results_num == 0) return ResponseEntity.status(200).body(BaseRes.of(200, "회원가입 성공."));
-		else if(results_num == 1) return ResponseEntity.status(401).body(BaseRes.of(401, "이미 가입된 아이디입니다."));
-		else return ResponseEntity.status(401).body(BaseRes.of(401, "예상치 못한 결과입니다."));
-
+		return ResponseEntity.status(200).body(BaseRes.of(200, "회원가입 성공."));
 	}
 	
 	@PostMapping("/login")
@@ -73,14 +83,9 @@ public class MemberController {
 	public ResponseEntity<? extends BaseRes> login(
 			@RequestBody @ApiParam(value="로그인 정보", required = true) MemberLoginReq loginInfo) {
 		
-		String memberId = loginInfo.getId();
+		memberService.loginMember(loginInfo);
 		
-
-		if(memberService.loginMember(loginInfo)) {
-			return ResponseEntity.ok(MemberLoginRes.of(200, "Success", JwtUtil.createJwt(memberId)));
-		}
-
-		else return ResponseEntity.status(401).body(BaseRes.of(401, "Fail"));
+		return ResponseEntity.ok(MemberLoginRes.of(200, "Success", JwtUtil.createJwt(loginInfo.getId())));
 	}
 
 	@PutMapping
@@ -95,11 +100,9 @@ public class MemberController {
 	public ResponseEntity<? extends BaseRes> updateMember(@ApiIgnore Authentication authentication,
 			@RequestBody @ApiParam(value="회원수정 정보", required = true) MemberUpdateReq updateInfo) {
 
-		int results_num = memberService.updateMember(updateInfo);
+		memberService.updateMember(updateInfo);
 
-		if(results_num == 0) return ResponseEntity.status(200).body(BaseRes.of(200, "회원수정 성공."));
-		else if(results_num == 1) return ResponseEntity.status(401).body(BaseRes.of(401, "등록되지 않은 아이디입니다."));
-		else return ResponseEntity.status(401).body(BaseRes.of(401, "예상치 못한 결과입니다."));
+		return ResponseEntity.status(200).body(BaseRes.of(200, "회원수정 성공."));
 	}
 
 	@DeleteMapping
@@ -116,11 +119,9 @@ public class MemberController {
 		
 		String memberDeleteId = authentication.getName();
 		
-		int results_num = memberService.deleteMember(memberDeleteId);
+		memberService.deleteMember(memberDeleteId);
 
-		if(results_num==0) return ResponseEntity.status(200).body(BaseRes.of(200, "회원삭제 성공."));
-		else if(results_num==1) return ResponseEntity.status(401).body(BaseRes.of(401, "등록되지 않은 아이디입니다."));
-		else return ResponseEntity.status(401).body(BaseRes.of(401, "예상치 못한 결과입니다."));
+		return ResponseEntity.status(200).body(BaseRes.of(200, "회원삭제 성공."));
 	}
 
 	@GetMapping("/findPW")
@@ -135,12 +136,9 @@ public class MemberController {
 			@ApiParam(value="회원가입했던 아이디", required = true) @RequestParam String memberId,
 			@ApiParam(value="회원가입했던 이메일", required = true) @RequestParam String memberEmail) {
 
-				
-		int results_num = memberService.findPassword(memberId, memberEmail);
+		memberService.findPassword(memberId, memberEmail);
 
-		if(results_num==0) return ResponseEntity.status(200).body(BaseRes.of(200, "가입하신 이메일로 임시 비밀번호가 전송되었습니다."));
-		else if(results_num==1) return ResponseEntity.status(401).body(BaseRes.of(401, "아이디나 이메일을 확인해주세요."));
-		else return ResponseEntity.status(401).body(BaseRes.of(401, "예상치 못한 결과입니다."));
+		return ResponseEntity.status(200).body(BaseRes.of(200, "가입하신 이메일로 임시 비밀번호가 전송되었습니다."));
 	}
 
 
@@ -152,22 +150,24 @@ public class MemberController {
         @ApiResponse(code = 404, message = "사용자 없음"),
         @ApiResponse(code = 500, message = "서버 오류")
     })
-	@PreAuthorize("hasAnyRole('USER')")
-	public ResponseEntity<MemberRes> getUserInfo(@ApiIgnore Authentication authentication) {
+//	@PreAuthorize("hasAnyRole('USER')")
+	public ResponseEntity<MemberRes> getUserInfo(
+		//@ApiIgnore Authentication authentication,
+		@ApiParam(value="마이페이지를 볼 회원 id", required = true)String id
+		) {
 
 		/**
 		 * 요청 헤더 액세스 토큰이 포함된 경우에만 실행되는 인증 처리이후, 리턴되는 인증 정보 객체(authentication) 통해서 요청한 유저 식별.
 		 * 액세스 토큰이 없이 요청하는 경우, 403 에러({"error": "Forbidden", "message": "Access Denied"}) 발생.
 		 */
+		
+		//String memberId = authentication.getName();
+		//Member member = memberService.getMemberById(memberId);
+		
+		// 아이디로 회원정보 조회
+		Member member = memberService.getMemberById(id);
 
-//		WishUserDetails userDetails = (WishUserDetails)authentication.getDetails();
-//
-//		String id = userDetails.getUsername();
-		
-		String memberId = authentication.getName();
-		Member member = memberService.getMemberById(memberId);
-		
-		//멤버 정보 리스폰스에 담기
+		if(member == null) throw new NotFoundMemberException();
 		
 		return ResponseEntity.status(200).body(MemberRes.of(member));
 	}
@@ -181,13 +181,9 @@ public class MemberController {
     })
 	public ResponseEntity<BaseRes> checkId(@ApiParam(value="중복검사할 아이디", required = true) String id) {
 		// id 가 이상한 문자열이 아닌지 검사->XSS
-		if(memberService.checkId(id)) {
-			// 중복이 있다 -> 가입 불가
-			return ResponseEntity.status(401).body(BaseRes.of(401, fail));
-		}else {
-			// 중복이 없다 -> 가입 가능
-			return ResponseEntity.status(200).body(BaseRes.of(200, success));
-		}
+		if(memberService.checkId(id)) throw new MemberAlreadyExistsException();
+		
+		return ResponseEntity.status(200).body(BaseRes.of(200, success));
 	}
 	
 
@@ -200,13 +196,9 @@ public class MemberController {
     })
 	public ResponseEntity<BaseRes> checkName(@ApiParam(value="중복검사할 이름", required = true)String name) {
 		// id 가 이상한 문자열이 아닌지 검사->XSS
-		if(memberService.checkName(name)) {
-			// 중복이 있다 -> 가입 불가
-			return ResponseEntity.status(401).body(BaseRes.of(401, fail));
-		}else {
-			// 중복이 없다 -> 가입 가능
-			return ResponseEntity.status(200).body(BaseRes.of(200, success));
-		}
+		if(memberService.checkName(name)) throw new MemberAlreadyExistsException();
+		
+		return ResponseEntity.status(200).body(BaseRes.of(200, success));
 	}
 	
 }

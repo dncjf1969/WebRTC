@@ -9,7 +9,7 @@ import java.util.List;
 
 public interface RelationQuestionService {
 
-    int relationQuestionAddCnt1(RelationQuestionUpdateReq relationQuestionUpdateReq);
+    void relationQuestionAddCnt1(RelationQuestionUpdateReq relationQuestionUpdateReq);
 
 }
 
