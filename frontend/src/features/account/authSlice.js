@@ -18,7 +18,8 @@ export const checkNickname = createAsyncThunk(
   }
 );
 
-//user 정보 불러오기
+
+
 export const loadUser = createAsyncThunk(
   'LOAD_USER',
   async (arg, { rejectWithValue }) => {

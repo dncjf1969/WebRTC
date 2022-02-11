@@ -16,7 +16,6 @@ import TestCharacter from "./Testcharacter/Testcharacter";
 import TestUserList from "./TestUserList/TestUserList";
 import TestQuesList from "./TestQuesList/TestQuesList";
 import EvaluationSheet from "./evaluationSheet/evaluationSheet";
-import RecommendationQues from "./recommendationQues/recommendationQues"
 
 // 채팅, 사전채팅 토글 
 import BottomNavigationAction from '@mui/material/BottomNavigationAction';
@@ -29,7 +28,7 @@ import { Box, Card, Stack, Link, Container, Typography, BottomNavigation } from 
 import { bgcolor } from "@mui/system";
 import { deepPurple, teal } from '@mui/material/colors';
 import { blue } from "@material-ui/core/colors";
-
+// ----------------------------------------------------------------------
 
 const RootStyle = styled("div")(({ theme }) => ({
   [theme.breakpoints.up("sm")]: {
@@ -46,8 +45,9 @@ const SectionStyle = styled("div")(({ theme }) => ({
   justifyContent: "center",
   margin: theme.spacing(0, 0, 0, 0),
 }));
+// ----------------------------------------------------------------------
 
-let localUser = new UserModel();
+var localUser = new UserModel();
 
 class TestComponent extends Component {
   constructor(props) {
@@ -56,8 +56,7 @@ class TestComponent extends Component {
     // this.OPENVIDU_SERVER_URL = this.props.openviduServerUrl
     //   ? this.props.openviduServerUrl
     //   : "https://" + "i6e201.p.ssafy.io" + ":4443";
-
-    this.OPENVIDU_SERVER_URL = "https://i6e201.p.ssafy.io"
+    this.OPENVIDU_SERVER_URL = "https://i6e201.p.ssafy.io";
     this.OPENVIDU_SERVER_SECRET = this.props.openviduSecret
       ? this.props.openviduSecret
       : "WISH";
@@ -133,7 +132,7 @@ class TestComponent extends Component {
       finalRank: [],
       isFliped: true,
       localUser: undefined,
-      chatDisplay: "none",
+      chatDisplay: "block",
       currentVideoDevice: undefined,
       nowUser: [],
       customSubscriber: [],
@@ -149,9 +148,8 @@ class TestComponent extends Component {
       // 다른 면접관이 모두 평가하길 기다리는 상태
       evalWaiting: false,
       // 면접관이 평가완료 누를때마다 다음 면접자로 넘어가기위해 설정한 면접자idx
-      vieweeIdx: 0, 
-      chosenQues: '',
-            // 사전질문이랑 채팅 토글 
+      vieweeIdx: 0,
+      // 사전질문이랑 채팅 토글 
       value: 0,
       hidden: false,
     };
@@ -176,9 +174,7 @@ class TestComponent extends Component {
     this.checkNotification = this.checkNotification.bind(this);
     this.checkSize = this.checkSize.bind(this);
     this.updateHost = this.updateHost.bind(this);
-    this.handleChoiceQues = this.handleChoiceQues.bind(this);
     this.setValue = this.setValue.bind(this);
-
   }
 
   componentDidMount() {
@@ -309,7 +305,7 @@ class TestComponent extends Component {
           console.log(event);
           console.log(event.target.remoteConnections);
           //시그널을 보낸 세션 아이디
-          let xx = event.from.connectionId;
+          var xx = event.from.connectionId;
           if (xx === localUser.connectionId) {
             this.readyStatusChanged();
             this.setState({ readyState: !this.state.readyState });
@@ -350,11 +346,11 @@ class TestComponent extends Component {
 
         this.state.session.on("signal:makeQues", (event) => {
           //시그널을 보낸 세션 아이디
-          let xx = event.from.connectionId;
+          var xx = event.from.connectionId;
           console.log(xx + "가 질문 만들겠대.");
           console.log(event);
-          let zz = "";
-          for (let i = 0; i < this.state.nowUser.length; i++) {
+          var zz = "";
+          for (var i = 0; i < this.state.nowUser.length; i++) {
             if (this.state.nowUser[i].sessionID === xx) {
               zz = this.state.nowUser[i].userName;
               break;
@@ -425,10 +421,9 @@ class TestComponent extends Component {
               }
             });
             // 모든로컬에서 면접자들 똑같은순서로 진행되도록
-
-            viewees.sort()
-            viewees.sort((a, b) => a.connectionId < b.connectionId ? -1 : 1);
-            this.setState({ 
+            viewees.sort();
+            viewees.sort((a, b) => (a.connectionId < b.connectionId ? -1 : 1));
+            this.setState({
               isStart: true,
               allUsers: allUsers,
               viewees: viewees,
@@ -443,45 +438,37 @@ class TestComponent extends Component {
           }, 20);
 
           // 면접관이 평가완료 하고 버튼눌렀을때
-        this.state.session.on('signal:next', (event) => {
-          // 내가보낸신호면
-          if (event.from.connectionId === localUser.connectionId) {
-            this.setState({evalWaiting: true})
-          }
-          console.log(event)
-          let evalnum = this.state.evalnum + 1
-          // 모두평가완료했다면
-          if (evalnum === this.state.viewers.length) {
-            this.setState({evalnum: 0, evalWaiting: false})
-            this.setState({chosenQues: ''})
-            this.nextViewee();
-          } else {
-            this.setState({evalnum: evalnum})
-          }
+          this.state.session.on("signal:next", (event) => {
+            // 내가보낸신호면
+            if (event.from.connectionId === localUser.connectionId) {
+              this.setState({ evalWaiting: true });
+            }
+            console.log(event);
+            let evalnum = this.state.evalnum + 1;
+            // 모두평가완료했다면
+            if (evalnum === this.state.viewers.length) {
+              this.setState({ evalnum: 0, evalWaiting: false });
+              this.nextViewee();
+            } else {
+              this.setState({ evalnum: evalnum });
+            }
+          });
         });
-
-        this.state.session.on('signal:choiceQues', (event) => {
-          console.log(event.data)
-          this.setState({chosenQues: event.data})
-          // 내가보낸신호면
-        });
-      });
-    });
+      }
+    );
   }
 
   nextViewee() {
-
-    // 이부분에서 axios요청보내서 추천질문 3개 가져와서 RecommendationQues컴포넌트로 프롭 //
-    console.log('다음참가자 들어오세요')
-    const vieweesNum = this.state.viewees.length - 1
-    let vieweeIdx = this.state.vieweeIdx
+    console.log("다음참가자 들어오세요");
+    const vieweesNum = this.state.viewees.length - 1;
+    let vieweeIdx = this.state.vieweeIdx;
     if (vieweeIdx === vieweesNum) {
       vieweeIdx = 0;
     } else {
       vieweeIdx++;
     }
-    this.handleMainVideoStream(this.state.viewees[vieweeIdx])
-    this.setState({vieweeIdx: vieweeIdx})
+    this.handleMainVideoStream(this.state.viewees[vieweeIdx]);
+    this.setState({ vieweeIdx: vieweeIdx });
   }
 
   connectToSession() {
@@ -574,9 +561,9 @@ class TestComponent extends Component {
   }
 
   async connectWebCam() {
-    let devices = await this.OV.getDevices();
-    let videoDevices = devices.filter((device) => device.kind === "videoinput");
-    console.log(videoDevices)
+    var devices = await this.OV.getDevices();
+    var videoDevices = devices.filter((device) => device.kind === "videoinput");
+
     let publisher = this.OV.initPublisher(undefined, {
       audioSource: undefined,
       videoSource: videoDevices[0].deviceId,
@@ -627,7 +614,6 @@ class TestComponent extends Component {
     );
   }
 
-  
   updateHost() {
     return new Promise((resolve, reject) => {
       console.log(this.OPENVIDU_SERVER_URL);
@@ -655,7 +641,7 @@ class TestComponent extends Component {
   }
 
   updateSubscribers() {
-    let subscribers = this.remotes;
+    var subscribers = this.remotes;
     this.setState(
       {
         subscribers: subscribers,
@@ -688,7 +674,19 @@ class TestComponent extends Component {
     this.setState({
       session: undefined,
       subscribers: [],
-      mySessionId: undefined,
+      mySessionId: "SessionA",
+      tempNamelist: [
+        "이정정",
+        "우처리",
+        "young남",
+        "조소히",
+        "hyuna55",
+        "동준은쌈디",
+        "나는우철",
+        "용남",
+        "소힝",
+        "현아입니다",
+      ],
       myUserName: this.tempNamelist[Math.floor(Math.random() * 10)],
       localUser: undefined,
     });
@@ -743,7 +741,7 @@ class TestComponent extends Component {
     this.state.session.on("streamCreated", (event) => {
       console.log(event);
       const subscriber = this.state.session.subscribe(event.stream, undefined);
-      // let subscribers = this.state.subscribers;
+      // var subscribers = this.state.subscribers;
       subscriber.on("streamPlaying", (e) => {
         this.checkSomeoneShareScreen();
         subscriber.videos[0].video.parentElement.classList.remove(
@@ -857,26 +855,25 @@ class TestComponent extends Component {
   async switchCamera() {
     try {
       const devices = await this.OV.getDevices();
-      let videoDevices = devices.filter(
+      var videoDevices = devices.filter(
         (device) => device.kind === "videoinput"
       );
-      console.log(videoDevices)
+
       if (videoDevices && videoDevices.length > 1) {
-        let newVideoDevice = videoDevices.filter(
+        var newVideoDevice = videoDevices.filter(
           (device) => device.deviceId !== this.state.currentVideoDevice.deviceId
         );
-        console.log(newVideoDevice)
+
         if (newVideoDevice.length > 0) {
           // Creating a new publisher with specific videoSource
           // In mobile devices the default and first camera is the front one
-          let newPublisher = this.OV.initPublisher(undefined, {
+          var newPublisher = this.OV.initPublisher(undefined, {
             audioSource: undefined,
             videoSource: newVideoDevice[0].deviceId,
             publishAudio: localUser.isAudioActive(),
             publishVideo: localUser.isVideoActive(),
             mirror: true,
           });
-
 
           //newPublisher.once("accessAllowed", () => {
           await this.state.session.unpublish(
@@ -885,7 +882,7 @@ class TestComponent extends Component {
           await this.state.session.publish(newPublisher);
           this.state.localUser.setStreamManager(newPublisher);
           this.setState({
-            currentVideoDevice: newVideoDevice[0],
+            currentVideoDevice: newVideoDevice,
             localUser: localUser,
             publisher: newPublisher,
           });
@@ -1019,6 +1016,7 @@ class TestComponent extends Component {
       }
     }
 
+
   handleMainVideoStream(stream) {
     if (this.state.mainStreamManager !== stream) {
       this.setState({
@@ -1027,15 +1025,7 @@ class TestComponent extends Component {
     }
   }
 
-
-  handleChoiceQues(question) {
-    console.log(question)
-    setTimeout(() => {
-      this.setState({chosenQues: question})
-      console.log('핸들초이스퀘스에서 바꾼 스테이트: ', this.state.chosenQues)
-    }, 20);
-    // this.props(this.setState({chosenQues: event.target.value}))
-  }
+  // ----------------------------------------------------------------------
 
   render() {
     const mySessionId = this.state.mySessionId;
@@ -1044,6 +1034,7 @@ class TestComponent extends Component {
     let chatDisplay = { display: this.state.chatDisplay };
 
     return (
+      
       <div style={{
         marginTop:"2%",
         marginLeft:"1%",
@@ -1060,7 +1051,7 @@ class TestComponent extends Component {
               backgroundColor: color,
               boxShadow: '0 3px 5px 2px rgba(47, 138, 241, 0.5)'
             }}>
-           {/* 유저 리스트 */}
+          {/* 유저 리스트 */}
             <Container>
               {this.state.isStart ? null : (
                 <TestUserList
@@ -1077,16 +1068,7 @@ class TestComponent extends Component {
               )}
               {this.state.isStart ? <h1>START</h1> : null}
             </Container>
-          {this.state.isStart ? null : (
-            <TestQuesList
-              session={this.state.session}
-              questions={this.state.questions}
-              ready={this.state.readyState}
-              localUser={localUser}
-            />
-          )}
-          {this.state.isStart ? <h1>START</h1> : null}
-          {/* 채팅 */}
+            {/* 채팅 */}
             
             <Container maxWidth="sm" >
               {localUser !== undefined &&
@@ -1140,41 +1122,8 @@ class TestComponent extends Component {
           {this.state.isStart ? <h1>START</h1> : null}
           {/* 여기까지가 대기방 */}
 
-
-          {this.state.isStart && 
-            <h1>{this.state.chosenQues}</h1>
-          }
-          {this.state.isStart && 
-          <div id="video-container" className="video-container">
-              {/* {this.state.mainStreamManager !== undefined ? (
-                <div
-                  className="stream-container"
-                >
-                  <UserVideoComponent streamManager={this.state.mainStreamManager} />
-                </div>
-              ) : null} */}
-
-              {/* {this.state.publisher !== undefined ? (
-                
-                <div
-                  className="stream-container"
-                  onClick={() =>
-                    this.handleMainVideoStream(this.state.publisher)
-                  }
-                >
-                  <UserVideoComponent streamManager={this.state.publisher} />
-                </div>
-              ) : null}
-              
-              {this.state.subscribers.map((sub, i) => (
-                <div
-                  key={i}
-                  className="stream-container"
-                  onClick={() => this.handleMainVideoStream(sub)}
-                >
-                  <UserVideoComponent streamManager={sub.streamManager.stream} />
-                </div>
-              ))} */}
+          {this.state.isStart && (
+            <div id="video-container" className="video-container">
               {localUser !== undefined &&
                 localUser.getStreamManager() !== undefined && (
                   <div className="stream-container" id="localUser">
@@ -1210,44 +1159,15 @@ class TestComponent extends Component {
                 </div>
               )}
             </div>
-
-          }
-
-          {this.state.isStart && localUser.viewer &&
-            <RecommendationQues
-              session={this.state.session}
-              questions={this.state.questions}
-              mainStreamManager={this.state.mainStreamManager}
-              setState={this.setState}
-              handleChoiceQues={e => this.handleChoiceQues(e)}
-            />
-          }
-
-          {this.state.isStart && localUser.viewer &&
-            <EvaluationSheet 
+          )}
+          {this.state.isStart && localUser.viewer && (
+            <EvaluationSheet
               viewers={this.state.viewers}
               viewee={this.state.mainStreamManager}
               session={this.state.session}
               evalWaiting={this.state.evalWaiting}
-              chosenQues={this.state.chosenQues}
             />
-          }
-
-
-          {localUser !== undefined &&
-            localUser.getStreamManager() !== undefined && (
-              <div
-                className="OT_root OT_publisher custom-class"
-                style={chatDisplay}
-              >
-                <ChatComponent
-                  user={localUser}
-                  chatDisplay={this.state.chatDisplay}
-                  close={this.toggleChat}
-                  messageReceived={this.checkNotification}
-                />
-              </div>
-            )}
+          )}
         </div>
     );
   }
@@ -1273,21 +1193,21 @@ class TestComponent extends Component {
   createSession(sessionId) {
     return new Promise((resolve, reject) => {
       console.log(this.OPENVIDU_SERVER_URL + "/openvidu/api/sessions");
-      let data = JSON.stringify({ customSessionId: sessionId });
+      var data = JSON.stringify({ customSessionId: sessionId });
       axios
         .post(this.OPENVIDU_SERVER_URL + "/openvidu/api/sessions", data, {
           headers: {
             Authorization:
               "Basic " + btoa("OPENVIDUAPP:" + this.OPENVIDU_SERVER_SECRET),
-              "Content-Type": "application/json",
-            },
+            "Content-Type": "application/json",
+          },
         })
         .then((response) => {
           console.log("CREATE SESION", response);
           resolve(response.data.id);
         })
         .catch((response) => {
-          let error = Object.assign({}, response);
+          var error = Object.assign({}, response);
           if (error.response && error.response.status === 409) {
             resolve(sessionId);
           } else {
@@ -1317,7 +1237,7 @@ class TestComponent extends Component {
 
   createToken(sessionId) {
     return new Promise((resolve, reject) => {
-      let data = JSON.stringify({});
+      var data = JSON.stringify({});
       axios
         .post(
           this.OPENVIDU_SERVER_URL +
