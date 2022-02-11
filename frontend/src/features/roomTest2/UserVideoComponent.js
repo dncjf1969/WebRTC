@@ -1,4 +1,4 @@
-/* eslint-disable react/destructuring-assignment */
+ /* eslint-disable react/destructuring-assignment */
 import React, { Component } from 'react';
 import styled from 'styled-components';
 import OpenViduVideoComponent from './OvVideo';

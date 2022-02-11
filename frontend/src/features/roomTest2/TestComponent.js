@@ -649,7 +649,7 @@ class TestComponent extends Component {
     this.setState({
       session: undefined,
       subscribers: [],
-      mySessionId: "SessionA",
+      mySessionId: undefined,
       myUserName: this.tempNamelist[Math.floor(Math.random() * 10)],
       localUser: undefined,
     });
