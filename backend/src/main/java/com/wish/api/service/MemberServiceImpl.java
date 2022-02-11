@@ -10,6 +10,13 @@ import org.springframework.stereotype.Service;
 import com.wish.api.dto.request.MemberLoginReq;
 import com.wish.api.dto.request.MemberSignupReq;
 import com.wish.api.dto.request.MemberUpdateReq;
+import com.wish.common.exception.custom.member.CreateMemberException;
+import com.wish.common.exception.custom.member.DeleteMemberException;
+import com.wish.common.exception.custom.member.EmailNotCorrectException;
+import com.wish.common.exception.custom.member.LoginMemberException;
+import com.wish.common.exception.custom.member.MemberAlreadyExistsException;
+import com.wish.common.exception.custom.member.NotFoundMemberException;
+import com.wish.common.exception.custom.member.UpdateMemberException;
 import com.wish.db.entity.Member;
 import com.wish.db.repository.MemberRepository;
 import com.wish.db.repository.MemberRepositorySupport;
@@ -34,55 +41,55 @@ public class MemberServiceImpl implements MemberService {
 	JavaMailSender javamailSender;
 
 	@Override
-	public int signupMember(MemberSignupReq memberSignupInfo) {
+	public void signupMember(MemberSignupReq memberSignupInfo) {
 
 		//회원가입 안되는 조건
 		//1. 중복된 아이디가 있으면 안됨.
 		Optional<Member> temp_member = memberRepository.findById(memberSignupInfo.getId());
 
-		//중복되는 아이디가 없다면
-		if(!temp_member.isPresent()){
+		//중복되는 아이디가 있다면
+		if(temp_member.isPresent()) throw new MemberAlreadyExistsException();
+		
+		try {
 			Member member = new Member();
 			member.setId(memberSignupInfo.getId());
 			member.setPassword(passwordEncoder.encode(memberSignupInfo.getPassword()));
 			member.setName(memberSignupInfo.getName());
 			member.setEmail(memberSignupInfo.getEmail());
-			member.setSignUpDate( new Date());
+			member.setSignUpDate(member.getSignUpDate());
 			
-//			List<String> temp = member.getRole();
-//			temp.add("USER");
-//			member.setRole(temp);
-			
+//				List<String> temp = member.getRole();
+//				temp.add("USER");
+//				member.setRole(temp);
 			memberRepository.save(member);
-
-			//성공
-			return 0;
+			
+		} catch ( CreateMemberException e) {
+			e.printStackTrace();
 		}
-		else{
-			//이미 등록된 아이디입니다.
-			return 1;
-		}
-
 	}
 	
 	@Override
-	public boolean loginMember(MemberLoginReq memberLoginInfo) {
+	public void loginMember(MemberLoginReq memberLoginInfo) {
 
-		Member member = memberRepository.findById(memberLoginInfo.getId()).get();
+		Optional<Member> temp_member = memberRepository.findById(memberLoginInfo.getId());
 		
-		if( passwordEncoder.matches(memberLoginInfo.getPassword(), member.getPassword())) return true;
-		else return false;
+		if(!temp_member.isPresent()) throw new NotFoundMemberException();
+		
+		Member member = temp_member.get();
+		
+		if(!passwordEncoder.matches(memberLoginInfo.getPassword(), member.getPassword())) throw new LoginMemberException();
 	}
 
 	@Override
-	public int updateMember(MemberUpdateReq memberUpdateInfo){
+	public void updateMember(MemberUpdateReq memberUpdateInfo){
 
 		//회원수정 안되는 조건
 		//1. 인자로 넣은 아이디가 없으면 안됨.
 		Optional<Member> temp_member = memberRepository.findById(memberUpdateInfo.getId());
 
-		//아이디로 찾은게 db에 있다면
-		if(temp_member.isPresent()){
+		if(!temp_member.isPresent()) throw new NotFoundMemberException();
+		
+		try {
 			Member member = new Member();
 			member.setId(memberUpdateInfo.getId());
 			member.setPassword(passwordEncoder.encode(memberUpdateInfo.getPassword()));
@@ -90,81 +97,61 @@ public class MemberServiceImpl implements MemberService {
 			member.setEmail(memberUpdateInfo.getEmail());
 
 			memberRepository.save(member);
-
-			//성공
-			return 0;
-		}
-		else{
-			//없는 아이디입니다.
-			return 1;
+			
+		} catch (UpdateMemberException e) {
+			e.printStackTrace();
 		}
 	}
 
 	@Override
-	public int deleteMember(String memberDeleteId) {
+	public void deleteMember(String memberDeleteId) {
 		//회원삭제 안되는 조건
 		//1. 인자로 넣은 아이디가 없으면 안됨.
 		Optional<Member> temp_member = memberRepository.findById(memberDeleteId);
 
-		System.out.println(memberDeleteId);
-		//id로 찾은게 있다면
-		if(temp_member.isPresent()){
+		if(!temp_member.isPresent()) throw new NotFoundMemberException();
+		
+		try {
 			Member delete_member = temp_member.get();
 			memberRepository.delete(delete_member);
-
-			//성공
-			return 0;
-		}
-		else{
-			//없는 아이디입니다.
-			return 1;
+		} catch ( DeleteMemberException e) {
+			e.printStackTrace();
 		}
 	}
 
 
 	@Override
-	public int findPassword(String memberId, String memberEmail){
+	public void findPassword(String memberId, String memberEmail){
 
 		//비밀번호 찾기 안되는 조건
-		//1. 인자로 넣은 아이디가 없으면 안됨.
+		
 		Optional<Member> temp_member = memberRepository.findById(memberId);
 
+		//1. 아이디에 맞는 멤버가 없으면 안됨.
+		if(!temp_member.isPresent()) throw new NotFoundMemberException();
+			
 		//아이디로 찾은게 db에 있다면
-		if(temp_member.isPresent()){
+		Member member = temp_member.get();
 
-			Member member = temp_member.get();
+		if(!member.getEmail().equals(memberEmail)) throw new EmailNotCorrectException();
+		
+		String randomPW = "111";
+		member.setPassword(passwordEncoder.encode(randomPW));
 
-			if(member.getEmail().equals(memberEmail)){
+		memberRepository.save(member);
 
-				String randomPW = "111";
-				member.setPassword(passwordEncoder.encode(randomPW));
+		//메일 보내기
+		SimpleMailMessage message = new SimpleMailMessage();
+		message.setSubject("[공지] 비밀번호");
+		message.setText("임시 비밀번호는 " + randomPW + " 입니다.");
+		message.setFrom("kyung_ho@naver.com");
+		message.setTo(member.getEmail());
 
-				memberRepository.save(member);
-
-				System.out.println(member.getEmail());
-				//메일 보내기
-				SimpleMailMessage message = new SimpleMailMessage();
-				message.setSubject("[공지] 비밀번호");
-				message.setText("임시 비밀번호는 " + randomPW + " 입니다.");
-				message.setFrom("kyung_ho@naver.com");
-				message.setTo(member.getEmail());
-
-				try {
-					javamailSender.send(message);
-					return 0;
-				} catch (MailException e) {
-					e.printStackTrace();
-				}
-			}
-			//이메일을 확인해주세요.
-			else return 1;
+		try {
+			javamailSender.send(message);
+		} catch (MailException e) {
+			e.printStackTrace();
 		}
-		else{
-			//아이디 확인해주세요.
-			return 1;
-		}
-
-		return 1;
 	}
 
 

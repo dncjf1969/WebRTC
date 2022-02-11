@@ -12,10 +12,10 @@ import java.util.List;
 public interface CustomQuestionService {
 
 	List<CustomQuestion> readAllCustomQuestionList(String meetingroomId);
-	int createCustomQuestion(CustomQuestionCreateReq customQuestionCreateReq);
-	int updateCustomQuestion(CustomQuestionUpdateReq customQuestionUpdateReq);
-	int deleteCustomQuestion(Long id);
-	int deleteAllCustomQuestion(String meetingroomId);
+	void createCustomQuestion(CustomQuestionCreateReq customQuestionCreateReq);
+	void updateCustomQuestion(CustomQuestionUpdateReq customQuestionUpdateReq);
+	void deleteCustomQuestion(Long id);
+	void deleteAllCustomQuestion(String meetingroomId);
 
 
 

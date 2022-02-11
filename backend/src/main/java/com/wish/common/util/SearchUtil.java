@@ -47,8 +47,8 @@ public class SearchUtil {
 		} catch (NumberFormatException e) {
 			// TODO: handle exception
 			System.err.println("숫자가 아니네.");
-		}
-		
+		} 
+	
 		return null;
 	}
 	

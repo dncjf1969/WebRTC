@@ -127,6 +127,14 @@ class TestComponent extends Component {
       evalWaiting: false,
       // 면접관이 평가완료 누를때마다 다음 면접자로 넘어가기위해 설정한 면접자idx
       vieweeIdx: 0,
+<<<<<<< HEAD
+=======
+            chosenQues: '',
+
+      // 사전질문이랑 채팅 토글 
+      value: 0,
+      hidden: false,
+>>>>>>> 2acca405ed13d8ae80e78b4862fca411f0230c6c
     };
     console.log("state다");
     console.log(this.state);
@@ -149,6 +157,11 @@ class TestComponent extends Component {
     this.checkNotification = this.checkNotification.bind(this);
     this.checkSize = this.checkSize.bind(this);
     this.updateHost = this.updateHost.bind(this);
+<<<<<<< HEAD
+=======
+    this.setValue = this.setValue.bind(this);
+    
+>>>>>>> 2acca405ed13d8ae80e78b4862fca411f0230c6c
   }
 
   componentDidMount() {
@@ -990,6 +1003,7 @@ class TestComponent extends Component {
     var chatDisplay = { display: this.state.chatDisplay };
 
     return (
+<<<<<<< HEAD
       <div className="container" id="container">
         <h1>{this.state.myUserName}</h1>
         <ToolbarComponent
@@ -1128,6 +1142,150 @@ class TestComponent extends Component {
                 />
               </div>
             )}
+=======
+      <div style={{
+        marginTop:"2%",
+        marginLeft:"1%",
+        marginRight:"1%",
+        }}>
+          <RootStyle
+            title="waitingProfile"
+            sx={{
+              height: '600px',
+              margin: '10px',
+              marginTop: '10px',
+              padding: '10px',
+              borderRadius: 8,
+              backgroundColor: color,
+              boxShadow: '0 3px 5px 2px rgba(47, 138, 241, 0.5)'
+          }}>
+          {this.state.isStart ? (
+            <>
+                      {this.state.isStart && (
+            <div id="video-container" className="video-container">
+              {localUser !== undefined &&
+                localUser.getStreamManager() !== undefined && (
+                  <div className="stream-container" id="localUser">
+                    <div>내캠</div>
+                    <StreamComponent
+                      user={localUser}
+                      handleNickname={this.nicknameChanged}
+                    />
+                  </div>
+                )}
+              {this.state.viewers.map((sub, i) => (
+                <div key={i} className="stream-container" id="remoteUsers">
+                  <div>면접관</div>
+                  <StreamComponent
+                    user={sub}
+                    handleNickname={this.nicknameChanged}
+                  />
+                </div>
+              ))}
+              {this.state.viewees.map((sub, i) => (
+                <div key={i} className="stream-container" id="remoteUsers">
+                  <div>면접자</div>
+                  <StreamComponent
+                    user={sub}
+                    handleNickname={this.nicknameChanged}
+                  />
+                </div>
+              ))}
+              {this.state.mainStreamManager && (
+                <div className="stream-container" id="remoteUsers">
+                  <div>선택된화면</div>
+                  <StreamComponent user={this.state.mainStreamManager} />
+                </div>
+              )}
+            </div>
+          )}
+          {this.state.isStart && localUser.viewer && (
+            <EvaluationSheet
+              viewers={this.state.viewers}
+              viewee={this.state.mainStreamManager}
+              session={this.state.session}
+              evalWaiting={this.state.evalWaiting}
+            />
+          )}
+            </>
+          ) : (
+              <>
+              {/* 유저 리스트 */}
+            <Container>
+              {this.state.isStart ? null : (
+                <TestUserList
+                  session={this.state.session}
+                  subscribers={this.state.subscribers}
+                  myUserName={this.state.myUserName}
+                  ready={this.state.readyState}
+                  viewer={this.state.viewerState}
+                  localUser={localUser}
+                  ishost={this.state.ishost}
+                  hostId={this.state.hostId}
+                  allReady={this.state.allReady}
+                />
+              )}
+              {this.state.isStart ? <h1>START</h1> : null}
+            </Container>
+            {/* 채팅 */}
+            
+            <Container maxWidth="sm" >
+              {localUser !== undefined &&
+                localUser.getStreamManager() !== undefined && (
+                  <div
+                    className="OT_root OT_publisher custom-class"
+                style={{
+                  chatDisplay
+                }}
+              >
+                
+                    <ChatComponent 
+                      user={localUser}
+                      chatDisplay={this.state.chatDisplay}
+                      close={this.toggleChat}
+                      messageReceived={this.checkNotification}
+                      hidden={!this.state.hidden}
+                />
+                <div hidden={this.state.hidden}>
+                  나는야 히든 트루
+                </div>
+                {/* {this.state.value ?
+                    (<ChatComponent 
+                      user={localUser}
+                      chatDisplay={this.state.chatDisplay}
+                      close={this.toggleChat}
+                      messageReceived={this.checkNotification}
+                    />) : null} */}
+        <BottomNavigation
+              sx={{
+                    // display: "contents",
+                borderRadius:"20px",
+                    marginLeft: "100px",
+                    marginRight: "80px",
+                    boxShadow : "4px 4px 4px #459de6"
+        }}
+          showLabels
+          value={this.state.value}
+          onChange={(event, newValue) => {
+            this.setValue(newValue);
+          }}
+        >
+          {/* <BottomNavigationAction value="0" label="Recents" icon={<RestoreIcon />} /> */}
+          <BottomNavigationAction value={0} label="Chat" icon={<FavoriteIcon />} />
+          <BottomNavigationAction value={1} label="PLUS" icon={<ArchiveIcon />} />
+        </BottomNavigation>
+                  </div>
+                )}
+          </Container>
+              </>
+          )}
+          
+          </RootStyle>
+          {this.state.isStart ? <h1>START</h1> : null}
+          {/* 여기까지가 대기방 */}
+
+
+>>>>>>> 2acca405ed13d8ae80e78b4862fca411f0230c6c
         </div>
       </div>
     );

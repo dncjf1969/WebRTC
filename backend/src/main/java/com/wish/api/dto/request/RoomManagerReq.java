@@ -16,9 +16,6 @@ public class RoomManagerReq {
 	@ApiModelProperty(name="방 id", example="12")
 	int roomId; 
 	
-	@ApiModelProperty(name="방장 id", example="chris1225")
-	String managerToken;
-
 	@ApiModelProperty(name="다음 방장 id", example="joe123")
 	String nextManagerId;
 	

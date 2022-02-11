@@ -29,15 +29,21 @@ import profileImages from '../../assets/normal.png';
 // component
 import MyTable from './Mytable';
 import DeleteModal from './DeleteModal';
+<<<<<<< HEAD
 import Donut from './chart/donutchart';
 import Bar from './chart/barchart';
 import Line from './chart/piechart';
 import InterviewList from './interviewList';
 // import Gravatar from './gravatar';
+=======
+// import Graph from './graph'
+import Chart from './chart';
+
+>>>>>>> 2acca405ed13d8ae80e78b4862fca411f0230c6c
 
 // action
 import { deleteToken } from '../../common/JWT-common';
-// import RatingStats from './ratingStats';
+// import { loadUser } from '../account/authSlice';
 
 // 전체 컨테이너
 const Wrapper = styled(Container)`
@@ -45,6 +51,7 @@ display: flex;
 padding: 100px 0px 0px 0px;
 height: auto;
 `;
+
 // 사이드바
 const Sidebar = styled.aside`
 display: flex;
@@ -169,19 +176,6 @@ const ProfileTooltip = withStyles(() => ({
   },
 }))(Tooltip);
 
-// 유저 정보 불러오기
-export const loadUser = createAsyncThunk(
-  'LOAD_USER',
-  async (arg, { rejectWithValue }) => {
-    try {
-      const response = await axios.get('api/user/me');
-      return response.data;
-    } catch (err) {
-      return rejectWithValue(err.response);
-    }
-  }
-);
-
 //slice
 const changeUserProfile = createAsyncThunk(
   'CHANGE_USER_PROFILE',
@@ -195,38 +189,32 @@ const changeUserProfile = createAsyncThunk(
   }
 );
 
+// 유저 정보 불러오기
+export const loadUser = createAsyncThunk(
+  'LOAD_USER',
+  async (arg, { rejectWithValue }) => {
+    try {
+      const response = await axios.get('api/user/me');
+      return response.data;
+    } catch (err) {
+      return rejectWithValue(err.response);
+    }
+  }
+);
 
 export default function MyPage() {
   // const { nickname, email, img } = useSelector((state) => state.auth.user);
-  const ID = window.localStorage.getItem('ID');
-  
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
-
-// 유저 정보
-  const [nickname, setNickname] = useState('');
-  const [email, setEmail] = useState('');
-  const [id, setId] = useState('');
-  const [signUpDate, setSignUpDate] = useState('');
+  const nickname = 'lee';
+  const email = 'dncjf1969@naver.com';
   const img = null;
 
-//방 정보
-  const [Personality, setPersonality] = useState([]);
-  const [Debate, setDebate] = useState([]);
-  const [PT, setPT] = useState([]);
-
-// 피드백 정보
-  const [meetingName, setMeetingName] = useState('');
-  const [meetingId, setMeetingId] = useState('');
-  const [rate, setRate] = useState('');
-  const [question, setQuestion] = useState('');
-  const [comment, setComment] = useState('');
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const [open, setOpen] = useState(false);
   const [currentImage, setCurrentImage] = useState(0);
   const [mouseState, setMouseState] = useState(false);
   const [isFlipped, setIsFlipped] = useState(false);
-
 
   const handleClick = () => {
     setIsFlipped(!isFlipped);
@@ -276,6 +264,7 @@ export default function MyPage() {
     setMouseState(false);
   };
   
+<<<<<<< HEAD
   async function myInfo (userInfo1) {
     try {
       const response = await axios.get(`/members/me?id=${userInfo1}`)
@@ -323,11 +312,13 @@ export default function MyPage() {
     }
   };
   feedback(ID)
+=======
+>>>>>>> 2acca405ed13d8ae80e78b4862fca411f0230c6c
 
   return (
     <>
       <Wrapper>
-        {/* <Sidebar>
+        <Sidebar>
             {profileImages.map((profileImage, index) => {
               if (index + 1 === Number(img)) {
                 return (
@@ -397,7 +388,7 @@ export default function MyPage() {
                 </DialogActions>
               </Dialog>
             </div>
-        </Sidebar> */}
+        </Sidebar>
           <br />
           <br />
         <Main>
@@ -419,17 +410,15 @@ export default function MyPage() {
                 </Link>
               </ContentContainer>
             </Nickname>
-            <br />
             <Email>
               <Title>이메일: </Title>
-              <div><Content>{email}</Content></div>
+              <Content>{email}</Content>
             </Email>
-            <br />
           </BasicInfo>
           
           <Record>
             <Title getMoreMB>내 기록</Title>
-            <MyTable Personality={Personality} Debate={Debate} PT={PT} />
+            <MyTable />
           </Record>
 
           <Title getMoreMB getMoreMT>
@@ -438,6 +427,7 @@ export default function MyPage() {
           <Message>
               오늘도 즐거운 면접 연습!!!!!!😀
             </Message>
+<<<<<<< HEAD
           <Bar/>
           <br />
           <Donut Personality={Personality} Debate={Debate} PT={PT} />
@@ -446,8 +436,14 @@ export default function MyPage() {
           <br />
           <InterviewList MeetingName={meetingName} MeetingId={meetingId} Rate={rate} Question={question} Comment={comment}/>
 
+=======
+            {/* <Graph />        */}
+       
+          <Chart />
+        
+>>>>>>> 2acca405ed13d8ae80e78b4862fca411f0230c6c
           <Footer>
-            {/* <DeleteModal nickname={nickname} /> */}
+            {/* <DeleteModal /> */}
           </Footer>
         </Main>
       </Wrapper>
