@@ -1,5 +1,6 @@
 package com.wish.api.service;
 
+import com.querydsl.core.Tuple;
 import com.wish.api.dto.request.FeedbackCreateReq;
 import com.wish.api.dto.response.FeedbackRes;
 import com.wish.common.exception.custom.feedback.CreateFeedbackException;
@@ -75,17 +76,17 @@ public class FeedbackServiceImpl implements FeedbackService {
 
 	@Override
 	public List<MeetingCountRes> getMyMeetingCounts(String memberId) {
-		List<Long> countList = feedbackRepositorySupport.countById(memberId).get();
-		List<MeetingCountRes> res = new ArrayList<MeetingCountRes>();
-		
-		long count = countList.get(0);
-		int cnt = (int) count;
-		res.add(MeetingCountRes.of("인성",cnt));
-		
-
-		count = countList.get(1);
-		cnt = (int) count;
-		res.add(MeetingCountRes.of("직무",cnt));
+		List<MeetingCountRes> res = feedbackRepositorySupport.countById(memberId).get();
+//		List<MeetingCountRes> res = new ArrayList<MeetingCountRes>();
+//		
+//		long count = countList.get(0);
+//		int cnt = (int) count;
+//		res.add(MeetingCountRes.of("인성",cnt));
+//		
+//
+//		count = countList.get(1);
+//		cnt = (int) count;
+//		res.add(MeetingCountRes.of("직무",cnt));
 		
 		return res;
 		

@@ -16,12 +16,20 @@ public class MeetingCountRes{
 	String type;
 
 	@ApiModelProperty(name="횟수", example="3")
-	int count;
+	Long count;
 	
-	public static MeetingCountRes of(String type, int count) {
+	public static MeetingCountRes of(String type, Long count) {
 		MeetingCountRes res = new MeetingCountRes();
 		res.setType(type);
 		res.setCount(count);
 		return res;
 	}
+
+
+//	public void setCount(Long count) {
+//		long tmp = count;
+//		this.count = (int)tmp;
+//	}
+	
+	
 }

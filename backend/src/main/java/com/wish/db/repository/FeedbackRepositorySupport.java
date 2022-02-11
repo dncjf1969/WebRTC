@@ -1,5 +1,8 @@
 package com.wish.db.repository;
 
+import com.querydsl.core.types.Projections;
+import com.querydsl.core.types.dsl.Expressions;
+import com.querydsl.core.types.dsl.NumberPath;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.wish.api.dto.response.MeetingCountRes;
 import com.wish.db.entity.Member;
@@ -9,6 +12,7 @@ import com.wish.db.entity.QMember;
 import java.util.List;
 import java.util.Optional;
 
+import org.hibernate.criterion.Projection;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -28,8 +32,12 @@ public class FeedbackRepositorySupport {
 //        return Optional.ofNullable(member);
 //    }
     
-    public Optional<List<Long>> countById(String id) {
-    	List<Long> meetingCount =  jpaQueryFactory.select(qFeedback.count())
+ // 별칭으로 정렬하려면 Path<>로 정렬할 컬럼을 선언한 후, as로 받아야
+    NumberPath<Long> count = Expressions.numberPath(Long.class, "count");
+    
+    public Optional<List<MeetingCountRes>> countById(String id) {
+    	List<MeetingCountRes> meetingCount =  jpaQueryFactory
+    				.select(Projections.bean(MeetingCountRes.class, qFeedback.type, qFeedback.id.count().as(count)))
     									.from(qFeedback)
     									.where(qFeedback.memberId.eq(id))
     									.groupBy(qFeedback.type)
