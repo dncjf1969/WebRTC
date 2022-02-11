@@ -34,9 +34,9 @@ export default function MyTable({Personality, Debate, PT}) {
     createData('면접 횟수', 
     Personality, 
     Debate,
-    PT,
+    // PT,
     ),
-    createData('Best Member', 0, 0, 0),
+    // createData('Best Member', 0, 0, 0),
   ];
   
   return (
@@ -45,9 +45,9 @@ export default function MyTable({Personality, Debate, PT}) {
         <TableHead>
           <TableRow selected>
             <TableCell />
-            <TableCell align="center">직무/인성면접</TableCell>
-            <TableCell align="center">PT면접</TableCell>
-            <TableCell align="center">토론면접</TableCell>
+            <TableCell align="center">직무면접</TableCell>
+            <TableCell align="center">인성면접</TableCell>
+            {/* <TableCell align="center">토론면접</TableCell> */}
           </TableRow>
         </TableHead>
         <TableBody>
@@ -58,7 +58,7 @@ export default function MyTable({Personality, Debate, PT}) {
               </TableCell>
               <TableCell align="center">{row.intervCategory}</TableCell>
               <TableCell align="center">{row.interviewCounting}</TableCell>
-              <TableCell align="center">{row.interviewBestmember}</TableCell>
+              {/* <TableCell align="center">{row.interviewBestmember}</TableCell> */}
             </TableRow>
           ))}
         </TableBody>

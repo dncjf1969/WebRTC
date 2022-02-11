@@ -24,7 +24,7 @@ const Style = {
   pb: 3,
 };
 
-function NestedModal(props) {
+function NestedModal(props, {MeetingName, MeetingId, Rate, Question, Comment}) {
   const { index, style } = props;
   const [open, setOpen] = useState(false);
   const handleOpen = () => {
@@ -38,6 +38,7 @@ function NestedModal(props) {
     <div>
       <ListItem onClick={handleOpen} style={style} key={index} component="div" disablePadding>
         <ListItemButton >
+          {/* 해당 날짜 넣기 */}
           <ListItemText primary={`Item ${index + 1}`} />
         </ListItemButton>
       </ListItem>
@@ -50,9 +51,15 @@ function NestedModal(props) {
       >
         <Box sx={{ ...Style, width: 200 }}>
           <h2 id="child-modal-title">면접 피드백이당</h2>
-          <p id="child-modal-description">
-            나는 이우철 나는 이우철 나는 이우철 나는 이우철 나는 이우철 나는 이우철 나는 이우철 나는 이우철 나는 이우철 나는 이우철 나는 이우철 나는 이우철
-          </p>
+          <div id="child-modal-description">
+            {/* 피드백 내용 뜨게 하기 */}
+            {MeetingName}
+            {MeetingId}
+            {Rate}
+            {Question} 
+            {Comment}
+            gggggggggggggggggg
+          </div>
           <br />
           <Button onClick={handleClose}>Close</Button>
         </Box>

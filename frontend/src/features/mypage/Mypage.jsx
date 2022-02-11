@@ -308,11 +308,11 @@ export default function MyPage() {
     try {
       const response = await axios.get(`/feedback?memberId=${userInfo}`)
       console.log(response)
-      setMeetingName(response.data.meetingName)
-      setMeetingId(response.data.meetingId)
-      setRate(response.data.rate)
-      setQuestion(response.data.question)
-      setComment(response.data.comment)
+      setMeetingName(response.data[0].meetingName)
+      setMeetingId(response.data[0].meetingId)
+      setRate(response.data[0].rate)
+      setQuestion(response.data[0].question)
+      setComment(response.data[0].comment)
       return response;
     } catch (err) {
       return(err.response)
@@ -433,11 +433,13 @@ export default function MyPage() {
           <Message>
               오늘도 즐거운 면접 연습!!!!!!😀
             </Message>
-          <InterviewList/>
+            
+          <InterviewList MeetingName={meetingName} MeetingId={meetingId} Rate={rate} Question={question} Comment={comment}/>
+
           <Chart Personality={Personality} Debate={Debate} PT={PT} />
           {/* <RatingStats /> */}
           <Footer>
-            <DeleteModal nickname={nickname} />
+            {/* <DeleteModal nickname={nickname} /> */}
           </Footer>
         </Main>
       </Wrapper>
