@@ -127,14 +127,11 @@ class TestComponent extends Component {
       evalWaiting: false,
       // 면접관이 평가완료 누를때마다 다음 면접자로 넘어가기위해 설정한 면접자idx
       vieweeIdx: 0,
-<<<<<<< HEAD
-=======
             chosenQues: '',
 
       // 사전질문이랑 채팅 토글 
       value: 0,
       hidden: false,
->>>>>>> 2acca405ed13d8ae80e78b4862fca411f0230c6c
     };
     console.log("state다");
     console.log(this.state);
@@ -157,11 +154,8 @@ class TestComponent extends Component {
     this.checkNotification = this.checkNotification.bind(this);
     this.checkSize = this.checkSize.bind(this);
     this.updateHost = this.updateHost.bind(this);
-<<<<<<< HEAD
-=======
     this.setValue = this.setValue.bind(this);
     
->>>>>>> 2acca405ed13d8ae80e78b4862fca411f0230c6c
   }
 
   componentDidMount() {
@@ -1003,146 +997,6 @@ class TestComponent extends Component {
     var chatDisplay = { display: this.state.chatDisplay };
 
     return (
-<<<<<<< HEAD
-      <div className="container" id="container">
-        <h1>{this.state.myUserName}</h1>
-        <ToolbarComponent
-          sessionId={mySessionId}
-          user={localUser}
-          isStart={this.state.isStart}
-          showNotification={this.state.messageReceived}
-          camStatusChanged={this.camStatusChanged}
-          micStatusChanged={this.micStatusChanged}
-          screenShare={this.screenShare}
-          stopScreenShare={this.stopScreenShare}
-          toggleFullscreen={this.toggleFullscreen}
-          switchCamera={this.switchCamera}
-          leaveSession={this.leaveSession}
-          toggleChat={this.toggleChat}
-        />
-
-        {/* <DialogExtensionComponent
-          showDialog={this.state.showExtensionDialog}
-          cancelClicked={this.closeDialogExtension}
-        /> */}
-
-        <div id="layout" className="bounds">
-          {this.state.isStart ? null : (
-            <TestUserList
-              session={this.state.session}
-              subscribers={this.state.subscribers}
-              myUserName={this.state.myUserName}
-              ready={this.state.readyState}
-              viewer={this.state.viewerState}
-              localUser={localUser}
-              ishost={this.state.ishost}
-              hostId={this.state.hostId}
-              allReady={this.state.allReady}
-            />
-          )}
-
-          {this.state.isStart ? null : (
-            <TestQuesList
-              session={this.state.session}
-              questions={this.state.questions}
-              ready={this.state.readyState}
-              localUser={localUser}
-            />
-          )}
-          {this.state.isStart ? <h1>START</h1> : null}
-          {/* 여기까지가 대기방 */}
-
-          {this.state.isStart && (
-            <div id="video-container" className="video-container">
-              {/* {this.state.mainStreamManager !== undefined ? (
-                <div
-                  className="stream-container"
-                >
-                  <UserVideoComponent streamManager={this.state.mainStreamManager} />
-                </div>
-              ) : null} */}
-
-              {/* {this.state.publisher !== undefined ? (
-                
-                <div
-                  className="stream-container"
-                  onClick={() =>
-                    this.handleMainVideoStream(this.state.publisher)
-                  }
-                >
-                  <UserVideoComponent streamManager={this.state.publisher} />
-                </div>
-              ) : null}
-              
-              {this.state.subscribers.map((sub, i) => (
-                <div
-                  key={i}
-                  className="stream-container"
-                  onClick={() => this.handleMainVideoStream(sub)}
-                >
-                  <UserVideoComponent streamManager={sub.streamManager.stream} />
-                </div>
-              ))} */}
-              {localUser !== undefined &&
-                localUser.getStreamManager() !== undefined && (
-                  <div className="stream-container" id="localUser">
-                    <div>내캠</div>
-                    <StreamComponent
-                      user={localUser}
-                      handleNickname={this.nicknameChanged}
-                    />
-                  </div>
-                )}
-              {this.state.viewers.map((sub, i) => (
-                <div key={i} className="stream-container" id="remoteUsers">
-                  <div>면접관</div>
-                  <StreamComponent
-                    user={sub}
-                    handleNickname={this.nicknameChanged}
-                  />
-                </div>
-              ))}
-              {this.state.viewees.map((sub, i) => (
-                <div key={i} className="stream-container" id="remoteUsers">
-                  <div>면접자</div>
-                  <StreamComponent
-                    user={sub}
-                    handleNickname={this.nicknameChanged}
-                  />
-                </div>
-              ))}
-              {this.state.mainStreamManager && (
-                <div className="stream-container" id="remoteUsers">
-                  <div>선택된화면</div>
-                  <StreamComponent user={this.state.mainStreamManager} />
-                </div>
-              )}
-            </div>
-          )}
-          {this.state.isStart && localUser.viewer && (
-            <EvaluationSheet
-              viewers={this.state.viewers}
-              viewee={this.state.mainStreamManager}
-              session={this.state.session}
-              evalWaiting={this.state.evalWaiting}
-            />
-          )}
-
-          {localUser !== undefined &&
-            localUser.getStreamManager() !== undefined && (
-              <div
-                className="OT_root OT_publisher custom-class"
-                style={chatDisplay}
-              >
-                <ChatComponent
-                  user={localUser}
-                  chatDisplay={this.state.chatDisplay}
-                  close={this.toggleChat}
-                  messageReceived={this.checkNotification}
-                />
-              </div>
-            )}
-=======
       <div style={{
         marginTop:"2%",
         marginLeft:"1%",
@@ -1285,7 +1139,6 @@ class TestComponent extends Component {
           {/* 여기까지가 대기방 */}
 
 
->>>>>>> 2acca405ed13d8ae80e78b4862fca411f0230c6c
         </div>
       </div>
     );
