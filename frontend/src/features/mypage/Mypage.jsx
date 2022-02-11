@@ -33,6 +33,7 @@ import Donut from './chart/donutchart';
 import Bar from './chart/barchart';
 import Line from './chart/piechart';
 import InterviewList from './interviewList';
+// import Gravatar from './gravatar';
 
 // action
 import { deleteToken } from '../../common/JWT-common';
@@ -275,46 +276,48 @@ export default function MyPage() {
     setMouseState(false);
   };
   
-  async function myInfo (userInfo) {
+  async function myInfo (userInfo1) {
     try {
-      const response = await axios.get(`/members/me?id=${userInfo}`)
+      const response = await axios.get(`/members/me?id=${userInfo1}`)
       console.log(response)
       setId(response.data.userId)
       setNickname(response.data.name)
       setEmail(response.data.email)
-      return response;
+      // return response;
     } catch (err) {
       return(err.response)
     }
   };
   myInfo(ID)
 
-  async function roomInfo (userInfo) {
+  async function roomInfo (userInfo2) {
     try {
-      const response = await axios.get(`/feedback/count?memberId=${userInfo}`)
+      const response = await axios.get(`/feedback/count?memberId=${userInfo2}`)
       console.log(response)
+      console.log('44444444444444444444444444444444')
       setPersonality(response.data.filter(info => info.type === '인성')[0].count)
       // backend 팀에 말해서 추가해달라고 요청 => 인성/직무 , 토론, PT
       setDebate(response.data.filter(info => info.type === '인성')[0].count)
       setPT(response.data.filter(info => info.type === '인성')[0].count)
-
-      return response;
+      // return response;
     } catch (err) {
       return(err.response)
     }
   };
   roomInfo(ID)
 
-  async function feedback (userInfo) {
+  async function feedback (userInfo3) {
     try {
-      const response = await axios.get(`/feedback?memberId=${userInfo}`)
+      const response = await axios.get(`/feedback?memberId=${userInfo3}`)
       console.log(response)
       setMeetingName(response.data[0].meetingName)
       setMeetingId(response.data[0].meetingId)
       setRate(response.data[0].rate)
       setQuestion(response.data[0].question)
       setComment(response.data[0].comment)
-      return response;
+      // console.log(meetingName)
+      // console.log(question)
+      // return response;
     } catch (err) {
       return(err.response)
     }
@@ -399,6 +402,7 @@ export default function MyPage() {
           <br />
         <Main>
           <BasicInfo>
+            {/* <Gravatar /> */}
             <Nickname>
               <Title>닉네임</Title>
               <ContentContainer>

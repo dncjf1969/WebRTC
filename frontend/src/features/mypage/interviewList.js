@@ -24,8 +24,43 @@ const Style = {
   pb: 3,
 };
 
-function NestedModal(props, {MeetingName, MeetingId, Rate, Question, Comment}) {
-  const { index, style } = props;
+
+
+function ChildModal({MeetingName, MeetingId, Rate, Question, Comment}) {
+  const [open, setOpen] = React.useState(false);
+  const handleOpen = () => {
+    setOpen(true);
+  };
+  const handleClose = () => {
+    setOpen(false);
+  };
+
+  return (
+    <React.Fragment>
+      <Button onClick={handleOpen}>Open Child Modal</Button>
+      <Modal
+        hideBackdrop
+        open={open}
+        onClose={handleClose}
+        aria-labelledby="child-modal-title"
+        aria-describedby="child-modal-description"
+      >
+        <Box sx={{ ...Style, width: 200 }}>
+          <h2 id="child-modal-title">Text in a child modal</h2>
+          <p id="child-modal-description">
+            Lorem ipsum, dolor sit amet consectetur adipisicing elit.
+          </p>
+          <Button onClick={handleClose}>Close Child Modal</Button>
+        </Box>
+      </Modal>
+    </React.Fragment>
+  );
+}
+
+
+
+export default function NestedModal({MeetingName, MeetingId, Rate, Question, Comment}) {
+  const index = 1;
   const [open, setOpen] = useState(false);
   const handleOpen = () => {
     setOpen(true);
@@ -36,10 +71,10 @@ function NestedModal(props, {MeetingName, MeetingId, Rate, Question, Comment}) {
 
   return (
     <div>
-      <ListItem onClick={handleOpen} style={style} key={index} component="div" disablePadding>
+      <ListItem onClick={handleOpen} key={index} component="div" disablePadding>
         <ListItemButton >
           {/* 해당 날짜 넣기 */}
-          <ListItemText primary={`Item ${index + 1}`} />
+          <ListItemText primary={`방제목: ${MeetingName}`} />
         </ListItemButton>
       </ListItem>
       <Modal
@@ -51,16 +86,12 @@ function NestedModal(props, {MeetingName, MeetingId, Rate, Question, Comment}) {
       >
         <Box sx={{ ...Style, width: 200 }}>
           <h2 id="child-modal-title">면접 피드백이당</h2>
+          
           <div id="child-modal-description">
-            {/* 피드백 내용 뜨게 하기 */}
-            {MeetingName}
-            {MeetingId}
-            {Rate}
-            {Question} 
-            {Comment}
-            gggggggggggggggggg
+            <text>{Question}</text>
           </div>
           <br />
+          <ChildModal />
           <Button onClick={handleClose}>Close</Button>
         </Box>
       </Modal>
@@ -68,22 +99,22 @@ function NestedModal(props, {MeetingName, MeetingId, Rate, Question, Comment}) {
   );
 }
 
-export default function VirtualizedList() {
-  return (
-    <Box
-      sx={{ width: '100%', height: 400, maxWidth: 360, bgcolor: 'background.paper' }}
-    >
-      <FixedSizeList
-        height={400}
-        width={360}
-        itemSize={70}
-        itemCount={10}
-        overscanCount={5}
-      >
-        {NestedModal}
-      </FixedSizeList>
-    </Box>
-  );
-}
+// function VirtualizedList() {
+//   return (
+//     <Box
+//       sx={{ width: '100%', height: 400, maxWidth: 360, bgcolor: 'background.paper' }}
+//     >
+//       <FixedSizeList
+//         height={400}
+//         width={360}
+//         itemSize={70}
+//         itemCount={10}
+//         overscanCount={5}
+//       >
+//         {NestedModal}
+//       </FixedSizeList>
+//     </Box>
+//   );
+// }
 
 
