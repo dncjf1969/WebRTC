@@ -77,18 +77,14 @@ public class FeedbackServiceImpl implements FeedbackService {
 	@Override
 	public List<MeetingCountRes> getMyMeetingCounts(String memberId) {
 		List<MeetingCountRes> res = feedbackRepositorySupport.countById(memberId).get();
-//		List<MeetingCountRes> res = new ArrayList<MeetingCountRes>();
-//		
-//		long count = countList.get(0);
-//		int cnt = (int) count;
-//		res.add(MeetingCountRes.of("인성",cnt));
-//		
-//
-//		count = countList.get(1);
-//		cnt = (int) count;
-//		res.add(MeetingCountRes.of("직무",cnt));
 		
 		return res;
 		
+	}
+
+	@Override
+	public List<String> getMeetingIdList(String memberId) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }
