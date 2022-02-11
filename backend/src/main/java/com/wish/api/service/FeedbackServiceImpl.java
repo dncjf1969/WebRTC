@@ -79,12 +79,31 @@ public class FeedbackServiceImpl implements FeedbackService {
 		List<MeetingCountRes> res = feedbackRepositorySupport.countById(memberId).get();
 		
 		return res;
-		
 	}
 
 	@Override
-	public List<String> getMeetingIdList(String memberId) {
-		// TODO Auto-generated method stub
-		return null;
+	public List<Long> getMeetingIdList(String memberId) {
+		List<Feedback> list = feedbackRepository.findByMemberId(memberId).get();
+		List<Long> res = new ArrayList<Long>();
+		
+		// 타입 변환
+		for (Feedback feedback : list) {
+			res.add(feedback.getMeetingId());
+		}
+		
+		return res;
+	}
+
+	@Override
+	public List<FeedbackRes> getMyFeedbackByRoom(Long roomId, String memberId) {
+		List<Feedback> list = feedbackRepository.findByMeetingIdAndMemberId(roomId, memberId).get();
+		List<FeedbackRes> res = new ArrayList<FeedbackRes>();
+
+		// 타입 변환
+		for (Feedback feedback : list) {
+			res.add(new FeedbackRes().of(feedback));
+		}
+		
+		return res;
 	}
 }
