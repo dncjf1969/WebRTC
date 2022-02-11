@@ -29,9 +29,10 @@ import profileImages from '../../assets/normal.png';
 // component
 import MyTable from './Mytable';
 import DeleteModal from './DeleteModal';
-import Chart from './chart';
+import Donut from './chart/donutchart';
+import Bar from './chart/barchart';
+import Line from './chart/piechart';
 import InterviewList from './interviewList';
-
 
 // action
 import { deleteToken } from '../../common/JWT-common';
@@ -433,11 +434,14 @@ export default function MyPage() {
           <Message>
               오늘도 즐거운 면접 연습!!!!!!😀
             </Message>
-            
+          <Bar/>
+          <br />
+          <Donut Personality={Personality} Debate={Debate} PT={PT} />
+          <br />
+          <Line />
+          <br />
           <InterviewList MeetingName={meetingName} MeetingId={meetingId} Rate={rate} Question={question} Comment={comment}/>
 
-          <Chart Personality={Personality} Debate={Debate} PT={PT} />
-          {/* <RatingStats /> */}
           <Footer>
             {/* <DeleteModal nickname={nickname} /> */}
           </Footer>
