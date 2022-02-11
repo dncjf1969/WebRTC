@@ -149,6 +149,8 @@ class TestComponent extends Component {
       evalWaiting: false,
       // 면접관이 평가완료 누를때마다 다음 면접자로 넘어가기위해 설정한 면접자idx
       vieweeIdx: 0,
+            chosenQues: '',
+
       // 사전질문이랑 채팅 토글 
       value: 0,
       hidden: false,
@@ -175,6 +177,7 @@ class TestComponent extends Component {
     this.checkSize = this.checkSize.bind(this);
     this.updateHost = this.updateHost.bind(this);
     this.setValue = this.setValue.bind(this);
+    
   }
 
   componentDidMount() {
@@ -1034,7 +1037,6 @@ class TestComponent extends Component {
     let chatDisplay = { display: this.state.chatDisplay };
 
     return (
-      
       <div style={{
         marginTop:"2%",
         marginLeft:"1%",
@@ -1050,8 +1052,59 @@ class TestComponent extends Component {
               borderRadius: 8,
               backgroundColor: color,
               boxShadow: '0 3px 5px 2px rgba(47, 138, 241, 0.5)'
-            }}>
-          {/* 유저 리스트 */}
+          }}>
+          {this.state.isStart ? (
+            <>
+                      {this.state.isStart && (
+            <div id="video-container" className="video-container">
+              {localUser !== undefined &&
+                localUser.getStreamManager() !== undefined && (
+                  <div className="stream-container" id="localUser">
+                    <div>내캠</div>
+                    <StreamComponent
+                      user={localUser}
+                      handleNickname={this.nicknameChanged}
+                    />
+                  </div>
+                )}
+              {this.state.viewers.map((sub, i) => (
+                <div key={i} className="stream-container" id="remoteUsers">
+                  <div>면접관</div>
+                  <StreamComponent
+                    user={sub}
+                    handleNickname={this.nicknameChanged}
+                  />
+                </div>
+              ))}
+              {this.state.viewees.map((sub, i) => (
+                <div key={i} className="stream-container" id="remoteUsers">
+                  <div>면접자</div>
+                  <StreamComponent
+                    user={sub}
+                    handleNickname={this.nicknameChanged}
+                  />
+                </div>
+              ))}
+              {this.state.mainStreamManager && (
+                <div className="stream-container" id="remoteUsers">
+                  <div>선택된화면</div>
+                  <StreamComponent user={this.state.mainStreamManager} />
+                </div>
+              )}
+            </div>
+          )}
+          {this.state.isStart && localUser.viewer && (
+            <EvaluationSheet
+              viewers={this.state.viewers}
+              viewee={this.state.mainStreamManager}
+              session={this.state.session}
+              evalWaiting={this.state.evalWaiting}
+            />
+          )}
+            </>
+          ) : (
+              <>
+              {/* 유저 리스트 */}
             <Container>
               {this.state.isStart ? null : (
                 <TestUserList
@@ -1118,56 +1171,14 @@ class TestComponent extends Component {
                   </div>
                 )}
           </Container>
+              </>
+          )}
+          
           </RootStyle>
           {this.state.isStart ? <h1>START</h1> : null}
           {/* 여기까지가 대기방 */}
 
-          {this.state.isStart && (
-            <div id="video-container" className="video-container">
-              {localUser !== undefined &&
-                localUser.getStreamManager() !== undefined && (
-                  <div className="stream-container" id="localUser">
-                    <div>내캠</div>
-                    <StreamComponent
-                      user={localUser}
-                      handleNickname={this.nicknameChanged}
-                    />
-                  </div>
-                )}
-              {this.state.viewers.map((sub, i) => (
-                <div key={i} className="stream-container" id="remoteUsers">
-                  <div>면접관</div>
-                  <StreamComponent
-                    user={sub}
-                    handleNickname={this.nicknameChanged}
-                  />
-                </div>
-              ))}
-              {this.state.viewees.map((sub, i) => (
-                <div key={i} className="stream-container" id="remoteUsers">
-                  <div>면접자</div>
-                  <StreamComponent
-                    user={sub}
-                    handleNickname={this.nicknameChanged}
-                  />
-                </div>
-              ))}
-              {this.state.mainStreamManager && (
-                <div className="stream-container" id="remoteUsers">
-                  <div>선택된화면</div>
-                  <StreamComponent user={this.state.mainStreamManager} />
-                </div>
-              )}
-            </div>
-          )}
-          {this.state.isStart && localUser.viewer && (
-            <EvaluationSheet
-              viewers={this.state.viewers}
-              viewee={this.state.mainStreamManager}
-              session={this.state.session}
-              evalWaiting={this.state.evalWaiting}
-            />
-          )}
+
         </div>
     );
   }

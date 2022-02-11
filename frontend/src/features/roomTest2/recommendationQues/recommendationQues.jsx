@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-class recommendationQues extends Component {
+class RecommendationQues extends Component {
     constructor(props) {
         super(props);
 
@@ -90,4 +90,4 @@ class recommendationQues extends Component {
    
 }
 
-export default recommendationQues;
+export default RecommendationQues;
