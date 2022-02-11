@@ -58,21 +58,14 @@ public class FeedbackController {
 //			@ApiIgnore Authentication authentication,
 			@ApiParam(value="마이페이지를 볼 회원 id", required = true)String memberId) {
 		
-//		String memberId = authentication.getName();
-				
-//		List<FeedbackRes> res = feedbackService.getMyFeedback(authentication.getName());
-//		List<FeedbackRes> res = feedbackService.getMyFeedback(memberId);
-		
 		// 1. memberId -> List<참여했던 방 ID>
 		List<Long> roomIdList = feedbackService.getMeetingIdList(memberId);
-		System.out.println(">>>>>> roomIdList : " + roomIdList.size());
 		// 2. 응답용 객체 생성
 		List<FeedbackByRoomRes> res = new ArrayList<FeedbackByRoomRes>();
 		List<FeedbackRes> feedbackList;
 		for (Long roomId : roomIdList) {
 			// 3. 방Id -> List<피드백>
 			feedbackList = feedbackService.getMyFeedbackByRoom(roomId, memberId);
-			System.out.println(">>>>>> feedbackList : " + feedbackList.size());
 			// 4. 응답 객체에 이 리스트들을 추가함
 			res.add(new FeedbackByRoomRes().of(feedbackList));
 		}
