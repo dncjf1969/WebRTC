@@ -17,13 +17,35 @@ import TestUserList from "./TestUserList/TestUserList";
 import TestQuesList from "./TestQuesList/TestQuesList";
 import EvaluationSheet from "./evaluationSheet/evaluationSheet";
 
-import imgA from "./testImages/rion.PNG";
-import imgB from "./testImages/muzi.PNG";
-import imgC from "./testImages/neo.PNG";
-import imgD from "./testImages/prodo.PNG";
-import imgE from "./testImages/prodo.PNG";
-import imgF from "./testImages/prodo.PNG";
-import { data } from "jquery";
+// 채팅, 사전채팅 토글 
+import BottomNavigationAction from '@mui/material/BottomNavigationAction';
+import RestoreIcon from '@mui/icons-material/Restore';
+import FavoriteIcon from '@mui/icons-material/Favorite';
+import ArchiveIcon from '@mui/icons-material/Archive';
+// material
+import { styled } from "@mui/material/styles";
+import { Box, Card, Stack, Link, Container, Typography, BottomNavigation } from "@mui/material";
+import { bgcolor } from "@mui/system";
+import { deepPurple, teal } from '@mui/material/colors';
+import { blue } from "@material-ui/core/colors";
+// ----------------------------------------------------------------------
+
+const RootStyle = styled("div")(({ theme }) => ({
+  [theme.breakpoints.up("sm")]: {
+    display: "flex",
+    marginTop:'15px'
+  },
+}));
+
+const SectionStyle = styled("div")(({ theme }) => ({
+  width: "100%",
+  // maxWidth: 464,
+  display: "flex",
+  flexDirection: "column",
+  justifyContent: "center",
+  margin: theme.spacing(0, 0, 0, 0),
+}));
+// ----------------------------------------------------------------------
 
 var localUser = new UserModel();
 
@@ -34,10 +56,10 @@ class TestComponent extends Component {
     // this.OPENVIDU_SERVER_URL = this.props.openviduServerUrl
     //   ? this.props.openviduServerUrl
     //   : "https://" + "i6e201.p.ssafy.io" + ":4443";
-    this.OPENVIDU_SERVER_URL = "https://localhost:4443";
+    this.OPENVIDU_SERVER_URL = "https://i6e201.p.ssafy.io";
     this.OPENVIDU_SERVER_SECRET = this.props.openviduSecret
       ? this.props.openviduSecret
-      : "MY_SECRET";
+      : "WISH";
     this.hasBeenUpdated = false;
     this.layout = new OpenViduLayout();
     // let sessionName = this.props.sessionName
@@ -110,7 +132,7 @@ class TestComponent extends Component {
       finalRank: [],
       isFliped: true,
       localUser: undefined,
-      chatDisplay: "none",
+      chatDisplay: "block",
       currentVideoDevice: undefined,
       nowUser: [],
       customSubscriber: [],
@@ -961,8 +983,7 @@ class TestComponent extends Component {
     }
     this.updateLayout();
   }
-
-  checkNotification(event) {
+    checkNotification(event) {
     this.setState({
       messageReceived: this.state.chatDisplay === "none",
     });
@@ -982,6 +1003,22 @@ class TestComponent extends Component {
       this.hasBeenUpdated = false;
     }
   }
+  // 채팅창이랑 사전질문 창 토글 기능
+  setValue() {
+    if (this.state.value === 1) {
+      this.setState({
+        value: 0,
+        hidden:false,
+      })
+    } else {
+        this.setState({
+          value : 1,
+          hidden:true,
+
+        })
+      }
+    }
+
 
   handleMainVideoStream(stream) {
     if (this.state.mainStreamManager !== stream) {
@@ -991,10 +1028,13 @@ class TestComponent extends Component {
     }
   }
 
+  // ----------------------------------------------------------------------
+
   render() {
     const mySessionId = this.state.mySessionId;
     const localUser = this.state.localUser;
-    var chatDisplay = { display: this.state.chatDisplay };
+    const color = blue[100];
+    let chatDisplay = { display: this.state.chatDisplay };
 
     return (
       <div style={{
@@ -1140,7 +1180,6 @@ class TestComponent extends Component {
 
 
         </div>
-      </div>
     );
   }
 
