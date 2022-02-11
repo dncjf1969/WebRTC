@@ -29,13 +29,13 @@ import profileImages from '../../assets/normal.png';
 // component
 import MyTable from './Mytable';
 import DeleteModal from './DeleteModal';
-// import Graph from './graph'
 import Chart from './chart';
+import InterviewList from './interviewList';
 
 
 // action
 import { deleteToken } from '../../common/JWT-common';
-// import { loadUser } from '../account/authSlice';
+// import RatingStats from './ratingStats';
 
 // 전체 컨테이너
 const Wrapper = styled(Container)`
@@ -43,7 +43,6 @@ display: flex;
 padding: 100px 0px 0px 0px;
 height: auto;
 `;
-
 // 사이드바
 const Sidebar = styled.aside`
 display: flex;
@@ -168,19 +167,6 @@ const ProfileTooltip = withStyles(() => ({
   },
 }))(Tooltip);
 
-//slice
-const changeUserProfile = createAsyncThunk(
-  'CHANGE_USER_PROFILE',
-  async (imgNum, { rejectWithValue }) => {
-    try {
-      const response = await axios.put(`/api/user/image?imgNum=${imgNum}`);
-      return response.data;
-    } catch (err) {
-      return rejectWithValue(err);
-    }
-  }
-);
-
 // 유저 정보 불러오기
 export const loadUser = createAsyncThunk(
   'LOAD_USER',
@@ -194,19 +180,51 @@ export const loadUser = createAsyncThunk(
   }
 );
 
+//slice
+const changeUserProfile = createAsyncThunk(
+  'CHANGE_USER_PROFILE',
+  async (imgNum, { rejectWithValue }) => {
+    try {
+      const response = await axios.put(`/api/user/image?imgNum=${imgNum}`);
+      return response.data;
+    } catch (err) {
+      return rejectWithValue(err);
+    }
+  }
+);
+
+
 export default function MyPage() {
   // const { nickname, email, img } = useSelector((state) => state.auth.user);
-  const nickname = 'lee';
-  const email = 'dncjf1969@naver.com';
-  const img = null;
-
+  const ID = window.localStorage.getItem('ID');
+  
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
+// 유저 정보
+  const [nickname, setNickname] = useState('');
+  const [email, setEmail] = useState('');
+  const [id, setId] = useState('');
+  const [signUpDate, setSignUpDate] = useState('');
+  const img = null;
+
+//방 정보
+  const [Personality, setPersonality] = useState([]);
+  const [Debate, setDebate] = useState([]);
+  const [PT, setPT] = useState([]);
+
+// 피드백 정보
+  const [meetingName, setMeetingName] = useState('');
+  const [meetingId, setMeetingId] = useState('');
+  const [rate, setRate] = useState('');
+  const [question, setQuestion] = useState('');
+  const [comment, setComment] = useState('');
 
   const [open, setOpen] = useState(false);
   const [currentImage, setCurrentImage] = useState(0);
   const [mouseState, setMouseState] = useState(false);
   const [isFlipped, setIsFlipped] = useState(false);
+
 
   const handleClick = () => {
     setIsFlipped(!isFlipped);
@@ -256,11 +274,56 @@ export default function MyPage() {
     setMouseState(false);
   };
   
+  async function myInfo (userInfo) {
+    try {
+      const response = await axios.get(`/members/me?id=${userInfo}`)
+      console.log(response)
+      setId(response.data.userId)
+      setNickname(response.data.name)
+      setEmail(response.data.email)
+      return response;
+    } catch (err) {
+      return(err.response)
+    }
+  };
+  myInfo(ID)
+
+  async function roomInfo (userInfo) {
+    try {
+      const response = await axios.get(`/feedback/count?memberId=${userInfo}`)
+      console.log(response)
+      setPersonality(response.data.filter(info => info.type === '인성')[0].count)
+      // backend 팀에 말해서 추가해달라고 요청 => 인성/직무 , 토론, PT
+      setDebate(response.data.filter(info => info.type === '인성')[0].count)
+      setPT(response.data.filter(info => info.type === '인성')[0].count)
+
+      return response;
+    } catch (err) {
+      return(err.response)
+    }
+  };
+  roomInfo(ID)
+
+  async function feedback (userInfo) {
+    try {
+      const response = await axios.get(`/feedback?memberId=${userInfo}`)
+      console.log(response)
+      setMeetingName(response.data[0].meetingName)
+      setMeetingId(response.data[0].meetingId)
+      setRate(response.data[0].rate)
+      setQuestion(response.data[0].question)
+      setComment(response.data[0].comment)
+      return response;
+    } catch (err) {
+      return(err.response)
+    }
+  };
+  feedback(ID)
 
   return (
     <>
       <Wrapper>
-        <Sidebar>
+        {/* <Sidebar>
             {profileImages.map((profileImage, index) => {
               if (index + 1 === Number(img)) {
                 return (
@@ -330,7 +393,7 @@ export default function MyPage() {
                 </DialogActions>
               </Dialog>
             </div>
-        </Sidebar>
+        </Sidebar> */}
           <br />
           <br />
         <Main>
@@ -351,15 +414,17 @@ export default function MyPage() {
                 </Link>
               </ContentContainer>
             </Nickname>
+            <br />
             <Email>
               <Title>이메일: </Title>
-              <Content>{email}</Content>
+              <div><Content>{email}</Content></div>
             </Email>
+            <br />
           </BasicInfo>
           
           <Record>
             <Title getMoreMB>내 기록</Title>
-            <MyTable />
+            <MyTable Personality={Personality} Debate={Debate} PT={PT} />
           </Record>
 
           <Title getMoreMB getMoreMT>
@@ -368,12 +433,13 @@ export default function MyPage() {
           <Message>
               오늘도 즐거운 면접 연습!!!!!!😀
             </Message>
-            {/* <Graph />        */}
-       
-          <Chart />
-        
+            
+          <InterviewList MeetingName={meetingName} MeetingId={meetingId} Rate={rate} Question={question} Comment={comment}/>
+
+          <Chart Personality={Personality} Debate={Debate} PT={PT} />
+          {/* <RatingStats /> */}
           <Footer>
-            {/* <DeleteModal /> */}
+            {/* <DeleteModal nickname={nickname} /> */}
           </Footer>
         </Main>
       </Wrapper>

@@ -11,13 +11,13 @@ import Login from "../features/account/login/Login";
 import Home from "../features/home/Home";
 import RoomList from "../features/roomlist/Roomlist";
 import MyPage from "../features/mypage/Mypage";
-// import DataTable from "../features/roomlist/roomarray2";
-// import Game from '../features/meetingroom/Game';
-// import Room from '../features/interview/Room';
-// import VideoRoomComponent from "../features/roomTest/VideoRoomComponent";
+import CheckPassword from '../features/account/modify/CheckPassword';
+import ModifyUserInfo from '../features/account/modify/ModifyUserInfo';
 import TestComponent from "../features/roomTest2/TestComponent";
 import Navbar from "../common/navbar/navbar";
 import Test from "../features/roomlist/test";
+// import RatingStats from "../features/mypage/ratingStats";
+
 
 const Wrapper = styled.div`
   background-color: white;
@@ -39,7 +39,10 @@ function App() {
           <Route path="/roomlist" element={<RoomList />}></Route>
           <Route path="/mypage" element={<MyPage />} />
           <Route path="/roomTest2" element={<TestComponent />}></Route>
-          <Route path="/test" element={<Test />}></Route>
+          <Route path="/test" element={<Test/>}></Route>
+          <Route path="/checkpassword" element={<CheckPassword/>}></Route>
+          <Route path="/modifyuserinfo" element={<ModifyUserInfo/>}></Route>
+          {/* <Route path="/ratingStats" element={<RatingStats/>}></Route> */}
         </Routes>
       </Router>
     </Wrapper>

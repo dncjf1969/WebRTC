@@ -75,6 +75,7 @@ function Login() {
         data: {accessToken},
       } = response;
       saveToken(accessToken);
+      window.localStorage.setItem('ID', userInfo.id);
       console.log(response)
       navigate('/')
       return response;
