@@ -35,14 +35,14 @@ function HeroHome() {
           {/* Section header */}
           <div className="text-center pb-12 md:pb-16">
             <h1 className="text-5xl md:text-6xs font-extrabold leading-tighter tracking-tighter mb-4" data-aos="zoom-y-out">
-              <span className="bg-clip-text text-transparent bg-gradient-to-r from-pink-500 to-pink-100">WISH</span>
+              <span className="bg-clip-text text-transparent font-extrabold bg-gradient-to-r from-blue-500 to-teal-200">WISH</span>
               가 당신의 
-              <span className="bg-clip-text text-transparent bg-gradient-to-r from-blue-500 to-teal-400">소망</span>
-              을 <p className="bg-clip-text text-transparent bg-gradient-to-r from-blue-500 to-teal-400">이루어 드리겠습니다</p>
+              <span className="bg-clip-text text-transparent bg-gradient-to-r from-blue-500 to-teal-200">소망</span>
+              을 <p className="bg-clip-text text-transparent bg-gradient-to-r from-blue-500 to-teal-200">이루어 드리겠습니다</p>
             </h1>
             <div className="max-w-3xl mx-auto">
               <p className="text-xl text-gray-600 mb-8" data-aos="zoom-y-out" data-aos-delay="150">
-                <span className="bg-clip-text text-transparent bg-gradient-to-r from-blue-700 to-teal-600">WISH</span>
+                <span className="bg-clip-text font-extrabold text-transparent bg-gradient-to-r from-blue-500 to-teal-200">WISH</span>
                 는 여러분들의 비대면 화상면접을 위해 <p>시간과 장소에 구애받지 않는 면접대비 서비스를 제공합니다</p>
               </p>
               <div className="max-w-xs mx-auto sm:max-w-none sm:flex sm:justify-center" data-aos="zoom-y-out" data-aos-delay="300">

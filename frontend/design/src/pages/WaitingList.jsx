@@ -34,7 +34,9 @@ import Typography from '@mui/material/Typography';
 
 //방만들기 비밀번호 스위치
 import Switch from '@mui/material/Switch';
+import RecordVoiceOverOutlinedIcon from '@mui/icons-material/RecordVoiceOverOutlined';
 
+//navbar
 
 function CustomizedInputBase() {
   const [word, setWord] = useState(''); // submit시에 바뀔 변수
@@ -82,7 +84,7 @@ function CustomizedInputBase() {
         console.log(res)
         const roomId = res.data.roomId
         window.localStorage.setItem('roomId', roomId);
-        navigate('/roomtest2')
+        // navigate('/roomtest2')
         return res.data;
       })
       .catch((err) => {
@@ -92,7 +94,37 @@ function CustomizedInputBase() {
       
     
   };
+// 카드
 
+function Card(key, room) {
+  return (
+    <div className='pt-3 pb-3 px-4 flex flex-col items-center p-6 ' data-aos="zoom-y-out" data-aos-delay="350">
+      <div className="pt-5 pb-5 max-w-6xl px-4 sm:px-6 ">
+          {/* <WaitingListItem /> */}
+
+  <div class="bg-gray-100 rounded  shadow-xl rounded">
+    <div class="max-w-xs rounded-md overflow-hidden shadow-lg hover:scale-105 transition duration-500 cursor-pointer card">
+      <div>
+        <img src="https://www.apple.com/newsroom/images/product/mac/standard/Apple_MacBook-Pro_16-inch-Screen_10182021_big_carousel.jpg.large.jpg" alt="" />
+      </div>
+      <div class="py-4 px-4 bg-white">
+        {/* <h3 class="text-md font-semibold text-gray-600">{data.name}</h3> */}
+        <p class="mt-4 font-semibold text-gray-600 text-lg">{room}</p>
+        <p class="mt-4 font-thin">비밀방 유무(있으면 키, 없으면 공란)</p>
+        <p class="mt-4 font-thin">{key}</p>
+        <span class="flex items-center justify-center mt-4 w-full bg-blue-400 hover:bg-blue-500 py-1 rounded">
+
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
+        <button class="font-semibold text-white">참여하기</button>
+        </span>
+      </div>
+    </div>
+
+        </div>
+        </div>
+        </div>
+  )
+}
   // 모달 내 select
   const [job, setJob] = useState('');
   const [type, setType] = useState('');
@@ -145,11 +177,11 @@ function CustomizedInputBase() {
   function handleRenew() {
     search('')
   }
-    
+
   // const color = lightBlue[300]; 
   return (
     <>
-      <div >
+      <div className='flex shadow-sm rounded'>
     <Paper onSubmit={handleSubmit}
       component="form"
       sx={{ p: '2px 4px', display: 'flex', alignItems: 'center', width: 800 }}
@@ -169,8 +201,8 @@ function CustomizedInputBase() {
         <AutorenewIcon />
     </IconButton>
     </Paper>
+      <Button  variant="contained" onClick={handleClickOpen}>방만들기</Button> 
     </div>
-      <Button variant="contained" onClick={handleClickOpen}>방만들기</Button> 
       {/* <div>
                   <a className="btn text-white bg-blue-600 hover:bg-blue-700 w-full mb-4 sm:w-auto sm:mb-0 fontsize"onClick={handleClickOpen}>방만들기</a>
                 </div> */}
@@ -269,11 +301,17 @@ function CustomizedInputBase() {
       </DialogActions>
     </Dialog>
 
-    <div>
+      <div className="max-w-sm mx-auto grid md:grid-cols-2 lg:grid-cols-3 items-start md:max-w-2xl lg:max-w-none">
+        {rooms.map((room) =>
+        <Card key={room.roomId} room={room}/>
+      )}
+    </div>
+
+    {/* <div>
       {rooms.map((room) =>
         <FormDialog key={room.roomId} room={room}/>
       )}
-    </div>
+    </div> */}
     </>
 
 
@@ -284,35 +322,6 @@ function CustomizedInputBase() {
 
 
 
-// 카드
-function Card() {
-  return (
-    <div className='pt-3 pb-3 px-4 flex flex-col items-center p-6 ' data-aos="zoom-y-out" data-aos-delay="350">
-      <div className="pt-5 pb-5 max-w-6xl px-4 sm:px-6 ">
-          {/* <WaitingListItem /> */}
-
-  <div class="bg-gray-100 rounded  shadow-xl rounded">
-    <div class="max-w-xs rounded-md overflow-hidden shadow-lg hover:scale-105 transition duration-500 cursor-pointer card">
-      <div>
-        <img src="https://www.apple.com/newsroom/images/product/mac/standard/Apple_MacBook-Pro_16-inch-Screen_10182021_big_carousel.jpg.large.jpg" alt="" />
-      </div>
-      <div class="py-4 px-4 bg-white">
-        <h3 class="text-md font-semibold text-gray-600">Apple MacBook Pro M1 13.3&quot; Silver 16GB/512GB (MYDC2FN/A-16GB)</h3>
-        <p class="mt-4 text-lg font-thin">$ 2400</p>
-        <span class="flex items-center justify-center mt-4 w-full bg-yellow-400 hover:bg-yellow-500 py-1 rounded">
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
-          </svg>
-          <button class="font-semibold text-gray-800">Add to Basket</button>
-        </span>
-      </div>
-    </div>
-
-        </div>
-        </div>
-        </div>
-  )
-}
 
 
 // 대기방 화면
@@ -343,21 +352,13 @@ function WaitingList() {
         <div className="py-12 md:py-10">
 
           {/* Section header */}
-          <div className="max-w-3xl py-20 mx-auto text-center pb-12 md:pb-20 font-extrabold leading-tighter text-5xl md:text-6xs tracking-tighter" data-aos="zoom-y-out">
-            <h1 className="h1 mb-4 bg-clip-text text-transparent bg-gradient-to-r from-blue-500 to-teal-400">인성면접 스터디</h1>
+          <div className="max-w-3xl py-20 mx-auto text-center pb-12 md:pb-20 font-extrabold leading-tighter text-5xl tracking-tighter" data-aos="zoom-y-out">
+            
+            <h1 className="bg-clip-text text-transparent font-extrabold bg-gradient-to-r from-blue-500 to-teal-200">인성면접 스터디</h1>
             <CustomizedInputBase />
           </div>
 
-          {/* Items */}
-          <div className="max-w-sm mx-auto grid md:grid-cols-2 lg:grid-cols-3 items-start md:max-w-2xl lg:max-w-none">
-
-            <Card />
-            <Card />
-            <Card />
-            <Card />
-            <Card />
-            <Card />
-      </div>
+          
     </div>
       </div>
       

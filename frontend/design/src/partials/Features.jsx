@@ -37,7 +37,7 @@ function Features() {
 
           {/* Section header */}
           <div className="max-w-3xl mx-auto text-center">
-            <h1 className="h2 mb-4  bg-clip-text text-transparent bg-gradient-to-r from-blue-500 to-teal-40">Get Study With Us</h1>
+            <h1 className="h2 mb-4  bg-clip-text text-transparent bg-gradient-to-r from-blue-500 to-teal-200">Get Study With Us</h1>
             <p className="text-xl text-gray-600 font-bold">희망하는 면접스터디 유형을 선택해주세요🤓</p>
           </div>
           {/* Section content */}

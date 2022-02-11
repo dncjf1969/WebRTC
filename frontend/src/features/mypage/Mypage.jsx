@@ -24,7 +24,7 @@ import Typography from '@material-ui/core/Typography';
 
 // image
 import defaultImage from '../../assets/pt.png';
-import profileImages from '../../assets/profile/profileImages';
+import profileImages from '../../assets/normal.png';
 
 // component
 import MyTable from './Mytable';
@@ -35,7 +35,7 @@ import Chart from './chart';
 
 // action
 import { deleteToken } from '../../common/JWT-common';
-import { loadUser } from '../account/authSlice';
+// import { loadUser } from '../account/authSlice';
 
 // 전체 컨테이너
 const Wrapper = styled(Container)`
@@ -181,7 +181,18 @@ const changeUserProfile = createAsyncThunk(
   }
 );
 
-
+// 유저 정보 불러오기
+export const loadUser = createAsyncThunk(
+  'LOAD_USER',
+  async (arg, { rejectWithValue }) => {
+    try {
+      const response = await axios.get('api/user/me');
+      return response.data;
+    } catch (err) {
+      return rejectWithValue(err.response);
+    }
+  }
+);
 
 export default function MyPage() {
   // const { nickname, email, img } = useSelector((state) => state.auth.user);

@@ -30,7 +30,7 @@ function Header() {
           {/* Site branding */}
           <div className="flex-shrink-0 mr-4">
             {/* Logo */}
-            <Link to="/" className="h3 block bg-clip-text text-transparent bg-gradient-to-r from-blue-500 to-teal-400" aria-label="Cruip">
+            <Link to="/" className="text-4xl bg-clip-text text-transparent font-extrabold bg-gradient-to-r from-blue-500 to-teal-200" aria-label="Cruip">
               WISH
             </Link>
           </div>
@@ -52,12 +52,7 @@ function Header() {
               <li className='flex items-center'>
                 <Link to="#" className="py-2 px-4 bg-blue-500 text-white font-semibold rounded-lg shadow-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-75">마이페이지</Link>
                 <Link to="/waitinglist" className="py-2 px-4 bg-blue-500 text-white font-semibold rounded-lg shadow-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-75">스터디 참여</Link>
-                <a
-                      className="px-3 py-2 flex items-center text-xs uppercase font-bold leading-snug text-white hover:opacity-75"
-                      href="#pablo"
-                    >
-                      Settings
-                    </a>
+               
                 </li>
                 
                 
