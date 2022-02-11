@@ -30,7 +30,7 @@ function Header() {
           {/* Site branding */}
           <div className="flex-shrink-0 mr-4">
             {/* Logo */}
-            <Link to="/" className="h3 block bg-clip-text text-transparent bg-gradient-to-r from-blue-500 to-teal-400" aria-label="Cruip">
+            <Link to="/" className="text-4xl bg-clip-text text-transparent font-extrabold bg-gradient-to-r from-blue-500 to-teal-200" aria-label="Cruip">
               WISH
             </Link>
           </div>

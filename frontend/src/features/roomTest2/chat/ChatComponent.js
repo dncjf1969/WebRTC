@@ -94,8 +94,8 @@ export default class ChatComponent extends Component {
     const styleChat = { display: this.props.chatDisplay };
     return (
       <div id="chatContainer">
-        <div id="navInput"></div>
         <div id="chatComponent" style={styleChat}>
+          <div id="navInput"></div>
           <div className="message-wrap" ref={this.chatScroll}>
             {this.state.messageList.map((data, i) => (
               <div

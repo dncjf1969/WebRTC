@@ -31,7 +31,7 @@ function App() {
     // Route = 하나의 컴포넌트이자, URL
     <Wrapper>
       <Router>
-        <Navbar />
+        {/* <Navbar /> */}
         <Routes>
           <Route path="/" element={<Home />}></Route>
           <Route path="/signup" element={<SignUp />}></Route>

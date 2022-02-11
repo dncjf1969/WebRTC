@@ -1,9 +1,8 @@
 #chatContainer {
-  position: absolute;
+  position: relative;
   z-index: 0;
-  box-shadow: #000000;
   width: 100%;
-  height: 100%;
+  height: 90%;
 }
 
 #chatComponent {
@@ -18,10 +17,11 @@
   height: calc(100% - 30px);
   width: calc(100% - 30px);
   border-radius: 30px;
-  box-shadow: #000000;
+  box-shadow: 4px 4px 4px #459de6;
 }
 
 .message-wrap {
+  margin-top: 50px;
   height: calc(100% - 90px);
   overflow: auto;
 }
@@ -69,7 +69,8 @@ span.triangle {
 
 .text {
   word-break: break-all;
-  color: #000000;
+  color: white;
+  font-weight: lighter;
 }
 
 /* Start message from other user */
@@ -83,11 +84,11 @@ span.triangle {
 }
 
 .message.left .msg-detail .msg-content {
-  background-color: #f0f0f0;
+  background-color: #4a4f55e7;
   float: left;
 }
 .message.left .msg-detail .msg-content span.triangle {
-  background-color: #f0f0f0;
+  background-color: #4a4f55e7;
   border-bottom-width: 0;
   border-left-width: 0;
   left: -5px;
@@ -102,11 +103,11 @@ span.triangle {
 }
 
 .message.right .msg-detail .msg-content {
-  background-color: #c8ffe8;
+  background-color: #1976d2;
   float: right;
 }
 .message.right .msg-detail .msg-content span.triangle {
-  background-color: #c8ffe8;
+  background-color: #1976d2;
   border-bottom-width: 0;
   border-left-width: 0;
   right: -5px;
@@ -137,24 +138,24 @@ span.triangle {
   height: 30px;
   border-top-left-radius: 30px;
   border-top-right-radius: 30px;
+  /* border-bottom-; */
 }
 #messageInput input {
-  width: 80%;
+  width: 70%;
   height: 100%;
   border: none;
   outline: none;
-  font-size: 20px;
-  margin-left: -6%;
-  color: #000000;
+  font-size: 17px;
+  margin-left: -10%;
 }
 
 #sendButton {
-  background-color: #26a69a;
+  background-color: #1976d2;
   position: absolute;
-  right: 10px;
+  right: 6%;
   top: 0;
   margin: auto;
-  border: 1px solid #26a69a;
+  border: 1px solid #1976d2;
   box-shadow: 1px;
 }
 #sendButton {

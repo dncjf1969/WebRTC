@@ -17,17 +17,14 @@ import TestUserList from "./TestUserList/TestUserList";
 import TestQuesList from "./TestQuesList/TestQuesList";
 import EvaluationSheet from "./evaluationSheet/evaluationSheet";
 
-import imgA from "./testImages/rion.PNG";
-import imgB from "./testImages/muzi.PNG";
-import imgC from "./testImages/neo.PNG";
-import imgD from "./testImages/prodo.PNG";
-import imgE from "./testImages/prodo.PNG";
-import imgF from "./testImages/prodo.PNG";
-import { data } from "jquery";
-
+// 채팅, 사전채팅 토글 
+import BottomNavigationAction from '@mui/material/BottomNavigationAction';
+import RestoreIcon from '@mui/icons-material/Restore';
+import FavoriteIcon from '@mui/icons-material/Favorite';
+import ArchiveIcon from '@mui/icons-material/Archive';
 // material
 import { styled } from "@mui/material/styles";
-import { Box, Card, Stack, Link, Container, Typography } from "@mui/material";
+import { Box, Card, Stack, Link, Container, Typography, BottomNavigation } from "@mui/material";
 import { bgcolor } from "@mui/system";
 import { deepPurple, teal } from '@mui/material/colors';
 import { blue } from "@material-ui/core/colors";
@@ -36,7 +33,7 @@ import { blue } from "@material-ui/core/colors";
 const RootStyle = styled("div")(({ theme }) => ({
   [theme.breakpoints.up("sm")]: {
     display: "flex",
-    
+    marginTop:'15px'
   },
 }));
 
@@ -59,11 +56,7 @@ class TestComponent extends Component {
     // this.OPENVIDU_SERVER_URL = this.props.openviduServerUrl
     //   ? this.props.openviduServerUrl
     //   : "https://" + "i6e201.p.ssafy.io" + ":4443";
-<<<<<<< HEAD:frontend/src/features/roomTest2/TestComponent.jsx
     this.OPENVIDU_SERVER_URL = "https://i6e201.p.ssafy.io";
-=======
-    this.OPENVIDU_SERVER_URL = "https://localhost:4443";
->>>>>>> bbe30a54994b5d202f0a222c967d9c0e4eff2bb0:frontend/src/features/roomTest2/TestComponent.js
     this.OPENVIDU_SERVER_SECRET = this.props.openviduSecret
       ? this.props.openviduSecret
       : "WISH";
@@ -139,7 +132,7 @@ class TestComponent extends Component {
       finalRank: [],
       isFliped: true,
       localUser: undefined,
-      chatDisplay: "none",
+      chatDisplay: "block",
       currentVideoDevice: undefined,
       nowUser: [],
       customSubscriber: [],
@@ -156,6 +149,9 @@ class TestComponent extends Component {
       evalWaiting: false,
       // 면접관이 평가완료 누를때마다 다음 면접자로 넘어가기위해 설정한 면접자idx
       vieweeIdx: 0,
+      // 사전질문이랑 채팅 토글 
+      value: 0,
+      hidden: false,
     };
     console.log("state다");
     console.log(this.state);
@@ -178,6 +174,7 @@ class TestComponent extends Component {
     this.checkNotification = this.checkNotification.bind(this);
     this.checkSize = this.checkSize.bind(this);
     this.updateHost = this.updateHost.bind(this);
+    this.setValue = this.setValue.bind(this);
   }
 
   componentDidMount() {
@@ -983,8 +980,7 @@ class TestComponent extends Component {
     }
     this.updateLayout();
   }
-
-  checkNotification(event) {
+    checkNotification(event) {
     this.setState({
       messageReceived: this.state.chatDisplay === "none",
     });
@@ -1004,6 +1000,22 @@ class TestComponent extends Component {
       this.hasBeenUpdated = false;
     }
   }
+  // 채팅창이랑 사전질문 창 토글 기능
+  setValue() {
+    if (this.state.value === 1) {
+      this.setState({
+        value: 0,
+        hidden:false,
+      })
+    } else {
+        this.setState({
+          value : 1,
+          hidden:true,
+
+        })
+      }
+    }
+
 
   handleMainVideoStream(stream) {
     if (this.state.mainStreamManager !== stream) {
@@ -1018,53 +1030,27 @@ class TestComponent extends Component {
   render() {
     const mySessionId = this.state.mySessionId;
     const localUser = this.state.localUser;
-    const color = teal[50];
-    var chatDisplay = { display: this.state.chatDisplay };
+    const color = blue[100];
+    let chatDisplay = { display: this.state.chatDisplay };
 
     return (
-      <div>
-        {/* <h1>{this.state.myUserName}</h1> */}
-        <ToolbarComponent
-          sessionId={mySessionId}
-          user={localUser}
-          isStart={this.state.isStart}
-          showNotification={this.state.messageReceived}
-          camStatusChanged={this.camStatusChanged}
-          micStatusChanged={this.micStatusChanged}
-          screenShare={this.screenShare}
-          stopScreenShare={this.stopScreenShare}
-          toggleFullscreen={this.toggleFullscreen}
-          switchCamera={this.switchCamera}
-          leaveSession={this.leaveSession}
-          toggleChat={this.toggleChat}
-        />
-
-        {/* <div className="bounds"> */}
-        <div>
+      
+      <div style={{
+        marginTop:"2%",
+        marginLeft:"1%",
+        marginRight:"1%",
+        }}>
           <RootStyle
             title="waitingProfile"
             sx={{
               height: '600px',
               margin: '10px',
+              marginTop: '10px',
               padding: '10px',
-              borderColor: 'grey.300',
               borderRadius: 8,
               backgroundColor: color,
-                  
+              boxShadow: '0 3px 5px 2px rgba(47, 138, 241, 0.5)'
             }}>
-            <Container>
-              <SectionStyle>
-                <Typography variant="h3" sx={{
-                
-                  px: 5, mt: 10, mb: 5,
-                  color : 'white'
-                }}>
-                  Hi, Welcome Back
-                </Typography>
-                {/* <img src="/logo512.png" alt="login" /> */}
-              </SectionStyle>
-              ddd
-            </Container>
           {/* 유저 리스트 */}
             <Container>
               {this.state.isStart ? null : (
@@ -1083,22 +1069,55 @@ class TestComponent extends Component {
               {this.state.isStart ? <h1>START</h1> : null}
             </Container>
             {/* 채팅 */}
+            
             <Container maxWidth="sm" >
               {localUser !== undefined &&
                 localUser.getStreamManager() !== undefined && (
                   <div
                     className="OT_root OT_publisher custom-class"
-                    style={chatDisplay}
-                  >
+                style={{
+                  chatDisplay
+                }}
+              >
+                
                     <ChatComponent 
                       user={localUser}
                       chatDisplay={this.state.chatDisplay}
                       close={this.toggleChat}
                       messageReceived={this.checkNotification}
-                    />
+                      hidden={!this.state.hidden}
+                />
+                <div hidden={this.state.hidden}>
+                  나는야 히든 트루
+                </div>
+                {/* {this.state.value ?
+                    (<ChatComponent 
+                      user={localUser}
+                      chatDisplay={this.state.chatDisplay}
+                      close={this.toggleChat}
+                      messageReceived={this.checkNotification}
+                    />) : null} */}
+        <BottomNavigation
+              sx={{
+                    // display: "contents",
+                borderRadius:"20px",
+                    marginLeft: "100px",
+                    marginRight: "80px",
+                    boxShadow : "4px 4px 4px #459de6"
+        }}
+          showLabels
+          value={this.state.value}
+          onChange={(event, newValue) => {
+            this.setValue(newValue);
+          }}
+        >
+          {/* <BottomNavigationAction value="0" label="Recents" icon={<RestoreIcon />} /> */}
+          <BottomNavigationAction value={0} label="Chat" icon={<FavoriteIcon />} />
+          <BottomNavigationAction value={1} label="PLUS" icon={<ArchiveIcon />} />
+        </BottomNavigation>
                   </div>
                 )}
-            </Container>
+          </Container>
           </RootStyle>
           {this.state.isStart ? <h1>START</h1> : null}
           {/* 여기까지가 대기방 */}
@@ -1150,7 +1169,6 @@ class TestComponent extends Component {
             />
           )}
         </div>
-      </div>
     );
   }
 
