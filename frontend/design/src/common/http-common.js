@@ -1,4 +1,3 @@
-<<<<<<< HEAD:frontend/design/src/common/http-common.js
 import axios from "axios";
 
 export default axios.create({
@@ -6,14 +5,6 @@ export default axios.create({
   // baseURL: "https://localhost:8443", // default URL
   header: {
     Authorization: "",
-=======
-import axios from 'axios';
-
-export default axios.create({
-  baseURL: 'https://i6e201.p.ssafy.io:8443', // default URL
-  header: {
-    Authorization: '',
->>>>>>> jang:frontend/디자인/src/common/http-common.js
   },
 });
 
