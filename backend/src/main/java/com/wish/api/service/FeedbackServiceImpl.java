@@ -30,24 +30,24 @@ public class FeedbackServiceImpl implements FeedbackService {
 	MeetingRepository meetingRepository;
 
 	// 사용자 아이디에 해당하는 피드백 가져오기
-	@Override
-	public List<FeedbackRes> getMyFeedback(String memberId) {
-		List<FeedbackRes> res = new ArrayList<FeedbackRes>();
-		
-		try {
-			List<Feedback> list = feedbackRepository.findByMemberId(memberId).get();
-			
-			for (Feedback feedback : list) {
-				res.add(FeedbackRes.of(feedback));
-			}
-			
-		} catch (ReadFeedbackException e) {
-			// TODO: handle exception
-			e.printStackTrace();
-		}
-		
-		return res;
-	}
+//	@Override
+//	public List<FeedbackRes> getMyFeedback(String memberId) {
+//		List<FeedbackRes> res = new ArrayList<FeedbackRes>();
+//
+//		try {
+//			List<Feedback> list = feedbackRepository.findByMemberId(memberId).get();
+//
+//			for (Feedback feedback : list) {
+//				res.add(FeedbackRes.of(feedback));
+//			}
+//
+//		} catch (ReadFeedbackException e) {
+//			// TODO: handle exception
+//			e.printStackTrace();
+//		}
+//
+//		return res;
+//	}
 
 	@Override
 	public void createFeedback(FeedbackCreateReq info) {
