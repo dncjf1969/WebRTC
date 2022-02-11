@@ -16,7 +16,7 @@ import TestCharacter from "./Testcharacter/Testcharacter";
 import TestUserList from "./TestUserList/TestUserList";
 import TestQuesList from "./TestQuesList/TestQuesList";
 import EvaluationSheet from "./evaluationSheet/evaluationSheet";
-import RecommendationQues from "./RecommendationQues/RecommendationQues"
+import RecommendationQues from "./recommendationQues/recommendationQues"
 
 import imgA from "./testImages/rion.PNG";
 import imgB from "./testImages/muzi.PNG";
@@ -447,7 +447,6 @@ class TestComponent extends Component {
     }
     this.handleMainVideoStream(this.state.viewees[vieweeIdx])
     this.setState({vieweeIdx: vieweeIdx})
-
   }
 
   connectToSession() {
