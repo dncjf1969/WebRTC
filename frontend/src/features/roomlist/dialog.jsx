@@ -8,7 +8,6 @@ import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import axios from '../../common/http-common'
 import { useNavigate } from "react-router-dom";
-import { connect } from 'react-redux';
 import { actionCreators } from '../../app/store';
 import { render } from 'react-dom';
 import TestComponent from '../roomTest2/TestComponent';
@@ -93,15 +92,6 @@ function FormDialog({room}) {
   );
 }
 
-function mapStateToProps(state) {
-  // console.log(states)
-  return { thisToken: state.tokenReducer }
-}
 
-function mapDispatchToProps(dispatch, ownProps) {
-  return {
-    saveToken: (token) => dispatch(actionCreators.saveToken(token)) // 만들어서 컴포넌트에서사용
-  }
-}
 
-export default connect(mapStateToProps, mapDispatchToProps)(FormDialog);
+export default FormDialog;

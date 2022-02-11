@@ -2,6 +2,7 @@
 
 # dependencies
 /node_modules
+/디자인/node_modules
 /.pnp
 .pnp.js
 

@@ -15,7 +15,6 @@ import CheckPassword from '../features/account/modify/CheckPassword';
 import ModifyUserInfo from '../features/account/modify/ModifyUserInfo';
 import TestComponent from "../features/roomTest2/TestComponent";
 import Navbar from "../common/navbar/navbar";
-import Test from "../features/roomlist/test";
 // import RatingStats from "../features/mypage/ratingStats";
 
 
@@ -39,7 +38,6 @@ function App() {
           <Route path="/roomlist" element={<RoomList />}></Route>
           <Route path="/mypage" element={<MyPage />} />
           <Route path="/roomTest2" element={<TestComponent />}></Route>
-          <Route path="/test" element={<Test/>}></Route>
           <Route path="/checkpassword" element={<CheckPassword/>}></Route>
           <Route path="/modifyuserinfo" element={<ModifyUserInfo/>}></Route>
           {/* <Route path="/ratingStats" element={<RatingStats/>}></Route> */}

@@ -35,11 +35,8 @@ class TestComponent extends Component {
     // this.OPENVIDU_SERVER_URL = this.props.openviduServerUrl
     //   ? this.props.openviduServerUrl
     //   : "https://" + "i6e201.p.ssafy.io" + ":4443";
-<<<<<<<< HEAD:frontend/src/features/roomTest2/TestComponent.js.orig
-    this.OPENVIDU_SERVER_URL = "https://localhost:4443";
-========
+
     this.OPENVIDU_SERVER_URL = "https://i6e201.p.ssafy.io"
->>>>>>>> jang:frontend/src/features/roomTest2/TestComponent.js
     this.OPENVIDU_SERVER_SECRET = this.props.openviduSecret
       ? this.props.openviduSecret
       : "WISH";
@@ -131,12 +128,8 @@ class TestComponent extends Component {
       // 다른 면접관이 모두 평가하길 기다리는 상태
       evalWaiting: false,
       // 면접관이 평가완료 누를때마다 다음 면접자로 넘어가기위해 설정한 면접자idx
-<<<<<<<< HEAD:frontend/src/features/roomTest2/TestComponent.js.orig
-      vieweeIdx: 0,
-========
       vieweeIdx: 0, 
       chosenQues: '',
->>>>>>>> jang:frontend/src/features/roomTest2/TestComponent.js
     };
     console.log("state다");
     console.log(this.state);
@@ -406,15 +399,10 @@ class TestComponent extends Component {
               }
             });
             // 모든로컬에서 면접자들 똑같은순서로 진행되도록
-<<<<<<<< HEAD:frontend/src/features/roomTest2/TestComponent.js.orig
-            viewees.sort();
-            viewees.sort((a, b) => (a.connectionId < b.connectionId ? -1 : 1));
-            this.setState({
-========
+
             viewees.sort()
             viewees.sort((a, b) => a.connectionId < b.connectionId ? -1 : 1);
             this.setState({ 
->>>>>>>> jang:frontend/src/features/roomTest2/TestComponent.js
               isStart: true,
               allUsers: allUsers,
               viewees: viewees,
@@ -429,23 +417,6 @@ class TestComponent extends Component {
           }, 20);
 
           // 면접관이 평가완료 하고 버튼눌렀을때
-<<<<<<<< HEAD:frontend/src/features/roomTest2/TestComponent.js.orig
-          this.state.session.on("signal:next", (event) => {
-            // 내가보낸신호면
-            if (event.from.connectionId === localUser.connectionId) {
-              this.setState({ evalWaiting: true });
-            }
-            console.log(event);
-            let evalnum = this.state.evalnum + 1;
-            // 모두평가완료했다면
-            if (evalnum === this.state.viewers.length) {
-              this.setState({ evalnum: 0, evalWaiting: false });
-              this.nextViewee();
-            } else {
-              this.setState({ evalnum: evalnum });
-            }
-          });
-========
         this.state.session.on('signal:next', (event) => {
           // 내가보낸신호면
           if (event.from.connectionId === localUser.connectionId) {
@@ -461,7 +432,6 @@ class TestComponent extends Component {
           } else {
             this.setState({evalnum: evalnum})
           }
->>>>>>>> jang:frontend/src/features/roomTest2/TestComponent.js
         });
 
         this.state.session.on('signal:choiceQues', (event) => {
@@ -474,28 +444,18 @@ class TestComponent extends Component {
   }
 
   nextViewee() {
-<<<<<<<< HEAD:frontend/src/features/roomTest2/TestComponent.js.orig
-    console.log("다음참가자 들어오세요");
-    const vieweesNum = this.state.viewees.length - 1;
-    let vieweeIdx = this.state.vieweeIdx;
-========
+
     // 이부분에서 axios요청보내서 추천질문 3개 가져와서 RecommendationQues컴포넌트로 프롭 //
     console.log('다음참가자 들어오세요')
     const vieweesNum = this.state.viewees.length - 1
     let vieweeIdx = this.state.vieweeIdx
->>>>>>>> jang:frontend/src/features/roomTest2/TestComponent.js
     if (vieweeIdx === vieweesNum) {
       vieweeIdx = 0;
     } else {
       vieweeIdx++;
     }
-<<<<<<<< HEAD:frontend/src/features/roomTest2/TestComponent.js.orig
-    this.handleMainVideoStream(this.state.viewees[vieweeIdx]);
-    this.setState({ vieweeIdx: vieweeIdx });
-========
     this.handleMainVideoStream(this.state.viewees[vieweeIdx])
     this.setState({vieweeIdx: vieweeIdx})
->>>>>>>> jang:frontend/src/features/roomTest2/TestComponent.js
   }
 
   connectToSession() {
@@ -1027,8 +987,7 @@ class TestComponent extends Component {
     }
   }
 
-<<<<<<<< HEAD:frontend/src/features/roomTest2/TestComponent.js.orig
-========
+
   handleChoiceQues(question) {
     console.log(question)
     setTimeout(() => {
@@ -1037,7 +996,7 @@ class TestComponent extends Component {
     }, 20);
     // this.props(this.setState({chosenQues: event.target.value}))
   }
->>>>>>>> jang:frontend/src/features/roomTest2/TestComponent.js
+
   render() {
     const mySessionId = this.state.mySessionId;
     const localUser = this.state.localUser;
@@ -1092,16 +1051,12 @@ class TestComponent extends Component {
           {this.state.isStart ? <h1>START</h1> : null}
           {/* 여기까지가 대기방 */}
 
-<<<<<<<< HEAD:frontend/src/features/roomTest2/TestComponent.js.orig
-          {this.state.isStart && (
-            <div id="video-container" className="video-container">
-========
+
           {this.state.isStart && 
             <h1>{this.state.chosenQues}</h1>
           }
           {this.state.isStart && 
           <div id="video-container" className="video-container">
->>>>>>>> jang:frontend/src/features/roomTest2/TestComponent.js
               {/* {this.state.mainStreamManager !== undefined ? (
                 <div
                   className="stream-container"
@@ -1166,11 +1121,7 @@ class TestComponent extends Component {
                 </div>
               )}
             </div>
-<<<<<<<< HEAD:frontend/src/features/roomTest2/TestComponent.js.orig
-          )}
-          {this.state.isStart && localUser.viewer && (
-            <EvaluationSheet
-========
+
           }
 
           {this.state.isStart && localUser.viewer &&
@@ -1185,18 +1136,14 @@ class TestComponent extends Component {
 
           {this.state.isStart && localUser.viewer &&
             <EvaluationSheet 
->>>>>>>> jang:frontend/src/features/roomTest2/TestComponent.js
               viewers={this.state.viewers}
               viewee={this.state.mainStreamManager}
               session={this.state.session}
               evalWaiting={this.state.evalWaiting}
               chosenQues={this.state.chosenQues}
             />
-<<<<<<<< HEAD:frontend/src/features/roomTest2/TestComponent.js.orig
-          )}
-========
           }
->>>>>>>> jang:frontend/src/features/roomTest2/TestComponent.js
+
 
           {localUser !== undefined &&
             localUser.getStreamManager() !== undefined && (
