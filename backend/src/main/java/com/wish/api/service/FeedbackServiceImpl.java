@@ -35,7 +35,7 @@ public class FeedbackServiceImpl implements FeedbackService {
 		List<FeedbackRes> res = new ArrayList<FeedbackRes>();
 		
 		try {
-			List<Feedback> list = feedbackRepository.findByMemberId(memberId);
+			List<Feedback> list = feedbackRepository.findByMemberId(memberId).get();
 			
 			for (Feedback feedback : list) {
 				res.add(FeedbackRes.of(feedback));
