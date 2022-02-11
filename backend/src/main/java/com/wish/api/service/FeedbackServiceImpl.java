@@ -83,13 +83,7 @@ public class FeedbackServiceImpl implements FeedbackService {
 
 	@Override
 	public List<Long> getMeetingIdList(String memberId) {
-		List<Feedback> list = feedbackRepository.findByMemberId(memberId).get();
-		List<Long> res = new ArrayList<Long>();
-		
-		// 타입 변환
-		for (Feedback feedback : list) {
-			res.add(feedback.getMeetingId());
-		}
+		List<Long> res = feedbackRepositorySupport.findDistinctByMemberId(memberId).get();
 		
 		return res;
 	}
