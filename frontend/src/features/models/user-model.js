@@ -12,7 +12,7 @@ class UserModel {
 
     constructor() {
         this.connectionId = '';
-        this.audioActive = true;
+        this.audioActive = false;
         this.videoActive = true;
         this.screenShareActive = false;
         this.nickname = '';
@@ -92,6 +92,13 @@ class UserModel {
         if (type === 'local' |  type === 'remote') {
             this.type = type;
         }
+    }
+    init() {
+        this.setAudioActive(false)
+        this.setVideoActive(true)
+        this.setReady(false)
+        this.setScreenShareActive(false)
+        this.setViewer(null)
     }
 }
 

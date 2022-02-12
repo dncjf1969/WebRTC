@@ -152,6 +152,8 @@ class TestComponent extends Component {
     this.checkSize = this.checkSize.bind(this);
     this.updateHost = this.updateHost.bind(this);
     this.handleChoiceQues = this.handleChoiceQues.bind(this);
+    this.handleFinish = this.handleFinish.bind(this);
+    this.initialize = this.initialize.bind(this)
   }
 
   componentDidMount() {
@@ -426,10 +428,26 @@ class TestComponent extends Component {
           }
         });
 
+        // 면접관이 고른 질문 공유
         this.state.session.on('signal:choiceQues', (event) => {
           console.log(event.data)
           this.setState({chosenQues: event.data})
-          // 내가보낸신호면
+        });
+
+        // 방장이 면접끝냄
+        this.state.session.on('signal:finish', (event) => {
+          // alert('면접이 끝났습니다.')
+          const isViewer = this.state.viewerState
+
+          this.initialize()
+          
+
+          console.log(this.state.isStart)
+          console.log(this.state.subscribers)
+          if (isViewer === true) { // 방장이면 대기방으로 돌아가
+              // 여기서 피드백 받는 axios 요청 
+          
+          }
         });
       });
     });
@@ -814,6 +832,38 @@ class TestComponent extends Component {
     }
   }
 
+  initialize() {
+    this.setState({
+      readyState: false,
+      viewerState: undefined,
+      // DB저장용 게임 ID 
+      gameId: undefined,
+      audiostate: false,
+      videostate: true,
+      isFliped: true,
+      chatDisplay: "none",
+      questions: [],
+      isStart: false,
+      allReady: false,
+      viewers: [],
+      viewees: [],
+      // 면접관이 질문당 평가하고 이벤트 보낼때 몇명이 평가했는지 보기위해
+      evalnum: 0,
+      // 다른 면접관이 모두 평가하길 기다리는 상태
+      evalWaiting: false,
+      // 면접관이 평가완료 누를때마다 다음 면접자로 넘어가기위해 설정한 면접자idx
+      vieweeIdx: 0, 
+      chosenQues: '',
+    })
+    // 다른 유저들정보 초기화
+    const init = this.state.subscribers.map((element) => {
+      element.init()
+      return element
+    });
+    this.setState({subscribers: init})
+    this.remotes = init
+    console.log(this.state.session)
+  }
   async switchCamera() {
     try {
       const devices = await this.OV.getDevices();
@@ -981,6 +1031,20 @@ class TestComponent extends Component {
     }, 20);
     // this.props(this.setState({chosenQues: event.target.value}))
   }
+
+  handleFinish() {
+    this.state.session
+      .signal({
+        data: '',
+        to: [],
+        type: 'finish',
+      })
+      .then(() => {
+        console.log('면접 끝')
+        console.log(this.state.session)
+    })
+      .catch((error) => {});
+  }
   render() {
     const mySessionId = this.state.mySessionId;
     const localUser = this.state.localUser;
@@ -1008,9 +1072,8 @@ class TestComponent extends Component {
           showDialog={this.state.showExtensionDialog}
           cancelClicked={this.closeDialogExtension}
         /> */}
-
         <div id="layout" className="bounds">
-          
+        
           {this.state.isStart ? null : 
           <TestUserList
             session={this.state.session}
@@ -1121,6 +1184,10 @@ class TestComponent extends Component {
             />
           }
 
+
+          {this.state.isStart && this.state.ishost && 
+            <button onClick={this.handleFinish}>면접끝내기</button>
+          }
           {localUser !== undefined &&
             localUser.getStreamManager() !== undefined && (
               <div
