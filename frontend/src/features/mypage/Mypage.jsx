@@ -1,30 +1,13 @@
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+// import { createAsyncThunk } from '@reduxjs/toolkit';
 import axios from '../../common/http-common';
-
-import React, {useEffect, useState} from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { Link, useNavigate } from 'react-router-dom';
+import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 
 // style
 import { Container, Button } from '@material-ui/core';
-import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
 import styled from 'styled-components';
-import { toast } from 'react-toastify';
-import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
-import DialogTitle from '@material-ui/core/DialogTitle';
-import { withStyles } from '@material-ui/styles';
-import Tooltip from '@material-ui/core/Tooltip';
-import Typography from '@material-ui/core/Typography';
-
-
-
-// image
-import defaultImage from '../../assets/pt.png';
-import profileImages from '../../assets/normal.png';
+import Box from '@mui/material/Box';
 
 // component
 import MyTable from './Mytable';
@@ -33,54 +16,16 @@ import Donut from './chart/donutchart';
 import Bar from './chart/barchart';
 import Line from './chart/piechart';
 import InterviewList from './interviewList';
-// import Gravatar from './gravatar';
 
-// action
-import { deleteToken } from '../../common/JWT-common';
-// import RatingStats from './ratingStats';
 
 // 전체 컨테이너
 const Wrapper = styled(Container)`
 display: flex;
 padding: 100px 0px 0px 0px;
 height: auto;
-`;
-// 사이드바
-const Sidebar = styled.aside`
-display: flex;
-flex: 1;
-justify-content: center;
-margin-left: 5%;
-`;
-
-const ProfileImage = styled.img`
-width: 150px;
-height: 150px;
-background: linear-gradient(45deg, #ffa1b5 30%, #ffa87a 80%);
-border-radius: 50%;
-border: ${(props) => (!props.isMouseOver ? '1px solid' : '5px solid')};
-cursor: pointer;
-border-color: ${(props) => (!props.isMouseOver ? 'white' : '#edb9bb')};
-`;
-
-// 선택할 수 있는 프로필 image 뿌려주기
-const VariousImage = styled.img`
-  width: 95px;
-  margin: 5px;
-  cursor: pointer;
-  border: 2px solid;
-  border-radius: 50%;
-  border-color: #f5e4e7;
-`;
-
-const SelectedImage = styled.img`
-  width: 95px;
-  margin: 5px;
-  cursor: pointer;
-  border: 4px solid;
-  border-radius: 50%;
-  border-color: #ff859f;
-  background: linear-gradient(45deg, #ffa1b5 30%, #ffa87a 80%);
+marginTop:"3%",
+marginLeft:"3%",
+marginRight:"3%",
 `;
 
 // 메인
@@ -91,8 +36,8 @@ const Main = styled.main`
 // 제목
 const Title = styled.div`
 display: inline-box;
-margin-bottom: ${(props) => (props.getMoreMB ? '40px' : '20px')};
-margin-top: ${(props) => (props.getMoreMT ? '40px' : '0px')};
+margin-bottom: 5px;
+margin-top: 10px;
 font-weight: bold;
 font-size: 1.5rem;
 border-bottom: 5px solid rgba(251, 209, 75, 0.5);
@@ -104,14 +49,6 @@ const Content = styled.span`
   display: inline-block;
 `;
 
-// 닉네임 이메일
-const BasicInfo = styled.section``;
-
-const Nickname = styled.div`
-  > button {
-    margin-left: 30px;
-  }
-`;
 
 const CommonButton = styled(Button)`
   width: 100%;
@@ -130,6 +67,7 @@ const ContentContainer = styled.div`
   display: flex;
 `;
 
+// 이메일
 const Email = styled.div``;
 
 // 기록
@@ -150,133 +88,27 @@ const Footer = styled.footer`
   margin: 50px 0;
 `;
 
-// 그래프
-const oneChart = styled.span`
-  width: 10px;
-  display: flex;
-  justify-content: flex-end;
-  margin: 0;
-`;
-
-// tooltip
-const ProfileTooltip = withStyles(() => ({
-  tooltip: {
-    backgroundColor: '#9FA9D8',
-    color: 'white',
-    maxWidth: 280,
-    fontSize: 11,
-    border: '1px solid #9FA9D8',
-  },
-}))(Tooltip);
-
-// 유저 정보 불러오기
-export const loadUser = createAsyncThunk(
-  'LOAD_USER',
-  async (arg, { rejectWithValue }) => {
-    try {
-      const response = await axios.get('api/user/me');
-      return response.data;
-    } catch (err) {
-      return rejectWithValue(err.response);
-    }
-  }
-);
-
-//slice
-const changeUserProfile = createAsyncThunk(
-  'CHANGE_USER_PROFILE',
-  async (imgNum, { rejectWithValue }) => {
-    try {
-      const response = await axios.put(`/api/user/image?imgNum=${imgNum}`);
-      return response.data;
-    } catch (err) {
-      return rejectWithValue(err);
-    }
-  }
-);
-
 
 export default function MyPage() {
-  // const { nickname, email, img } = useSelector((state) => state.auth.user);
   const ID = window.localStorage.getItem('ID');
-  
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
 
 // 유저 정보
   const [nickname, setNickname] = useState('');
   const [email, setEmail] = useState('');
   const [id, setId] = useState('');
-  const [signUpDate, setSignUpDate] = useState('');
-  const img = null;
 
 //방 정보
-  const [Personality, setPersonality] = useState([]);
-  const [Job, setJob] = useState([]);
-  const [Debate, setDebate] = useState([]);
-  const [PT, setPT] = useState([]);
+  const [Personality, setPersonality] = useState();
+  const [Job, setJob] = useState();
+  const [Debate, setDebate] = useState();
+  const [PT, setPT] = useState();
 
 // 피드백 정보
-  const [meetingName, setMeetingName] = useState('');
-  const [meetingId, setMeetingId] = useState('');
-  const [rate, setRate] = useState('');
-  const [question, setQuestion] = useState('');
-  const [comment, setComment] = useState('');
+  // const [meetingInfo, setMeetingInfo] = useState('');
+  const [meetingInfo, setMeetingInfo] = useState([]);
+  const [meetingInfo2, setMeetingInfo2] = useState([]);
 
-  const [open, setOpen] = useState(false);
-  const [currentImage, setCurrentImage] = useState(0);
-  const [mouseState, setMouseState] = useState(false);
-  const [isFlipped, setIsFlipped] = useState(false);
-
-
-  const handleClick = () => {
-    setIsFlipped(!isFlipped);
-  };
-
-  function handleDeleteBtn() {
-  };
-
-  const handleClose = () => {
-    setOpen(false);
-  };
-
-  const updateProfile = () => {
-    // setOpen(false);
-    if (Number(img) === currentImage) return;
-    dispatch(changeUserProfile(currentImage.toString()))
-      .then(() => {
-        dispatch(loadUser());
-        toast.success('🎨 프로필 사진이 변경되었습니다!');
-      })
-      .catch((err) => {
-        if (err.status === 401) {
-          toast.error('😥 로그인을 다시 해주세요!');
-          deleteToken();
-          navigate.push('/login');
-        } else if (err.status === 500) {
-          navigate.push('/error');
-        }
-      });
-    handleClose();
-  };
-
-  function updateCurrentImg(imgNum) {
-    setCurrentImage(imgNum);
-  }
-
-  const handleClickOpen = () => {
-    setOpen(true);
-    setCurrentImage(Number(img));
-  };
-
-  const handleMouseOver = () => {
-    setMouseState(true);
-  };
-
-  const handleMouseOut = () => {
-    setMouseState(false);
-  };
-  
+// 유저 정보
   async function myInfo (userInfo1) {
     try {
       const response = await axios.get(`/members/me?id=${userInfo1}`)
@@ -286,173 +118,120 @@ export default function MyPage() {
       setEmail(response.data.email)
       // return response;
       // console.log(response)
+      // console.log('myInfo: 1111111111111111111111111')
     } catch (err) {
       return(err.response)
     }
   };
   myInfo(ID)
 
+  //방 정보
   async function roomInfo (userInfo2) {
     try {
       const response = await axios.get(`/feedback/count?memberId=${userInfo2}`)
-      // console.log(response)
-      // console.log('44444444444444444444444444444444')
       setPersonality(response.data.filter(info => info.type === '인성')[0].count)
       setJob(response.data.filter(info => info.type === '직무')[0].count)
       setDebate(response.data.filter(info => info.type === '토론')[0].count)
       setPT(response.data.filter(info => info.type === 'PT')[0].count)
       // return response;
-      console.log(response)
-      console.log('44444444444444444444444444444444')
-     
+      // console.log(response)
+      // console.log('roomInfo: 22222222222222222222222222')
+
     } catch (err) {
       return(err.response)
     }
   };
   roomInfo(ID)
 
+  // 피드백 정보
   async function feedback (userInfo3) {
     try {
       const response = await axios.get(`/feedback?memberId=${userInfo3}`)
-      // console.log(response)
-      setMeetingName(response.data[0].meetingName)
-      setMeetingId(response.data[0].meetingId)
-      setRate(response.data[0].rate)
-      setQuestion(response.data[0].question)
-      setComment(response.data[0].comment)
+      setMeetingInfo(response.data)
+      setMeetingInfo2(response.data)
       // return response;
+      // console.log(meetingInfo2)
+      // console.log(response.data)
+      // console.log('feedback: 3333333333333333333333333333')
+
     } catch (err) {
       return(err.response)
     }
   };
   feedback(ID)
 
+
   return (
     <>
       <Wrapper>
-        {/* <Sidebar>
-            {profileImages.map((profileImage, index) => {
-              if (index + 1 === Number(img)) {
-                return (
-                  <ProfileTooltip
-                    key={[index, img].join('_')}
-                    title={
-                      <>
-                        <Typography color="inherit">
-                          프로필을 변경하려면 👆🏼 클릭해주세요!
-                        </Typography>
-                      </>
-                    }
-                  >
-                    <ProfileImage
-                      src={profileImage}
-                      alt="profile"
-                      onClick={handleClickOpen}
-                      onMouseOver={handleMouseOver}
-                      onMouseOut={handleMouseOut}
-                      isMouseOver={mouseState}
-                    />
-                  </ProfileTooltip>
-                );
-              }
-              return <span key={[profileImage, index]}> </span>;
-            })}
-            <div>
-              <Dialog
-                open={open}
-                // onClose={handleClose}
-                aria-labelledby="alert-dialog-title"
-                aria-describedby="alert-dialog-description"
-              >
-                <DialogTitle id="alert-dialog-title">
-                  변경할 프로필을 골라주세요
-                </DialogTitle>
-                <DialogContent>
-                  <DialogContentText id="alert-dialog-description">
-                    {profileImages.map((profileImage, index) => {
-                      if (index + 1 === currentImage) {
-                        return (
-                          <SelectedImage
-                            key={[profileImage, index]}
-                            alt="profile"
-                            src={profileImage}
-                          />
-                        );
-                      }
-                      return (
-                        <VariousImage
-                          key={[profileImage, index]}
-                          alt="profile"
-                          src={profileImage}
-                          onClick={() => updateCurrentImg(index + 1)}
-                        />
-                      );
-                    })}
-                  </DialogContentText>
-                </DialogContent>
-                <DialogActions>
-                  <Button onClick={updateProfile} color="primary" autoFocus>
-                    변경하기
-                  </Button>
-                  <Button onClick={handleClose} color="primary">
-                    취소
-                  </Button>
-                </DialogActions>
-              </Dialog>
-            </div>
-        </Sidebar> */}
-          <br />
-          <br />
-        <Main>
-          <BasicInfo>
-            {/* <Gravatar /> */}
-            <Nickname>
-              <Title>닉네임</Title>
-              <ContentContainer>
-                <Content>{nickname}</Content>
-                <Link to="/checkpassword">
-                  <CommonButton
-                    variant="contained"
-                    color="primary"
-                    size="small"
-                    startIcon={<EditIcon />}
-                  >
-                    회원정보수정
-                  </CommonButton>
-                </Link>
-              </ContentContainer>
-            </Nickname>
-            <br />
-            <Email>
-              <Title>이메일: </Title>
-              <div><Content>{email}</Content></div>
-            </Email>
-            <br />
-          </BasicInfo>
+      <Message>
+        오늘도 즐거운 면접 연습!!!!!!😀
+      </Message>
+        <main>
+          <Box display="grid" gridTemplateColumns="repeat(12, 1fr)" gap={2}>
+              <Box gridColumn="span 5">
+                <Box display="grid" gridTemplateColumns="repeat(12, 1fr)" gap={2}>
+                  <Box gridColumn="span 4">
+                    <img src="https://placeimg.com/150/230/animals/sepia" />
+                  </Box>
+                  <Box gridColumn="span 8">
+                    <Title>닉네임</Title>
+                    <ContentContainer>
+                      <h4>{nickname}</h4>
+                      <Link to="/checkpassword">
+                        <CommonButton
+                          variant="contained"
+                          color="primary"
+                          size="small"
+                          startIcon={<EditIcon />}
+                        >
+                          회원정보수정
+                        </CommonButton>
+                      </Link>
+                    </ContentContainer>
+                    <Email>
+                      <Title>이메일: </Title>
+                      <div><h4>{email}</h4></div>
+                    </Email>
+                  </Box>
+                </Box>
+              </Box>
+
+              <Box gridColumn="span 7">
+                <Record>
+                  <Title getMoreMB>내 기록</Title>
+                  <MyTable Personality={Personality} Job={Job} Debate={Debate} PT={PT} />
+                </Record>
+              </Box>
+         
+            
+            <Box gridColumn="span 8">
+              <Title>
+                그래프
+              </Title>
+              
+              <Box display="grid" gridTemplateColumns="repeat(12, 1fr)" gap={2}>
+                <Box gridColumn="span 6">
+                  <Bar Personality={Personality} Job={Job} Debate={Debate} PT={PT} />
+                </Box>
+                <Box gridColumn="span 6">
+                  <Donut Personality={Personality} Job={Job} Debate={Debate} PT={PT} />
+                </Box>
+              </Box>
+            </Box>
+
+            <Box gridColumn="span 4">
+              <Title>
+                면접 피드백 (방제목)
+              </Title>
+              <InterviewList MeetingInfo={meetingInfo} MeetingInfo2={meetingInfo2} />
+            </Box>
+          </Box>
           
-          <Record>
-            <Title getMoreMB>내 기록</Title>
-            <MyTable Personality={Personality} Job={Job} Debate={Debate} PT={PT} />
-          </Record>
-
-          <Title>
-            그래프
-          </Title>
-          <Message>
-              오늘도 즐거운 면접 연습!!!!!!😀
-            </Message>
-          <Bar Personality={Personality} Job={Job} Debate={Debate} PT={PT} />
-          <br />
-          <Donut Personality={Personality} Job={Job} Debate={Debate} PT={PT} />
-          <br />
-          <Line Personality={Personality} Job={Job} Debate={Debate} PT={PT} />
-          <br />
-          <InterviewList MeetingName={meetingName} MeetingId={meetingId} Rate={rate} Question={question} Comment={comment}/>
-
           <Footer>
-            {/* <DeleteModal nickname={nickname} /> */}
+            <DeleteModal nickname={nickname} />
           </Footer>
-        </Main>
+        </main>
       </Wrapper>
     </>
   );

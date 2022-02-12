@@ -10,7 +10,8 @@ class Donut extends Component {
       options: {
         labels: ['인성면접', '직무면접', '토론면접', 'PT면접']
       },
-      series: [props.Personality, props.Job, props.Debate, props.PT]
+      // series: [props.Personality, props.Job, props.Debate, props.PT]
+      series: [1,6,8,9]
 
     }
   }
@@ -18,9 +19,9 @@ class Donut extends Component {
   render() {
 
     return (
-      <div className="donut">
-        <Chart options={this.state.options} series={this.state.series} type="donut" width="380" />
-      </div>
+      <span className="donut">
+        <Chart options={this.state.options} series={this.state.series} type="donut" width="300" />
+      </span>
     );
   }
 }

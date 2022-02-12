@@ -1,11 +1,14 @@
 import React, { Component } from 'react';
 import Chart from 'react-apexcharts'
 
+
+
 class Bar extends Component {
 
   constructor(props) {
     super(props);
-    console.log(props)
+    console.log(props.Personality)
+
     this.state = {
       options: {
         dataLabels: {
@@ -21,19 +24,23 @@ class Bar extends Component {
         }
       },
       series: [{
+        // data: [4, 4, 1, 2]
         data: [props.Personality, props.Job, props.Debate, props.PT]
       }],
     
     }
   }
   
-
+  componentDidMount(props) {
+    console.log(this.props)
+  };
+  
   render() {
 
     return (
-      <div className="bar">
-        <Chart options={this.state.options} series={this.state.series} type="bar" width="500" />
-      </div>
+      <span className="bar">
+        <Chart options={this.state.options} series={this.state.series} type="bar" width="300" />
+      </span>
     );
   }
 }

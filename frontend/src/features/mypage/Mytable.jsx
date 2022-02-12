@@ -27,11 +27,10 @@ export default function MyTable({Personality, Job, Debate, PT}) {
     return { name, intervCategory, interviewCounting, interviewBestmember };
   }
 
-  console.log(Personality)
-  console.log(Job)
-  console.log(Debate)
-  console.log(PT)
-  // console.log(data)
+  // console.log(Personality)
+  // console.log(Job)
+  // console.log(Debate)
+  // console.log(PT)
   const classes = useStyles();
   const rows = [
     createData('면접 횟수', 

@@ -18,7 +18,8 @@ class Line extends Component {
         }
       },
       series: [{
-        data: [props.Personality, props.Job, props.Debate, props.PT]
+        // data: [props.Personality, props.Job, props.Debate, props.PT]
+        data: [9, 9, 5, 1]
       }],
     }
   }
@@ -27,9 +28,9 @@ class Line extends Component {
   render() {
 
     return (
-      <div className="line">
-        <Chart options={this.state.options} series={this.state.series} type="line" width="500" />
-      </div>
+      <span className="line">
+        <Chart options={this.state.options} series={this.state.series} type="line" width="300" />
+      </span>
     );
   }
 }
