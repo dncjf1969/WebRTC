@@ -11,7 +11,7 @@ import Paper from '@material-ui/core/Paper';
 
 
 
-export default function MyTable({Personality, Debate, PT}) {
+export default function MyTable({Personality, Job, Debate, PT}) {
 
   const useStyles = makeStyles({
     table: {
@@ -28,13 +28,17 @@ export default function MyTable({Personality, Debate, PT}) {
   }
 
   console.log(Personality)
+  console.log(Job)
+  console.log(Debate)
+  console.log(PT)
   // console.log(data)
   const classes = useStyles();
   const rows = [
     createData('면접 횟수', 
     Personality, 
+    Job,
     Debate,
-    // PT,
+    PT,
     ),
     // createData('Best Member', 0, 0, 0),
   ];
@@ -45,9 +49,10 @@ export default function MyTable({Personality, Debate, PT}) {
         <TableHead>
           <TableRow selected>
             <TableCell />
-            <TableCell align="center">직무면접</TableCell>
             <TableCell align="center">인성면접</TableCell>
-            {/* <TableCell align="center">토론면접</TableCell> */}
+            <TableCell align="center">직무면접</TableCell>
+            <TableCell align="center">토론면접</TableCell>
+            <TableCell align="center">PT면접</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
@@ -58,7 +63,8 @@ export default function MyTable({Personality, Debate, PT}) {
               </TableCell>
               <TableCell align="center">{row.intervCategory}</TableCell>
               <TableCell align="center">{row.interviewCounting}</TableCell>
-              {/* <TableCell align="center">{row.interviewBestmember}</TableCell> */}
+              <TableCell align="center">{row.interviewBestmember}</TableCell>
+              <TableCell align="center">{row.interviewBestmember}</TableCell>
             </TableRow>
           ))}
         </TableBody>

@@ -10,7 +10,7 @@ class Donut extends Component {
       options: {
         labels: ['인성면접', '직무면접', '토론면접', 'PT면접']
       },
-      series: [4, 5, 1, 1]
+      series: [props.Personality, props.Job, props.Debate, props.PT]
 
     }
   }

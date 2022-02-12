@@ -212,6 +212,7 @@ export default function MyPage() {
 
 //방 정보
   const [Personality, setPersonality] = useState([]);
+  const [Job, setJob] = useState([]);
   const [Debate, setDebate] = useState([]);
   const [PT, setPT] = useState([]);
 
@@ -279,11 +280,12 @@ export default function MyPage() {
   async function myInfo (userInfo1) {
     try {
       const response = await axios.get(`/members/me?id=${userInfo1}`)
-      console.log(response)
+      
       setId(response.data.userId)
       setNickname(response.data.name)
       setEmail(response.data.email)
       // return response;
+      // console.log(response)
     } catch (err) {
       return(err.response)
     }
@@ -293,13 +295,16 @@ export default function MyPage() {
   async function roomInfo (userInfo2) {
     try {
       const response = await axios.get(`/feedback/count?memberId=${userInfo2}`)
+      // console.log(response)
+      // console.log('44444444444444444444444444444444')
+      setPersonality(response.data.filter(info => info.type === '인성')[0].count)
+      setJob(response.data.filter(info => info.type === '직무')[0].count)
+      setDebate(response.data.filter(info => info.type === '토론')[0].count)
+      setPT(response.data.filter(info => info.type === 'PT')[0].count)
+      // return response;
       console.log(response)
       console.log('44444444444444444444444444444444')
-      setPersonality(response.data.filter(info => info.type === '인성')[0].count)
-      // backend 팀에 말해서 추가해달라고 요청 => 인성/직무 , 토론, PT
-      setDebate(response.data.filter(info => info.type === '인성')[0].count)
-      setPT(response.data.filter(info => info.type === '인성')[0].count)
-      // return response;
+     
     } catch (err) {
       return(err.response)
     }
@@ -309,14 +314,12 @@ export default function MyPage() {
   async function feedback (userInfo3) {
     try {
       const response = await axios.get(`/feedback?memberId=${userInfo3}`)
-      console.log(response)
+      // console.log(response)
       setMeetingName(response.data[0].meetingName)
       setMeetingId(response.data[0].meetingId)
       setRate(response.data[0].rate)
       setQuestion(response.data[0].question)
       setComment(response.data[0].comment)
-      // console.log(meetingName)
-      // console.log(question)
       // return response;
     } catch (err) {
       return(err.response)
@@ -429,20 +432,20 @@ export default function MyPage() {
           
           <Record>
             <Title getMoreMB>내 기록</Title>
-            <MyTable Personality={Personality} Debate={Debate} PT={PT} />
+            <MyTable Personality={Personality} Job={Job} Debate={Debate} PT={PT} />
           </Record>
 
-          <Title getMoreMB getMoreMT>
-            면접 원 그래프
+          <Title>
+            그래프
           </Title>
           <Message>
               오늘도 즐거운 면접 연습!!!!!!😀
             </Message>
-          <Bar/>
+          <Bar Personality={Personality} Job={Job} Debate={Debate} PT={PT} />
           <br />
-          <Donut Personality={Personality} Debate={Debate} PT={PT} />
+          <Donut Personality={Personality} Job={Job} Debate={Debate} PT={PT} />
           <br />
-          <Line />
+          <Line Personality={Personality} Job={Job} Debate={Debate} PT={PT} />
           <br />
           <InterviewList MeetingName={meetingName} MeetingId={meetingId} Rate={rate} Question={question} Comment={comment}/>
 
