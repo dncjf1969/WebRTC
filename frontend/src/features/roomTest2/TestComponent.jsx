@@ -440,7 +440,7 @@ class TestComponent extends Component {
           const isViewer = this.state.viewerState
           console.log(this.props.test)
           this.initialize()
-          this.props.navigate('/roomlist')
+          this.props.navigate('/')
 
           console.log(this.state.isStart)
           console.log(this.state.subscribers)
