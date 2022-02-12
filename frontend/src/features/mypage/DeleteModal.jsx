@@ -1,6 +1,6 @@
 // basic
 import React, { useState, forwardRef } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import axios from '../../common/http-common';
