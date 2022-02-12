@@ -438,9 +438,9 @@ class TestComponent extends Component {
         this.state.session.on('signal:finish', (event) => {
           // alert('면접이 끝났습니다.')
           const isViewer = this.state.viewerState
-
+          console.log(this.props.test)
           this.initialize()
-          
+          this.props.navigate('/roomlist')
 
           console.log(this.state.isStart)
           console.log(this.state.subscribers)
@@ -667,7 +667,6 @@ class TestComponent extends Component {
       session: undefined,
       subscribers: [],
       mySessionId: undefined,
-      myUserName: this.tempNamelist[Math.floor(Math.random() * 10)],
       localUser: undefined,
     });
     if (this.props.leaveSession) {
@@ -834,17 +833,17 @@ class TestComponent extends Component {
 
   initialize() {
     this.setState({
+      mainStreamManager: undefined,
       readyState: false,
       viewerState: undefined,
       // DB저장용 게임 ID 
       gameId: undefined,
-      audiostate: false,
-      videostate: true,
       isFliped: true,
       chatDisplay: "none",
       questions: [],
       isStart: false,
       allReady: false,
+      allUsers: [],
       viewers: [],
       viewees: [],
       // 면접관이 질문당 평가하고 이벤트 보낼때 몇명이 평가했는지 보기위해
@@ -852,18 +851,24 @@ class TestComponent extends Component {
       // 다른 면접관이 모두 평가하길 기다리는 상태
       evalWaiting: false,
       // 면접관이 평가완료 누를때마다 다음 면접자로 넘어가기위해 설정한 면접자idx
-      vieweeIdx: 0, 
+      vieweeIdx: 0,
       chosenQues: '',
     })
     // 다른 유저들정보 초기화
-    const init = this.state.subscribers.map((element) => {
-      element.init()
-      return element
+    const temp = this.state.subscribers
+    temp.forEach((element) => {
+      element.setReady(false)
+      element.setViewer(null)
     });
-    this.setState({subscribers: init})
-    this.remotes = init
-    console.log(this.state.session)
+    this.remotes = temp
+    this.setState({subscribers: this.remotes})
+    localUser.setReady(false)
+    localUser.setViewer(null)
+    // this.setState({subscribers: init})
+
+    console.log(this.state.subscribers)
   }
+  
   async switchCamera() {
     try {
       const devices = await this.OV.getDevices();
@@ -1033,6 +1038,7 @@ class TestComponent extends Component {
   }
 
   handleFinish() {
+    console.log(this.state.allUsers.map((user) => user.streamManager.stream.connection))
     this.state.session
       .signal({
         data: '',
@@ -1188,6 +1194,7 @@ class TestComponent extends Component {
           {this.state.isStart && this.state.ishost && 
             <button onClick={this.handleFinish}>면접끝내기</button>
           }
+
           {localUser !== undefined &&
             localUser.getStreamManager() !== undefined && (
               <div

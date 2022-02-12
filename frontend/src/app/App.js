@@ -18,6 +18,7 @@ import MyPage from "../features/mypage/Mypage";
 import TestComponent from "../features/roomTest2/TestComponent";
 import Navbar from "../common/navbar/navbar";
 import Test from "../features/roomlist/test";
+import Room from "../features/roomTest2/room";
 
 
 const Wrapper = styled.div`
@@ -43,7 +44,7 @@ function App() {
           {/* <Route path="/game" element={<Game />}></Route> */}
           {/* <Route path="/room" element={<Room />}></Route>
           <Route path="/roomTest" element={<VideoRoomComponent />}></Route> */}
-          <Route path="/roomTest2" element={<TestComponent />}></Route>
+          <Route path="/roomTest2" element={<Room />}></Route>
           <Route path="/test" element={<Test/>}></Route>
 
         </Routes>

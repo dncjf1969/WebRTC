@@ -93,13 +93,7 @@ class UserModel {
             this.type = type;
         }
     }
-    init() {
-        this.setAudioActive(false)
-        this.setVideoActive(true)
-        this.setReady(false)
-        this.setScreenShareActive(false)
-        this.setViewer(null)
-    }
+    
 }
 
 export default UserModel;
