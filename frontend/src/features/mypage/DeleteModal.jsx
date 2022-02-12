@@ -31,7 +31,7 @@ const deleteUser = createAsyncThunk(
   'DELETE_USER',
   async (arg, { rejectWithValue }) => {
     try {
-      const response = await axios.delete('/member');
+      const response = await axios.delete('/members');
       return response;
     } catch (err) {
       return rejectWithValue(err.response);
@@ -39,9 +39,9 @@ const deleteUser = createAsyncThunk(
   }
 );
 
-export default function DraggableDialog() {
+export default function DraggableDialog({nickname}) {
   const [open, setOpen] = useState(false);
-  const { nickname } = useSelector((state) => state.auth.user);
+  // const { nickname } = useSelector((state) => state.auth.user);
 
   const dispatch = useDispatch();
   const navigate = useNavigate();

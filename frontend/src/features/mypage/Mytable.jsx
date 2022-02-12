@@ -9,37 +9,49 @@ import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 
 
-const useStyles = makeStyles({
-  table: {
-    minWidth: 700,
-    minHeight: 200,
-  },
-  container: {
-    width: '100%',
-  },
-});
 
-function createData(name, intervCategory, interviewCounting, interviewBestmember ) {
-  return { name, intervCategory, interviewCounting, interviewBestmember };
-}
 
-const rows = [
-  createData('면접 횟수', 0, 0, 0),
-  createData('Best Member', 0, 0, 0),
-];
+export default function MyTable({Personality, Job, Debate, PT}) {
 
-export default function MyTable() {
+  const useStyles = makeStyles({
+    table: {
+      minWidth: 700,
+      minHeight: 200,
+    },
+    container: {
+      width: '100%',
+    },
+  });
+  
+  function createData(name, intervCategory, interviewCounting, interviewBestmember ) {
+    return { name, intervCategory, interviewCounting, interviewBestmember };
+  }
+
+  // console.log(Personality)
+  // console.log(Job)
+  // console.log(Debate)
+  // console.log(PT)
   const classes = useStyles();
-
+  const rows = [
+    createData('면접 횟수', 
+    Personality, 
+    Job,
+    Debate,
+    PT,
+    ),
+    // createData('Best Member', 0, 0, 0),
+  ];
+  
   return (
     <TableContainer component={Paper} className={classes.container}>
       <Table className={classes.table} size="small" aria-label="simple table">
         <TableHead>
           <TableRow selected>
             <TableCell />
-            <TableCell align="center">직무/인성면접</TableCell>
-            <TableCell align="center">PT면접</TableCell>
+            <TableCell align="center">인성면접</TableCell>
+            <TableCell align="center">직무면접</TableCell>
             <TableCell align="center">토론면접</TableCell>
+            <TableCell align="center">PT면접</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
@@ -50,6 +62,7 @@ export default function MyTable() {
               </TableCell>
               <TableCell align="center">{row.intervCategory}</TableCell>
               <TableCell align="center">{row.interviewCounting}</TableCell>
+              <TableCell align="center">{row.interviewBestmember}</TableCell>
               <TableCell align="center">{row.interviewBestmember}</TableCell>
             </TableRow>
           ))}
