@@ -6,13 +6,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.ArrayList;
 import java.sql.Date;
-import java.util.List;
 
-import javax.persistence.ElementCollection;
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 /**
  * 멤버 모델 정의.
@@ -23,6 +19,7 @@ import javax.persistence.Id;
 public class Member{
     @Id
 	String id;
+
     String name;
     String email;
     
@@ -31,10 +28,5 @@ public class Member{
     String password;
     
     Date signUpDate;
-    
-    //이렇게 추가해줘야할듯.
-    @ElementCollection(targetClass=String.class)
-    List<String> role = new ArrayList<String>();
-
     
 }

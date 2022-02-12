@@ -30,24 +30,24 @@ public class FeedbackServiceImpl implements FeedbackService {
 	MeetingRepository meetingRepository;
 
 	// 사용자 아이디에 해당하는 피드백 가져오기
-	@Override
-	public List<FeedbackRes> getMyFeedback(String memberId) {
-		List<FeedbackRes> res = new ArrayList<FeedbackRes>();
-		
-		try {
-			List<Feedback> list = feedbackRepository.findByMemberId(memberId);
-			
-			for (Feedback feedback : list) {
-				res.add(FeedbackRes.of(feedback));
-			}
-			
-		} catch (ReadFeedbackException e) {
-			// TODO: handle exception
-			e.printStackTrace();
-		}
-		
-		return res;
-	}
+//	@Override
+//	public List<FeedbackRes> getMyFeedback(String memberId) {
+//		List<FeedbackRes> res = new ArrayList<FeedbackRes>();
+//
+//		try {
+//			List<Feedback> list = feedbackRepository.findByMemberId(memberId).get();
+//
+//			for (Feedback feedback : list) {
+//				res.add(FeedbackRes.of(feedback));
+//			}
+//
+//		} catch (ReadFeedbackException e) {
+//			// TODO: handle exception
+//			e.printStackTrace();
+//		}
+//
+//		return res;
+//	}
 
 	@Override
 	public void createFeedback(FeedbackCreateReq info) {
@@ -77,18 +77,27 @@ public class FeedbackServiceImpl implements FeedbackService {
 	@Override
 	public List<MeetingCountRes> getMyMeetingCounts(String memberId) {
 		List<MeetingCountRes> res = feedbackRepositorySupport.countById(memberId).get();
-//		List<MeetingCountRes> res = new ArrayList<MeetingCountRes>();
-//		
-//		long count = countList.get(0);
-//		int cnt = (int) count;
-//		res.add(MeetingCountRes.of("인성",cnt));
-//		
-//
-//		count = countList.get(1);
-//		cnt = (int) count;
-//		res.add(MeetingCountRes.of("직무",cnt));
 		
 		return res;
+	}
+
+	@Override
+	public List<Long> getMeetingIdList(String memberId) {
+		List<Long> res = feedbackRepositorySupport.findDistinctByMemberId(memberId).get();
 		
+		return res;
+	}
+
+	@Override
+	public List<FeedbackRes> getMyFeedbackByRoom(Long roomId, String memberId) {
+		List<Feedback> list = feedbackRepository.findByMeetingIdAndMemberId(roomId, memberId).get();
+		List<FeedbackRes> res = new ArrayList<FeedbackRes>();
+
+		// 타입 변환
+		for (Feedback feedback : list) {
+			res.add(new FeedbackRes().of(feedback));
+		}
+		
+		return res;
 	}
 }

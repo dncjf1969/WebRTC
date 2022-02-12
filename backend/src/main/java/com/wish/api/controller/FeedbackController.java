@@ -1,5 +1,6 @@
 package com.wish.api.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.wish.api.dto.request.FeedbackCreateReq;
 import com.wish.api.dto.response.BaseRes;
+import com.wish.api.dto.response.FeedbackByRoomRes;
 import com.wish.api.dto.response.FeedbackRes;
 import com.wish.api.dto.response.MeetingCountRes;
 import com.wish.api.service.FeedbackService;
@@ -52,15 +54,24 @@ public class FeedbackController {
         @ApiResponse(code = 500, message = "서버 오류")
     })
 //	@PreAuthorize("hasAnyRole('USER')")
-	public ResponseEntity<List<FeedbackRes>> getMyFeedback(
+	public ResponseEntity<List<FeedbackByRoomRes>> getMyFeedback(
 //			@ApiIgnore Authentication authentication,
 			@ApiParam(value="마이페이지를 볼 회원 id", required = true)String memberId) {
 		
-//		String memberId = authentication.getName();
-				
-//		List<FeedbackRes> res = feedbackService.getMyFeedback(authentication.getName());
-		List<FeedbackRes> res = feedbackService.getMyFeedback(memberId);
-
+		// 1. memberId -> List<참여했던 방 ID>
+		List<Long> roomIdList = feedbackService.getMeetingIdList(memberId);
+		// 2. 응답용 객체 생성
+		List<FeedbackByRoomRes> res = new ArrayList<FeedbackByRoomRes>();
+		List<FeedbackRes> feedbackList;
+		for (Long roomId : roomIdList) {
+			// 3. 방Id -> List<피드백>
+			feedbackList = feedbackService.getMyFeedbackByRoom(roomId, memberId);
+			// 4. 응답 객체에 이 리스트들을 추가함
+			res.add(new FeedbackByRoomRes().of(feedbackList));
+		}
+		
+		// List<FeedbackByRoomRes = List<FeedbackRes>>
+		// 리스트<리스트<피드백>>
 		return ResponseEntity.status(200).body(res);
 	}
 	
@@ -125,4 +136,22 @@ public class FeedbackController {
 		return ResponseEntity.status(201).body(BaseRes.of(201, success));
 	}
 	
+	@GetMapping("/meeting")
+	@ApiOperation(value = "이번 면접에서 본인이 받은 피드백 조회") 
+    @ApiResponses({
+        @ApiResponse(code = 200, message = "성공"),
+        @ApiResponse(code = 401, message = "인증 실패"),
+        @ApiResponse(code = 404, message = "사용자 없음"),
+        @ApiResponse(code = 500, message = "서버 오류")
+    })
+//	@PreAuthorize("hasAnyRole('USER')")
+	public ResponseEntity<List<FeedbackRes>> getMeetingroomFeedback(
+//			@ApiIgnore Authentication authentication,
+			@ApiParam(value="회원 id", required = true)String memberId,
+			@ApiParam(value="면접방 id", required = true)Long roomId) {
+		
+		List<FeedbackRes> res = feedbackService.getMyFeedbackByRoom(roomId, memberId);
+			
+		return ResponseEntity.status(200).body(res);
+	}
 }

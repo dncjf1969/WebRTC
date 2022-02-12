@@ -32,7 +32,7 @@ public interface RoomService {
 	
 	public void changeManager(int roomId, String memberId, String nextManager);
 	
-	public void startMeeting(String memberId, int roomId);
+	public Long startMeeting(String memberId, int roomId);
 	
-	public void finishMeeting(String memberId, int roomId);
+	public void finishMeeting(String memberId, int roomId, Long meetingId);
 }

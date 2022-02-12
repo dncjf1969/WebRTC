@@ -1,5 +1,7 @@
 package com.wish.api.service;
 
+import java.sql.Date;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -24,6 +26,8 @@ import com.wish.common.exception.custom.room.IsNotRoomManagerException;
 import com.wish.common.exception.custom.room.NotFoundRoomException;
 import com.wish.common.exception.custom.room.RoomMemberUnderMaxMemberCntException;
 import com.wish.common.exception.custom.room.RoomPasswordIsNotCorrectException;
+import com.wish.db.entity.MeetingRoom;
+import com.wish.db.repository.MeetingRepository;
 
 import io.openvidu.java.client.ConnectionProperties;
 import io.openvidu.java.client.ConnectionType;
@@ -41,6 +45,8 @@ public class RoomServiceImpl implements RoomService{
 	@Autowired 
 	RedisTemplate<String, Room> redisTemplate;
 	
+	@Autowired
+	MeetingRepository meetingRepository; 
 	
 
 
@@ -68,8 +74,9 @@ public class RoomServiceImpl implements RoomService{
 		while(iter1.hasNext()) {
 			String now = iter1.next();
 			if(now.contains("backup")) continue;
+			if(now.contains("turn")) continue;
 			try {
-				Room room = getRoom( Integer.parseInt(now));
+				Room room = getRoom(Integer.parseInt(now));
 				if(room.getType().equals(type)) list1.add(room);
 				
 			} catch (NumberFormatException e) {
@@ -124,7 +131,7 @@ public class RoomServiceImpl implements RoomService{
 			session = openVidu.createSession();
 			String token = session.createConnection(connectionProperties).getToken();
 			
-			Room room = Room.of(token, autoIncreament++, createInfo);
+			Room room = Room.of(token, autoIncreament, createInfo);
 			
 			System.out.println(room.toString());
 			//redis에 방 정보 추가.
@@ -212,7 +219,7 @@ public class RoomServiceImpl implements RoomService{
 		Room room = getRoom(roomId);
 		
 		// 현재 방장아이디와 입력받은 현재방장 아이디 같아야함.
-		if(memberId != room.getManager()) throw new IsNotRoomManagerException(memberId);
+		if(!memberId.equals(room.getManager())) throw new IsNotRoomManagerException(memberId);
 		
 		room.setManager(nextManager);
 		
@@ -220,28 +227,58 @@ public class RoomServiceImpl implements RoomService{
 		
 	}
 
-	public void startMeeting(String memberId, int roomId) {
-		
+	public Long startMeeting(String memberId, int roomId) {
+		/*
+		 * Redis 데이터를  면접중으로 변경
+		 */
 		Room room = getRoom(roomId);
 		
 		// 현재 방장아이디와 입력받은 현재방장 아이디 같아야함.
-		if(memberId != room.getManager()) throw new IsNotRoomManagerException(memberId);
+		if(!memberId.equals(room.getManager())) throw new IsNotRoomManagerException(memberId);
 				
 		room.setNowMeeting(true);
 		setRoom(room);
 		
+
+		/*
+		 * Mysql에 저장하고 ID받아오기
+		 */
+		MeetingRoom meetingRoom = MeetingRoom.of(room);
+		Long roomIdmysql = meetingRepository.save(meetingRoom).getId();
+		
+		return roomIdmysql;
 	}
 	
-	public void finishMeeting(String memberId, int roomId) {
-		
+	public void finishMeeting(String memberId, int roomId, Long meetingId) {
+		/*
+		 * redis
+		 */
+		// redis에 저장된 방 정보 가져온다.
 		Room room = getRoom(roomId);
 		
 		// 현재 방장아이디와 입력받은 현재방장 아이디 같아야함.
-		if(memberId != room.getManager()) throw new IsNotRoomManagerException(memberId);
+		if(!memberId.equals(room.getManager())) throw new IsNotRoomManagerException(memberId);
 				
 		room.setNowMeeting(false);
 		setRoom(room);
 		
+		/*
+		 * mysql
+		 */
+		MeetingRoom meetingRoom = meetingRepository.findById(meetingId).get();
+		
+		// 현재 시간 (종료시간)
+		Long endTime = System.currentTimeMillis();
+        
+        // 시작시간 가져오기
+        Long startTime = meetingRoom.getStartTime();
+        
+        // 면접에 걸린 시간 계산에서 저장
+        Long takenTime = endTime - startTime;
+        		
+		meetingRoom.setTakenTime(takenTime);
+		
+		meetingRepository.save(meetingRoom);
 	}
 
 

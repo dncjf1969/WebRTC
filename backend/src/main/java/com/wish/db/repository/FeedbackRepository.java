@@ -15,7 +15,8 @@ import java.util.List;
  */
 @Repository
 public interface FeedbackRepository extends JpaRepository<Feedback, Long> {
-	List<Feedback> findByMemberId(String memberId);
+
+	Optional<List<Feedback>> findByMeetingIdAndMemberId(Long meetingId, String memberId);
 	
 	Optional<List<Long>> countByMemberId(String id);
 	
