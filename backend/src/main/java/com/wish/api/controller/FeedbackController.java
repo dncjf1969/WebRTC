@@ -136,4 +136,22 @@ public class FeedbackController {
 		return ResponseEntity.status(201).body(BaseRes.of(201, success));
 	}
 	
+	@GetMapping("/meeting")
+	@ApiOperation(value = "이번 면접에서 본인이 받은 피드백 조회") 
+    @ApiResponses({
+        @ApiResponse(code = 200, message = "성공"),
+        @ApiResponse(code = 401, message = "인증 실패"),
+        @ApiResponse(code = 404, message = "사용자 없음"),
+        @ApiResponse(code = 500, message = "서버 오류")
+    })
+//	@PreAuthorize("hasAnyRole('USER')")
+	public ResponseEntity<List<FeedbackRes>> getMeetingroomFeedback(
+//			@ApiIgnore Authentication authentication,
+			@ApiParam(value="회원 id", required = true)String memberId,
+			@ApiParam(value="면접방 id", required = true)Long roomId) {
+		
+		List<FeedbackRes> res = feedbackService.getMyFeedbackByRoom(roomId, memberId);
+			
+		return ResponseEntity.status(200).body(res);
+	}
 }
