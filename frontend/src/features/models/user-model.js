@@ -12,7 +12,7 @@ class UserModel {
 
     constructor() {
         this.connectionId = '';
-        this.audioActive = true;
+        this.audioActive = false;
         this.videoActive = true;
         this.screenShareActive = false;
         this.nickname = '';
@@ -93,6 +93,7 @@ class UserModel {
             this.type = type;
         }
     }
+    
 }
 
 export default UserModel;
