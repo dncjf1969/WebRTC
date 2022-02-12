@@ -234,7 +234,7 @@ public class RoomServiceImpl implements RoomService{
 	}
 	
 	public void finishMeeting(String memberId, int roomId) {
-		
+		// redis에 저장된 방 정보 가져온다.
 		Room room = getRoom(roomId);
 		
 		// 현재 방장아이디와 입력받은 현재방장 아이디 같아야함.

@@ -5,9 +5,8 @@ import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.core.types.dsl.NumberPath;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.wish.api.dto.response.MeetingCountRes;
-import com.wish.db.entity.Member;
+import com.wish.db.entity.Feedback;
 import com.wish.db.entity.QFeedback;
-import com.wish.db.entity.QMember;
 
 import java.util.List;
 import java.util.Optional;
@@ -44,5 +43,15 @@ public class FeedbackRepositorySupport {
     									.fetch();
 
     	return Optional.ofNullable(meetingCount);
+    }
+    
+    public Optional<List<Long>> findDistinctByMemberId(String memberId) {
+    	List<Long> list =  jpaQueryFactory
+    							.selectDistinct(qFeedback.meetingId)
+								.from(qFeedback)
+								.where(qFeedback.memberId.eq(memberId))
+								.fetch();
+
+    	return Optional.ofNullable(list);
     }
 }
