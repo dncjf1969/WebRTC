@@ -7,6 +7,7 @@ import com.wish.api.dto.request.RoomManagerReq;
 import com.wish.api.dto.request.RoomModifyReq;
 import com.wish.api.dto.response.BaseRes;
 import com.wish.api.dto.response.RoomListRes;
+import com.wish.api.dto.response.RoomMysqlIdRes;
 import com.wish.api.dto.response.RoomSearchRes;
 import com.wish.api.dto.response.RoomTokenRes;
 import com.wish.api.service.RoomServiceImpl;
@@ -265,13 +266,14 @@ public class RoomController {
         @ApiResponse(code = 500, message = "서버 에러")
     })
 	//@PreAuthorize("hasAnyRole('USER')")
-	public ResponseEntity<BaseRes> startMeeting(
+	public ResponseEntity<RoomMysqlIdRes> startMeeting(
 			@ApiIgnore Authentication authentication,
 			@RequestParam @ApiParam(value="대기방 id", required = true) int roomId) {
 	
-		roomService.startMeeting(authentication.getName(), roomId);
+//		Long roomIdmysql = roomService.startMeeting(authentication.getName(), roomId);
+		Long roomIdmysql = roomService.startMeeting("a", roomId);
 		
-		return ResponseEntity.status(200).body(BaseRes.of(200, success));
+		return ResponseEntity.status(200).body(RoomMysqlIdRes.of(roomIdmysql));
 	}
 	
 	@GetMapping("/meeting/finish")
@@ -286,9 +288,11 @@ public class RoomController {
 	//@PreAuthorize("hasAnyRole('USER')")
 	public ResponseEntity<BaseRes> finishMeeting(
 			@ApiIgnore Authentication authentication,
-			@RequestParam @ApiParam(value="대기방 id", required = true) int roomId) {
+			@RequestParam @ApiParam(value="대기방 id(Redis)", required = true) int roomId,
+			@RequestParam @ApiParam(value="면접방 id(Mysql)", required = true) Long meetingId) {
 	
-		roomService.finishMeeting(authentication.getName(), roomId);
+//		roomService.finishMeeting(authentication.getName(), roomId, meetingId);
+		roomService.finishMeeting("a", roomId, meetingId);
 		
 		return ResponseEntity.status(200).body(BaseRes.of(200, success));
 	}
