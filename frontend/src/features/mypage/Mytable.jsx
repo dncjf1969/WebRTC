@@ -34,10 +34,10 @@ export default function MyTable({Personality, Job, Debate, PT}) {
   const classes = useStyles();
   const rows = [
     createData('면접 횟수', 
-    Personality, 
-    Job,
-    Debate,
-    PT,
+    <h1>{Personality}</h1>, 
+    <h1>{Job}</h1>,
+    <h1>{Debate}</h1>,
+    <h1>{PT}</h1>,
     ),
     // createData('Best Member', 0, 0, 0),
   ];

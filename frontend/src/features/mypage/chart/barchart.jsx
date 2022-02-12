@@ -1,7 +1,5 @@
-import React, { Component, useState,  useEffect } from 'react';
+import React from 'react';
 import Chart from 'react-apexcharts'
-
-
 
 export default function Bar (props)  {
   const options = {

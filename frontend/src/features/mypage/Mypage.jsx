@@ -14,7 +14,6 @@ import MyTable from "./Mytable";
 import DeleteModal from "./DeleteModal";
 import Donut from "./chart/donutchart";
 import Bar from "./chart/barchart";
-import Line from "./chart/piechart";
 import InterviewList from "./interviewList";
 
 // 전체 컨테이너
@@ -209,9 +208,9 @@ export default function MyPage() {
               </Record>
             </Box>
 
-            <Box gridColumn="span 8">
+            <Box gridColumn="span 9">
               <Title>그래프</Title>
-
+              
               <Box display="grid" gridTemplateColumns="repeat(12, 1fr)" gap={2}>
                 <Box gridColumn="span 6">
                   <Bar
@@ -232,7 +231,7 @@ export default function MyPage() {
               </Box>
             </Box>
 
-            <Box gridColumn="span 4">
+            <Box gridColumn="span 3">
               <Title>면접 피드백 (방제목)</Title>
               <InterviewList
                 MeetingInfo={meetingInfo}
@@ -244,7 +243,10 @@ export default function MyPage() {
           <Footer>
             <DeleteModal nickname={nickname} />
           </Footer>
+
         </main>
+        <br />
+        <br />
       </Wrapper>
     </>
   );
