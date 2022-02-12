@@ -2,8 +2,8 @@ package com.wish.api.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.MailException;
-import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -21,9 +21,11 @@ import com.wish.db.entity.Member;
 import com.wish.db.repository.MemberRepository;
 import com.wish.db.repository.MemberRepositorySupport;
 
-import java.util.Date;
-import java.util.List;
 import java.util.Optional;
+import java.util.Random;
+
+import javax.mail.MessagingException;
+import javax.mail.internet.MimeMessage;
 
 
 @Service
@@ -33,6 +35,9 @@ public class MemberServiceImpl implements MemberService {
 	
 	@Autowired
 	MemberRepositorySupport memberRepositorySupport;
+	
+	@Autowired
+	RoleService roleService;
 	
 	@Autowired
 	PasswordEncoder passwordEncoder;
@@ -58,9 +63,9 @@ public class MemberServiceImpl implements MemberService {
 			member.setEmail(memberSignupInfo.getEmail());
 			member.setSignUpDate(member.getSignUpDate());
 			
-//				List<String> temp = member.getRole();
-//				temp.add("USER");
-//				member.setRole(temp);
+			//role 테이블에 회원 아이디와 권한 추가.
+			roleService.createRole(memberSignupInfo.getId(), "BASIC");
+			
 			memberRepository.save(member);
 			
 		} catch ( CreateMemberException e) {
@@ -135,17 +140,53 @@ public class MemberServiceImpl implements MemberService {
 
 		if(!member.getEmail().equals(memberEmail)) throw new EmailNotCorrectException();
 		
-		String randomPW = "111";
+		String randomPW = "";
+		
+		Random rand = new Random();
+		while(randomPW.length()<6) {
+			
+			int rand_pw = rand.nextInt(75); //0 - 74
+			rand_pw+=48; // 48 - 122
+			
+			//48 - 57 : 숫자
+			//65 - 89 : 대문자
+			//98 - 122 : 소문자
+			if(rand_pw>57 && rand_pw<65) continue;
+			if(rand_pw>90 && rand_pw<97) continue;
+			
+			randomPW += (char)rand_pw;
+		}
+		
 		member.setPassword(passwordEncoder.encode(randomPW));
 
 		memberRepository.save(member);
-
+		
+		StringBuffer mailcontent = new StringBuffer();
+		mailcontent.append("<!DOCTYPE html>");
+		mailcontent.append("<html>");
+        mailcontent.append("<head>");
+        mailcontent.append("</head>");
+        mailcontent.append("<body>");
+        mailcontent.append("hello!!<br> <b>WISH</b> 입니다.<br> 임시 비밀번호는 : <b>");
+        mailcontent.append(randomPW);
+        mailcontent.append("</b><br></body>");
+        mailcontent.append("</html>");
+		
 		//메일 보내기
-		SimpleMailMessage message = new SimpleMailMessage();
-		message.setSubject("[공지] 비밀번호");
-		message.setText("임시 비밀번호는 " + randomPW + " 입니다.");
-		message.setFrom("kyung_ho@naver.com");
-		message.setTo(member.getEmail());
+//		SimpleMailMessage message2 = new SimpleMailMessage();
+		MimeMessage message = javamailSender.createMimeMessage();
+		MimeMessageHelper helper = new MimeMessageHelper(message, "utf-8");
+		
+		try {
+			helper.setSubject("[공지] 비밀번호");
+			helper.setText(mailcontent.toString(), true);
+			//message.setText("임시 비밀번호는 " + randomPW + " 입니다.");
+			helper.setFrom("kyung_ho@naver.com");
+			helper.setTo(member.getEmail());
+		} catch (MessagingException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 
 		try {
 			javamailSender.send(message);
