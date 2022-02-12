@@ -36,7 +36,7 @@ function App() {
         <Route path="/Login" element={<Login />} />
         <Route path="/signup" element={<SignUp />} />
         <Route path="/reset-password" element={<ResetPassword />} />
-        <Route path="/waitinglist/:id" element={<WaitingList />} />
+        <Route path="/waitinglist/:roomType" element={<WaitingList />} />
         <Route path="/waitingroom" element={<WaitingRoom />} />
       </Routes>
     </>

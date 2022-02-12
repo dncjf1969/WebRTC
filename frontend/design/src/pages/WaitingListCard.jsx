@@ -1,4 +1,5 @@
-function WaitingListCard(key, room) {
+function WaitingListCard({ key, roomId, name, job, memberMax }) {
+  console.log("들어옴");
   return (
     <div
       className="pt-3 pb-3 px-4 flex flex-col items-center p-6 "
@@ -18,7 +19,7 @@ function WaitingListCard(key, room) {
             </div>
             <div class="py-4 px-4 bg-white">
               {/* <h3 class="text-md font-semibold text-gray-600">{data.name}</h3> */}
-              <p class="mt-4 font-semibold text-gray-600 text-lg">{room}</p>
+              <p class="mt-4 font-semibold text-gray-600 text-lg">{name}</p>
               <p class="mt-4 font-thin">비밀방 유무(있으면 키, 없으면 공란)</p>
               <p class="mt-4 font-thin">{key}</p>
               <span class="flex items-center justify-center mt-4 w-full bg-blue-400 hover:bg-blue-500 py-1 rounded">
