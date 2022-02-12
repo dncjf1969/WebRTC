@@ -131,7 +131,7 @@ public class RoomController {
 	
 		System.out.println("대기방 생성 ");
 
-		RoomTokenRes res = roomService.createWaitingRoom(createInfo, openVidu, autoIncreament);
+		RoomTokenRes res = roomService.createWaitingRoom(createInfo, openVidu, autoIncreament++);
 		
 		return ResponseEntity.status(201).body(res);
 	}

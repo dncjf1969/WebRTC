@@ -68,8 +68,9 @@ public class RoomServiceImpl implements RoomService{
 		while(iter1.hasNext()) {
 			String now = iter1.next();
 			if(now.contains("backup")) continue;
+			if(now.contains("turn")) continue;
 			try {
-				Room room = getRoom( Integer.parseInt(now));
+				Room room = getRoom(Integer.parseInt(now));
 				if(room.getType().equals(type)) list1.add(room);
 				
 			} catch (NumberFormatException e) {
@@ -124,7 +125,7 @@ public class RoomServiceImpl implements RoomService{
 			session = openVidu.createSession();
 			String token = session.createConnection(connectionProperties).getToken();
 			
-			Room room = Room.of(token, autoIncreament++, createInfo);
+			Room room = Room.of(token, autoIncreament, createInfo);
 			
 			System.out.println(room.toString());
 			//redis에 방 정보 추가.
