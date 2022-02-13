@@ -12,8 +12,6 @@ import ResetPassword from "./pages/ResetPassword";
 import WaitingList from "./pages/WaitingList";
 import Room from "./pages/roomTest2/room";
 import MyPage from "./pages/mypage/Mypage";
-// import CheckPassword from './pages/CheckPassword';
-import ModifyUserInfo from './pages/ModifyUserInfo';
 import NotFound from './pages/Page404';
 
 function App() {
@@ -44,8 +42,6 @@ function App() {
         <Route path="/waitinglist/:roomType" element={<WaitingList />} />
         <Route path="/waitingroom" element={<Room />} />
         <Route path="/mypage" element={<MyPage />} />
-        {/* <Route path="/checkpassword" element={<CheckPassword/>} /> */}
-        <Route path="/modifyuserinfo" element={<ModifyUserInfo/>} />
         <Route path= '/404' element= {<NotFound/>} />
         <Route path= '*' element= {<Navigate to="/404" replace />}/>
 

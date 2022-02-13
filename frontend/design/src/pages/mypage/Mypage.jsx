@@ -2,6 +2,7 @@
 import axios from "../../common/http-common";
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import Gravatar from "react-gravatar";
 
 // style
 import { Container, Button } from "@material-ui/core";
@@ -186,7 +187,10 @@ export default function MyPage() {
                 <Box gridColumn="span 5">
                   <Box display="grid" gridTemplateColumns="repeat(12, 1fr)" gap={2}>
                     <Box gridColumn="span 4">
-                      <img src="https://placeimg.com/150/230/animals/sepia" />
+                      {/* <img src="https://placeimg.com/150/230/animals/sepia" /> */}
+                      {/* <Gravatar email={email} size={300} rating="pg" default="monsterid" style={{margin: '5px'}}className="CustomAvatar-image" /> */}
+                      <Gravatar email='blahblah@blah.com' size={150} rating="pg" default="monsterid" className="CustomAvatar-image" />
+                      
                     </Box>
                     <Box gridColumn="span 8">
                       <Title>닉네임</Title>
@@ -257,14 +261,12 @@ export default function MyPage() {
                   />
                 </Box>
               </Box>
+              <Footer>
+                <DeleteModal nickname={nickname} />
+              </Footer>
             </Wrapper>
+    
           </div>
-          
-
-          <Footer>
-            <DeleteModal nickname={nickname} />
-          </Footer>
-
         </main>
         <br />
       </div>

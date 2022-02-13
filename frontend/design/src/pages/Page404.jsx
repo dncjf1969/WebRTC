@@ -43,7 +43,7 @@ export const CommonButton = styled.button`
 export default function Error404() {
   return (
     <Wrapper>
-      <Logo src={logo} width="60vh" alt="logo" />
+      <Logo src={logo} width="600vh" alt="logo" />
       <TitleWrapper>
         <Title>페이지를 이용할 수 없습니다</Title>
       </TitleWrapper>
