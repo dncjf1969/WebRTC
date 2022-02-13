@@ -1,5 +1,7 @@
 import React, { Component } from "react";
 import axios from "axios";
+import myAxios from "../../common/http-common";
+
 import "./TestComponent.css";
 import { OpenVidu } from "openvidu-browser";
 import StreamComponent from "./stream/StreamComponent";
@@ -79,10 +81,11 @@ class TestComponent extends Component {
     let userName = this.props.user
       ? this.props.user
       : "OpenVidu_User" + Math.floor(Math.random() * 100);
-
+    let id = this.props.id ? this.props.id : "임시아이디";
     this.remotes = [];
     this.localUserAccessAllowed = false;
     this.state = {
+      id: id,
       // 방id like key
       mySessionId: sessionName,
       // 방에 들어간 유저 - > nickname
@@ -126,8 +129,6 @@ class TestComponent extends Component {
       hostId: undefined,
       // 토론, pt 한다면 추가
       timer: false,
-      // DB저장용 게임 ID
-      gameId: undefined,
       // 높은 확률로 jwt토큰인데 여기서 사용안했음
       token: undefined,
       audiostate: false,
@@ -160,7 +161,12 @@ class TestComponent extends Component {
       // 면접관이 평가완료 누를때마다 다음 면접자로 넘어가기위해 설정한 면접자idx
       vieweeIdx: 0,
       chosenQues: "",
-
+      // 나중에 API로 수정
+      waitingId: sessionName,
+      meetingId: null,
+      preQuesId: -1,
+      curQuesId: -1,
+      destroyedUserId: "",
       // 사전질문이랑 채팅 토글
       value: 0,
       hidden: false,
@@ -398,11 +404,16 @@ class TestComponent extends Component {
 
         this.state.session.on("streamDestroyed", (event) => {
           // Remove the stream from 'subscribers' array
+          const destroyedUserId = JSON.parse(event.stream.connection.data).id;
           this.updateHost().then((connectionid) => {
             const host = connectionid;
+            const context = JSON.stringify({
+              hostId: host,
+              destroyedUserId: destroyedUserId,
+            });
             this.state.session
               .signal({
-                data: host,
+                data: context,
                 to: [],
                 type: "update-host",
               })
@@ -414,9 +425,17 @@ class TestComponent extends Component {
 
         // 방장 업데이트
         this.state.session.on("signal:update-host", (event) => {
-          this.setState({ hostId: event.data });
-          if (this.state.session.connection.connectionId === event.data) {
+          const data = JSON.parse(event.data);
+          this.setState({ hostId: data.hostId });
+          this.setState({ destroyedUserId: data.destroyedUserId });
+          // 방장만 요청보내
+          if (this.state.session.connection.connectionId === data.hostId) {
+            // 방장이 갱신되는 상황만 요청에 정보보내
+            const nextManager = this.state.ishost ? "" : this.state.id;
             this.setState({ ishost: true });
+            myAxios.put(
+              `/room/waiting/exit?memberId=${data.destroyedUserId}&nextManger=${nextManager}&roomId=${this.state.waitingId}`
+            );
           }
         });
 
@@ -443,7 +462,7 @@ class TestComponent extends Component {
               allUsers: allUsers,
               viewees: viewees,
               viewers: viewers,
-              gameId: event.data,
+              meetingId: event.data,
               mainStreamManager: viewees[0],
             });
             console.log("시그널받고 스타트상태", this.state.isStart);
@@ -462,7 +481,28 @@ class TestComponent extends Component {
             let evalnum = this.state.evalnum + 1;
             // 모두평가완료했다면
             if (evalnum === this.state.viewers.length) {
+              if (
+                this.state.viewers[0].connectionId === localUser.connectionId
+              ) {
+                // 면접관중 한명만
+                axios
+                  .put("/question/past", { questionId: this.state.curQuesId })
+                  .then(() => {
+                    console.log("선택질문 count요청보냄");
+                    axios
+                      .put("/question/relation", {
+                        childId: this.state.curQuesId,
+                        parentId: this.state.preQuesId,
+                      })
+                      .then(() => {
+                        console.log("연관질문 count요청보냄");
+                      })
+                      .catch((e) => console.log(e));
+                  })
+                  .catch((e) => console.log(e));
+              }
               this.setState({ evalnum: 0, evalWaiting: false });
+              this.setState({ preQuesId: this.state.curQuesId });
               this.nextViewee();
             } else {
               this.setState({ evalnum: evalnum });
@@ -474,6 +514,14 @@ class TestComponent extends Component {
         this.state.session.on("signal:choiceQues", (event) => {
           console.log(event.data);
           this.setState({ chosenQues: event.data });
+        });
+        this.state.session.on("signal:choiceRecoQues", (event) => {
+          console.log(event.data);
+          const data = JSON.parse(event.data);
+          this.setState({
+            chosenQues: data.content,
+            curQuesId: data.id,
+          });
         });
 
         // 방장이 면접끝냄
@@ -564,8 +612,12 @@ class TestComponent extends Component {
   }
 
   connect(token) {
+    const context = {
+      clientData: this.state.myUserName,
+      id: this.state.id,
+    };
     this.state.session
-      .connect(token, { clientData: this.state.myUserName })
+      .connect(token, context)
       .then(() => {
         console.log("여기사람있어요");
         this.updateHost().then((firstUser) => {
@@ -628,6 +680,7 @@ class TestComponent extends Component {
     localUser.setStreamManager(publisher);
     localUser.setReady(false);
     localUser.setViewer(null);
+    localUser.setId(this.props.id ? this.props.id : "");
     this.subscribeToUserChanged();
     this.subscribeToStreamDestroyed();
     this.sendSignalUserChanged({
@@ -689,6 +742,7 @@ class TestComponent extends Component {
             isAudioActive: this.state.localUser.isAudioActive(),
             isVideoActive: this.state.localUser.isVideoActive(),
             nickname: this.state.localUser.getNickname(),
+            id: this.state.localUser.getId(),
             isScreenShareActive: this.state.localUser.isScreenShareActive(),
             ready: this.state.localUser.isReady(),
             viewer: this.state.localUser.isViewer(),
@@ -701,10 +755,24 @@ class TestComponent extends Component {
 
   leaveSession() {
     const mySession = this.state.session;
-
-    if (mySession) {
-      mySession.disconnect();
-    }
+    axios
+      .get(this.OPENVIDU_SERVER_URL + "/openvidu/api/sessions", {
+        headers: {
+          Authorization:
+            "Basic " + btoa("OPENVIDUAPP:" + this.OPENVIDU_SERVER_SECRET),
+        },
+      })
+      .then((response) => {
+        console.log(response);
+        if (response.data.numberOfElements === 0) {
+          // 0인지 1인지 실험필요
+          myAxios
+            .delete(`/room/waiting?roomId=${this.state.waitingId}`)
+            .then(() => console.log("DB에서 방삭제됨"))
+            .catch((e) => console.log(e));
+        }
+      })
+      .catch(() => {});
 
     // Empty all properties...
     this.OV = null;
@@ -777,7 +845,7 @@ class TestComponent extends Component {
       newUser.setConnectionId(event.stream.connection.connectionId);
       newUser.setType("remote");
       const nickname = event.stream.connection.data.split("%")[0];
-
+      newUser.setId("");
       newUser.setNickname(JSON.parse(nickname).clientData);
       newUser.setReady(false);
       newUser.setViewer(null);
@@ -881,8 +949,7 @@ class TestComponent extends Component {
       mainStreamManager: undefined,
       readyState: false,
       viewerState: undefined,
-      // DB저장용 게임 ID
-      gameId: undefined,
+      meetingId: undefined,
       isFliped: true,
       chatDisplay: "none",
       questions: [],
@@ -1109,6 +1176,15 @@ class TestComponent extends Component {
         console.log(this.state.session);
       })
       .catch((error) => {});
+    // axios
+    if (this.state.ishost) {
+      myAxios
+        .get(
+          `/room/meeting/finish?meetingId=${this.state.meetingId}&roomId=${this.state.waitingId}`
+        )
+        .then((res) => console.log("면접끝 서버로 요청보냄"))
+        .catch((e) => console.log(e));
+    }
   }
   render() {
     const mySessionId = this.state.mySessionId;
@@ -1129,7 +1205,7 @@ class TestComponent extends Component {
           spacing={2}
           title="waitingProfile"
           sx={{
-            height: "650px",
+            height: "630px",
             margin: "10px",
             marginTop: "10px",
             padding: "10px",
@@ -1179,14 +1255,15 @@ class TestComponent extends Component {
                   )}
                 </div>
               )}
+
               {this.state.isStart && localUser.viewer && (
                 <div>
                   <RecommendationQues
                     session={this.state.session}
                     questions={this.state.questions}
                     mainStreamManager={this.state.mainStreamManager}
-                    setState={this.setState}
                     handleChoiceQues={(e) => this.handleChoiceQues(e)}
+                    preQuesId={this.state.preQuesId}
                   />
 
                   <EvaluationSheet
@@ -1195,6 +1272,10 @@ class TestComponent extends Component {
                     session={this.state.session}
                     evalWaiting={this.state.evalWaiting}
                     chosenQues={this.state.chosenQues}
+                    curQuesId={this.state.curQuesId}
+                    preQuesId={this.state.preQuesId}
+                    meetingId={this.state.meetingId}
+                    mainStreamManager={this.state.mainStreamManager}
                   />
                 </div>
               )}
@@ -1295,7 +1376,6 @@ class TestComponent extends Component {
         {this.state.isStart && this.state.ishost && (
           <button onClick={this.handleFinish}>면접끝내기</button>
         )}
-        {/* 여기까지가 대기방 */}
       </div>
     );
   }

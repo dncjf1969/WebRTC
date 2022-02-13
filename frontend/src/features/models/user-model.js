@@ -9,6 +9,7 @@ class UserModel {
     isReady;
     viewer;
     stream;
+    id;
 
     constructor() {
         this.connectionId = '';
@@ -20,6 +21,7 @@ class UserModel {
         this.type = 'local';
         this.ready = false;
         this.viewer = null;
+        this.id = '';
     }
 
     isReady() {
@@ -48,6 +50,10 @@ class UserModel {
 
     getNickname() {
         return this.nickname;
+    }
+
+    getId() {
+        return this.id;
     }
 
     getStreamManager() {
@@ -87,6 +93,9 @@ class UserModel {
     }
     setNickname(nickname) {
         this.nickname = nickname;
+    }
+    setId(id) {
+        this.id = id;
     }
     setType(type) {
         if (type === 'local' |  type === 'remote') {
