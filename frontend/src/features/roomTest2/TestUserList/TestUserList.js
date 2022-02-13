@@ -1,8 +1,5 @@
 import React, { Component } from "react";
-import imgA from "./testImages/rion.PNG";
-import imgB from "./testImages/muzi.PNG";
-import imgC from "./testImages/neo.PNG";
-import imgD from "./testImages/prodo.PNG";
+import axios from "../../../common/http-common"
 import "./TestUserList.css";
 
 class TestUserList extends Component {
@@ -10,6 +7,7 @@ class TestUserList extends Component {
     super(props);
     this.readyTest = this.readyTest.bind(this);
     this.start = this.start.bind(this);
+    this.informStart = this.informStart.bind(this);
 
     this.state = {
       isReady: false,
@@ -39,15 +37,34 @@ class TestUserList extends Component {
     }
   }
 
+  
+  informStart = (async (roomId) => {
+    console.log(this.props.roo)
+    await axios
+    .get(`/room/meeting/start?roomId=${roomId}`)
+      .then((res) => {
+        console.log(res)
+        return res;
+      })
+      .catch((err) => {
+        return err;
+      });
+  });
+
   start() {
     const check = (value) => value.ready;
-    // console.log('스타트')
-    // console.log(this.props)
     if (this.props.subscribers.every(check) && this.props.ready) {
       console.log("모두레디함 스타트");
+      // 서버에 시작했다는 사실 알려주기 나중에 대기방아이디 받아서
+      // const roomId = this.props.waitingId
+      // const meetingId = this.informStart(roomId)
+      
+
       this.props.session
         .signal({
           data: Date.now(),
+          //나중에 바꾸기
+          // data: waitingId,
           to: [],
           type: "start",
         })
