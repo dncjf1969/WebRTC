@@ -100,27 +100,63 @@ public class SearchUtil {
 			
 			//TODO
 			//kmp 알고리즘 사용해야하는 부분
-			int len = tempList1.size()-list1.size();
-			if(len<0) continue;
-				
-			for(int a=0; a<=tempList1.size()-list1.size(); a++) {
-				for(int b=0; b<list1.size(); b++) {
-					if(tempList1.get(a+b) == list1.get(b)) {
-						if(b== list1.size()-1) {
-							RoomSearchRes room = RoomSearchRes.of(now);				
-							res.add(room);
-						}
-					}
-					else {
-						break;
-					}
-				}
+			
+			if(kmpAlgo(tempList1 , list1)) {
+				RoomSearchRes room = RoomSearchRes.of(now);				
+				res.add(room);
 			}
+			
+//			int len = tempList1.size()-list1.size();
+//			if(len<0) continue;
+//				
+//			
+//			for(int a=0; a<=tempList1.size()-list1.size(); a++) {
+//				for(int b=0; b<list1.size(); b++) {
+//					if(tempList1.get(a+b) == list1.get(b)) {
+//						if(b== list1.size()-1) {
+//							RoomSearchRes room = RoomSearchRes.of(now);				
+//							res.add(room);
+//						}
+//					}
+//					else {
+//						break;
+//					}
+//				}
+//			}
 		}
 		
 		return res;
 	}
 	
+	public static boolean kmpAlgo(List<Integer> s, List<Integer> p) {
+		int m = p.size();
+		int j=0;
+		List<Integer> pi = new ArrayList<Integer>();
+		for(int a=0; a<m; a++) pi.add(0);
+		
+		for(int i = 1; i< m ; i++){
+			while(j > 0 && p.get(i) != p.get(j)) j = pi.get(j-1); 
+			if(p.get(i) == p.get(j)) pi.set(i, ++j); 
+		}
+		
+		
+		System.out.println("pi 완성");
+		
+		int n = s.size();
+		j =0; 
+		for(int i = 0 ; i < n ; i++){
+			while(j>0 && s.get(i) != p.get(j)) j = pi.get(j-1);
+			if( s.get(i) == p.get(j)){
+				if(j==m-1){
+					return true;
+				}else{
+					j++; 
+					} 
+				} 
+			}
+		
+		return false;
+	}
 	
 	//keyword가 초성인지 체크하는 함수.
 	//초성이라면 true 리턴
