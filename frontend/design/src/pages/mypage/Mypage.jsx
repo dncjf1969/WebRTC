@@ -8,6 +8,7 @@ import { Container, Button } from "@material-ui/core";
 import EditIcon from "@material-ui/icons/Edit";
 import styled from "styled-components";
 import Box from "@mui/material/Box";
+import Gravatar from "react-gravatar";
 
 // component
 import MyTable from "./Mytable";
@@ -186,13 +187,15 @@ export default function MyPage() {
                 <Box gridColumn="span 5">
                   <Box display="grid" gridTemplateColumns="repeat(12, 1fr)" gap={2}>
                     <Box gridColumn="span 4">
-                      <img src="https://placeimg.com/150/230/animals/sepia" />
+                      {/* <img src="https://placeimg.com/150/230/animals/sepia" /> */}
+                      <Gravatar email={email} size={300} rating="pg" default="monsterid" style={{margin: '5px'}}className="CustomAvatar-image" />
                     </Box>
                     <Box gridColumn="span 8">
                       <Title>닉네임</Title>
                       <ContentContainer>
                         <h3>{nickname}</h3>
-                        {/* <Link to="/checkpassword">
+                        {/* 회원정보수정 버튼은 있지만, 회원정보수정 기능이 실행되지는 않음 */}
+                        <Link to="/checkpassword">
                           <CommonButton
                             variant="contained"
                             color="primary"
@@ -201,7 +204,7 @@ export default function MyPage() {
                           >
                             회원정보수정
                           </CommonButton>
-                        </Link> */}
+                        </Link>
                       </ContentContainer>
                       <br />
                       <Email>
