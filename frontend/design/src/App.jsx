@@ -11,6 +11,10 @@ import SignUp from "./pages/SignUp";
 import ResetPassword from "./pages/ResetPassword";
 import WaitingList from "./pages/WaitingList";
 import WaitingRoom from "./pages/WaitingRoom";
+import MyPage from "./pages/mypage/Mypage";
+import CheckPassword from './pages/CheckPassword';
+import ModifyUserInfo from './pages/ModifyUserInfo';
+
 function App() {
   const location = useLocation();
 
@@ -38,6 +42,10 @@ function App() {
         <Route path="/reset-password" element={<ResetPassword />} />
         <Route path="/waitinglist/:roomType" element={<WaitingList />} />
         <Route path="/waitingroom" element={<WaitingRoom />} />
+        <Route path="/mypage" element={<MyPage />} />
+        <Route path="/checkpassword" element={<CheckPassword/>} />
+        <Route path="/modifyuserinfo" element={<ModifyUserInfo/>} />
+
       </Routes>
     </>
   );
