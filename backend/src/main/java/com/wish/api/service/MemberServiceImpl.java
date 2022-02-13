@@ -75,7 +75,7 @@ public class MemberServiceImpl implements MemberService {
 	}
 	
 	@Override
-	public void loginMember(MemberLoginReq memberLoginInfo) {
+	public Member loginMember(MemberLoginReq memberLoginInfo) {
 
 		Optional<Member> temp_member = memberRepository.findById(memberLoginInfo.getId());
 		
@@ -84,6 +84,8 @@ public class MemberServiceImpl implements MemberService {
 		Member member = temp_member.get();
 		
 		if(!passwordEncoder.matches(memberLoginInfo.getPassword(), member.getPassword())) throw new LoginMemberException();
+		
+		return member;
 	}
 
 	@Override
