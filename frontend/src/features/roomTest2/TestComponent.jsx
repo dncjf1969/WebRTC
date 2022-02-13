@@ -420,7 +420,7 @@ class TestComponent extends Component {
           this.setState({ hostId: data.hostId });
           this.setState({ destroyedUserId: data.destroyedUserId })
           // 방장만 요청보내
-          if (this.state.session.connection.connectionId === event.data.hostId) {
+          if (this.state.session.connection.connectionId === data.hostId) {
             // 방장이 갱신되는 상황만 요청에 정보보내
             const nextManager = this.state.ishost ? '' : this.state.id
             this.setState({ ishost: true });
@@ -470,11 +470,25 @@ class TestComponent extends Component {
             let evalnum = this.state.evalnum + 1;
             // 모두평가완료했다면
             if (evalnum === this.state.viewers.length) {
+              if (this.state.viewers[0].connectionId === localUser.connectionId) { // 면접관중 한명만
+                axios.put('/question/past',{ "questionId": this.state.curQuesId})
+                .then(() => {
+                  console.log('선택질문 count요청보냄')
+                  axios.put('/question/relation',{ "childId": this.state.curQuesId, "parentId": this.state.preQuesId})
+                  .then(() => {
+                    console.log('연관질문 count요청보냄')
+                  })
+                  .catch((e) => console.log(e))
+                })
+                .catch((e) => console.log(e))
+              }
               this.setState({ evalnum: 0, evalWaiting: false });
+              this.setState({ preQuesId: this.state.curQuesId})
               this.nextViewee();
             } else {
               this.setState({ evalnum: evalnum });
             }
+            
           });
         });
 
@@ -482,6 +496,15 @@ class TestComponent extends Component {
         this.state.session.on('signal:choiceQues', (event) => {
           console.log(event.data)
           this.setState({chosenQues: event.data})
+        });
+        this.state.session.on('signal:choiceRecoQues', (event) => {
+          console.log(event.data)
+          const data = JSON.parse(event.data);
+          this.setState({
+            chosenQues: data.content,
+            curQuesId: data.id
+          })
+          
         });
 
         // 방장이 면접끝냄
@@ -1210,7 +1233,7 @@ class TestComponent extends Component {
                 questions={this.state.questions}
                 mainStreamManager={this.state.mainStreamManager}
                 handleChoiceQues={e => this.handleChoiceQues(e)}
-
+                preQuesId={this.state.preQuesId}
               />
 
               <EvaluationSheet 
@@ -1219,6 +1242,10 @@ class TestComponent extends Component {
                 session={this.state.session}
                 evalWaiting={this.state.evalWaiting}
                 chosenQues={this.state.chosenQues}
+                curQuesId={this.state.curQuesId}
+                preQuesId={this.state.preQuesId}
+                meetingId={this.state.meetingId}
+                mainStreamManager={this.state.mainStreamManager}
               />
             </div>
             

@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import axios from '../../../common/http-common'
 
 class RecommendationQues extends Component {
     constructor(props) {
@@ -6,11 +7,20 @@ class RecommendationQues extends Component {
         this.handleEnter = this.handleEnter.bind(this);
         this.handleDeleteBtn = this.handleDeleteBtn.bind(this);
         this.handleChoiceQues = this.handleChoiceQues.bind(this);
+        this.handleChoiceRecommenedQues = this.handleChoiceRecommenedQues.bind(this);
         this.state = {
-            question: undefined,
+            questions: [],
         };
     }
+    componentDidMount() {
+        axios.get(`/question?meetingroomId=${this.props.meetingId}&parentId=${this.props.preQuesId}`)
+        .then((res) => {
+            console.log(res)
+            this.setState({questions: res.data.questionList})
 
+        })
+        .catch((e) => console.log(e))
+    }
 
     handleEnter(event) {
         if (event.keyCode === 13 && !this.props.ready) {
@@ -47,9 +57,28 @@ class RecommendationQues extends Component {
     handleChoiceQues(question) {
         console.log(question)
         this.props.session.signal({
-            data: question,  // 보내는 내용
-            to: [],         // 누구한데 보낼건지. 비워있으면 모두에게 보내는거고, 만약 세션 아이디 적으면 그 세션한데만 보내진다.
-            type: 'choiceQues'   // 시그널 타입.
+            data: question,  
+            to: [],      
+            type: 'choiceQues'  
+        })
+        .then(() => {
+            console.log("choice Question!");
+        })
+        .catch(error => {
+            console.error(error);
+        });
+    }
+
+    handleChoiceRecommenedQues(question) {
+        console.log(question)
+        const context = {
+            'id' : question.id,
+            'content' : question.content
+        }
+        this.props.session.signal({
+            data: JSON.stringify(context),  
+            to: [],         
+            type: 'choiceRecoQues'   
         })
         .then(() => {
             console.log("choice Question!");
@@ -113,12 +142,16 @@ class RecommendationQues extends Component {
                 <div>{this.props.mainStreamManager.nickname}</div>
                 <div>
                     <div>추천질문1</div>
-                    <div>추천질문2</div>
-                    <div>추천질문3</div> 
+                    {this.state.questions.map((question) =>
+                    <div id={question.id} key={question.id}>
+                        {question.content}
+                        <button onClick={e => this.handleChoiceRecommenedQues(question)}>선택</button>
+                    </div>
+                    )}
                     <div>
                         {questions.map((question) => 
                         <div id={question.questionId} key={question.questionId}>
-                            {question.userName} : {question.content}
+                            {question.content}
                             <button onClick={e => this.handleChoiceQues(question.content)}>선택</button>
                         </div>
                         )}

@@ -41,10 +41,6 @@ class TestQuesList extends Component {
     let temp = document.getElementById("input1").value;
     document.getElementById("input1").value = "";
     console.log(temp);
-    const context = {
-      "content": temp,
-      "meetingroomId": this.props.waitingId
-    }
     this.props.session
       .signal({
         data: JSON.stringify({
@@ -60,10 +56,6 @@ class TestQuesList extends Component {
       .catch((error) => {
         console.error(error);
       });
-    // axios
-    // axios.post('/question/custom', context)
-    // .then((res) => console.log('DB에 질문 등록함'))
-    // .catch((e) => console.log(e))
   }
 
   handleEnter(event) {
@@ -85,10 +77,6 @@ class TestQuesList extends Component {
       .catch((error) => {
         console.error(error);
       });
-    //axios
-    // axios.delete(`/question/custom?id=${}`)
-    // .then((res) => console.log('DB에 질문 등록함'))
-    // .catch((e) => console.log(e))
   }
 
   render() {
