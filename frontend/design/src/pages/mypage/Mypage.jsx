@@ -189,22 +189,13 @@ export default function MyPage() {
                   <Box display="grid" gridTemplateColumns="repeat(12, 1fr)" gap={2}>
                     <Box gridColumn="span 4">
                       {/* <img src="https://placeimg.com/150/230/animals/sepia" /> */}
-<<<<<<< HEAD
-                      {/* <Gravatar email={email} size={300} rating="pg" default="monsterid" style={{margin: '5px'}}className="CustomAvatar-image" /> */}
-                      <Gravatar email='blahblah@blah.com' size={150} rating="pg" default="monsterid" className="CustomAvatar-image" />
-                      
-=======
                       <Gravatar email={email} size={300} rating="pg" default="monsterid" style={{margin: '5px'}}className="CustomAvatar-image" />
->>>>>>> frontend
                     </Box>
                     <Box gridColumn="span 8">
                       <Title>닉네임</Title>
                       <ContentContainer>
                         <h3>{nickname}</h3>
-<<<<<<< HEAD
-=======
                         {/* 회원정보수정 버튼은 있지만, 회원정보수정 기능이 실행되지는 않음 */}
->>>>>>> frontend
                         <Link to="/checkpassword">
                           <CommonButton
                             variant="contained"
