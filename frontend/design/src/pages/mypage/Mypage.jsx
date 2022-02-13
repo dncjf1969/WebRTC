@@ -192,7 +192,7 @@ export default function MyPage() {
                       <Title>닉네임</Title>
                       <ContentContainer>
                         <h3>{nickname}</h3>
-                        {/* <Link to="/checkpassword">
+                        <Link to="/checkpassword">
                           <CommonButton
                             variant="contained"
                             color="primary"
@@ -201,7 +201,7 @@ export default function MyPage() {
                           >
                             회원정보수정
                           </CommonButton>
-                        </Link> */}
+                        </Link>
                       </ContentContainer>
                       <br />
                       <Email>

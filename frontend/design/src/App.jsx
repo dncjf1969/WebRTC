@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { Routes, Route, useLocation } from "react-router-dom";
+import { Routes, Route, useLocation, Navigate } from "react-router-dom";
 
 import "./css/style.scss";
 
@@ -14,6 +14,7 @@ import Room from "./pages/roomTest2/room";
 import MyPage from "./pages/mypage/Mypage";
 // import CheckPassword from './pages/CheckPassword';
 import ModifyUserInfo from './pages/ModifyUserInfo';
+import NotFound from './pages/Page404';
 
 function App() {
   const location = useLocation();
@@ -45,6 +46,8 @@ function App() {
         <Route path="/mypage" element={<MyPage />} />
         {/* <Route path="/checkpassword" element={<CheckPassword/>} /> */}
         <Route path="/modifyuserinfo" element={<ModifyUserInfo/>} />
+        <Route path= '/404' element= {<NotFound/>} />
+        <Route path= '*' element= {<Navigate to="/404" replace />}/>
 
       </Routes>
     </>

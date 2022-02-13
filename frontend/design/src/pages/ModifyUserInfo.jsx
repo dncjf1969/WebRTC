@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+// import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { toast } from 'react-toastify';
@@ -76,7 +76,7 @@ export default function ModifyUserInfo() {
   const [isValidInputNickname, setIsValidInputNickname] = useState(false);
   const errRef = useRef(null);
   const classes = useStyles();
-  const dispatch = useDispatch();
+  // const dispatch = useDispatch();
   const navigate = useNavigate();
 
   useEffect(() => {

@@ -29,7 +29,6 @@ const Transition = forwardRef(function Transition(props, ref) {
 
 export default function DraggableDialog({nickname}) {
   const [open, setOpen] = useState(false);
-
   const navigate = useNavigate();
 
   const handleClickOpen = () => {
@@ -53,6 +52,8 @@ export default function DraggableDialog({nickname}) {
       .catch((error) => {
         console.log(error)
         toast.error('😥 회원탈퇴 중 문제가 발생하였습니다');
+        deleteToken();
+        navigate.push('/mypage');
       })
     };
 
