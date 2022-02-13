@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import axios from '../../../common/http-common'
 
 class EvaluationSheet extends Component {
     constructor(props) {
@@ -14,26 +15,36 @@ class EvaluationSheet extends Component {
 
     
     handleNextBtn(event) {
-      let rate = document.getElementById("rate").value;
-      let comment = document.getElementById("comment").value;
-      document.getElementById("rate").value = "";
-      document.getElementById("comment").value = "";
-      // 이부분에서 axios요청 보냄 //
+        let rate = document.getElementById("rate").value;
+        let comment = document.getElementById("comment").value;
+        document.getElementById("rate").value = "";
+        document.getElementById("comment").value = "";
+        // 이부분에서 axios요청 보냄 //
 
-      // const viewers = this.props.viewers.map((viewer) => viewer.streamManager.stream.connection)
-      
-      // 면접관들에게 평가했다고 알림
-      this.props.session.signal({
-              data: '',  
-              to: [],
-              type: 'next'
-            })
-            .then(() => {
-                console.log('평가완료')
-            })
-            .catch(error => {
-              console.error(error);
-            });
+        axios.post('/feedback',{ 
+            "comment": comment,
+            "meetingId": this.props.meetingId,
+            "memberId": this.props.mainStreamManager.id,
+            "question": this.props.chosenQues,
+            "rate": rate
+        })
+        .then(()=> console.log('평가 서버로 보냈음'))
+        .catch((e) => console.log(e))
+
+        // const viewers = this.props.viewers.map((viewer) => viewer.streamManager.stream.connection)
+        
+        // 면접관들에게 평가했다고 알림
+        this.props.session.signal({
+                data: '',  
+                to: [],
+                type: 'next'
+                })
+                .then(() => {
+                    console.log('평가완료')
+                })
+                .catch(error => {
+                console.error(error);
+                });
     }
 
     handleEnter(event) {

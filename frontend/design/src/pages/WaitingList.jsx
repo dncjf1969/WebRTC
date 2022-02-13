@@ -36,11 +36,10 @@ export function WaitingListSearch() {
         },
       })
       .then((res) => {
-        console.log(res.data.list);
-        console.log(typeof search);
-        console.log(word);
-        // console.log(typeof res.data.list);
         setRooms(res.data.list);
+      })
+      .then(() => {
+        // 검색결과 확인을 위한 콘솔창
         console.log("룸 검색 결과", rooms);
       })
       .catch((err) => {

@@ -65,12 +65,13 @@ function WaitingRoomModal({ modalClose }) {
     console.log(data);
 
     // console.log("아이디 버튼 활성화", ID);
+    // 여기는 대기방생성모달로 지금 axios요청 보냄
     await axios
       .post(`/room/waiting`, data)
       .then((res) => {
         console.log(res);
-        const roomId = res.data.roomId;
-        window.localStorage.setItem("roomId", roomId);
+        const token = res.data.token;
+        window.localStorage.setItem("token", token);
         navigate("/roomtest2");
         return res.data;
       })

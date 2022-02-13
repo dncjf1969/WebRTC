@@ -1,3 +1,11 @@
-#me {
-  margin: 10ex;
+.userbox {
+  margin: 4%;
+  display: flex;
+  justify-content: flex-start;
+  column-gap: 6%;
+}
+
+#myBox {
+  flex-direction: column;
+  justify-content: space-evenly;
 }
