@@ -39,7 +39,6 @@ class TestUserList extends Component {
 
   
   informStart = (async (roomId) => {
-    console.log(this.props.roo)
     await axios
     .get(`/room/meeting/start?roomId=${roomId}`)
       .then((res) => {
@@ -51,14 +50,17 @@ class TestUserList extends Component {
       });
   });
 
+
+
   start() {
     const check = (value) => value.ready;
     if (this.props.subscribers.every(check) && this.props.ready) {
       console.log("모두레디함 스타트");
+      
+
       // 서버에 시작했다는 사실 알려주기 나중에 대기방아이디 받아서
       // const roomId = this.props.waitingId
       // const meetingId = this.informStart(roomId)
-      
 
       this.props.session
         .signal({

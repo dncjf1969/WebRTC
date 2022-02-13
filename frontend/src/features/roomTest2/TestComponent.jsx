@@ -1203,8 +1203,8 @@ class TestComponent extends Component {
                 session={this.state.session}
                 questions={this.state.questions}
                 mainStreamManager={this.state.mainStreamManager}
-                setState={this.setState}
                 handleChoiceQues={e => this.handleChoiceQues(e)}
+
               />
 
               <EvaluationSheet 
@@ -1234,13 +1234,16 @@ class TestComponent extends Component {
                     ishost={this.state.ishost}
                     hostId={this.state.hostId}
                     allReady={this.state.allReady}
+                    questions={this.state.questions}
                     // roomId={this.state.waitingId}
+                    // meetingroomId={this.state.meetingId}
                   />
                   <TestQuesList 
                     session={this.state.session} 
                     questions={this.state.questions}
                     ready={this.state.readyState}
                     localUser={localUser}
+                    waitingId={this.state.waitingId}
                   />
                 </>
                 
