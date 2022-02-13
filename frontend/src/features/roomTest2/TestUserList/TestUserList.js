@@ -4,6 +4,7 @@ import imgB from "./testImages/muzi.PNG";
 import imgC from "./testImages/neo.PNG";
 import imgD from "./testImages/prodo.PNG";
 import "./TestUserList.css";
+import { Container } from "@material-ui/core";
 
 class TestUserList extends Component {
   constructor(props) {
@@ -64,11 +65,11 @@ class TestUserList extends Component {
     // const myNickName = temp.clientData
     return (
       <div>
-        <div>
+        <div className="grid grid-cols-4 gap-4">
           {/* 나 */}
-          <div id="me">
-            <div id="seat0"> 내 자리 </div>
-            <div id="name0">
+          <div id="myBox">
+            <div id="mySeat"> 내 자리 </div>
+            <div id="myName">
               {" "}
               {this.props.myUserName} {this.props.ishost ? "방장" : null}{" "}
             </div>

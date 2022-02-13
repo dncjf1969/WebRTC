@@ -18,6 +18,8 @@ import WaitingListCard from "./WaitingListCard";
 export function WaitingListSearch() {
   const [rooms, setRooms] = useState([]);
   const [word, setWord] = useState(""); // submit시에 바뀔 변수
+  const [search, setSearch] = useState(-1);
+  // const [] state의 기본값 -1
 
   let { roomType } = useParams();
   roomType = parseInt(roomType);
@@ -29,12 +31,14 @@ export function WaitingListSearch() {
       .get(`/room/waiting/${roomType}`, {
         params: {
           keyword: word,
-          searchType: -1,
+          searchType: search,
           roomType: roomType,
         },
       })
       .then((res) => {
         console.log(res.data.list);
+        console.log(typeof search);
+        console.log(word);
         // console.log(typeof res.data.list);
         setRooms(res.data.list);
         console.log("룸 검색 결과", rooms);
@@ -43,6 +47,11 @@ export function WaitingListSearch() {
         return err;
       });
   };
+  // 맨 처음에는 -1로 해서 전체 반환
+  // 이름으로 검색하면 searchType 1로 전달
+  // 아이디로 검색하면 searchType 0로 전달
+  // 버튼 만들어서 컨트롤
+
   // 처음 목록 들어갔을 때, 모든 리스트 보여주기
   useEffect(() => {
     getRooms();
@@ -50,16 +59,26 @@ export function WaitingListSearch() {
 
   const onChange = (e) => {
     setWord(e.target.value);
+    console.log(word);
   };
   const handleSubmit = (e) => {
     e.preventDefault();
     if (word === "") {
       return;
     }
+    console.log(word);
+
     getRooms();
     setWord("");
   };
-
+  const onClick = (e) => {
+    // console.log(e.target.textContent);
+    if (e.target.textContext === "방ID") {
+      setSearch(0);
+    } else {
+      setSearch(1);
+    }
+  };
   return (
     <>
       <section className="relative">
@@ -121,6 +140,23 @@ export function WaitingListSearch() {
                     width: 800,
                   }}
                 >
+                  <IconButton
+                    type="submit"
+                    sx={{ p: "10px" }}
+                    aria-label="search"
+                    onClick={onClick}
+                  >
+                    방ID
+                  </IconButton>
+                  <IconButton
+                    type="submit"
+                    sx={{ p: "10px" }}
+                    aria-label="search"
+                    onClick={onClick}
+                  >
+                    제목
+                  </IconButton>
+
                   <InputBase
                     onChange={onChange}
                     sx={{ ml: 1, flex: 1 }}
@@ -129,6 +165,7 @@ export function WaitingListSearch() {
                     value={word}
                   />
                   <Divider sx={{ height: 28, m: 0.5 }} orientation="vertical" />
+
                   <IconButton
                     type="submit"
                     sx={{ p: "10px" }}

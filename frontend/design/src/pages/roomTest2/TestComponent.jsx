@@ -16,6 +16,7 @@ import TestCharacter from "./Testcharacter/Testcharacter";
 import TestUserList from "./TestUserList/TestUserList";
 import TestQuesList from "./TestQuesList/TestQuesList";
 import EvaluationSheet from "./evaluationSheet/evaluationSheet";
+import RecommendationQues from "./recommendationQues/recommendationQues"
 
 // 채팅, 사전채팅 토글 
 import BottomNavigationAction from '@mui/material/BottomNavigationAction';
@@ -149,7 +150,7 @@ class TestComponent extends Component {
       evalWaiting: false,
       // 면접관이 평가완료 누를때마다 다음 면접자로 넘어가기위해 설정한 면접자idx
       vieweeIdx: 0,
-            chosenQues: '',
+      chosenQues: '',
 
       // 사전질문이랑 채팅 토글 
       value: 0,
@@ -177,7 +178,9 @@ class TestComponent extends Component {
     this.checkSize = this.checkSize.bind(this);
     this.updateHost = this.updateHost.bind(this);
     this.setValue = this.setValue.bind(this);
-    
+    this.handleChoiceQues = this.handleChoiceQues.bind(this);
+    this.handleFinish = this.handleFinish.bind(this);
+    this.initialize = this.initialize.bind(this)
   }
 
   componentDidMount() {
@@ -457,8 +460,29 @@ class TestComponent extends Component {
             }
           });
         });
-      }
-    );
+
+        // 면접관이 고른 질문 공유
+        this.state.session.on('signal:choiceQues', (event) => {
+          console.log(event.data)
+          this.setState({chosenQues: event.data})
+        });
+
+        // 방장이 면접끝냄
+        this.state.session.on('signal:finish', (event) => {
+          // alert('면접이 끝났습니다.')
+          const isViewer = this.state.viewerState
+          console.log(this.props.test)
+          this.initialize()
+          this.props.navigate('/')
+
+          console.log(this.state.isStart)
+          console.log(this.state.subscribers)
+          if (isViewer === true) { // 방장이면 대기방으로 돌아가
+              // 여기서 피드백 받는 axios 요청 
+          
+          }
+        });
+      });
   }
 
   nextViewee() {
@@ -677,20 +701,7 @@ class TestComponent extends Component {
     this.setState({
       session: undefined,
       subscribers: [],
-      mySessionId: "SessionA",
-      tempNamelist: [
-        "이정정",
-        "우처리",
-        "young남",
-        "조소히",
-        "hyuna55",
-        "동준은쌈디",
-        "나는우철",
-        "용남",
-        "소힝",
-        "현아입니다",
-      ],
-      myUserName: this.tempNamelist[Math.floor(Math.random() * 10)],
+      mySessionId: undefined,
       localUser: undefined,
     });
     if (this.props.leaveSession) {
@@ -855,6 +866,44 @@ class TestComponent extends Component {
     }
   }
 
+  initialize() {
+    this.setState({
+      mainStreamManager: undefined,
+      readyState: false,
+      viewerState: undefined,
+      // DB저장용 게임 ID 
+      gameId: undefined,
+      isFliped: true,
+      chatDisplay: "none",
+      questions: [],
+      isStart: false,
+      allReady: false,
+      allUsers: [],
+      viewers: [],
+      viewees: [],
+      // 면접관이 질문당 평가하고 이벤트 보낼때 몇명이 평가했는지 보기위해
+      evalnum: 0,
+      // 다른 면접관이 모두 평가하길 기다리는 상태
+      evalWaiting: false,
+      // 면접관이 평가완료 누를때마다 다음 면접자로 넘어가기위해 설정한 면접자idx
+      vieweeIdx: 0,
+      chosenQues: '',
+    })
+    // 다른 유저들정보 초기화
+    const temp = this.state.subscribers
+    temp.forEach((element) => {
+      element.setReady(false)
+      element.setViewer(null)
+    });
+    this.remotes = temp
+    this.setState({subscribers: this.remotes})
+    localUser.setReady(false)
+    localUser.setViewer(null)
+    // this.setState({subscribers: init})
+
+    console.log(this.state.subscribers)
+  }
+  
   async switchCamera() {
     try {
       const devices = await this.OV.getDevices();
@@ -1028,8 +1077,29 @@ class TestComponent extends Component {
     }
   }
 
-  // ----------------------------------------------------------------------
+  handleChoiceQues(question) {
+    console.log(question)
+    setTimeout(() => {
+      this.setState({chosenQues: question})
+      console.log('핸들초이스퀘스에서 바꾼 스테이트: ', this.state.chosenQues)
+    }, 20);
+    // this.props(this.setState({chosenQues: event.target.value}))
+  }
 
+  handleFinish() {
+    console.log(this.state.allUsers.map((user) => user.streamManager.stream.connection))
+    this.state.session
+      .signal({
+        data: '',
+        to: [],
+        type: 'finish',
+      })
+      .then(() => {
+        console.log('면접 끝')
+        console.log(this.state.session)
+    })
+      .catch((error) => {});
+  }
   render() {
     const mySessionId = this.state.mySessionId;
     const localUser = this.state.localUser;
@@ -1094,12 +1164,24 @@ class TestComponent extends Component {
             </div>
           )}
           {this.state.isStart && localUser.viewer && (
-            <EvaluationSheet
-              viewers={this.state.viewers}
-              viewee={this.state.mainStreamManager}
-              session={this.state.session}
-              evalWaiting={this.state.evalWaiting}
-            />
+            <div>
+              <RecommendationQues
+                session={this.state.session}
+                questions={this.state.questions}
+                mainStreamManager={this.state.mainStreamManager}
+                setState={this.setState}
+                handleChoiceQues={e => this.handleChoiceQues(e)}
+              />
+
+              <EvaluationSheet 
+                viewers={this.state.viewers}
+                viewee={this.state.mainStreamManager}
+                session={this.state.session}
+                evalWaiting={this.state.evalWaiting}
+                chosenQues={this.state.chosenQues}
+              />
+            </div>
+            
           )}
             </>
           ) : (
@@ -1107,17 +1189,26 @@ class TestComponent extends Component {
               {/* 유저 리스트 */}
             <Container>
               {this.state.isStart ? null : (
-                <TestUserList
-                  session={this.state.session}
-                  subscribers={this.state.subscribers}
-                  myUserName={this.state.myUserName}
-                  ready={this.state.readyState}
-                  viewer={this.state.viewerState}
-                  localUser={localUser}
-                  ishost={this.state.ishost}
-                  hostId={this.state.hostId}
-                  allReady={this.state.allReady}
-                />
+                <>
+                  <TestUserList
+                    session={this.state.session}
+                    subscribers={this.state.subscribers}
+                    myUserName={this.state.myUserName}
+                    ready={this.state.readyState}
+                    viewer={this.state.viewerState}
+                    localUser={localUser}
+                    ishost={this.state.ishost}
+                    hostId={this.state.hostId}
+                    allReady={this.state.allReady}
+                  />
+                  <TestQuesList 
+                    session={this.state.session} 
+                    questions={this.state.questions}
+                    ready={this.state.readyState}
+                    localUser={localUser}
+                  />
+                </>
+                
               )}
               {this.state.isStart ? <h1>START</h1> : null}
             </Container>
@@ -1176,6 +1267,9 @@ class TestComponent extends Component {
           
           </RootStyle>
           {this.state.isStart ? <h1>START</h1> : null}
+          {this.state.isStart && this.state.ishost && 
+            <button onClick={this.handleFinish}>면접끝내기</button>
+          }
           {/* 여기까지가 대기방 */}
 
 

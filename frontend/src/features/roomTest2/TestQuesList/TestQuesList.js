@@ -1,5 +1,8 @@
 import React, { Component } from "react";
-
+import { Tooltip, SnackbarContent } from "@material-ui/core";
+import ChatOutlinedIcon from "@mui/icons-material/ChatOutlined";
+import Fab from "@material-ui/core/Fab";
+import "./ChatComponent.css";
 class TestQuesList extends Component {
   constructor(props) {
     super(props);
@@ -9,33 +12,6 @@ class TestQuesList extends Component {
     this.handleDeleteBtn = this.handleDeleteBtn.bind(this);
     this.state = {};
   }
-
-  // readyTest(){
-  // 	//signal을 보낸다.
-  // 	//이 signal을 받는 것은 200번째줄부터
-  //     console.log(this.props);
-  // 	this.props.session.signal({
-  // 		data: 'hello',  // 보내는 내용
-  // 		to: [],         // 누구한데 보낼건지. 비워있으면 모두에게 보내는거고, 만약 세션 아이디 적으면 그 세션한데만 보내진다.
-  // 		type: 'readyTest'   // 시그널 타입.
-  // 	})
-  // 	.then(() => {
-  //         if(this.state.isReady === true){
-  //             this.state.isReady = false;
-  //             console.log("레디 해제.")
-  //             document.getElementById("ready0").innerHTML = "준비 중.."
-
-  //         }
-  //         else{
-  //             this.state.isReady = true;
-  //             console.log('레디.');
-  //             document.getElementById("ready0").innerHTML = "준비 완료!"
-  //         }
-  // 	})
-  // 	.catch(error => {
-  // 		console.error(error);
-  // 	});
-  // }
 
   makeQues() {
     let temp = document.getElementById("input1").value;
@@ -80,36 +56,15 @@ class TestQuesList extends Component {
   }
 
   render() {
-    const tempStyle = {
-      display: "inline-block",
-      width: "400px",
-      height: "400px",
-      marginLeft: "50px",
-    };
-
     const tempStyle2 = {
       display: "inline-block",
-      width: "800px",
+      width: "300px",
       height: "100px",
       marginLeft: "200px",
       backgroundColor: "white",
       border: "1px solid black",
       marginLeft: "250px",
       marginTop: "50px",
-    };
-    const tempStyle3 = {
-      display: "inline-block",
-      width: "500px",
-      height: "100px",
-      marginLeft: "200px",
-      backgroundColor: "white",
-      border: "1px solid black",
-    };
-
-    const tempStyle4 = {
-      float: "left",
-      width: "100px",
-      height: "100px",
     };
 
     const tempStyle5 = {
@@ -123,38 +78,74 @@ class TestQuesList extends Component {
       marginLeft: "10px",
     };
 
-    const tempStyle7 = {
-      fontSize: "30pt",
-    };
-
     return (
-      <div style={tempStyle2}>
-        <div style={tempStyle5}>사전질문</div>
-        <input
-          onKeyDown={this.handleEnter}
-          id="input1"
-          style={tempStyle6}
-        ></input>
-        <button
-          onClick={this.makeQues}
-          disabled={this.props.ready ? true : false}
-        >
-          질문 추가
-        </button>
-        {this.props.questions.map((question) => (
-          <div id={question.questionId} key={question.questionId}>
-            {question.userName}: {question.content}
-            {question.connectionId === this.props.localUser.connectionId ? (
-              <button
-                disabled={this.props.ready ? true : false}
-                onClick={this.handleDeleteBtn}
-              >
-                X
-              </button>
-            ) : null}
+      <div id="chatContainer">
+        <div id="chatComponent">
+          <div id="navInput">
+            <div className="message-wrap" ref={this.chatScroll}>
+              {this.props.questions.map((question, i) => (
+                <p>{question.context}</p>
+                // <div key={i} id={question.questionId}>
+                //   <div className="msg-detail">
+                //     <div className="msg-info">
+                //       <p> {question.userName}</p>
+                //     </div>
+                //     <div className="msg-content">
+                //       <span className="triangle" />
+                //       <p className="text">{question.content}</p>
+                //     </div>
+                //   </div>
+                // </div>
+              ))}
+            </div>
           </div>
-        ))}
+
+          <div id="messageInput">
+            <input
+              placeholder="질문을 추가해주세요"
+              id="input1"
+              onKeyDown={this.handleEnter}
+            />
+            <Tooltip title="보내기">
+              <Fab
+                size="small"
+                id="sendButton"
+                onClick={this.makeQues}
+                disabled={this.props.ready ? true : false}
+              >
+                <ChatOutlinedIcon sx={{ color: "white" }} />
+              </Fab>
+            </Tooltip>
+          </div>
+        </div>
       </div>
+      // <div style={tempStyle2}>
+      //   <div style={tempStyle5}>사전질문</div>
+      //   <input
+      //     onKeyDown={this.handleEnter}
+      //     id="input1"
+      //     style={tempStyle6}
+      //   ></input>
+      //   <button
+      //     onClick={this.makeQues}
+      //     disabled={this.props.ready ? true : false}
+      //   >
+      //     질문 추가
+      //   </button>
+      //   {this.props.questions.map((question) => (
+      //     <div id={question.questionId} key={question.questionId}>
+      //       {question.userName}: {question.content}
+      //       {question.connectionId === this.props.localUser.connectionId ? (
+      //         <button
+      //           disabled={this.props.ready ? true : false}
+      //           onClick={this.handleDeleteBtn}
+      //         >
+      //           X
+      //         </button>
+      //       ) : null}
+      //     </div>
+      //   ))}
+      // </div>
     );
   }
 }
