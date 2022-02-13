@@ -1,8 +1,8 @@
 // basic
 import React, { useState, forwardRef } from 'react';
-import { useDispatch } from 'react-redux';
+
 import { useNavigate } from 'react-router-dom';
-import { createAsyncThunk } from '@reduxjs/toolkit';
+
 import axios from '../../common/http-common';
 
 // material ui
@@ -26,24 +26,10 @@ const Transition = forwardRef(function Transition(props, ref) {
   return <Zoom in ref={ref} {...props} />;
 });
 
-// 회원탈퇴
-const deleteUser = createAsyncThunk(
-  'DELETE_USER',
-  async (arg, { rejectWithValue }) => {
-    try {
-      const response = await axios.delete('/members');
-      return response;
-    } catch (err) {
-      return rejectWithValue(err.response);
-    }
-  }
-);
 
 export default function DraggableDialog({nickname}) {
   const [open, setOpen] = useState(false);
-  // const { nickname } = useSelector((state) => state.auth.user);
 
-  const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const handleClickOpen = () => {
@@ -54,31 +40,21 @@ export default function DraggableDialog({nickname}) {
     setOpen(false);
   };
 
+
+
   const doDeleteUser = () => {
     handleClose();
-    dispatch(deleteUser())
-      .unwrap()
+      axios.delete(`/members`)
       .then(() => {
         toast.success('😥 회원탈퇴가 완료 되었습니다');
         deleteToken();
         navigate.push('/login');
       })
-      .catch((err) => {
-        if (err.status === 401) {
-          toast.error('😥 로그인을 다시 해주세요!');
-          deleteToken();
-          navigate.push('/login');
-        } else if (err.status === 404) {
-          toast.error('😥 회원정보가 존재하지 않습니다');
-          deleteToken();
-          navigate.push('/login');
-        } else if (err.status === 400) {
-          toast.error('😥 다시 한 번 시도해주세요');
-        } else if (err.status === 500) {
-          navigate.push('/error');
-        }
-      });
-  };
+      .catch((error) => {
+        console.log(error)
+        toast.error('😥 회원탈퇴 중 문제가 발생하였습니다');
+      })
+    };
 
   return (
     <div>

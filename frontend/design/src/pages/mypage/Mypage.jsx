@@ -262,7 +262,7 @@ export default function MyPage() {
           
 
           <Footer>
-            {/* <DeleteModal nickname={nickname} /> */}
+            <DeleteModal nickname={nickname} />
           </Footer>
 
         </main>

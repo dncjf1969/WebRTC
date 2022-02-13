@@ -60,6 +60,20 @@ function CheckPassword() {
   const classes = useStyles();
   const navigate = useNavigate();
 
+
+
+
+  const doDeleteUser = () => {
+    handleClose();
+      axios.delete(`/members`)
+      .then(() => {
+        toast.success('😥 회원탈퇴가 완료 되었습니다');
+        deleteToken();
+        navigate.push('/login');
+      })
+      .catch((error) => console.log(error)
+      )};
+
   // function
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -77,7 +91,6 @@ function CheckPassword() {
         }
       })
       .catch((err) => {
-        if (err.status === 400) {
           toast.error('😥 비밀번호를 다시 입력해주세요');
         } else if (err.status === 401) {
           toast.error('😥 로그인을 다시 해주세요!');
