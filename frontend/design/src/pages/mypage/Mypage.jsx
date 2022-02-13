@@ -2,6 +2,7 @@
 import axios from "../../common/http-common";
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import Gravatar from "react-gravatar";
 
 // style
 import { Container, Button } from "@material-ui/core";
@@ -260,14 +261,12 @@ export default function MyPage() {
                   />
                 </Box>
               </Box>
+              <Footer>
+                <DeleteModal nickname={nickname} />
+              </Footer>
             </Wrapper>
+    
           </div>
-          
-
-          <Footer>
-            <DeleteModal nickname={nickname} />
-          </Footer>
-
         </main>
         <br />
       </div>
