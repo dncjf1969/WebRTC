@@ -29,4 +29,6 @@ public class Member{
     
     Date signUpDate;
     
+    int characterNumber;
+    
 }

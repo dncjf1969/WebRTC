@@ -80,12 +80,12 @@ public class MemberController {
         @ApiResponse(code = 404, message = "사용자 없음"),
         @ApiResponse(code = 500, message = "서버 오류")
     })
-	public ResponseEntity<? extends BaseRes> login(
+	public ResponseEntity<MemberLoginRes> login(
 			@RequestBody @ApiParam(value="로그인 정보", required = true) MemberLoginReq loginInfo) {
 		
-		memberService.loginMember(loginInfo);
+		Member member = memberService.loginMember(loginInfo);
 		
-		return ResponseEntity.ok(MemberLoginRes.of(200, "Success", JwtUtil.createJwt(loginInfo.getId())));
+		return ResponseEntity.ok(MemberLoginRes.of(200, "Success", JwtUtil.createJwt(loginInfo.getId()), member));
 	}
 
 	@PutMapping

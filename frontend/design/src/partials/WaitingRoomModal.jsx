@@ -72,7 +72,7 @@ function WaitingRoomModal({ modalClose }) {
         console.log(res);
         const token = res.data.token;
         window.localStorage.setItem("token", token);
-        navigate("/roomtest2");
+        navigate("/waitingroom");
         return res.data;
       })
       .catch((err) => {

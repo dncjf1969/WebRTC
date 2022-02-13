@@ -41,6 +41,7 @@ export function WaitingListSearch() {
       .then(() => {
         // 검색결과 확인을 위한 콘솔창
         console.log("룸 검색 결과", rooms);
+        console.log("id검색 결과", search);
       })
       .catch((err) => {
         return err;
@@ -70,8 +71,9 @@ export function WaitingListSearch() {
     getRooms();
     setWord("");
   };
+  // select 태그로 바꿔서 보내기
   const onClick = (e) => {
-    // console.log(e.target.textContent);
+    console.log(e.target.textContent);
     if (e.target.textContext === "방ID") {
       setSearch(0);
     } else {

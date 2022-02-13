@@ -20,4 +20,6 @@ public class MemberUpdateReq {
 	
 	@ApiModelProperty(name="이메일", example="hong123@gmail.com")
 	String email;
+	
+	int characterNumber;
 }

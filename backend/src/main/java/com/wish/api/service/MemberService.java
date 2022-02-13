@@ -9,7 +9,7 @@ import com.wish.db.entity.Member;
 public interface MemberService {
 	
 	void signupMember(MemberSignupReq memberSignupInfo);
-	void loginMember(MemberLoginReq memberLoginInfo);
+	Member loginMember(MemberLoginReq memberLoginInfo);
 
 	void updateMember(MemberUpdateReq memberUpdateInfo);
 	void deleteMember(String memberDeleteId);
