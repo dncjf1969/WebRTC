@@ -1133,6 +1133,12 @@ class TestComponent extends Component {
         console.log(this.state.session)
     })
       .catch((error) => {});
+    // axios
+    if (this.state.ishost) {
+      myAxios.get(`/room/meeting/finish?meetingId=${this.state.meetingId}&roomId=${this.state.waitingId}`)
+      .then((res) => console.log('면접끝 서버로 요청보냄'))
+      .catch((e) => console.log(e))
+    }
   }
   render() {
     const mySessionId = this.state.mySessionId;

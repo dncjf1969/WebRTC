@@ -66,7 +66,7 @@ class TestUserList extends Component {
         .signal({
           data: Date.now(),
           //나중에 바꾸기
-          // data: waitingId,
+          // data: meetingId,
           to: [],
           type: "start",
         })
