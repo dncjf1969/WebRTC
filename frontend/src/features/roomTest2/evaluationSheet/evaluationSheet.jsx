@@ -20,13 +20,6 @@ class EvaluationSheet extends Component {
         document.getElementById("rate").value = "";
         document.getElementById("comment").value = "";
         // 이부분에서 axios요청 보냄 //
-        axios.put('/question/past',{ "questionId": this.props.curQuesId})
-        .then(()=> console.log('선택질문 count요청보냄'))
-        .catch((e) => console.log(e))
-
-        axios.put('/question/relation',{ "childId": this.props.curQuesId, "parentId": this.props.preQuesId})
-        .then(()=> console.log('연관질문 count요청보냄'))
-        .catch((e) => console.log(e))
 
         axios.post('/feedback',{ 
             "comment": comment,
@@ -35,7 +28,7 @@ class EvaluationSheet extends Component {
             "question": this.props.chosenQues,
             "rate": rate
         })
-        .then(()=> console.log('연관질문 count요청보냄'))
+        .then(()=> console.log('평가 서버로 보냈음'))
         .catch((e) => console.log(e))
 
         // const viewers = this.props.viewers.map((viewer) => viewer.streamManager.stream.connection)
