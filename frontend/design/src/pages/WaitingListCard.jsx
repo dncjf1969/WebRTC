@@ -2,14 +2,14 @@ function WaitingListCard({ key, roomId, name, job, memberMax }) {
   console.log("들어옴");
   return (
     <div
-      className="pt-3 pb-3 px-4 flex flex-col items-center p-6 "
+      className="pt-3 pb-3  px-4 flex flex-col items-center  "
       data-aos="zoom-y-out"
       data-aos-delay="350"
     >
       <div className="pt-5 pb-5 max-w-6xl px-4 sm:px-6 ">
         {/* <WaitingListItem /> */}
 
-        <div class="bg-gray-100 rounded  shadow-xl rounded">
+        <div class="bg-gray-100 rounded w-48 shadow-xl rounded">
           <div class="max-w-xs rounded-md overflow-hidden shadow-lg hover:scale-105 transition duration-500 cursor-pointer card">
             <div>
               <img

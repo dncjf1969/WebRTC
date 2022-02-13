@@ -5,15 +5,15 @@ import InputBase from "@mui/material/InputBase";
 import Divider from "@mui/material/Divider";
 import IconButton from "@mui/material/IconButton";
 import SearchIcon from "@mui/icons-material/Search";
-import AutorenewIcon from "@mui/icons-material/Autorenew";
-import Button from "@mui/material/Button";
 // Gri
-import { useNavigate, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import "./WaitingList.css";
 // // 방만들기 dialog
 
 import axios from "../common/http-common";
 import WaitingListCard from "./WaitingListCard";
+import { Card, CardActionArea, CardMedia, Grid } from "@mui/material";
+import styled, { keyframes } from "styled-components";
 
 export function WaitingListSearch() {
   const [rooms, setRooms] = useState([]);
@@ -116,14 +116,11 @@ export function WaitingListSearch() {
 
         <div className="flex flex-col min-h-screen overflow-hidden">
           <Header mb-5 />
-          <div
-            className="relative max-w-6xl mx-auto px-4 sm:px-6 "
-            data-aos="zoom-y-out"
-          >
+          <div className="   sm:px-6 " data-aos="zoom-y-out">
             <div className="py-12 md:py-10">
               {/* Section header */}
               <div
-                className="max-w-3xl py-20 mx-auto text-center pb-12 md:pb-20 font-extrabold leading-tighter text-5xl tracking-tighter"
+                className="max-w-5xl py-20 mx-auto text-center pb-12 md:pb-20 font-extrabold leading-tighter text-5xl"
                 data-aos="zoom-y-out"
               >
                 {/* 방제목 */}
@@ -136,9 +133,12 @@ export function WaitingListSearch() {
                   component="form"
                   sx={{
                     p: "2px 4px",
+                    width: "80%",
+                    marginTop: "3%",
+                    marginLeft: "10%",
                     display: "flex",
-                    alignItems: "center",
-                    width: 800,
+                    // alignItems: "center",
+                    // width: 800,
                   }}
                 >
                   <IconButton
@@ -176,19 +176,87 @@ export function WaitingListSearch() {
                   </IconButton>
                 </Paper>
                 {/* 방 목록 카드*/}
-                <div>
-                  {rooms.map((room) => (
-                    <WaitingListCard
-                      key={room.roomId}
-                      roomId={room.roomId}
-                      name={room.name}
-                      job={room.job}
-                    />
+                <Container>
+                  <ProductList>
+                    <Grid
+                      container
+                      margin={0}
+                      display={"flex"}
+                      justifyContent={"center"}
+                    >
+                      {rooms.map((room, idx) => (
+                        // <li key={idx}>{d.groupNo}</li>
+                        <Grid
+                          item
+                          key={idx}
+                          sx={{ marginLeft: 2, marginRight: 2 }}
+                        >
+                          <Alarm>
+                            <Box>New</Box>
+                          </Alarm>
+                          <CardActionArea>
+                            <Card
+                              sx={{
+                                width: 200,
+                                height: 200,
+                                display: "flex",
+                                justifyContent: "center",
+                                alignItems: "center",
+                                backgroundColor: "whitesmoke",
+                                transition: "all .25s linear",
+                              }}
+                            >
+                              <CardMedia
+                                component="img"
+                                height="auto"
+                                width="100px"
+                                image="img/Hoodie.png"
+                                alt="Product Image"
+                              />
+                            </Card>
+                          </CardActionArea>
+                          <CardDetail>
+                            <CategoryName>{room.name}</CategoryName>
+                            <ProductName>{room.job}</ProductName>
+                            {/* <Price>{makeComma(d.price)}원</Price> */}
+                            <PriceDetail>공동구매가</PriceDetail>
+                            {/* <MaxPeople>80/{d.maxPeople}명</MaxPeople>
+                <DeadLine>마감 {d.deadline}일 전</DeadLine> */}
+                          </CardDetail>
+                        </Grid>
+                      ))}
+                    </Grid>
+                  </ProductList>
+                </Container>
+                {/* <Grid
+                  container
+                  display={"flex"}
+                  justifyContent={"center"}
+                  rowSpacing={1}
+                >
+                  {rooms.map((room, index) => (
+                    <Grid
+                      item
+                      xs={2}
+                      sx={{ marginLeft: 2, marginRight: 2 }}
+                      key={index}
+                    >
+                      <WaitingListCard
+                        sx={{
+                          width: 200,
+                          height: 200,
+                          display: "flex",
+                          justifyContent: "center",
+                          // alignItems: "center",
+                        }}
+                        key={room.roomId}
+                        roomId={room.roomId}
+                        name={room.name}
+                        job={room.job}
+                      />
+                    </Grid>
                   ))}
-                  {rooms.map(function (room, idx) {
-                    return <li key={idx}>{room.name}</li>;
-                  })}
-                </div>
+                </Grid> */}
               </div>
             </div>
           </div>
@@ -197,5 +265,134 @@ export function WaitingListSearch() {
     </>
   );
 }
+const CardImg = styled(CardMedia)``;
 
+const animation = keyframes`
+0% {
+  opacity: 1;
+}
+10% {
+  opacity: 0.9;
+}
+20% {
+  opacity: 0.8;
+}
+30% {
+  opacity: 0.7;
+}
+40% {
+  opacity: 0.6;
+}
+50% {
+  opacity: 0.5;
+}
+60% {
+  opacity: 0.4;
+}
+70% {
+  opacity: 0.3;
+}
+80% {
+  opacity: 0.2;
+}
+90% {
+  opacity: 0.1;
+}
+100% {
+  opacity: 0;
+}
+`;
+
+const Box = styled.div`
+  height: 20px;
+  width: 50px;
+  background-color: tomato;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 5px;
+  animation: ${animation} 2s infinite;
+  margin-bottom: 5px;
+`;
+
+const Alarm = styled.span`
+  display: flex;
+  justify-content: left;
+  font-size: 10px;
+  font-weight: bold;
+  color: white;
+`;
+
+const TextKOR = styled.h1`
+  font-size: 16px;
+  font-weight: bold;
+  color: grey;
+  text-align: center;
+  margin-top: 3px;
+`;
+
+const TextENG = styled.h1`
+  font-size: 20px;
+  font-weight: bold;
+  text-align: center;
+`;
+
+const Title = styled.div`
+  display: flex;
+  justify-content: center;
+  width: 60%;
+  margin-top: 20px;
+`;
+
+const MaxPeople = styled.p``;
+
+const DeadLine = styled.p``;
+
+const PriceDetail = styled.p`
+  font-size: 8px;
+  color: grey;
+`;
+
+const ProductName = styled.p`
+  font-size: 12px;
+  font-weight: bold;
+  margin-bottom: 10px;
+`;
+
+const Price = styled.p`
+  font-size: 15px;
+  font-weight: bold;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+  padding-bottom: 3px;
+`;
+
+const CategoryName = styled.p`
+  font-size: 10px;
+  font-weight: bold;
+  color: grey;
+  padding-bottom: 5px;
+`;
+
+const CardDetail = styled.div`
+  justify-content: left;
+  margin-top: 5px;
+`;
+
+const Container = styled.div`
+  display: flex;
+  /* height: 100vh; */
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  flex-flow: wrap;
+  row-gap: 20px;
+  margin-bottom: 50px;
+`;
+
+const ProductList = styled.div`
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+`;
 export default WaitingListSearch;
