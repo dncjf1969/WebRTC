@@ -174,9 +174,25 @@ public class MemberServiceImpl implements MemberService {
         mailcontent.append("<head>");
         mailcontent.append("</head>");
         mailcontent.append("<body>");
-        mailcontent.append("hello!!<br> <b>WISH</b> 입니다.<br> 임시 비밀번호는 : <b>");
+        mailcontent.append("<div>");
+        mailcontent.append("<div>");
+        mailcontent.append("<img src=\"https://github.com/yesfordev/homedong/blob/develop/frontend/public/favicon.png?raw=true\">");
+        mailcontent.append("<div style=\"background-color:rgb(243, 248, 251); width: 800px; float: left;\">");
+        mailcontent.append("<div style=\"margin: 7px; padding: 10px; font-family: Trebuchet MS;\">");
+        mailcontent.append("<p> 안녕하세요. WISH입니다.</p>");
+        mailcontent.append("<p> 오늘도 WISH를 찾아주셔서 감사합니다.</p>");
+        mailcontent.append("<p> 당신의 임시 비밀번호는 <b style=\"font-size: 14pt;\">");
         mailcontent.append(randomPW);
-        mailcontent.append("</b><br></body>");
+        mailcontent.append("</b> 입니다.</p>");
+        mailcontent.append("<p> 위의 비밀번호로 로그인 후, 비밀번호를 수정하여 주세요.</p>");
+        mailcontent.append("<p> 당신의 취업이 성공하는 그날까지 WISH</p>");
+        mailcontent.append("<img src=\"https://github.com/yesfordev/homedong/blob/develop/frontend/public/favicon.png?raw=true\" style=\"opacity: 30%; float: right; width: 40%;\">");
+        mailcontent.append("</div>");
+        mailcontent.append(" <p style=\"font-size: 3pt; margin-top: 60px; margin-left: 17px;\"> Copyright © WISH All Rights Reserved </p>");
+        mailcontent.append("</div>");
+        mailcontent.append("</div>");
+        mailcontent.append("</div>");
+        mailcontent.append("</body>");
         mailcontent.append("</html>");
 		
 		//메일 보내기
