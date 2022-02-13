@@ -28,7 +28,7 @@ export default function Bar (props)  {
 
     return (
       <span className="bar">
-        <Chart options={options} series={series} type="bar" width="300" />
+        <Chart options={options} series={series} type="bar" width="350" />
       </span>
     );
   

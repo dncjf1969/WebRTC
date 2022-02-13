@@ -15,7 +15,7 @@ export default function Donut (props) {
 
     return (
       <span className="donut">
-        <Chart options={options} series={series} type="donut" width="300" />
+        <Chart options={options} series={series} type="donut" width="350" />
       </span>
     );
   

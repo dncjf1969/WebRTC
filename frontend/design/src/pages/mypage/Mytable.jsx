@@ -15,7 +15,7 @@ export default function MyTable({Personality, Job, Debate, PT}) {
 
   const useStyles = makeStyles({
     table: {
-      minWidth: 700,
+      minWidth: 500,
       minHeight: 200,
     },
     container: {
@@ -34,10 +34,10 @@ export default function MyTable({Personality, Job, Debate, PT}) {
   const classes = useStyles();
   const rows = [
     createData('면접 횟수', 
-    <h1>{Personality}</h1>, 
-    <h1>{Job}</h1>,
-    <h1>{Debate}</h1>,
-    <h1>{PT}</h1>,
+    <h1><b>{Personality}</b></h1>, 
+    <h1><b>{Job}</b></h1>,
+    <h1><b>{Debate}</b></h1>,
+    <h1><b>{PT}</b></h1>,
     ),
     // createData('Best Member', 0, 0, 0),
   ];

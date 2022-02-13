@@ -6,29 +6,42 @@ import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemText from "@mui/material/ListItemText";
 import { useState } from "react";
+import styled from "styled-components";
 
 const Style = {
   position: "absolute",
   top: "50%",
   left: "50%",
   transform: "translate(-50%, -50%)",
-  width: 400,
+  width: 800,
   height: 400,
   bgcolor: "background.paper",
-  border: "2px solid #000",
+  border: "3px solid #000",
   boxShadow: 24,
   pt: 2,
   px: 4,
   pb: 3,
 };
 
+const Title = styled.div`
+  display: flex;
+  justify-content: center;
+  margin-bottom: 5px;
+  margin-top: 10px;
+  font-weight: bold;
+  font-size: 1.5rem;
+  border-bottom: 5px solid rgba(251, 209, 75, 0.5);
+`;
+
 function ChildModal({ MeetingInfo, info }) {
   const [modalInfo, setModalInfo] = React.useState();
+  const [modalInfo2, setModalInfo2] = React.useState();
   const [open, setOpen] = React.useState(false);
 
   const handleOpen = (e, _item) => {
     setOpen(true);
     setModalInfo(_item.comment);
+    setModalInfo2(_item.rate);
   };
   const handleClose = () => {
     setOpen(false);
@@ -50,9 +63,13 @@ function ChildModal({ MeetingInfo, info }) {
         aria-labelledby="child-modal-title"
         aria-describedby="child-modal-description"
       >
-        <Box sx={{ ...Style, width: 200 }}>
-          <h2 id="child-modal-title">{modalInfo}</h2>
-          <Button onClick={handleClose}>Close Child Modal</Button>
+        <Box sx={{ ...Style, width: 300, height:300 }}>
+          <Title>피드백 내용</Title>
+          <br />
+          <h2 id="child-modal-title">comment : {modalInfo}</h2>
+          <h2 id="child-modal-title">rate : {modalInfo2}점</h2>
+          <br />
+          <Button onClick={handleClose}>Close</Button>
         </Box>
       </Modal>
     </React.Fragment>
@@ -100,14 +117,13 @@ export default function NestedModal({ MeetingInfo }) {
         aria-labelledby="child-modal-title"
         aria-describedby="child-modal-description"
       >
-        <Box sx={{ ...Style, width: 200 }}>
-          <h2 id="child-modal-title">[면접 피드백이당]</h2>
+        <Box sx={{ ...Style, width: 500, height:400 }}>
           <div id="child-modal-description">
-            <text>받은 질문 리스트</text>
+            <Title>받은 질문 리스트</Title>
           </div>
           <br />
 
-          <ChildModal MeetingInfo={MeetingInfo} info={childInfo} />
+          <div><ChildModal MeetingInfo={MeetingInfo} info={childInfo} /></div>
           <Button onClick={handleClose}>Close</Button>
         </Box>
       </Modal>

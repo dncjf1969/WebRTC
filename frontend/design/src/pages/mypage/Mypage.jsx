@@ -15,21 +15,25 @@ import DeleteModal from "./DeleteModal";
 import Donut from "./chart/donutchart";
 import Bar from "./chart/barchart";
 import InterviewList from "./interviewList";
+import Header from "../../partials/Header";
+import HeroMypage from '../../partials/HeroMypage';
 
 // 전체 컨테이너
-const Wrapper = styled(Container)`
-  display: flex;
-  padding: 100px 0px 0px 0px;
-  height: auto;
-  marginTop:"3%",
-  marginLeft:"3%",
-  marginRight:"3%",
+const Wrapper = styled.div`
+  border: 5px  solid teal;
+  border-radius: 2em;
 `;
 
-// 메인
-const Main = styled.main`
-  width: 70%;
-`;
+
+ // 중간 컨테이너
+ const Style = styled.div`
+ border-bottom: 5px solid rgba(251, 209, 75, 0.5),
+`
+
+const Style2 = {
+  margin: 10,
+  padding: 40,
+}
 
 // 제목
 const Title = styled.div`
@@ -40,6 +44,8 @@ const Title = styled.div`
   font-size: 1.5rem;
   border-bottom: 5px solid rgba(251, 209, 75, 0.5);
 `;
+
+
 
 // 내용
 const Content = styled.span`
@@ -104,6 +110,7 @@ export default function MyPage() {
   const [meetingInfo, setMeetingInfo] = useState([]);
   const [meetingInfo2, setMeetingInfo2] = useState([]);
 
+
   // 유저 정보
   async function myInfo(userInfo1) {
     try {
@@ -161,84 +168,98 @@ export default function MyPage() {
   }, []);
 
   return (
-    <>
-      <Wrapper>
-        <Message>오늘도 즐거운 면접 연습!!!!!!😀</Message>
-        <main>
-          <Box display="grid" gridTemplateColumns="repeat(12, 1fr)" gap={2}>
-            <Box gridColumn="span 5">
-              <Box display="grid" gridTemplateColumns="repeat(12, 1fr)" gap={2}>
-                <Box gridColumn="span 4">
-                  <img src="https://placeimg.com/150/230/animals/sepia" />
-                </Box>
-                <Box gridColumn="span 8">
-                  <Title>닉네임</Title>
-                  <ContentContainer>
-                    <h4>{nickname}</h4>
-                    <Link to="/checkpassword">
-                      <CommonButton
-                        variant="contained"
-                        color="primary"
-                        size="small"
-                        startIcon={<EditIcon />}
-                      >
-                        회원정보수정
-                      </CommonButton>
-                    </Link>
-                  </ContentContainer>
-                  <Email>
-                    <Title>이메일: </Title>
-                    <div>
-                      <h4>{email}</h4>
-                    </div>
-                  </Email>
-                </Box>
-              </Box>
-            </Box>
+    <div>
+      {/*  Site header */}
+      <Header />
+      <div className="flex flex-col min-h-screen overflow-hidden">
 
-            <Box gridColumn="span 7">
-              <Record>
-                <Title getMoreMB>내 기록</Title>
-                <MyTable
-                  Personality={Personality}
-                  Job={Job}
-                  Debate={Debate}
-                  PT={PT}
-                />
-              </Record>
-            </Box>
+        {/*  Page content */}
+        <main className="flex-grow">
 
-            <Box gridColumn="span 9">
-              <Title>그래프</Title>
-              
-              <Box display="grid" gridTemplateColumns="repeat(12, 1fr)" gap={2}>
-                <Box gridColumn="span 6">
-                  <Bar
-                    Personality={Personality}
-                    Job={Job}
-                    Debate={Debate}
-                    PT={PT}
+          {/*  Page sections */}
+          <HeroMypage />
+
+          
+          <div className="max-w-7xl mx-auto px-4 sm:px-6" >
+            <Wrapper>
+              <Box style={Style2} display="grid" gridTemplateColumns="repeat(12, 1fr)" gap={2}>
+                <Box gridColumn="span 5">
+                  <Box display="grid" gridTemplateColumns="repeat(12, 1fr)" gap={2}>
+                    <Box gridColumn="span 4">
+                      <img src="https://placeimg.com/150/230/animals/sepia" />
+                    </Box>
+                    <Box gridColumn="span 8">
+                      <Title>닉네임</Title>
+                      <ContentContainer>
+                        <h3>{nickname}</h3>
+                        {/* <Link to="/checkpassword">
+                          <CommonButton
+                            variant="contained"
+                            color="primary"
+                            size="small"
+                            startIcon={<EditIcon />}
+                          >
+                            회원정보수정
+                          </CommonButton>
+                        </Link> */}
+                      </ContentContainer>
+                      <br />
+                      <Email>
+                        <Title>이메일: </Title>
+                        <div>
+                          <h3>{email}</h3>
+                        </div>
+                      </Email>
+                    </Box>
+                  </Box>
+                </Box>
+
+                <Box gridColumn="span 7">
+                  <Record>
+                    <Title>내 기록</Title>
+                    <MyTable
+                      Personality={Personality}
+                      Job={Job}
+                      Debate={Debate}
+                      PT={PT}
+                    />
+                  </Record>
+                </Box>
+                      
+                <Box gridColumn="span 9">
+                  <Title>그래프</Title>
+                  
+                  <Box display="grid" gridTemplateColumns="repeat(12, 1fr)" gap={2}>
+                    <Box gridColumn="span 6">
+                      <Bar
+                        Personality={Personality}
+                        Job={Job}
+                        Debate={Debate}
+                        PT={PT}
+                      />
+                    </Box>
+                    <Box gridColumn="span 6">
+                      <Donut
+                        Personality={Personality}
+                        Job={Job}
+                        Debate={Debate}
+                        PT={PT}
+                      />
+                    </Box>
+                  </Box>
+                </Box>
+
+                <Box gridColumn="span 3">
+                  <Title>면접 피드백 (방제목)</Title>
+                  <InterviewList
+                    MeetingInfo={meetingInfo}
+                    MeetingInfo2={meetingInfo2}
                   />
                 </Box>
-                <Box gridColumn="span 6">
-                  <Donut
-                    Personality={Personality}
-                    Job={Job}
-                    Debate={Debate}
-                    PT={PT}
-                  />
-                </Box>
               </Box>
-            </Box>
-
-            <Box gridColumn="span 3">
-              <Title>면접 피드백 (방제목)</Title>
-              <InterviewList
-                MeetingInfo={meetingInfo}
-                MeetingInfo2={meetingInfo2}
-              />
-            </Box>
-          </Box>
+            </Wrapper>
+          </div>
+          
 
           <Footer>
             <DeleteModal nickname={nickname} />
@@ -246,8 +267,7 @@ export default function MyPage() {
 
         </main>
         <br />
-        <br />
-      </Wrapper>
-    </>
+      </div>
+    </div>
   );
 }
