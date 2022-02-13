@@ -62,6 +62,7 @@ public class MemberServiceImpl implements MemberService {
 			member.setName(memberSignupInfo.getName());
 			member.setEmail(memberSignupInfo.getEmail());
 			member.setSignUpDate(member.getSignUpDate());
+			member.setCharacterNumber(memberSignupInfo.getCharacterNumber());
 			
 			//role 테이블에 회원 아이디와 권한 추가.
 			roleService.createRole(memberSignupInfo.getId(), "BASIC");
@@ -100,6 +101,7 @@ public class MemberServiceImpl implements MemberService {
 			member.setPassword(passwordEncoder.encode(memberUpdateInfo.getPassword()));
 			member.setName(memberUpdateInfo.getName());
 			member.setEmail(memberUpdateInfo.getEmail());
+			member.setCharacterNumber(memberUpdateInfo.getCharacterNumber());
 
 			memberRepository.save(member);
 			
@@ -119,6 +121,9 @@ public class MemberServiceImpl implements MemberService {
 		try {
 			Member delete_member = temp_member.get();
 			memberRepository.delete(delete_member);
+			
+			roleService.deleteRole(delete_member.getId(), "BASIC");
+			
 		} catch ( DeleteMemberException e) {
 			e.printStackTrace();
 		}
