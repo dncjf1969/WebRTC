@@ -68,7 +68,7 @@ class TestComponent extends Component {
     // this.OPENVIDU_SERVER_URL = this.props.openviduServerUrl
     //   ? this.props.openviduServerUrl
     //   : "https://" + "i6e201.p.ssafy.io" + ":4443";
-    this.OPENVIDU_SERVER_URL = "https://i6e201.p.ssafy.io";
+    this.OPENVIDU_SERVER_URL = "https://i6e201.p.ssafy.io:1443";
     this.OPENVIDU_SERVER_SECRET = this.props.openviduSecret
       ? this.props.openviduSecret
       : "WISH";
