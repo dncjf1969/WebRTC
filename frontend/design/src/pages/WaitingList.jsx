@@ -12,7 +12,14 @@ import "./WaitingList.css";
 
 import axios from "../common/http-common";
 import WaitingListCard from "./WaitingListCard";
-import { Card, CardActionArea, CardMedia, Grid } from "@mui/material";
+import {
+  Card,
+  CardActionArea,
+  CardMedia,
+  Grid,
+  MenuItem,
+  Select,
+} from "@mui/material";
 import styled, { keyframes } from "styled-components";
 
 export function WaitingListSearch() {
@@ -72,13 +79,9 @@ export function WaitingListSearch() {
     setWord("");
   };
   // select 태그로 바꿔서 보내기
-  const onClick = (e) => {
-    console.log(e.target.textContent);
-    if (e.target.textContext === "방ID") {
-      setSearch(0);
-    } else {
-      setSearch(1);
-    }
+  const onClickSelect = (e) => {
+    setSearch(e.target.value);
+    console.log(search);
   };
   return (
     <>
@@ -137,26 +140,23 @@ export function WaitingListSearch() {
                     marginTop: "3%",
                     marginLeft: "10%",
                     display: "flex",
+                    justifyContent: "center",
                     // alignItems: "center",
                     // width: 800,
                   }}
                 >
-                  <IconButton
-                    type="submit"
-                    sx={{ p: "10px" }}
-                    aria-label="search"
-                    onClick={onClick}
+                  <select
+                    id="country"
+                    name="country"
+                    autoComplete="country-name"
+                    onChange={onClickSelect}
+                    value={search}
+                    className="mt-1 block text-gray-600 w-32 py-2 px-3 border cursor-pointer bg-white focus:outline-none focus:ring-indigo-500 border-none sm:text-sm"
                   >
-                    방ID
-                  </IconButton>
-                  <IconButton
-                    type="submit"
-                    sx={{ p: "10px" }}
-                    aria-label="search"
-                    onClick={onClick}
-                  >
-                    제목
-                  </IconButton>
+                    <option value={-1}>통합검색</option>
+                    <option value={0}>방ID</option>
+                    <option value={1}>방제목</option>
+                  </select>
 
                   <InputBase
                     onChange={onChange}
@@ -218,8 +218,12 @@ export function WaitingListSearch() {
                           <CardDetail>
                             <CategoryName>{room.name}</CategoryName>
                             <ProductName>{room.job}</ProductName>
+                            <ProductName>{room.manager}</ProductName>
                             {/* <Price>{makeComma(d.price)}원</Price> */}
-                            <PriceDetail>공동구매가</PriceDetail>
+                            <PriceDetail>
+                              {" "}
+                              {room.memberCount} / {room.memberMax}
+                            </PriceDetail>
                             {/* <MaxPeople>80/{d.maxPeople}명</MaxPeople>
                 <DeadLine>마감 {d.deadline}일 전</DeadLine> */}
                           </CardDetail>
@@ -228,35 +232,6 @@ export function WaitingListSearch() {
                     </Grid>
                   </ProductList>
                 </Container>
-                {/* <Grid
-                  container
-                  display={"flex"}
-                  justifyContent={"center"}
-                  rowSpacing={1}
-                >
-                  {rooms.map((room, index) => (
-                    <Grid
-                      item
-                      xs={2}
-                      sx={{ marginLeft: 2, marginRight: 2 }}
-                      key={index}
-                    >
-                      <WaitingListCard
-                        sx={{
-                          width: 200,
-                          height: 200,
-                          display: "flex",
-                          justifyContent: "center",
-                          // alignItems: "center",
-                        }}
-                        key={room.roomId}
-                        roomId={room.roomId}
-                        name={room.name}
-                        job={room.job}
-                      />
-                    </Grid>
-                  ))}
-                </Grid> */}
               </div>
             </div>
           </div>
@@ -311,8 +286,9 @@ const Box = styled.div`
   justify-content: center;
   align-items: center;
   border-radius: 5px;
-  animation: ${animation} 2s infinite;
+  animation: ${animation} 3s infinite;
   margin-bottom: 5px;
+  margin-top: 10px;
 `;
 
 const Alarm = styled.span`
