@@ -100,27 +100,60 @@ public class SearchUtil {
 			
 			//TODO
 			//kmp 알고리즘 사용해야하는 부분
-			int len = tempList1.size()-list1.size();
-			if(len<0) continue;
-				
-			for(int a=0; a<=tempList1.size()-list1.size(); a++) {
-				for(int b=0; b<list1.size(); b++) {
-					if(tempList1.get(a+b) == list1.get(b)) {
-						if(b== list1.size()-1) {
-							RoomSearchRes room = RoomSearchRes.of(now);				
-							res.add(room);
-						}
-					}
-					else {
-						break;
-					}
-				}
+			
+			if(kmpAlgo(tempList1 , list1)) {
+				RoomSearchRes room = RoomSearchRes.of(now);				
+				res.add(room);
 			}
+			
+//			int len = tempList1.size()-list1.size();
+//			if(len<0) continue;
+//				
+//			
+//			for(int a=0; a<=tempList1.size()-list1.size(); a++) {
+//				for(int b=0; b<list1.size(); b++) {
+//					if(tempList1.get(a+b) == list1.get(b)) {
+//						if(b== list1.size()-1) {
+//							RoomSearchRes room = RoomSearchRes.of(now);				
+//							res.add(room);
+//						}
+//					}
+//					else {
+//						break;
+//					}
+//				}
+//			}
 		}
 		
 		return res;
 	}
 	
+	public static boolean kmpAlgo(List<Integer> content, List<Integer> keyword) {
+		int keyword_len = keyword.size();
+		int b=0;
+		List<Integer> list1 = new ArrayList<Integer>();
+		for(int a=0; a<keyword_len; a++) list1.add(0);
+		
+		for(int a = 1; a< keyword_len ; a++){
+			while(b > 0 && keyword.get(a) != keyword.get(b)) b = list1.get(b-1); 
+			if(keyword.get(a) == keyword.get(b)) list1.set(a, ++b); 
+		}
+		
+		int content_len = content.size();
+		b =0; 
+		for(int a = 0 ; a < content_len ; a++){
+			while(b>0 && content.get(a) != keyword.get(b)) b = list1.get(b-1);
+			if( content.get(a) == keyword.get(b)){
+				if(b==keyword_len-1){
+					return true;
+				}else{
+					b++; 
+					} 
+				} 
+			}
+		
+		return false;
+	}
 	
 	//keyword가 초성인지 체크하는 함수.
 	//초성이라면 true 리턴

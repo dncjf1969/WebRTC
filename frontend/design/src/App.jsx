@@ -12,11 +12,21 @@ import ResetPassword from "./pages/ResetPassword";
 import WaitingList from "./pages/WaitingList";
 import Room from "./pages/roomTest2/room";
 import MyPage from "./pages/mypage/Mypage";
-import NotFound from './pages/Page404';
-
+import NotFound from "./pages/Page404";
+import { createTheme } from "@material-ui/core";
 function App() {
   const location = useLocation();
-
+  const theme = createTheme({
+    breakpoints: {
+      values: {
+        xs: 0,
+        sm: 400,
+        md: 900,
+        lg: 1200,
+        xl: 1536,
+      },
+    },
+  });
   useEffect(() => {
     AOS.init({
       once: true,
@@ -40,11 +50,10 @@ function App() {
         <Route path="/signup" element={<SignUp />} />
         <Route path="/reset-password" element={<ResetPassword />} />
         <Route path="/waitinglist/:roomType" element={<WaitingList />} />
-        <Route path="/waitingroom" element={<Room />} />
+        <Route path="/waitingroom" element={<Room theme={theme} />} />
         <Route path="/mypage" element={<MyPage />} />
-        <Route path= '/404' element= {<NotFound/>} />
-        <Route path= '*' element= {<Navigate to="/404" replace />}/>
-
+        <Route path="/404" element={<NotFound />} />
+        <Route path="*" element={<Navigate to="/404" replace />} />
       </Routes>
     </>
   );

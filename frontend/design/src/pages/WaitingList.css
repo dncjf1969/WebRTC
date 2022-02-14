@@ -19,3 +19,8 @@
   justify-content: space-around;
   align-content: space-around;
 }
+
+#selectbox {
+  border: none !important;
+  outline: none !important;
+}

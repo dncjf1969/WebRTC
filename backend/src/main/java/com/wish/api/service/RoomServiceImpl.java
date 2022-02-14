@@ -158,9 +158,9 @@ public class RoomServiceImpl implements RoomService{
 		Room room = getRoom(roomId);
 				
 		// 최대인원 확인
-		if(room.getMemberCount()< room.getMemberMax()) { throw new RoomMemberUnderMaxMemberCntException();}
+		if(room.getMemberCount() >= room.getMemberMax()) { throw new RoomMemberUnderMaxMemberCntException();}
 		// 비밀번호 일치여부 확인
-		if( room.getPassword().equals(password)) { throw new RoomPasswordIsNotCorrectException();}
+		if(!room.getPassword().equals(password)) { throw new RoomPasswordIsNotCorrectException();}
 		
 		
 		int nowMemberCnt = room.getMemberCount();
