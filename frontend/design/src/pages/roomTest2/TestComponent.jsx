@@ -2,6 +2,8 @@ import React, { Component } from "react";
 import axios from "axios";
 import myAxios from "../../common/http-common";
 
+//
+
 import "./TestComponent.css";
 import { OpenVidu } from "openvidu-browser";
 import StreamComponent from "./stream/StreamComponent";

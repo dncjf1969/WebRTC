@@ -9,9 +9,10 @@ import {
   CardContent,
   CardMedia,
   Grid,
+  Select,
   Typography,
 } from "@mui/material";
-import { borderRadius } from "@mui/system";
+import { borderRadius, display } from "@mui/system";
 
 class TestUserList extends Component {
   constructor(props) {
@@ -100,35 +101,59 @@ class TestUserList extends Component {
         <Grid container spacing={2}>
           {/* 나 */}
 
-          {/* <Grid item xs={3} id="me">
+          <Grid item xs={3} id="me">
             <Card
               sx={{
                 maxWidth: 345,
-                borderRadius: 16,
-                opacity:
+                borderRadius: 7,
+                display: "flex",
+                flexDirection: "column",
+                flexWrap: "wrap",
+                alignItems: "center",
+                justifyContent: "space-evenly",
+
+                // p: ,
               }}
             >
               <CardMedia
                 component="img"
                 height="140"
-                image="../../../images/logo.PNG"
+                image="/static/images/cards/contemplative-reptile.jpg"
                 alt="green iguana"
               />
               <CardContent>
                 <Typography gutterBottom variant="h5" component="div">
-                  Lizard
+                  {this.props.myUserName}
                 </Typography>
                 <Typography variant="body2" color="text.secondary">
-                  Lizards are a widespread group of squamate reptiles, with over
-                  6,000 species, ranging across all continents except Antarctica
+                  <select
+                    id="role"
+                    name="role"
+                    required
+                    disabled={this.props.ready ? true : false}
+                  >
+                    <option value="">선택안함</option>
+                    <option value="true">면접관</option>
+                    <option value="false">면접자</option>
+                  </select>
+
+                  {/* <Button size="small">면접관</Button>
+                  <Button size="small">면접자</Button> */}
                 </Typography>
               </CardContent>
               <CardActions>
-                <Button size="small">Share</Button>
-                <Button size="small">Learn More</Button>
+                <div id="ready0">
+                  {this.props.ready ? "준비 완료!!!" : "준비 중..."}
+                </div>
+                <Button onClick={this.readyTest} sx={{}} size="big">
+                  {this.props.ready ? "레디 해제" : "레디"}
+                </Button>
+
+                <p>{this.props.ishost ? "방장" : null}</p>
               </CardActions>
-            </Card> */}
-          <div>
+            </Card>
+          </Grid>
+          {/* <div >
             <Gravatar
               email="#"
               size={200}
@@ -157,9 +182,7 @@ class TestUserList extends Component {
             </select>
           </div>
 
-          <div id="ready0">
-            {this.props.ready ? "준비 완료!!!" : "준비 중..."}
-          </div>
+          
           <button onClick={this.readyTest}>
             {" "}
             {this.props.ready ? "레디 해제" : "레디"}
@@ -167,7 +190,7 @@ class TestUserList extends Component {
 
           {this.props.ishost && this.props.allReady ? (
             <button onClick={this.start}>start</button>
-          ) : null}
+          ) : null} */}
         </Grid>
         {/* 다른 유저들 */}
         <Grid item xs={8} id="others">
