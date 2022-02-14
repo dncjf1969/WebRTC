@@ -1226,28 +1226,44 @@ class TestComponent extends Component {
         >
           {this.state.isStart ? (
             <>
-              {this.state.isStart && (
-                <div id="video-container" className="video-container">
-                  {localUser !== undefined &&
-                    localUser.getStreamManager() !== undefined && (
-                      <div className="stream-container" id="localUser">
-                        <div>내캠</div>
-                        <StreamComponent
-                          user={localUser}
-                          handleNickname={this.nicknameChanged}
-                        />
-                      </div>
-                    )}
-                  {this.state.viewers.map((sub, i) => (
-                    <div key={i} className="stream-container" id="remoteUsers">
-                      <div>면접관</div>
-                      <StreamComponent
-                        user={sub}
-                        handleNickname={this.nicknameChanged}
-                      />
-                    </div>
-                  ))}
-                  {this.state.viewees.map((sub, i) => (
+            <Grid item xs={3}>
+              <div>
+                {this.state.viewers.map((sub, i) => (
+                  <div key={i} className="stream-container" id="remoteUsers">
+                    <div>면접관</div>
+                    <StreamComponent
+                      user={sub}
+                      handleNickname={this.nicknameChanged}
+                    />
+                  </div>
+                ))}
+              </div>
+
+              <div>
+                {this.state.isStart && localUser.viewer && (
+                  <EvaluationSheet
+                    viewers={this.state.viewers}
+                    viewee={this.state.mainStreamManager}
+                    session={this.state.session}
+                    evalWaiting={this.state.evalWaiting}
+                  />
+                )}
+              </div>
+
+            </Grid>
+            <Grid item xs={6}>
+              {localUser !== undefined &&
+                localUser.getStreamManager() !== undefined && (
+                  <div className="stream-container" id="localUser">
+                    <div>내캠</div>
+                    <StreamComponent
+                      user={localUser}
+                      handleNickname={this.nicknameChanged}
+                    />
+                  </div>
+              )}
+
+              {this.state.viewees.map((sub, i) => (
                     <div key={i} className="stream-container" id="remoteUsers">
                       <div>면접자</div>
                       <StreamComponent
@@ -1256,14 +1272,16 @@ class TestComponent extends Component {
                       />
                     </div>
                   ))}
+
                   {this.state.mainStreamManager && (
                     <div className="stream-container" id="remoteUsers">
                       <div>선택된화면</div>
                       <StreamComponent user={this.state.mainStreamManager} />
                     </div>
                   )}
-                </div>
-              )}
+            </Grid>
+            
+            <Grid item xs={3}>
               {this.state.isStart && localUser.viewer && (
                 <EvaluationSheet
                   viewers={this.state.viewers}
@@ -1272,7 +1290,15 @@ class TestComponent extends Component {
                   evalWaiting={this.state.evalWaiting}
                 />
               )}
+
+            </Grid>
+
+              
+
+
             </>
+
+
           ) : (
             <>
               {/* 유저 리스트 */}
@@ -1327,138 +1353,6 @@ class TestComponent extends Component {
         {this.state.isStart ? <h1>START</h1> : null}
         {/* 여기까지가 대기방 */}
       </div>
-      // <div className="justify-content-center">
-      //   <div
-      //     className="mx-auto border-2 border-gray-300 rounded-2xl mt-8 mb-30 h-4/6 w-5/6 py-6 flex flex-row"
-      //     title="waitingProfile"
-      //   >
-      //     {this.state.isStart ? (
-      //       <>
-      //         {this.state.isStart && (
-      //           <div id="video-container" className="video-container">
-      //             {localUser !== undefined &&
-      //               localUser.getStreamManager() !== undefined && (
-      //                 <div className="stream-container" id="localUser">
-      //                   <div>내캠</div>
-      //                   <StreamComponent
-      //                     user={localUser}
-      //                     handleNickname={this.nicknameChanged}
-      //                   />
-      //                 </div>
-      //               )}
-      //             {this.state.viewers.map((sub, i) => (
-      //               <div key={i} className="stream-container" id="remoteUsers">
-      //                 <div>면접관</div>
-      //                 <StreamComponent
-      //                   user={sub}
-      //                   handleNickname={this.nicknameChanged}
-      //                 />
-      //               </div>
-      //             ))}
-      //             {this.state.viewees.map((sub, i) => (
-      //               <div key={i} className="stream-container" id="remoteUsers">
-      //                 <div>면접자</div>
-      //                 <StreamComponent
-      //                   user={sub}
-      //                   handleNickname={this.nicknameChanged}
-      //                 />
-      //               </div>
-      //             ))}
-      //             {this.state.mainStreamManager && (
-      //               <div className="stream-container" id="remoteUsers">
-      //                 <div>선택된화면</div>
-      //                 <StreamComponent user={this.state.mainStreamManager} />
-      //               </div>
-      //             )}
-      //           </div>
-      //         )}
-      //         {this.state.isStart && localUser.viewer && (
-      //           <div>
-      //             <RecommendationQues
-      //               session={this.state.session}
-      //               questions={this.state.questions}
-      //               mainStreamManager={this.state.mainStreamManager}
-      //               handleChoiceQues={(e) => this.handleChoiceQues(e)}
-      //               preQuesId={this.state.preQuesId}
-      //             />
-
-      //             <EvaluationSheet
-      //               viewers={this.state.viewers}
-      //               viewee={this.state.mainStreamManager}
-      //               session={this.state.session}
-      //               evalWaiting={this.state.evalWaiting}
-      //               chosenQues={this.state.chosenQues}
-      //               curQuesId={this.state.curQuesId}
-      //               preQuesId={this.state.preQuesId}
-      //               meetingId={this.state.meetingId}
-      //               mainStreamManager={this.state.mainStreamManager}
-      //             />
-      //           </div>
-      //         )}
-      //       </>
-      //     ) : (
-      //       <div className="grid grid-cols-5">
-      //         {/* 유저 리스트 */}
-      //         <div className="col-span-3">
-      //           {this.state.isStart ? null : (
-      //             <>
-      //               <TestUserList
-      //                 session={this.state.session}
-      //                 subscribers={this.state.subscribers}
-      //                 myUserName={this.state.myUserName}
-      //                 ready={this.state.readyState}
-      //                 viewer={this.state.viewerState}
-      //                 localUser={localUser}
-      //                 ishost={this.state.ishost}
-      //                 hostId={this.state.hostId}
-      //                 allReady={this.state.allReady}
-      //                 questions={this.state.questions}
-      //                 // roomId={this.state.waitingId}
-      //                 // meetingroomId={this.state.meetingId}
-      //               />
-      //             </>
-      //           )}
-      //           {this.state.isStart ? <h1>START</h1> : null}
-      //         </div>
-      //         {/* 채팅 */}
-
-      //         <div className="col-span-2 ">
-      //           {localUser !== undefined &&
-      //             localUser.getStreamManager() !== undefined && (
-      //               <div
-      //                 className="grid grid-rows-2 gap-4"
-      //                 style={{
-      //                   chatDisplay,
-      //                 }}
-      //               >
-      //                 <TestQuesList
-      //                   // className="row-span-1"
-      //                   session={this.state.session}
-      //                   questions={this.state.questions}
-      //                   ready={this.state.readyState}
-      //                   localUser={localUser}
-      //                   waitingId={this.state.waitingId}
-      //                 />
-      //                 <ChatComponent
-      //                   // className="row-span-1"
-      //                   user={localUser}
-      //                   chatDisplay={this.state.chatDisplay}
-      //                   close={this.toggleChat}
-      //                   messageReceived={this.checkNotification}
-      //                   hidden={!this.state.hidden}
-      //                 />
-      //               </div>
-      //             )}
-      //         </div>
-      //       </div>
-      //     )}
-      //   </div>
-      //   {this.state.isStart ? <h1>START</h1> : null}
-      //   {this.state.isStart && this.state.ishost && (
-      //     <button onClick={this.handleFinish}>면접끝내기</button>
-      //   )}
-      //   {/* 여기까지가 대기방 */}
-      // </div>
     );
   }
 
