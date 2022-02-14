@@ -128,29 +128,26 @@ public class SearchUtil {
 		return res;
 	}
 	
-	public static boolean kmpAlgo(List<Integer> s, List<Integer> p) {
-		int m = p.size();
-		int j=0;
-		List<Integer> pi = new ArrayList<Integer>();
-		for(int a=0; a<m; a++) pi.add(0);
+	public static boolean kmpAlgo(List<Integer> content, List<Integer> keyword) {
+		int keyword_len = keyword.size();
+		int b=0;
+		List<Integer> list1 = new ArrayList<Integer>();
+		for(int a=0; a<keyword_len; a++) list1.add(0);
 		
-		for(int i = 1; i< m ; i++){
-			while(j > 0 && p.get(i) != p.get(j)) j = pi.get(j-1); 
-			if(p.get(i) == p.get(j)) pi.set(i, ++j); 
+		for(int a = 1; a< keyword_len ; a++){
+			while(b > 0 && keyword.get(a) != keyword.get(b)) b = list1.get(b-1); 
+			if(keyword.get(a) == keyword.get(b)) list1.set(a, ++b); 
 		}
 		
-		
-		System.out.println("pi 완성");
-		
-		int n = s.size();
-		j =0; 
-		for(int i = 0 ; i < n ; i++){
-			while(j>0 && s.get(i) != p.get(j)) j = pi.get(j-1);
-			if( s.get(i) == p.get(j)){
-				if(j==m-1){
+		int content_len = content.size();
+		b =0; 
+		for(int a = 0 ; a < content_len ; a++){
+			while(b>0 && content.get(a) != keyword.get(b)) b = list1.get(b-1);
+			if( content.get(a) == keyword.get(b)){
+				if(b==keyword_len-1){
 					return true;
 				}else{
-					j++; 
+					b++; 
 					} 
 				} 
 			}
