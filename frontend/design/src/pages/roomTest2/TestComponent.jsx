@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import axios from "axios";
 import myAxios from "../../common/http-common";
+import styled from "styled-components";
 
 import "./TestComponent.css";
 import { OpenVidu } from "openvidu-browser";
@@ -26,28 +27,32 @@ import RestoreIcon from '@mui/icons-material/Restore';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import ArchiveIcon from '@mui/icons-material/Archive';
 // material
-import { styled } from "@mui/material/styles";
+// import { styled } from "@mui/material/styles";
 import { Box, Card, Stack, Link, Container, Typography, BottomNavigation } from "@mui/material";
 import { bgcolor } from "@mui/system";
 import { deepPurple, teal } from '@mui/material/colors';
 import { blue } from "@material-ui/core/colors";
 // ----------------------------------------------------------------------
 
-const RootStyle = styled("div")(({ theme }) => ({
-  [theme.breakpoints.up("sm")]: {
-    display: "flex",
-    marginTop:'15px'
-  },
-}));
+const RootStyle = styled.div`
+  height: '800px',
+  weight:'600px',
+  margin: '10px',
+  marginTop: '10px',
+  padding: '10px',
+  borderRadius: 8,
+  backgroundColor: color,
+  boxShadow: '0 3px 5px 2px rgba(47, 138, 241, 0.5)'
+  `
 
-const SectionStyle = styled("div")(({ theme }) => ({
-  width: "100%",
-  // maxWidth: 464,
-  display: "flex",
-  flexDirection: "column",
-  justifyContent: "center",
-  margin: theme.spacing(0, 0, 0, 0),
-}));
+// const SectionStyle = styled("div")(({ theme }) => ({
+//   width: "100%",
+//   // maxWidth: 464,
+//   display: "flex",
+//   flexDirection: "column",
+//   justifyContent: "center",
+//   margin: theme.spacing(0, 0, 0, 0),
+// }));
 // ----------------------------------------------------------------------
 
 var localUser = new UserModel();
@@ -59,7 +64,7 @@ class TestComponent extends Component {
     // this.OPENVIDU_SERVER_URL = this.props.openviduServerUrl
     //   ? this.props.openviduServerUrl
     //   : "https://" + "i6e201.p.ssafy.io" + ":4443";
-    this.OPENVIDU_SERVER_URL = "https://i6e201.p.ssafy.io";
+    this.OPENVIDU_SERVER_URL = "https://i6e201.p.ssafy.io:1443";
     this.OPENVIDU_SERVER_SECRET = this.props.openviduSecret
       ? this.props.openviduSecret
       : "WISH";
@@ -1170,173 +1175,213 @@ class TestComponent extends Component {
     let chatDisplay = { display: this.state.chatDisplay };
 
     return (
-      <div style={{
-        marginTop:"2%",
-        marginLeft:"1%",
-        marginRight:"1%",
-        }}>
-          <RootStyle
-            title="waitingProfile"
-            sx={{
-              height: '600px',
-              margin: '10px',
-              marginTop: '10px',
-              padding: '10px',
-              borderRadius: 8,
-              backgroundColor: color,
-              boxShadow: '0 3px 5px 2px rgba(47, 138, 241, 0.5)'
-          }}>
-          {this.state.isStart ? (
-            <>
-                      {this.state.isStart && (
-            <div id="video-container" className="video-container">
-              {localUser !== undefined &&
-                localUser.getStreamManager() !== undefined && (
-                  <div className="stream-container" id="localUser">
-                    <div>내캠</div>
-                    <StreamComponent
-                      user={localUser}
-                      handleNickname={this.nicknameChanged}
-                    />
-                  </div>
-                )}
-              {this.state.viewers.map((sub, i) => (
-                <div key={i} className="stream-container" id="remoteUsers">
-                  <div>면접관</div>
-                  <StreamComponent
-                    user={sub}
-                    handleNickname={this.nicknameChanged}
-                  />
-                </div>
-              ))}
-              {this.state.viewees.map((sub, i) => (
-                <div key={i} className="stream-container" id="remoteUsers">
-                  <div>면접자</div>
-                  <StreamComponent
-                    user={sub}
-                    handleNickname={this.nicknameChanged}
-                  />
-                </div>
-              ))}
-              {this.state.mainStreamManager && (
-                <div className="stream-container" id="remoteUsers">
-                  <div>선택된화면</div>
-                  <StreamComponent user={this.state.mainStreamManager} />
-                </div>
-              )}
-            </div>
-          )}
-          {this.state.isStart && localUser.viewer && (
-            <div>
-              <RecommendationQues
-                session={this.state.session}
-                questions={this.state.questions}
-                mainStreamManager={this.state.mainStreamManager}
-                handleChoiceQues={e => this.handleChoiceQues(e)}
-                preQuesId={this.state.preQuesId}
-              />
-
-              <EvaluationSheet 
-                viewers={this.state.viewers}
-                viewee={this.state.mainStreamManager}
-                session={this.state.session}
-                evalWaiting={this.state.evalWaiting}
-                chosenQues={this.state.chosenQues}
-                curQuesId={this.state.curQuesId}
-                preQuesId={this.state.preQuesId}
-                meetingId={this.state.meetingId}
-                mainStreamManager={this.state.mainStreamManager}
-              />
-            </div>
-            
-          )}
-            </>
-          ) : (
-              <>
-              {/* 유저 리스트 */}
-            <Container>
-              {this.state.isStart ? null : (
-                <>
-                  <TestUserList
-                    session={this.state.session}
-                    subscribers={this.state.subscribers}
-                    myUserName={this.state.myUserName}
-                    ready={this.state.readyState}
-                    viewer={this.state.viewerState}
-                    localUser={localUser}
-                    ishost={this.state.ishost}
-                    hostId={this.state.hostId}
-                    allReady={this.state.allReady}
-                    questions={this.state.questions}
-                    // roomId={this.state.waitingId}
-                    // meetingroomId={this.state.meetingId}
-                  />
-                  <TestQuesList 
-                    session={this.state.session} 
-                    questions={this.state.questions}
-                    ready={this.state.readyState}
-                    localUser={localUser}
-                    waitingId={this.state.waitingId}
-                  />
-                </>
-                
-              )}
-              {this.state.isStart ? <h1>START</h1> : null}
-            </Container>
-            {/* 채팅 */}
-            
-            <Container maxWidth="sm" >
-              {localUser !== undefined &&
-                localUser.getStreamManager() !== undefined && (
-                  <div
-                    className="OT_root OT_publisher custom-class"
-                style={{
-                  chatDisplay
-                }}
-              >
-                
-                    <ChatComponent 
-                      user={localUser}
-                      chatDisplay={this.state.chatDisplay}
-                      close={this.toggleChat}
-                      messageReceived={this.checkNotification}
-                      hidden={!this.state.hidden}
-                />
-                <div hidden={this.state.hidden}>
-                  나는야 히든 트루
-                </div>
-                {/* {this.state.value ?
-                    (<ChatComponent 
-                      user={localUser}
-                      chatDisplay={this.state.chatDisplay}
-                      close={this.toggleChat}
-                      messageReceived={this.checkNotification}
-                    />) : null} */}
-        <BottomNavigation
-              sx={{
-                    // display: "contents",
-                borderRadius:"20px",
-                    marginLeft: "100px",
-                    marginRight: "80px",
-                    boxShadow : "4px 4px 4px #459de6"
-        }}
-          showLabels
-          value={this.state.value}
-          onChange={(event, newValue) => {
-            this.setValue(newValue);
+      <div 
+        style={{
+          marginTop:"2%",
+          marginLeft:"1%",
+          marginRight:"1%",
           }}
-        >
-          {/* <BottomNavigationAction value="0" label="Recents" icon={<RestoreIcon />} /> */}
-          <BottomNavigationAction value={0} label="Chat" icon={<FavoriteIcon />} />
-          <BottomNavigationAction value={1} label="PLUS" icon={<ArchiveIcon />} />
-        </BottomNavigation>
-                  </div>
-                )}
-          </Container>
-              </>
-          )}
+          >
+      
           
-          </RootStyle>
+            <div className="grid grid-cols-3 gap-4" title="waitingProfile">
+                                   
+              {this.state.isStart ? (
+                <>
+                  <div className="col-span-1" title="waitingProfile">
+                    
+                    <div>
+                      {localUser !== undefined &&
+                        localUser.getStreamManager() !== undefined && (
+                          <div>
+                            <title>내캠</title>
+                            <StreamComponent
+                              user={localUser}
+                              handleNickname={this.nicknameChanged}
+                            />
+                          </div>
+                      )}
+                    </div>
+                  </div>
+
+                  <div className="col-span-1" title="waitingProfile">
+                    22222111111111111111222
+                  </div>
+
+                  <div className="col-span-1">
+                    3333311111111111111111333
+                  </div>
+
+                  {/* {this.state.isStart && (
+                    <div id="video-container" className="video-container">
+                      {localUser !== undefined &&
+                        localUser.getStreamManager() !== undefined && (
+                          <div className="stream-container" id="localUser">
+                            <div>내캠</div>
+                            <StreamComponent
+                              user={localUser}
+                              handleNickname={this.nicknameChanged}
+                            />
+                          </div>
+                        )} */}
+
+                      {/* {this.state.viewers.map((sub, i) => (
+                        <div key={i} className="stream-container" id="remoteUsers">
+                          <div>면접관</div>
+                          <StreamComponent
+                            user={sub}
+                            handleNickname={this.nicknameChanged}
+                          />
+                        </div>
+                      ))} */}
+
+                      {/* {this.state.viewees.map((sub, i) => (
+                        <div key={i} className="stream-container" id="remoteUsers">
+                          <div>면접자</div>
+                          <StreamComponent
+                            user={sub}
+                            handleNickname={this.nicknameChanged}
+                          />
+                        </div>
+                      ))} */}
+
+                      {/* {this.state.mainStreamManager && (
+                        <div className="stream-container" id="remoteUsers">
+                          <div>선택된화면</div>
+                          <StreamComponent user={this.state.mainStreamManager} />
+                        </div>
+                      )} */}
+                      {/* 444444444444444
+                    </div>
+                  )} */}
+                  
+                  {/* {this.state.isStart && localUser.viewer && (
+                    <div> */}
+                      {/* <RecommendationQues
+                        session={this.state.session}
+                        questions={this.state.questions}
+                        mainStreamManager={this.state.mainStreamManager}
+                        handleChoiceQues={(e) => this.handleChoiceQues(e)}
+                        preQuesId={this.state.preQuesId}
+                      /> */}
+
+                      {/* <EvaluationSheet
+                        viewers={this.state.viewers}
+                        viewee={this.state.mainStreamManager}
+                        session={this.state.session}
+                        evalWaiting={this.state.evalWaiting}
+                        chosenQues={this.state.chosenQues}
+                        curQuesId={this.state.curQuesId}
+                        preQuesId={this.state.preQuesId}
+                        meetingId={this.state.meetingId}
+                        mainStreamManager={this.state.mainStreamManager}
+                      /> */}
+                      {/* dddd
+                    </div>
+                  )} */}
+                </>
+              ) : (
+                <>
+                  {/* 유저 리스트 */}
+                  <div className="col-span-1">
+                    {this.state.isStart ? null : (
+                      <>
+                        <TestUserList
+                          // className="col-span-1"
+                          session={this.state.session}
+                          subscribers={this.state.subscribers}
+                          myUserName={this.state.myUserName}
+                          ready={this.state.readyState}
+                          viewer={this.state.viewerState}
+                          localUser={localUser}
+                          ishost={this.state.ishost}
+                          hostId={this.state.hostId}
+                          allReady={this.state.allReady}
+                          questions={this.state.questions}
+                          // roomId={this.state.waitingId}
+                          // meetingroomId={this.state.meetingId}
+                        />
+                      </>
+                    )}
+
+                    
+                    {this.state.isStart ? <h1>START</h1> : null}
+                  </div>
+                  {/* 채팅 */}
+
+                  <div className="col-span-1">
+                    {localUser !== undefined &&
+                      localUser.getStreamManager() !== undefined && (
+                        <div
+                          style={{
+                            chatDisplay,
+                          }}
+                        >
+                          <ChatComponent
+                            user={localUser}
+                            chatDisplay={this.state.chatDisplay}
+                            close={this.toggleChat}
+                            messageReceived={this.checkNotification}
+                            hidden={!this.state.hidden}
+                          />
+                          <div hidden={this.state.hidden}>나는야 히든 트루</div>
+                          {/* {this.state.value ?
+                        (<ChatComponent 
+                          user={localUser}
+                          chatDisplay={this.state.chatDisplay}
+                          close={this.toggleChat}
+                          messageReceived={this.checkNotification}
+                        />) : null} */}
+                          <BottomNavigation
+                            sx={{
+                              // display: "contents",
+                              borderRadius: "20px",
+                              marginLeft: "100px",
+                              marginRight: "80px",
+                              boxShadow: "4px 4px 4px #459de6",
+                            }}
+                            showLabels
+                            value={this.state.value}
+                            onChange={(event, newValue) => {
+                              this.setValue(newValue);
+                            }}
+                          >
+                            {/* <BottomNavigationAction value="0" label="Recents" icon={<RestoreIcon />} /> */}
+                            <BottomNavigationAction
+                              value={0}
+                              label="Chat"
+                              icon={<FavoriteIcon />}
+                            />
+                            <BottomNavigationAction
+                              value={1}
+                              label="PLUS"
+                              icon={<ArchiveIcon />}
+                            />
+                          </BottomNavigation>
+                        </div>
+                      
+                      )}
+                  </div>
+                  <div className="col-span-1">
+                    {this.state.isStart ? null : (
+                      <>
+                        <TestQuesList
+                          // className="col-span-1"
+                          session={this.state.session}
+                          questions={this.state.questions}
+                          ready={this.state.readyState}
+                          localUser={localUser}
+                          waitingId={this.state.waitingId}
+
+                        />
+                      </>
+                    )}
+                  </div>
+                </>
+              )}
+            </div>
+         
+         
           {this.state.isStart ? <h1>START</h1> : null}
           {this.state.isStart && this.state.ishost && 
             <button onClick={this.handleFinish}>면접끝내기</button>

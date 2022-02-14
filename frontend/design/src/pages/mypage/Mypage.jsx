@@ -9,7 +9,6 @@ import { Container, Button } from "@material-ui/core";
 import EditIcon from "@material-ui/icons/Edit";
 import styled from "styled-components";
 import Box from "@mui/material/Box";
-import Gravatar from "react-gravatar";
 
 // component
 import MyTable from "./Mytable";

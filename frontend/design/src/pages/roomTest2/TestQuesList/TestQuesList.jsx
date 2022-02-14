@@ -84,23 +84,23 @@ class TestQuesList extends Component {
       display: "inline-block",
       width: "400px",
       height: "400px",
-      marginLeft: "50px",
+      marginLeft: "5px",
     };
 
     const tempStyle2 = {
       display: "inline-block",
-      width: "800px",
-      height: "100px",
-      marginLeft: "200px",
+      width: "300px",
+      height: "200px",
+      marginLeft: "2px",
       backgroundColor: "white",
       border: "1px solid black",
-      marginLeft: "250px",
-      marginTop: "50px",
+      marginLeft: "2px",
+      marginTop: "10px",
     };
     const tempStyle3 = {
       display: "inline-block",
-      width: "500px",
-      height: "100px",
+      width: "50px",
+      height: "10px",
       marginLeft: "200px",
       backgroundColor: "white",
       border: "1px solid black",
@@ -113,9 +113,9 @@ class TestQuesList extends Component {
     };
 
     const tempStyle5 = {
-      width: "700px",
-      marginLeft: "10px",
-      marginTop: "10px",
+      width: "100px",
+      marginLeft: "5px",
+      marginTop: "5px",
       fontSize: "17pt",
     };
 
