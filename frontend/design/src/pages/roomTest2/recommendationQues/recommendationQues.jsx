@@ -4,22 +4,15 @@ import axios from '../../../common/http-common'
 class RecommendationQues extends Component {
     constructor(props) {
         super(props);
-        this.handleEnter = this.handleEnter.bind(this);
-        this.handleDeleteBtn = this.handleDeleteBtn.bind(this);
         this.handleChoiceQues = this.handleChoiceQues.bind(this);
+        this.handleReloadBtn = this.handleReloadBtn.bind(this);
+        this.handleEnter = this.handleEnter.bind(this);
         this.handleChoiceRecommenedQues = this.handleChoiceRecommenedQues.bind(this);
         this.state = {
             questions: [],
         };
     }
     componentDidMount() {
-        axios.get(`/question?meetingroomId=${this.props.meetingId}&parentId=${this.props.preQuesId}`)
-        .then((res) => {
-            console.log(res)
-            this.setState({questions: res.data.questionList})
-
-        })
-        .catch((e) => console.log(e))
     }
 
     handleEnter(event) {
@@ -39,21 +32,21 @@ class RecommendationQues extends Component {
         }
     }
 
-    handleDeleteBtn(event) {
-        console.log(event)
+    handleReloadBtn() {
         this.props.session.signal({
-            data: event.target.parentElement.id,  // 보내는 내용
+            data: '',  // 보내는 내용
             to: [],         // 누구한데 보낼건지. 비워있으면 모두에게 보내는거고, 만약 세션 아이디 적으면 그 세션한데만 보내진다.
-            type: 'deleteQues'   // 시그널 타입.
+            type: 'reRecoQues'   // 시그널 타입.
         })
         .then(() => {
-            console.log("delete Question!");
+            console.log("reRecoQues! 신호보냄");
         })
         .catch(error => {
             console.error(error);
         });
     }
 
+    // 이건 대기방에서 등록한 사전질문 선택한 경우
     handleChoiceQues(question) {
         console.log(question)
         this.props.session.signal({
@@ -141,8 +134,8 @@ class RecommendationQues extends Component {
             <div style={tempStyle2}>
                 <div>{this.props.mainStreamManager.nickname}</div>
                 <div>
-                    <div>추천질문1</div>
-                    {this.state.questions.map((question) =>
+                    <button onClick={this.handleReloadBtn}>질문새로받기</button>
+                    {this.props.recoQues.map((question) =>
                     <div id={question.id} key={question.id}>
                         {question.content}
                         <button onClick={e => this.handleChoiceRecommenedQues(question)}>선택</button>
