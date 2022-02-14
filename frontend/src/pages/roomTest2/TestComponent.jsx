@@ -76,7 +76,10 @@ class TestComponent extends Component {
     //   ? this.props.openviduServerUrl
     //   : "https://" + "i6e201.p.ssafy.io" + ":4443";
     this.OPENVIDU_SERVER_URL = "https://i6e201.p.ssafy.io:1443";
+<<<<<<< HEAD
+=======
     // this.OPENVIDU_SERVER_URL = "https://localhost:4443";
+>>>>>>> frontend
     this.OPENVIDU_SERVER_SECRET = this.props.openviduSecret
       ? this.props.openviduSecret
       : "WISH";
@@ -1254,8 +1257,32 @@ class TestComponent extends Component {
         >
           {this.state.isStart ? (
             <>
-                      {this.state.isStart && (
-            <div id="video-container" className="video-container">
+            <Grid item xs={3}>
+              <div>
+                {this.state.viewers.map((sub, i) => (
+                  <div key={i} className="stream-container" id="remoteUsers">
+                    <div>면접관</div>
+                    <StreamComponent
+                      user={sub}
+                      handleNickname={this.nicknameChanged}
+                    />
+                  </div>
+                ))}
+              </div>
+
+              <div>
+                {this.state.isStart && localUser.viewer && (
+                  <EvaluationSheet
+                    viewers={this.state.viewers}
+                    viewee={this.state.mainStreamManager}
+                    session={this.state.session}
+                    evalWaiting={this.state.evalWaiting}
+                  />
+                )}
+              </div>
+
+            </Grid>
+            <Grid item xs={6}>
               {localUser !== undefined &&
                 localUser.getStreamManager() !== undefined && (
                   <div className="stream-container" id="localUser">
@@ -1265,60 +1292,44 @@ class TestComponent extends Component {
                       handleNickname={this.nicknameChanged}
                     />
                   </div>
-                )}
-              {this.state.viewers.map((sub, i) => (
-                <div key={i} className="stream-container" id="remoteUsers">
-                  <div>면접관</div>
-                  <StreamComponent
-                    user={sub}
-                    handleNickname={this.nicknameChanged}
-                  />
-                </div>
-              ))}
-              {this.state.viewees.map((sub, i) => sub !== this.state.mainStreamManager ? 
-                <div key={i} className="stream-container" id="remoteUsers">
-                  <div>면접자</div>
-                  <StreamComponent
-                    user={sub}
-                    handleNickname={this.nicknameChanged}
-                  />
-                </div>
-                : null
               )}
-              {this.state.mainStreamManager && (
-                <div className="stream-container" id="remoteUsers">
-                  <div>선택된화면</div>
-                  <StreamComponent user={this.state.mainStreamManager} />
-                </div>
-              )}
-            </div>
-          )}
-          {this.state.isStart && localUser.viewer && (
-            <div>
-              <RecommendationQues
-                session={this.state.session}
-                questions={this.state.questions}
-                recoQues={this.state.recoQues}
-                mainStreamManager={this.state.mainStreamManager}
-                handleChoiceQues={e => this.handleChoiceQues(e)}
-                preQuesId={this.state.preQuesId}
-                meetingId={this.state.meetingId}
-              />
 
-              <EvaluationSheet 
-                viewers={this.state.viewers}
-                viewee={this.state.mainStreamManager}
-                session={this.state.session}
-                evalWaiting={this.state.evalWaiting}
-                chosenQues={this.state.chosenQues}
-                curQuesId={this.state.curQuesId}
-                preQuesId={this.state.preQuesId}
-                meetingId={this.state.meetingId}
-              />
-            </div>
+              {this.state.viewees.map((sub, i) => (
+                    <div key={i} className="stream-container" id="remoteUsers">
+                      <div>면접자</div>
+                      <StreamComponent
+                        user={sub}
+                        handleNickname={this.nicknameChanged}
+                      />
+                    </div>
+                  ))}
+
+                  {this.state.mainStreamManager && (
+                    <div className="stream-container" id="remoteUsers">
+                      <div>선택된화면</div>
+                      <StreamComponent user={this.state.mainStreamManager} />
+                    </div>
+                  )}
+            </Grid>
             
-          )}
+            <Grid item xs={3}>
+              {this.state.isStart && localUser.viewer && (
+                <EvaluationSheet
+                  viewers={this.state.viewers}
+                  viewee={this.state.mainStreamManager}
+                  session={this.state.session}
+                  evalWaiting={this.state.evalWaiting}
+                />
+              )}
+
+            </Grid>
+
+              
+
+
             </>
+
+
           ) : (
             <>
               {/* 유저 리스트 */}
