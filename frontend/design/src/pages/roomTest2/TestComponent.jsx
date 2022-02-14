@@ -76,10 +76,6 @@ class TestComponent extends Component {
     //   ? this.props.openviduServerUrl
     //   : "https://" + "i6e201.p.ssafy.io" + ":4443";
     this.OPENVIDU_SERVER_URL = "https://i6e201.p.ssafy.io:1443";
-<<<<<<< HEAD
-=======
-    // this.OPENVIDU_SERVER_URL = "https://localhost:4443";
->>>>>>> frontend
     this.OPENVIDU_SERVER_SECRET = this.props.openviduSecret
       ? this.props.openviduSecret
       : "WISH";
@@ -1258,6 +1254,7 @@ class TestComponent extends Component {
           {this.state.isStart ? (
             <>
             <Grid item xs={3}>
+              
               <div>
                 {this.state.viewers.map((sub, i) => (
                   <div key={i} className="stream-container" id="remoteUsers">
@@ -1283,7 +1280,7 @@ class TestComponent extends Component {
 
             </Grid>
             <Grid item xs={6}>
-              {localUser !== undefined &&
+              {/* {localUser !== undefined &&
                 localUser.getStreamManager() !== undefined && (
                   <div className="stream-container" id="localUser">
                     <div>내캠</div>
@@ -1292,17 +1289,17 @@ class TestComponent extends Component {
                       handleNickname={this.nicknameChanged}
                     />
                   </div>
-              )}
+              )} */}
 
-              {this.state.viewees.map((sub, i) => (
-                    <div key={i} className="stream-container" id="remoteUsers">
-                      <div>면접자</div>
-                      <StreamComponent
-                        user={sub}
-                        handleNickname={this.nicknameChanged}
-                      />
-                    </div>
-                  ))}
+              {this.state.viewees.map((sub, i) => sub !== this.state.mainStreamManager ? 
+                <div key={i} className="stream-container" id="remoteUsers">
+                  <div>면접자</div>
+                  <StreamComponent
+                    user={sub}
+                  />
+                </div>
+                : null
+              )}
 
                   {this.state.mainStreamManager && (
                     <div className="stream-container" id="remoteUsers">
