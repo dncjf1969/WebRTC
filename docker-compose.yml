@@ -15,8 +15,8 @@ services:
     volumes:
       # - ./web/nginx.conf:/etc/nginx/nginx.conf
       - type: bind
-        source: ./web/nginx.conf
-        target: /etc/nginx/nginx.conf
+        source: ./web
+        target: /etc/nginx
 
 
   frontend:
