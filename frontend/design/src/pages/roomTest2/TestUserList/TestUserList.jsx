@@ -126,6 +126,9 @@ class TestUserList extends Component {
                   {this.props.myUserName}
                 </Typography>
                 <Typography variant="body2" color="text.secondary">
+                  {this.props.ishost && this.props.allReady ? (
+                    <button onClick={this.start}>start</button>
+                  ) : null}
                   <select
                     id="role"
                     name="role"

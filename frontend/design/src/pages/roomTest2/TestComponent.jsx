@@ -1264,7 +1264,12 @@ class TestComponent extends Component {
               <Grid item xs={3}>
                 <div>
                   {this.state.viewers.map((sub, i) => (
-                    <div key={i} className="stream-container" id="remoteUsers">
+                    <div
+                      key={i}
+                      className="stream-container"
+                      style={{ height: "200px" }}
+                      id="remoteUsers"
+                    >
                       <div>면접관</div>
                       <StreamComponent
                         user={sub}
@@ -1276,12 +1281,17 @@ class TestComponent extends Component {
 
                 <div>
                   {this.state.isStart && localUser.viewer && (
-                    <EvaluationSheet
-                      viewers={this.state.viewers}
-                      viewee={this.state.mainStreamManager}
-                      session={this.state.session}
-                      evalWaiting={this.state.evalWaiting}
-                    />
+                    <div>
+                      <RecommendationQues
+                        session={this.state.session}
+                        questions={this.state.questions}
+                        recoQues={this.state.recoQues}
+                        mainStreamManager={this.state.mainStreamManager}
+                        handleChoiceQues={(e) => this.handleChoiceQues(e)}
+                        preQuesId={this.state.preQuesId}
+                        meetingId={this.state.meetingId}
+                      />
+                    </div>
                   )}
                 </div>
               </Grid>
@@ -1299,7 +1309,12 @@ class TestComponent extends Component {
 
                 {this.state.viewees.map((sub, i) =>
                   sub !== this.state.mainStreamManager ? (
-                    <div key={i} className="stream-container" id="remoteUsers">
+                    <div
+                      key={i}
+                      className="stream-container"
+                      style={{ height: "200px" }}
+                      id="remoteUsers"
+                    >
                       <div>면접자</div>
                       <StreamComponent user={sub} />
                     </div>
