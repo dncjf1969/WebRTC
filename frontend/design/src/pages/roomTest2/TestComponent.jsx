@@ -60,6 +60,7 @@ class TestComponent extends Component {
     //   ? this.props.openviduServerUrl
     //   : "https://" + "i6e201.p.ssafy.io" + ":4443";
     this.OPENVIDU_SERVER_URL = "https://i6e201.p.ssafy.io";
+    // this.OPENVIDU_SERVER_URL = "https://localhost:4443";
     this.OPENVIDU_SERVER_SECRET = this.props.openviduSecret
       ? this.props.openviduSecret
       : "WISH";
@@ -68,14 +69,17 @@ class TestComponent extends Component {
     // let sessionName = this.props.sessionName
     //   ? this.props.sessionName
     //   : "SessionA";
-    let sessionName = window.localStorage.getItem("roomId");
+    let sessionName = this.props.roomId;
+    let waitingId = this.props.roomId;
     let userName = this.props.user
       ? this.props.user
       : "OpenVidu_User" + Math.floor(Math.random() * 100);
     let id = this.props.id ? this.props.id : '임시아이디'
+    let jwt = this.props.jwt ? this.props.jwt : null
     this.remotes = [];
     this.localUserAccessAllowed = false;
     this.state = {
+      jwt: jwt,
       id: id,
       // 방id like key
       mySessionId: sessionName,
@@ -153,7 +157,7 @@ class TestComponent extends Component {
       vieweeIdx: 0,
       chosenQues: '',
       // 나중에 API로 수정
-      waitingId: sessionName,
+      waitingId: waitingId,
       meetingId: null,
       preQuesId: -1,
       curQuesId: -1,
@@ -458,6 +462,7 @@ class TestComponent extends Component {
             console.log("면접관 ", this.state.viewers);
             console.log("면접자 ", this.state.viewees);
             console.log("모든유저 ", this.state.allUsers);
+            console.log("미팅아이디", this.state.meetingId)
           }, 20);
 
           // 면접관이 평가완료 하고 버튼눌렀을때
@@ -1268,7 +1273,7 @@ class TestComponent extends Component {
                     hostId={this.state.hostId}
                     allReady={this.state.allReady}
                     questions={this.state.questions}
-                    // roomId={this.state.waitingId}
+                    roomId={this.state.waitingId}
                     // meetingroomId={this.state.meetingId}
                   />
                   <TestQuesList 
@@ -1277,6 +1282,7 @@ class TestComponent extends Component {
                     ready={this.state.readyState}
                     localUser={localUser}
                     waitingId={this.state.waitingId}
+                    jwt={this.state.jwt}
                   />
                 </>
                 

@@ -36,6 +36,7 @@ export function WaitingListSearch() {
         },
       })
       .then((res) => {
+        console.log(res)
         setRooms(res.data.list);
       })
       .then(() => {
@@ -178,9 +179,7 @@ export function WaitingListSearch() {
                   {rooms.map((room) => (
                     <WaitingListCard
                       key={room.roomId}
-                      roomId={room.roomId}
-                      name={room.name}
-                      job={room.job}
+                      room={room}
                     />
                   ))}
                   {rooms.map(function (room, idx) {
