@@ -12,7 +12,7 @@ public class RoomPasswordIsNotCorrectException extends RoomException{
 //		
 //	}
 	public RoomPasswordIsNotCorrectException() {
-		super(ErrorCode.LESS_THAN_MAX_MEMBER_ROOM);
+		super(ErrorCode.PASSWORD_NOT_CORRECT);
 	
 	}
 	
