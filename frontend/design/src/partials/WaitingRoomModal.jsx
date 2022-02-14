@@ -56,7 +56,7 @@ function WaitingRoomModal({ modalClose }) {
   const handleCreateRoom = async () => {
     const data = {
       job: job,
-      manager: "sohui",
+      manager: window.localStorage.getItem('id'),
       memberMax: members,
       name: name,
       password: password !== "" ? password : null,
@@ -71,8 +71,10 @@ function WaitingRoomModal({ modalClose }) {
       .then((res) => {
         console.log(res);
         const token = res.data.token;
+        const roomId = res.data.roomId;
         window.localStorage.setItem("token", token);
-        navigate("/waitingroom");
+        window.localStorage.setItem("roomId", roomId);
+        // navigate("/waitingroom");
         return res.data;
       })
       .catch((err) => {

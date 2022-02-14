@@ -20,15 +20,16 @@ class EvaluationSheet extends Component {
         document.getElementById("rate").value = "";
         document.getElementById("comment").value = "";
         // 이부분에서 axios요청 보냄 //
-
-        axios.post('/feedback',{ 
+        const data = {  
             "comment": comment,
             "meetingId": this.props.meetingId,
-            "memberId": this.props.mainStreamManager.id,
+            "memberId": this.props.viewee.id,
             "question": this.props.chosenQues,
             "rate": rate
-        })
-        .then(()=> console.log('평가 서버로 보냈음'))
+        }
+        console.log(data)
+        axios.post('/feedback', data)
+        .then((res)=> console.log(res, '평가 서버로 보냈음'))
         .catch((e) => console.log(e))
 
         // const viewers = this.props.viewers.map((viewer) => viewer.streamManager.stream.connection)

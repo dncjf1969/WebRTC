@@ -43,6 +43,7 @@ export function WaitingListSearch() {
         },
       })
       .then((res) => {
+        console.log(res)
         setRooms(res.data.list);
       })
       .then(() => {

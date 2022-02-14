@@ -37,6 +37,8 @@ function Login() {
       } = response;
       saveToken(accessToken);
       console.log(response);
+      window.localStorage.setItem('id', response.data.userId);
+      window.localStorage.setItem('nickname', response.data.name);
       navigate("/");
       return response;
     } catch (err) {

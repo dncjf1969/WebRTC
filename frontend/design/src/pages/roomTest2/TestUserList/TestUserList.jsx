@@ -13,6 +13,7 @@ class TestUserList extends Component {
       isReady: false,
       userReadyState: [],
       viewerCheck: false,
+      meetingId: ''
     };
   }
 
@@ -39,10 +40,16 @@ class TestUserList extends Component {
 
   
   informStart = (async (roomId) => {
+    const headers = {
+      headers: {
+        'Authorization': this.props.jwt
+      }
+    }
     await axios
-    .get(`/room/meeting/start?roomId=${roomId}`)
+    .get(`/room/meeting/start?roomId=${roomId}`, headers)
       .then((res) => {
         console.log(res)
+        this.setState({meetingId: res.data.roomIdMysql})
         return res;
       })
       .catch((err) => {
@@ -51,22 +58,20 @@ class TestUserList extends Component {
   });
 
 
-
-  start() {
+  async start() {
     const check = (value) => value.ready;
     if (this.props.subscribers.every(check) && this.props.ready) {
       console.log("모두레디함 스타트");
-      
 
       // 서버에 시작했다는 사실 알려주기 나중에 대기방아이디 받아서
-      // const roomId = this.props.waitingId
-      // const meetingId = this.informStart(roomId)
-
+      const roomId = this.props.roomId
+      await this.informStart(roomId)
+      console.log(this.state.meetingId)
       this.props.session
         .signal({
-          data: Date.now(),
+          // data: Date.now(),
           //나중에 바꾸기
-          // data: meetingId,
+          data: this.state.meetingId,
           to: [],
           type: "start",
         })
