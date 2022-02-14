@@ -1252,7 +1252,7 @@ class TestComponent extends Component {
             boxShadow: "0 3px 5px 2px rgba(47, 138, 241, 0.5)",
           }}
         >
-          {this.state.isStart ? (
+          
             <>
               <Grid item xs={3}>
                   <div>
@@ -1268,7 +1268,6 @@ class TestComponent extends Component {
                   </div>
 
                   <div>
-                  {/* {this.state.isStart && localUser.viewer && (
                     <div>
                       <RecommendationQues
                         session={this.state.session}
@@ -1278,8 +1277,7 @@ class TestComponent extends Component {
                         preQuesId={this.state.preQuesId}
                       />
                     </div>
-                  )} */}
-                </div>
+                  </div>
               </Grid>
 
               <Grid item xs={6}>
@@ -1330,57 +1328,7 @@ class TestComponent extends Component {
             </>
 
 
-          ) : (
-            <>
-              {/* 유저 리스트 */}
-              <Grid item xs={8}>
-                {this.state.isStart ? null : (
-                  <TestUserList
-                    session={this.state.session}
-                    subscribers={this.state.subscribers}
-                    myUserName={this.state.myUserName}
-                    ready={this.state.readyState}
-                    viewer={this.state.viewerState}
-                    localUser={localUser}
-                    ishost={this.state.ishost}
-                    hostId={this.state.hostId}
-                    allReady={this.state.allReady}
-                    roomId={this.state.waitingId}
-                  />
-                )}
-                {this.state.isStart ? <h1>START</h1> : null}
-              </Grid>
-              {/* 채팅 */}
-
-              <Grid item xs={4}>
-                {localUser !== undefined &&
-                  localUser.getStreamManager() !== undefined && (
-                    <div
-                      style={{
-                        chatDisplay,
-                      }}
-                    >
-                      <TestQuesList
-                        className="row-span-1"
-                        session={this.state.session}
-                        questions={this.state.questions}
-                        ready={this.state.readyState}
-                        chatDisplay={this.state.chatDisplay}
-                        localUser={localUser}
-                        waitingId={this.state.waitingId}
-                      />
-                      <ChatComponent
-                        user={localUser}
-                        chatDisplay={this.state.chatDisplay}
-                        close={this.toggleChat}
-                        messageReceived={this.checkNotification}
-                        hidden={!this.state.hidden}
-                      />
-                    </div>
-                  )}
-              </Grid>
-            </>
-          )}
+          
           
           </Grid>
           {this.state.isStart ? <h1>START</h1> : null}
