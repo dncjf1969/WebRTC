@@ -1,6 +1,6 @@
 FROM node:14 as build-stage
 WORKDIR /app
-ADD . .
+COPY . .
 RUN npm install
 RUN npm run build
 
