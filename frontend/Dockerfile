@@ -1,16 +1,11 @@
-FROM node:12.2.0-alpine
-
-RUN mkdir /app
+FROM node:14 as build-stage
 WORKDIR /app
-ENV PATH /app/node_modules/.bin:$PATH
-COPY package.json /app/package.json
+ADD . .
+RUN npm install
+RUN npm run build
 
-RUN npm install --no-cache
-RUN npm install -g react-scripts
-RUN npm install -g react-router-dom
-RUN apk add --no-cache git
+FROM nginx:stable-alpine as production-stage
+COPY  ./web/nginx.conf /etc/nginx/conf.d/default.conf
 
-EXPOSE 3000
-
-COPY . /app
-CMD ["npm", "start"]
+COPY --from=build-stage /app/dist /usr/share/nginx/html
+CMD ["nginx", "-g", "daemon off;"]
