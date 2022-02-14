@@ -104,10 +104,10 @@ public class FeedbackController {
         @ApiResponse(code = 404, message = "사용자 없음"),
         @ApiResponse(code = 500, message = "서버 오류")
     })
-	@PreAuthorize("hasAnyRole('USER')")
+//	@PreAuthorize("hasAnyRole('USER')")
 	public ResponseEntity<BaseRes> createFeedback(
 			@ApiIgnore Authentication authentication,
-			@RequestBody @ApiParam(value="멤버Id")FeedbackCreateReq info) {
+			@RequestBody @ApiParam(value="피드백 정보")FeedbackCreateReq info) {
 		
 		feedbackService.createFeedback(info);
 		
