@@ -10,5 +10,7 @@ RUN npm install -g react-scripts
 RUN npm install -g react-router-dom
 RUN apk add --no-cache git
 
+EXPOSE 3000
+
 COPY . /app
 CMD ["npm", "start"]
