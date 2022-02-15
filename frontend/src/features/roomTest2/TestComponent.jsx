@@ -68,7 +68,7 @@ class TestComponent extends Component {
     // this.OPENVIDU_SERVER_URL = this.props.openviduServerUrl
     //   ? this.props.openviduServerUrl
     //   : "https://" + "i6e201.p.ssafy.io" + ":4443";
-    this.OPENVIDU_SERVER_URL = "https://i6e201.p.ssafy.io:1443";
+    this.OPENVIDU_SERVER_URL = "https://i6e201.p.ssafy.io";
     this.OPENVIDU_SERVER_SECRET = this.props.openviduSecret
       ? this.props.openviduSecret
       : "WISH";
@@ -196,10 +196,17 @@ class TestComponent extends Component {
     this.handleChoiceQues = this.handleChoiceQues.bind(this);
     this.handleFinish = this.handleFinish.bind(this);
     this.initialize = this.initialize.bind(this);
+
+    //
+    this.init = this.init.bind(this);
+    this.loop = this.loop.bind(this);
+    this.predict = this.predict.bind(this);
+    this.drawPose = this.drawPose.bind(this);
   }
 
   componentDidMount() {
     console.log("마운트됐다");
+    this.setmodel();
     const openViduLayoutOptions = {
       maxRatio: 3 / 2, // The narrowest ratio that will be used (default 2x3)
       minRatio: 9 / 16, // The widest ratio that will be used (default 16x9)
@@ -542,6 +549,84 @@ class TestComponent extends Component {
       }
     );
   }
+
+  //TODO
+  async setmodel(){
+    const modelURL = `https://teachablemachine.withgoogle.com/models/Yz08D02qS/model.json`;
+    const metadataURL = `https://teachablemachine.withgoogle.com/models/Yz08D02qS/metadata.json`;
+    // load the model and metadata
+    // Refer to tmImage.loadFromFiles() in the API to support files from a file picker
+    // Note: the pose library adds a tmPose object to your window (window.tmPose)
+    this.setState({
+      model: await tmPose.load(modelURL, metadataURL),
+    });
+    this.state.maxPredictions = this.state.model.getTotalClasses();
+    console.log(this.state.model);
+  }
+
+  async init() {
+
+    // load the model and metadata
+    // Refer to tmImage.loadFromFiles() in the API to support files from a file picker
+    // Note: the pose library adds a tmPose object to your window (window.tmPose)
+    //this.state.
+
+    // Convenience function to setup a webcam
+    const size = 200;
+    const flip = true; // whether to flip the webcam
+    this.state.webcam = new tmPose.Webcam(size, size, flip); // width, height, flip
+    await this.state.webcam.setup(); // request access to the webcam
+    await this.state.webcam.play();
+    window.requestAnimationFrame(this.loop);
+
+    // append/get elements to the DOM
+    const canvas = document.getElementById("canvas");
+    canvas.width = size; canvas.height = size;
+    this.state.ctx = canvas.getContext("2d");
+    this.state.labelContainer = document.getElementById("label-container");
+    for (let i = 0; i < this.state.maxPredictions; i++) { // and class labels
+      this.state.labelContainer.appendChild(document.createElement("div"));
+    }
+  }
+
+  async loop(timestamp) {
+    this.state.webcam.update(); // update the webcam frame
+    await this.predict();
+    window.requestAnimationFrame(this.loop);
+  }
+
+  async predict() {
+    // Prediction #1: run input through posenet
+    // estimatePose can take in an image, video or canvas html element
+    const { pose, posenetOutput } = await this.state.model.estimatePose(this.state.webcam.canvas);
+    // Prediction 2: run input through teachable machine classification model
+    const prediction = await this.state.model.predict(posenetOutput);
+
+    for (let i = 0; i < this.state.maxPredictions; i++) {
+        const classPrediction =
+            prediction[i].className + ": " + prediction[i].probability.toFixed(2);
+        this.state.labelContainer.childNodes[i].innerHTML = classPrediction;
+    }
+
+    // finally draw the poses
+    this.drawPose(pose);
+  }
+
+  drawPose(pose) {
+    if (this.state.webcam.canvas) {
+        this.state.ctx.drawImage(this.state.webcam.canvas, 0, 0);
+        // draw the keypoints and skeleton
+        if (pose) {
+            const minPartConfidence = 0.5;
+            tmPose.drawKeypoints(pose.keypoints, minPartConfidence, this.state.ctx);
+            tmPose.drawSkeleton(pose.keypoints, minPartConfidence, this.state.ctx);
+        }
+    }
+  }
+
+
+
+  //
 
   nextViewee() {
     console.log("다음참가자 들어오세요");
