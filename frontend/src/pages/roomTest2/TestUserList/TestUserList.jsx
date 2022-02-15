@@ -154,7 +154,7 @@ class TestUserList extends Component {
               >
                 <img
                   className="inline-block h-15 w-15 rounded-full ring-2 ring-white"
-                  src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
+                  src={`https://lab.ssafy.com/s06-webmobile1-sub2/S06P12E201/-/raw/hyun/frontend/src/images/${this.props.characterNum}.PNG`}
                   alt=""
                 />
                 <CardContent>
@@ -268,7 +268,7 @@ class TestUserList extends Component {
             >
               <img
                 className="inline-block h-12 w-12 rounded-full ring-2 ring-white"
-                src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
+                src={`https://lab.ssafy.com/s06-webmobile1-sub2/S06P12E201/-/raw/hyun/frontend/src/images/${userInfo.image}.PNG`}
                 alt=""
               />
               <CardContent>
