@@ -738,6 +738,7 @@ class TestComponent extends Component {
     const context = {
       clientData: this.state.myUserName,
       id: this.state.id,
+      image: this.state.characterNum,
     };
     this.state.session
       .connect(token, context)
@@ -804,6 +805,7 @@ class TestComponent extends Component {
     localUser.setReady(false);
     localUser.setViewer(null);
     localUser.setId(this.state.id);
+    localUser.setImage(this.state.characterNum)
     this.subscribeToUserChanged();
     this.subscribeToStreamDestroyed();
     this.sendSignalUserChanged({
@@ -991,6 +993,7 @@ class TestComponent extends Component {
       newUser.setType("remote");
       newUser.setId(JSON.parse(event.stream.connection.data).id);
       newUser.setNickname(JSON.parse(event.stream.connection.data).clientData);
+      newUser.setImage(JSON.parse(event.stream.connection.data).image)
       newUser.setReady(false);
       newUser.setViewer(null);
       this.remotes.push(newUser);
@@ -1461,6 +1464,7 @@ class TestComponent extends Component {
                     hostId={this.state.hostId}
                     allReady={this.state.allReady}
                     roomId={this.state.waitingId}
+                    characterNum={this.state.characterNum}
                   />
                 )}
                 {this.state.isStart ? <h1>START</h1> : null}
