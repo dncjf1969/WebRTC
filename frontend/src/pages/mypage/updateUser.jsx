@@ -12,9 +12,9 @@ import { ValidatorForm, TextValidator } from 'react-material-ui-form-validator';
 // $ npm i @material-ui/core/styles
 import { makeStyles } from '@material-ui/core/styles';
 // import { signup, checkEmail } from '../authSlice';
-import axios from '../common/http-common'
-import Header from '../partials/Header';
-import SelectCharacter from "./SelectCharacter";
+import axios from '../../common/http-common'
+import Header from '../../partials/Header';
+import SelectCharacter from "../SelectCharacter";
 
 // style
 const Wrapper = styled.div`
@@ -44,21 +44,18 @@ const useStyles = makeStyles({
   },
 });
 
-function SignUp() {
+function UpdateUser() {
     // local state
   const [email, setEmail] = useState('');
-  const [ID, setID] = useState('');
   const [Nickname, setNickname] = useState('');
 
   // 인증후에 ID, 닉네임 다시 입력시 인증 다시받도록 하기위함
-  useEffect(() => {setCheckId(false)}, [ID]);
   useEffect(() => {setCheckNickname(false)}, [Nickname]);
 
   const [confirmNumber, setConfirmNumber] = useState('');
   const [password, setPassword] = useState('');
   const [repeatPassword, setRepeatPassword] = useState('');
 
-  const [checkId, setCheckId] = useState(false)
   const [checkNickname, setCheckNickname] = useState(false)
   const [characterNumber, setCharacterNumber] = useState("");
 
@@ -71,14 +68,7 @@ function SignUp() {
   const navigate = useNavigate();
 
   // setState when user change input
-  function handleID(event) {
-    const { value } = event.target;
-    if (value.length < 11) {
-      setID(value);
-      return true;
-    }
-    return false;
-  }
+
 
   function handleNickname(event) {
     const { value } = event.target;
@@ -90,13 +80,18 @@ function SignUp() {
   }
   // 닉네임 최대 10글자
 
-  const signup = ( // 액션 이름을 정의해 주도록 합니다.
+  const update = ( // 액션 이름을 정의해 주도록 합니다.
     async (userInfo) => {
       // 비동기 호출 함수를 정의합니다.
       console.log(userInfo);
       await axios
-        .post("/members/signup", userInfo)
+        .put("/members", userInfo)
         .then((res) => {
+          alert('회원정보 변경 완료! 다시 로그인 해주세요!')
+          window.localStorage.removeItem('id')
+          window.localStorage.removeItem('jwt')
+          window.localStorage.removeItem('nickname')
+          navigate("/login")
           console.log(res)
           return res.data;
         })
@@ -109,44 +104,24 @@ function SignUp() {
   // submit when user click button
   function handleSubmit(event) {
     event.preventDefault();
-    if (checkId && checkNickname) {
+    if (checkNickname && characterNumber) {
       const data = {
         'email': email,
-        'id': ID,
+        'id': window.localStorage.getItem('id'),
         'name': Nickname,
         'password': password,
         'characterNumber' : characterNumber,
       }
-      signup(data);
-      alert('회원가입 성공!')
-      navigate("/login")
-    } else if (!checkId && checkNickname) {
-      alert('아이디 중복을 확인해주세요')
-    } else if (checkId && !checkNickname) {
+      update(data);
+    } else if (!checkNickname && characterNumber) {
       alert('닉네임 중복을 확인해주세요')
-    } else if (!checkId && !checkNickname) {
-      alert('아이디와 닉네임의 중복을 확인해주세요')
-    }
+    } else if (checkNickname && !characterNumber) {
+      alert('캐릭터를 선택해주세요')
+    } 
   }
   // event.preventDefault() = 기본 클릭 동작 방지하기
   // '/signup' -> 비동기 호출 실시
 
-  async function handleIDCheck() {
-    await axios
-      .get(`/members/check/id?id=${ID}`)
-      .then((res) => {
-        console.log(res)
-        alert("사용 가능한 아이디입니다")
-        setCheckId(true)
-        return res.data;
-      })
-      .catch((err) => {
-        console.log(err)
-        alert("이미 존재하는 아이디입니다")
-        setCheckId(false)
-        return err;
-      });
-  }
 
   
 
@@ -189,7 +164,7 @@ function SignUp() {
       }
       return true;
     });
-  }, [ID, Nickname]);
+  }, [Nickname]);
 
   //잘 모르겠다.
   //없어도 잘 돌아가긴 함.
@@ -209,7 +184,7 @@ function SignUp() {
 
               {/* Page header */}
               <div className="max-w-3xl mx-auto text-center pb-12 md:pb-20">
-                <h1 className="h1">회원가입</h1>
+                <h1 className="h1">회원정보 수정</h1>
               </div>
 
               {/* Form */}
@@ -219,20 +194,10 @@ function SignUp() {
                   <SelectCharacter 
                    setCharacterNumber={setCharacterNumber}/>
 
-                  {/* 아이디 */}
-                  <div className="flex flex-wrap -mx-3 mb-4">
-                    <div className="w-full px-3" >
-                      <label className="block text-gray-800 text-sm font-medium mb-1" htmlFor="id">아이디 <span className="text-red-600">*</span></label>
-                      <input  id="id" type="text" style={{width: '66%', float: 'left'}} onChange={handleID} value={ID} className="rounded-lg form-input w-full text-gray-800" placeholder="아이디 10자 이내로 입력" required />
-                      <button type="button" style={{width: '30%', height: '67%', float: 'right'}} onClick={handleIDCheck} className="btn-sm text-gray-200 bg-gray-900 hover:bg-gray-800 ml-3 text-white font-semibold rounded-lg">
-                        <span>중복확인</span>
-                      </button>
-                    </div>
-                  </div>
                   {/* 닉네임 */}
                   <div className="flex flex-wrap -mx-3 mb-4">
                     <div className="w-full px-3">
-                      <label className="block text-gray-800 text-sm font-medium mb-1" htmlFor="name">닉네임 <span className="text-red-600">*</span></label>
+                      <label className="block text-gray-800 text-sm font-medium mb-1" htmlFor="name">새 닉네임 <span className="text-red-600">*</span></label>
                       <input id="name" type="text" style={{width: '66%', float: 'left'}} onChange={handleNickname} value={Nickname} className="rounded-lg form-input w-full text-gray-800" placeholder="닉네임 10자 이내로 입력" required />
                       <button type="button" style={{width: '30%', height: '67%', float: 'right'}} onClick={handleNicknameCheck} className="btn-sm text-gray-200 bg-gray-900 hover:bg-gray-800 ml-3 text-white font-semibold rounded-lg">
                         <span>중복확인</span>
@@ -241,13 +206,13 @@ function SignUp() {
                   </div>
                   <div className="flex flex-wrap -mx-3 mb-4">
                     <div className="w-full px-3">
-                      <label className="rounded-lg block text-gray-800 text-sm font-medium mb-1" htmlFor="email">이메일 <span className="text-red-600">*</span></label>
+                      <label className="rounded-lg block text-gray-800 text-sm font-medium mb-1" htmlFor="email">새 이메일 <span className="text-red-600">*</span></label>
                       <input id="email" type="email" onChange={(e) => setEmail(e.target.value)} value={email} className="rounded-lg form-input w-full text-gray-800" placeholder="이메일 주소를 입력해주세요" required />
                     </div>
                   </div>
                   <div className="flex flex-wrap -mx-3 mb-4">
                     <div className="w-full px-3">
-                      <label className="rounded-lg block text-gray-800 text-sm font-medium mb-1" htmlFor="password">비밀번호 <span className="text-red-600">*</span></label>
+                      <label className="rounded-lg block text-gray-800 text-sm font-medium mb-1" htmlFor="password">새 비밀번호 <span className="text-red-600">*</span></label>
                       <input id="password" type="password" onChange={(e) => setPassword(e.target.value)} value={password} className="rounded-lg form-input w-full text-gray-800" placeholder="비밀번호를 입력해주세요" required />
                     </div>
                   </div>
@@ -260,18 +225,11 @@ function SignUp() {
                   <div className="flex flex-wrap -mx-3 mt-6">
 
                     <div className="w-full px-3">
-                      <button className="btn text-white bg-blue-500 hover:bg-blue-700 w-full text-white font-semibold rounded-lg">회원가입</button>
+                      <button className="btn text-white bg-blue-500 hover:bg-blue-700 w-full text-white font-semibold rounded-lg">회원정보 수정</button>
                     </div>
-
                   </div>
-                  
                 </form>
-
-                <div className="text-gray-600 text-center mt-6">
-                  이미 회원이신가요? <Link to="/login" className="text-blue-600 hover:underline transition duration-150 ease-in-out">지금 바로 로그인하세요!</Link>
-                </div>
               </div>
-
             </div>
           </div>
         </section>
@@ -282,4 +240,4 @@ function SignUp() {
   );
 }
 
-export default SignUp;
+export default UpdateUser;

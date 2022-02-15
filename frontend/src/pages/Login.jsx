@@ -42,6 +42,7 @@ function Login() {
       navigate("/");
       return response;
     } catch (err) {
+      alert("회원정보를 다시 확인해주세요")
       return err.response;
     }
   }

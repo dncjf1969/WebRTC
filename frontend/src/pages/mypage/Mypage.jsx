@@ -227,7 +227,7 @@ export default function MyPage() {
                       <ContentContainer>
                         <h3>{nickname}</h3>
                         {/* 회원정보수정 버튼은 있지만, 회원정보수정 기능이 실행되지는 않음 */}
-                        <Link to="/checkpassword">
+                        <Link to="/updateuser">
                           <CommonButton
                             variant="contained"
                             color="primary"
