@@ -17,7 +17,11 @@ function WaitingListCard({ room }) {
   console.log("들어옴");
   const handleEnter = async () => {
     await axios
-      .get(`/room/waiting/enter?password=&roomId=${parseInt(room.roomId)}`)
+      .get(`/room/waiting/enter?password=&roomId=${parseInt(room.roomId)}`, {
+        headers: {
+          Authorization: window.localStorage.getItem('jwt'),
+        },
+      })
       .then((res) => {
         console.log(res)
         // const token = res.data.token
@@ -32,7 +36,7 @@ function WaitingListCard({ room }) {
         console.log(err)
         return err;
       });
-    window.localStorage.setItem('roomId', room.roomId);
+    // window.localStorage.setItem('roomId', room.roomId);
   };
   return (
     <div

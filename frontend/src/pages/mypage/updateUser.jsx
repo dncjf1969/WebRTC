@@ -130,7 +130,10 @@ function UpdateUser() {
   
 
   async function handleNicknameCheck() {
-    await axios
+    if (Nickname === "") {
+      alert("닉네임을 입력해주세요")
+    } else {
+      await axios
       .get(`/members/check/name?name=${Nickname}`)
       .then((res) => {
         console.log(res)
@@ -144,6 +147,7 @@ function UpdateUser() {
         setCheckNickname(false)
         return err;
       });
+    }
   }
 
   // validation (same password)
