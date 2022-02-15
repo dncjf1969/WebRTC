@@ -10,6 +10,7 @@ class UserModel {
     viewer;
     stream;
     id;
+    image;
 
     constructor() {
         this.connectionId = '';
@@ -22,6 +23,7 @@ class UserModel {
         this.ready = false;
         this.viewer = null;
         this.id = '';
+        this.image = '';
     }
 
     isReady() {
@@ -50,6 +52,10 @@ class UserModel {
 
     getNickname() {
         return this.nickname;
+    }
+
+    getImage() {
+        return this.image;
     }
 
     getId() {
@@ -96,6 +102,9 @@ class UserModel {
     }
     setId(id) {
         this.id = id;
+    }
+    setImage(image) {
+        this.image = image;
     }
     setType(type) {
         if (type === 'local' |  type === 'remote') {
