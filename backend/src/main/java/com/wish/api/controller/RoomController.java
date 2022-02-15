@@ -114,7 +114,7 @@ public class RoomController {
 		
 		Room room = roomService.getRoom(roomId);
 		
-		return ResponseEntity.status(405).body(BaseRes.of(405, "에러요"));
+		return ResponseEntity.status(200).body(RoomSearchRes.of(room));
 	}
 	
 	
