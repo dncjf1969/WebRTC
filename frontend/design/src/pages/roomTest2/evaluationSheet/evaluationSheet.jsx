@@ -59,12 +59,6 @@ class EvaluationSheet extends Component {
     // }
     
     render() {
-        const tempStyle={
-            display:"inline-block",
-            width:"400px",
-            height:"400px",
-            marginLeft:"50px",
-        }
 
         const tempStyle2={
             display:"inline-block",
@@ -81,39 +75,40 @@ class EvaluationSheet extends Component {
             height:"100px",
             marginLeft:"5px",
             backgroundColor : 'white',
-            border: '1px solid black',
-        }
 
-        const tempStyle4={
-            float: "left",
-            width:"100px",
-            height:"100px",
+        }    
+        const tempStyle1={
+            display:"inline-block",
+            width:"300px",
+            height:"600px",
+            marginLeft:"5px",
+            backgroundColor : 'Cornsilk',
+            border: '1px solid black',
+            marginTop:"5px",
         }
+       
 
         const tempStyle5={
             width:"200px",
             height:"100px",
             marginTop:"5px",
             fontSize: "30pt",
-        }
-        
-        const tempStyle6={
             marginLeft:"10px",
-        }
-
-        const tempStyle7={
-            fontSize: "30pt",
+            marginTop:"10px",
+            fontSize: "17pt",
         }
         
+   
+       
         return (
-            <div style={tempStyle2}>
+            <div style={tempStyle1}>
                 {this.props.evalWaiting ? <div>다른 면접관들이 평가완료할 때까지 기다려주세요!</div> :
                 <div>
-                  <div style={tempStyle5}>평가지</div>
+                  <div style={tempStyle2}>평가지</div>
                   {/* <input onKeyDown={this.handleEnter} onChange={e => this.setState({question: e.target.value})} id="question" style={tempStyle6} placeholder="질문선택" value={this.state.question}></input> */}
                   <div>선택된 질문: {this.props.chosenQues}</div>
-                  <input onKeyDown={this.handleEnter} id="rate" style={tempStyle6} placeholder="평점"></input>
-                  <input onKeyDown={this.handleEnter} id="comment" style={tempStyle6} placeholder="코멘트"></input>
+                  <input onKeyDown={this.handleEnter} id="rate" style={tempStyle3} placeholder="평점"></input>
+                  <input onKeyDown={this.handleEnter} id="comment" style={tempStyle3} placeholder="코멘트"></input>
                   <button onClick={this.handleNextBtn} disabled={this.props.evalWaiting?true:false}>NEXT</button>
                 </div>
                 }

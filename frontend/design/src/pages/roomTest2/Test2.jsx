@@ -2,16 +2,12 @@ import React, { Component } from "react";
 import axios from "axios";
 import myAxios from "../../common/http-common";
 
-//
-
 import "./TestComponent.css";
 import { OpenVidu } from "openvidu-browser";
 import StreamComponent from "./stream/StreamComponent";
 // import DialogExtensionComponent from "./dialog-extension/DialogExtension";
 import ChatComponent from "./chat/ChatComponent";
 import UserVideoComponent from "./UserVideoComponent";
-import StreamComponent2 from "./stream/StreamComponent2";
-import StreamComponent3 from "./stream/StreamComponent3";
 
 import OpenViduLayout from "../layout/openvidu-layout";
 import UserModel from "../models/user-model";
@@ -54,6 +50,22 @@ const RootStyle = styled("div")(({ theme }) => ({
     marginTop: "15px",
   },
 }));
+// const Wrapper = styled.div`
+//   display: flex;
+//   padding: 0px 0px 0px 0px;
+//   min-height: 100vh;
+//   height: auto;
+//   width: 100%;
+// `;
+
+// const SectionStyle = styled("div")(({ theme }) => ({
+//   display: "flex",
+//   padding: "0px 0px 0px 0px",
+//   min-height: "100vh",
+//   height: "auto",
+//   width: "100%",
+// }));
+// ----------------------------------------------------------------------
 
 var localUser = new UserModel();
 
@@ -78,8 +90,8 @@ class TestComponent extends Component {
     let userName = this.props.user
       ? this.props.user
       : "OpenVidu_User" + Math.floor(Math.random() * 100);
-    let id = this.props.id ? this.props.id : "임시아이디";
-    let jwt = this.props.jwt ? this.props.jwt : null;
+    let id = this.props.id ? this.props.id : '임시아이디'
+    let jwt = this.props.jwt ? this.props.jwt : null
     this.remotes = [];
     this.localUserAccessAllowed = false;
     this.state = {
@@ -163,7 +175,7 @@ class TestComponent extends Component {
       chosenQues: "",
       // 나중에 API로 수정
       waitingId: waitingId,
-      meetingId: "",
+      meetingId: '',
       preQuesId: -1,
       curQuesId: -1,
       destroyedUserId: "",
@@ -444,7 +456,7 @@ class TestComponent extends Component {
         // 게임시작
         this.state.session.on("signal:start", async (event) => {
           console.log("원래 내 스타트상태", this.state.isStart);
-
+          
           let allUsers = [localUser, ...this.state.subscribers];
           let viewees = [];
           let viewers = [];
@@ -459,7 +471,7 @@ class TestComponent extends Component {
           // 모든로컬에서 면접자들 똑같은순서로 진행되도록
           viewees.sort((a, b) => (a.connectionId < b.connectionId ? -1 : 1));
 
-          await this.getRecoQues();
+          await this.getRecoQues()
           await this.setState({
             isStart: true,
             allUsers: allUsers,
@@ -472,7 +484,8 @@ class TestComponent extends Component {
           console.log("면접관 ", this.state.viewers);
           console.log("면접자 ", this.state.viewees);
           console.log("모든유저 ", this.state.allUsers);
-          console.log("미팅아이디", this.state.meetingId);
+          console.log("미팅아이디", this.state.meetingId)
+          
 
           // 면접관이 평가완료 하고 버튼눌렀을때
           this.state.session.on("signal:next", (event) => {
@@ -484,94 +497,76 @@ class TestComponent extends Component {
             let evalnum = this.state.evalnum + 1;
             // 모두평가완료했다면
             if (evalnum === this.state.viewers.length) {
-              if (
-                this.state.viewers[0].connectionId === localUser.connectionId
-              ) {
-                // 면접관중 한명만
-                if (this.state.customQuesCheck === false) {
-                  // 사용자가 만든 질문이 아니라면
-                  myAxios
-                    .put("/question/past", { questionId: this.state.curQuesId })
+              if (this.state.viewers[0].connectionId === localUser.connectionId) { // 면접관중 한명만
+                if (this.state.customQuesCheck === false){ // 사용자가 만든 질문이 아니라면
+                  myAxios.put('/question/past',{ "questionId": this.state.curQuesId})
+                  .then((res) => {
+                    console.log(res)
+                    console.log('선택질문 count요청보냄')
+                    console.log("childId", this.state.curQuesId, "parentId", this.state.preQuesId)
+                    myAxios.put('/question/relation',{ "childId": this.state.curQuesId, "parentId": this.state.preQuesId})
                     .then((res) => {
-                      console.log(res);
-                      console.log("선택질문 count요청보냄");
-                      console.log(
-                        "childId",
-                        this.state.curQuesId,
-                        "parentId",
-                        this.state.preQuesId
-                      );
-                      myAxios
-                        .put("/question/relation", {
-                          childId: this.state.curQuesId,
-                          parentId: this.state.preQuesId,
-                        })
-                        .then((res) => {
-                          console.log(res);
-                          console.log("연관질문 count요청보냄");
-                          this.setState({ preQuesId: this.state.curQuesId });
-                        })
-                        .catch((e) => console.log(e));
+                      console.log(res)
+                      console.log('연관질문 count요청보냄')
+                      this.setState({ preQuesId: this.state.curQuesId});
                     })
-                    .catch((e) => console.log(e));
+                    .catch((e) => console.log(e))
+                  })
+                  .catch((e) => console.log(e))
+                  }
                 }
-              }
-              // 전체가
-              this.setState({ evalnum: 0, evalWaiting: false });
-              this.setState({ chosenQues: "" });
-            } else {
-              // 아직 평가 진행중이라면
+            // 전체가
+            this.setState({ evalnum: 0, evalWaiting: false });
+            this.setState({ chosenQues: ''})
+            } else { // 아직 평가 진행중이라면
               this.setState({ evalnum: evalnum });
             }
             this.nextViewee();
           });
         });
 
-        this.state.session.on("signal:choiceQues", (event) => {
-          console.log(event.data);
-          this.setState({ chosenQues: event.data, customQuesCheck: true });
+        this.state.session.on('signal:choiceQues', (event) => {
+          console.log(event.data)
+          this.setState({chosenQues: event.data, customQuesCheck: true})
         });
 
-        this.state.session.on("signal:reRecoQues", (event) => {
-          console.log(event);
-          this.getRecoQues();
+        this.state.session.on('signal:reRecoQues', (event) => {
+          console.log(event)
+          this.getRecoQues()
           this.setState({
-            chosenQues: "",
-            customQuesCheck: false,
-          });
+            chosenQues: '',
+            customQuesCheck: false
+          })
+          
         });
 
-        this.state.session.on("signal:choiceRecoQues", (event) => {
-          console.log(event.data);
-          console.log(this.state.meetingId);
+        this.state.session.on('signal:choiceRecoQues', (event) => {
+          console.log(event.data)
+          console.log(this.state.meetingId)
           const data = JSON.parse(event.data);
           this.setState({
             chosenQues: data.content,
             curQuesId: data.id,
-            customQuesCheck: false,
-          });
+            customQuesCheck: false
+          })
         });
 
         // 방장이 면접끝냄
         this.state.session.on("signal:finish", (event) => {
           // alert('면접이 끝났습니다.')
-          const isViewer = this.state.viewerState;
-          console.log(this.props.test);
-          if (isViewer === false) {
-            // 면접자들이면 피드백 정보 받기
-            myAxios
-              .get(
-                `/feedback/meeting?memberId=${this.state.id}&roomId=${this.state.meetingId}`
-              )
-              .then((res) => console.log(res))
-              .catch((e) => console.log(e));
-            this.initialize();
+          const isViewer = this.state.viewerState
+          console.log(this.props.test)
+          if (isViewer === false) { // 면접자들이면 피드백 정보 받기
+            myAxios.get(`/feedback/meeting?memberId=${this.state.id}&roomId=${this.state.meetingId}`)
+            .then((res) => console.log(res))
+            .catch((e) => console.log(e))
+            this.initialize()
             // this.props.navigate('/')
             // // 새로고침 안하면 내부적으로 openvidu에서 연결유지됨
             // window.location.reload()
-
-            console.log(this.state.isStart);
-            console.log(this.state.subscribers);
+  
+            console.log(this.state.isStart)
+            console.log(this.state.subscribers)
           }
         });
       }
@@ -741,17 +736,14 @@ class TestComponent extends Component {
   }
 
   getRecoQues() {
-    myAxios
-      .get(
-        `/question?meetingroomId=${this.state.meetingId}&parentId=${this.state.preQuesId}`
-      )
+    myAxios.get(`/question?meetingroomId=${this.state.meetingId}&parentId=${this.state.preQuesId}`)
       .then((res) => {
-        console.log(res);
-        this.setState({
-          recoQues: res.data.questionList,
-        });
+          console.log(res)
+          this.setState({
+              recoQues: res.data.questionList,
+          })
       })
-      .catch((e) => console.log(e));
+      .catch((e) => console.log(e))
   }
 
   updateHost() {
@@ -894,7 +886,7 @@ class TestComponent extends Component {
       newUser.setStreamManager(subscriber);
       newUser.setConnectionId(event.stream.connection.connectionId);
       newUser.setType("remote");
-      newUser.setId(JSON.parse(event.stream.connection.data).id);
+      newUser.setId(JSON.parse(event.stream.connection.data).id)
       newUser.setNickname(JSON.parse(event.stream.connection.data).clientData);
       newUser.setReady(false);
       newUser.setViewer(null);
@@ -998,7 +990,7 @@ class TestComponent extends Component {
       mainStreamManager: undefined,
       readyState: false,
       viewerState: undefined,
-      meetingId: "",
+      meetingId: '',
       isFliped: true,
       chatDisplay: "none",
       questions: [],
@@ -1224,19 +1216,17 @@ class TestComponent extends Component {
       })
       .catch((error) => {});
     // axios 방장이 버튼눌렀으므로 한번만감
-    myAxios
-      .get(
-        `/room/meeting/finish?meetingId=${this.state.meetingId}&roomId=${this.state.waitingId}`
-      )
-      .then((res) => console.log("면접끝 서버로 요청보냄", res))
-      .catch((e) => console.log(e));
+    myAxios.get(`/room/meeting/finish?meetingId=${this.state.meetingId}&roomId=${this.state.waitingId}`)
+    .then((res) => console.log('면접끝 서버로 요청보냄', res))
+    .catch((e) => console.log(e))
+    
   }
   render() {
     const mySessionId = this.state.mySessionId;
     const localUser = this.state.localUser;
     const color = blue[100];
     let chatDisplay = { display: this.state.chatDisplay };
-    const mainStreamManager = this.state.mainStreamManager;
+    const mainStreamManager = this.state.mainStreamManager
     return (
       <div
         style={{
@@ -1250,7 +1240,7 @@ class TestComponent extends Component {
           spacing={2}
           title="waitingProfile"
           sx={{
-            height: "850px",
+            height: "650px",
             display: "flex",
             marginTop: "15px",
             // margin: "16px",
@@ -1262,147 +1252,91 @@ class TestComponent extends Component {
             boxShadow: "0 3px 5px 2px rgba(47, 138, 241, 0.5)",
           }}
         >
-          {this.state.isStart ? (
+          
             <>
               <Grid item xs={3}>
-                <div style={{height:'60%'}}>
-                  {this.state.viewers.map((sub, i) => (
-                    <div
-                      key={i}
-                      className="stream-container"
-                      style={{ height: "50%", marginBottom: "5%", marginTop: "5%" }}
-                      id="remoteUsers"
-                    >
-                      <div>면접관</div>
-                      <StreamComponent
-                        user={sub}
-                        handleNickname={this.nicknameChanged}
-                        style={{height:"50%"}}
-                      />
-                    </div>
-                  ))}
-                </div>
+                  <div>
+                    {this.state.viewers.map((sub, i) => (
+                      <div key={i} className="stream-container" id="remoteUsers">
+                        <div>면접관</div>
+                        <StreamComponent
+                          user={sub}
+                          handleNickname={this.nicknameChanged}
+                        />
+                      </div>
+                    ))}
+                  </div>
 
-                <div>
-                  {this.state.isStart && localUser.viewer && (
-                    <div style={{height: '40%'}}>
+                  <div>
+                    <div>
                       <RecommendationQues
                         session={this.state.session}
                         questions={this.state.questions}
-                        recoQues={this.state.recoQues}
                         mainStreamManager={this.state.mainStreamManager}
-                        handleChoiceQues={(e) => this.handleChoiceQues(e)}
+                        handleChoiceQues={e => this.handleChoiceQues(e)}
                         preQuesId={this.state.preQuesId}
-                        meetingId={this.state.meetingId}
                       />
                     </div>
-                  )}
-                </div>
+                  </div>
               </Grid>
+
               <Grid item xs={6}>
-                <div style={{width:'100%', height:'30%'}}>
-                  {this.state.viewees.map((sub, i) =>
-                    sub !== this.state.mainStreamManager ? (
-                      <div
-                        key={i}
-                        className="stream-container"
-                        style={{ float: "left", marginTop:'5%', width:'30%', height:'40%'}}
-                        id="remoteUsers"
-                      >
-                        <div>면접자</div>
-                        <StreamComponent3 user={sub} />
-                      </div>
-                    ) : null
+                {/* {localUser !== undefined &&
+                  localUser.getStreamManager() !== undefined && (
+                    <div className="stream-container" id="localUser">
+                      <div>내캠</div>
+                      <StreamComponent
+                        user={localUser}
+                        handleNickname={this.nicknameChanged}
+                      />
+                    </div>
+                )} */}
+                <div>
+                  {this.state.viewees.map((sub, i) => sub !== this.state.mainStreamManager ? 
+                    <div key={i} className="stream-container" id="remoteUsers">
+                      <div>면접자</div>
+                      <StreamComponent
+                        user={sub}
+                      />
+                    </div>
+                    : null
                   )}
                 </div>
 
-                <div style={{width:'100%', height:'70%'}}>
+                <div>
                   {this.state.mainStreamManager && (
-                    <div className="stream-container" style={{ height: "100%", width:'100%' }} id="remoteUsers">
+                    <div className="stream-container" id="remoteUsers">
                       <div>선택된화면</div>
-                      <StreamComponent2 user={this.state.mainStreamManager} />
+                      <StreamComponent user={this.state.mainStreamManager} />
                     </div>
                   )}
                 </div>
               </Grid>
-
+              
               <Grid item xs={3}>
-                <div>
-                  {this.state.isStart && localUser.viewer && (
-                    <EvaluationSheet
-                      viewers={this.state.viewers}
-                      viewee={this.state.mainStreamManager}
-                      session={this.state.session}
-                      evalWaiting={this.state.evalWaiting}
-                    />
-                  )}
-                </div>
-
-                <div>
-                  {this.state.isStart && localUser.viewer && (
-                    <button onClick={this.handleFinish}>면접끝내기</button>
-                  )}
-                </div>
-              </Grid>
-            </>
-          ) : (
-            <>
-              {/* 유저 리스트 */}
-              <Grid item xs={8}>
-                {this.state.isStart ? null : (
-                  <TestUserList
+                {this.state.isStart && localUser.viewer && (
+                  <EvaluationSheet
+                    viewers={this.state.viewers}
+                    viewee={this.state.mainStreamManager}
                     session={this.state.session}
-                    subscribers={this.state.subscribers}
-                    myUserName={this.state.myUserName}
-                    ready={this.state.readyState}
-                    viewer={this.state.viewerState}
-                    localUser={localUser}
-                    ishost={this.state.ishost}
-                    hostId={this.state.hostId}
-                    allReady={this.state.allReady}
-                    roomId={this.state.waitingId}
+                    evalWaiting={this.state.evalWaiting}
                   />
                 )}
-                {this.state.isStart ? <h1>START</h1> : null}
               </Grid>
-              {/* 채팅 */}
 
-              <Grid item xs={4}>
-                {localUser !== undefined &&
-                  localUser.getStreamManager() !== undefined && (
-                    <div
-                      style={{
-                        chatDisplay,
-                      }}
-                    >
-                      <TestQuesList
-                        className="row-span-1"
-                        session={this.state.session}
-                        questions={this.state.questions}
-                        ready={this.state.readyState}
-                        chatDisplay={this.state.chatDisplay}
-                        localUser={localUser}
-                        waitingId={this.state.waitingId}
-                      />
-                      <ChatComponent
-                        user={localUser}
-                        chatDisplay={this.state.chatDisplay}
-                        close={this.toggleChat}
-                        messageReceived={this.checkNotification}
-                        hidden={!this.state.hidden}
-                      />
-                    </div>
-                  )}
-              </Grid>
+
             </>
-          )}
-        </Grid>
-        {this.state.isStart ? <h1>START</h1> : null}
-        {/* {this.state.isStart && localUser.viewer && (
-          <button onClick={this.handleFinish}>면접끝내기</button>
-        )} */}
-        {/* 여기까지가 대기방 */}
-      </div>
+
+
+          
+          
+          </Grid>
+          {this.state.isStart ? <h1>START</h1> : null}
+          {this.state.isStart && localUser.viewer && 
+            <button onClick={this.handleFinish}>면접끝내기</button>
+          }
+          {/* 여기까지가 대기방 */}
+        </div>
     );
   }
 
