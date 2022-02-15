@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import './StreamComponent.css';
 
-export default class OvVideoComponent extends Component {
+export default class OvVideoComponent2 extends Component {
     constructor(props) {
         super(props);
         this.videoRef = React.createRef();
@@ -32,7 +32,7 @@ export default class OvVideoComponent extends Component {
     render() {
         return (
             <video
-                style={{width:'100%', marginLeft:'2%', marginBottom:'2%', marginRight:'2%'}}
+                style={{width:'200%', height:'100%', marginLeft:'2%', marginBottom:'2%', marginRight:'2%'}}
                 autoPlay={true}
                 id={'video-' + this.props.user.getStreamManager().stream.streamId}
                 ref={this.videoRef}

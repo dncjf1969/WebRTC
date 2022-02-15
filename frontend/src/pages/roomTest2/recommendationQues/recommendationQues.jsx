@@ -91,13 +91,12 @@ class RecommendationQues extends Component {
 
         const tempStyle2={
             display:"inline-block",
-            width:"800px",
-            height:"100px",
-            marginLeft:"200px",
+            width:"280px",
+            height:"300px",
+            marginLeft:"5px",
             backgroundColor : 'white',
-            border: '1px solid black',
-            marginLeft:"250px",
-            marginTop:"50px",
+            border: '5px solid black',
+            marginTop:"10%",
         }
         const tempStyle3={
             display:"inline-block",

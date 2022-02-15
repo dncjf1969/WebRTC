@@ -126,7 +126,7 @@ function WaitingRoomModal({ modalClose }) {
               label="Age"
               onChange={handleJobChange}
             >
-              <MenuItem value={"인성"}>인성</MenuItem>
+              {/* <MenuItem value={"인성"}>인성</MenuItem> */}
               <MenuItem value={"IT"}>IT</MenuItem>
               <MenuItem value={"금융"}>금융</MenuItem>
               <MenuItem value={"영업"}>영업</MenuItem>

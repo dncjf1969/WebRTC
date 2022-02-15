@@ -94,10 +94,10 @@ function Login() {
                             비밀번호
                           </label>
                           <Link
-                            to="reset-password"
+                            to="/reset-password"
                             className="text-sm font-medium text-blue-600 hover:underline"
                           >
-                            Having trouble Loging in?
+                            비밀번호를 잊어버리셨나요?
                           </Link>
                         </div>
                         <input

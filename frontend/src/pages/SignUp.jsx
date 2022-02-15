@@ -14,6 +14,7 @@ import { makeStyles } from '@material-ui/core/styles';
 // import { signup, checkEmail } from '../authSlice';
 import axios from '../common/http-common'
 import Header from '../partials/Header';
+import SelectCharacter from "./SelectCharacter";
 
 // style
 const Wrapper = styled.div`
@@ -59,6 +60,7 @@ function SignUp() {
 
   const [checkId, setCheckId] = useState(false)
   const [checkNickname, setCheckNickname] = useState(false)
+  const [characterNumber, setCharacterNumber] = useState("");
 
   const classes = useStyles();
   // const dispatch = useDispatch();
@@ -112,7 +114,8 @@ function SignUp() {
         'email': email,
         'id': ID,
         'name': Nickname,
-        'password': password
+        'password': password,
+        'characterNumber' : characterNumber,
       }
       signup(data);
       alert('요청보냄')
@@ -212,6 +215,10 @@ function SignUp() {
               {/* Form */}
               <div className="max-w-sm mx-auto">
                 <form onSubmit={handleSubmit}>
+                  {/* 캐릭터 선택 */}
+                  <SelectCharacter 
+                   setCharacterNumber={setCharacterNumber}/>
+
                   {/* 아이디 */}
                   <div className="flex flex-wrap -mx-3 mb-4">
                     <div className="w-full px-3" >
