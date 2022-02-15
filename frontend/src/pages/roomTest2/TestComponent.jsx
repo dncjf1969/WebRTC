@@ -19,7 +19,6 @@ import TestUserList from "./TestUserList/TestUserList";
 import TestQuesList from "./TestQuesList/TestQuesList";
 import EvaluationSheet from "./evaluationSheet/evaluationSheet";
 import RecommendationQues from "./recommendationQues/recommendationQues";
-
 // 채팅, 사전채팅 토글
 import BottomNavigationAction from "@mui/material/BottomNavigationAction";
 import RestoreIcon from "@mui/icons-material/Restore";
@@ -38,10 +37,44 @@ import {
   BottomNavigation,
   createTheme,
 } from "@mui/material";
+// 피드백용
+import PropTypes from 'prop-types';
+import Button from '@mui/material/Button';
+import Dialog from '@mui/material/Dialog';
+import DialogTitle from '@mui/material/DialogTitle';
+import DialogContent from '@mui/material/DialogContent';
+import DialogActions from '@mui/material/DialogActions';
+import IconButton from '@mui/material/IconButton';
+import CloseIcon from '@mui/icons-material/Close';
+import Divider from '@mui/material/Divider';
+//
 import { bgcolor } from "@mui/system";
 import { deepPurple, teal } from "@mui/material/colors";
 import { blue } from "@material-ui/core/colors";
 // ----------------------------------------------------------------------
+//// 피드백용
+const BootstrapDialog = styled(Dialog)(({ theme }) => ({
+  '& .MuiDialogContent-root': {
+    padding: theme.spacing(2),
+  },
+  '& .MuiDialogActions-root': {
+    padding: theme.spacing(1),
+  },
+}));
+
+const BootstrapDialogTitle = (props) => {
+  const { children, ...other } = props;
+  return (
+    <DialogTitle sx={{ m: 0, p: 2 }} {...other}>
+      {children}
+    </DialogTitle>
+  );
+};
+
+BootstrapDialogTitle.propTypes = {
+  children: PropTypes.node,
+};
+////
 
 const RootStyle = styled("div")(({ theme }) => ({
   [theme.breakpoints.up("300")]: {
@@ -76,10 +109,6 @@ class TestComponent extends Component {
     //   ? this.props.openviduServerUrl
     //   : "https://" + "i6e201.p.ssafy.io" + ":4443";
     this.OPENVIDU_SERVER_URL = "https://i6e201.p.ssafy.io:1443";
-<<<<<<< HEAD
-=======
-    // this.OPENVIDU_SERVER_URL = "https://localhost:4443";
->>>>>>> frontend
     this.OPENVIDU_SERVER_SECRET = this.props.openviduSecret
       ? this.props.openviduSecret
       : "WISH";
@@ -186,10 +215,13 @@ class TestComponent extends Component {
       value: 0,
       hidden: false,
       customQuesCheck: false,
+      feedbacks: [],
+      feedbackDialogState: false,
     };
     console.log("state다");
     console.log(this.state);
     console.log(localUser);
+    this.handleCloseFeedback = this.handleCloseFeedback.bind(this);
     this.getRecoQues = this.getRecoQues.bind(this);
     this.nextViewee = this.nextViewee.bind(this);
     this.joinSession = this.joinSession.bind(this);
@@ -559,11 +591,17 @@ class TestComponent extends Component {
           // alert('면접이 끝났습니다.')
           const isViewer = this.state.viewerState
           console.log(this.props.test)
+          this.setState({feedbackDialogState: true,})
           if (isViewer === false) { // 면접자들이면 피드백 정보 받기
             myAxios.get(`/feedback/meeting?memberId=${this.state.id}&roomId=${this.state.meetingId}`)
-            .then((res) => console.log(res))
+            .then((res) => {
+              console.log(res)
+              this.setState({
+                feedbacks: res.data
+              })
+            })
             .catch((e) => console.log(e))
-            this.initialize()
+            // this.initialize()
             // this.props.navigate('/')
             // // 새로고침 안하면 내부적으로 openvidu에서 연결유지됨
             // window.location.reload()
@@ -809,7 +847,7 @@ class TestComponent extends Component {
       })
       .then((response) => {
         console.log(response);
-        if (response.data.numberOfElements === 0) {
+        if (response.data.numberOfElements === 1) {
           // 0인지 1인지 실험필요
           myAxios
             .delete(`/room/waiting?roomId=${this.state.waitingId}`)
@@ -1222,14 +1260,22 @@ class TestComponent extends Component {
     myAxios.get(`/room/meeting/finish?meetingId=${this.state.meetingId}&roomId=${this.state.waitingId}`)
     .then((res) => console.log('면접끝 서버로 요청보냄', res))
     .catch((e) => console.log(e))
-    
   }
+
+  handleCloseFeedback() {
+    this.setState({feedbackDialogState:false});
+    this.props.navigate("/")
+    window.localStorage.removeItem("roomId")
+    window.localStorage.removeItem("token")
+    window.location.reload()
+  }
+
   render() {
     const mySessionId = this.state.mySessionId;
     const localUser = this.state.localUser;
     const color = blue[100];
     let chatDisplay = { display: this.state.chatDisplay };
-    const mainStreamManager = this.state.mainStreamManager
+    const mainStreamManager = this.state.mainStreamManager;
     return (
       <div
         style={{
@@ -1257,33 +1303,37 @@ class TestComponent extends Component {
         >
           {this.state.isStart ? (
             <>
-            <Grid item xs={3}>
-              <div>
-                {this.state.viewers.map((sub, i) => (
-                  <div key={i} className="stream-container" id="remoteUsers">
-                    <div>면접관</div>
-                    <StreamComponent
-                      user={sub}
-                      handleNickname={this.nicknameChanged}
-                    />
-                  </div>
-                ))}
-              </div>
+              <Grid item xs={3}>
+                {/* <div>
+                  {this.state.viewers.map((sub, i) => (
+                    <div key={i} className="stream-container" id="remoteUsers">
+                      <div>면접관</div>
+                      <StreamComponent
+                        user={sub}
+                        handleNickname={this.nicknameChanged}
+                      />
+                    </div>
+                  ))}
+                </div> */}
 
-              <div>
-                {this.state.isStart && localUser.viewer && (
-                  <EvaluationSheet
-                    viewers={this.state.viewers}
-                    viewee={this.state.mainStreamManager}
-                    session={this.state.session}
-                    evalWaiting={this.state.evalWaiting}
-                  />
-                )}
-              </div>
-
-            </Grid>
-            <Grid item xs={6}>
-              {localUser !== undefined &&
+                <div>
+                  {this.state.isStart && localUser.viewer && (
+                    <div>
+                      <RecommendationQues
+                        session={this.state.session}
+                        questions={this.state.questions}
+                        recoQues={this.state.recoQues}
+                        mainStreamManager={this.state.mainStreamManager}
+                        handleChoiceQues={e => this.handleChoiceQues(e)}
+                        preQuesId={this.state.preQuesId}
+                        meetingId={this.state.meetingId}
+                      />
+                    </div>
+                  )}
+                </div>
+              </Grid>
+              <Grid item xs={6}>
+                {/* {localUser !== undefined &&
                 localUser.getStreamManager() !== undefined && (
                   <div className="stream-container" id="localUser">
                     <div>내캠</div>
@@ -1292,44 +1342,40 @@ class TestComponent extends Component {
                       handleNickname={this.nicknameChanged}
                     />
                   </div>
-              )}
+              )} */}
 
-              {this.state.viewees.map((sub, i) => (
+                {this.state.viewees.map((sub, i) =>
+                  sub !== this.state.mainStreamManager ? (
                     <div key={i} className="stream-container" id="remoteUsers">
                       <div>면접자</div>
-                      <StreamComponent
-                        user={sub}
-                        handleNickname={this.nicknameChanged}
-                      />
+                      <StreamComponent user={sub} />
                     </div>
-                  ))}
+                  ) : null
+                )}
 
-                  {this.state.mainStreamManager && (
-                    <div className="stream-container" id="remoteUsers">
-                      <div>선택된화면</div>
-                      <StreamComponent user={this.state.mainStreamManager} />
-                    </div>
-                  )}
-            </Grid>
-            
-            <Grid item xs={3}>
-              {this.state.isStart && localUser.viewer && (
-                <EvaluationSheet
-                  viewers={this.state.viewers}
-                  viewee={this.state.mainStreamManager}
-                  session={this.state.session}
-                  evalWaiting={this.state.evalWaiting}
-                />
-              )}
+                {this.state.mainStreamManager && (
+                  <div className="stream-container" id="remoteUsers">
+                    <div>선택된화면</div>
+                    <StreamComponent user={this.state.mainStreamManager} />
+                  </div>
+                )}
+              </Grid>
 
-            </Grid>
-
-              
-
-
+              <Grid item xs={3}>
+                {this.state.isStart && localUser.viewer && (
+                  <EvaluationSheet
+                    viewers={this.state.viewers}
+                    viewee={this.state.mainStreamManager}
+                    session={this.state.session}
+                    evalWaiting={this.state.evalWaiting}
+                    chosenQues={this.state.chosenQues}
+                    curQuesId={this.state.curQuesId}
+                    preQuesId={this.state.preQuesId}
+                    meetingId={this.state.meetingId}
+                  />
+                )}
+              </Grid>
             </>
-
-
           ) : (
             <>
               {/* 유저 리스트 */}
@@ -1381,14 +1427,67 @@ class TestComponent extends Component {
               </Grid>
             </>
           )}
-          
-          </Grid>
-          {this.state.isStart ? <h1>START</h1> : null}
-          {this.state.isStart && localUser.viewer && 
-            <button onClick={this.handleFinish}>면접끝내기</button>
-          }
-          {/* 여기까지가 대기방 */}
-        </div>
+        </Grid>
+        {this.state.isStart ? <h1>START</h1> : null}
+        {this.state.isStart && localUser.viewer && (
+          <button onClick={this.handleFinish}>면접끝내기</button>
+        )}
+        {/* 피드백 */}
+        {/* 면접자용 */}
+          <div>
+            <BootstrapDialog
+              aria-labelledby="customized-dialog-title"
+              open={this.state.feedbackDialogState && !this.state.viewerState}
+            >
+              <BootstrapDialogTitle id="customized-dialog-title" onClose={this.handleCloseFeedback}>
+                면접이 끝났습니다! 피드백들이에요!
+              </BootstrapDialogTitle>
+              <DialogContent dividers>
+                {this.state.feedbacks.map((feedback) =>
+                <div>
+                  <Typography gutterBottom>
+                    받은질문: {feedback.question}
+                  </Typography>
+                  <Typography gutterBottom>
+                    받은점수: {feedback.rate}
+                  </Typography>
+                  <Typography gutterBottom>
+                    피드백: {feedback.comment}
+                  </Typography>
+                  <Divider />
+                </div>
+                )}
+              </DialogContent>
+              <DialogActions>
+                <Button autoFocus onClick={this.handleCloseFeedback}>
+                  확인
+                </Button>
+              </DialogActions>
+            </BootstrapDialog>
+          </div>
+          {/* 면접관용 */}
+          <div>
+            <BootstrapDialog
+              aria-labelledby="customized-dialog-title"
+              open={this.state.feedbackDialogState && this.state.viewerState}
+            >
+              <BootstrapDialogTitle id="customized-dialog-title" onClose={this.handleCloseFeedback}>
+                면접이 끝났습니다!
+              </BootstrapDialogTitle>
+              <DialogContent dividers>
+                <Typography gutterBottom> 
+                  면접을 마치셨습니다. 면접관님의 평가는 면접자들에게 큰 도움이 될 것입니다!!!
+                </Typography>
+              </DialogContent>
+              <DialogActions>
+                <Button autoFocus onClick={this.handleCloseFeedback}>
+                  확인
+                </Button>
+              </DialogActions>
+            </BootstrapDialog>
+          </div>
+        
+      </div>
     );
   }
 
