@@ -43,7 +43,7 @@ public class QuestionController {
 			@ApiResponse(code = 404, message = "사용자 없음"),
 			@ApiResponse(code = 500, message = "서버 오류")
 	})
-	//@PreAuthorize("hasAnyRole('USER')")
+	@PreAuthorize("hasAnyRole('BASIC')")
 	public ResponseEntity<? extends BaseRes> readQuestion(
 			@ApiIgnore Authentication authentication,
 			@ApiParam(value="사전질문 리스트 조회할 방 id", required = true, example="1") @RequestParam String meetingroomId, 
@@ -64,7 +64,7 @@ public class QuestionController {
         @ApiResponse(code = 404, message = "사용자 없음"),
         @ApiResponse(code = 500, message = "서버 오류")
     })
-	//@PreAuthorize("hasAnyRole('USER')")
+	@PreAuthorize("hasAnyRole('BASIC')")
 	public ResponseEntity<? extends BaseRes> createCustomQuestion(
 			@ApiIgnore Authentication authentication,
 			@RequestBody @ApiParam(value="사전질문 생성 정보", required = true) CustomQuestionCreateReq customQuestionCreateReq) {
@@ -83,7 +83,7 @@ public class QuestionController {
 			@ApiResponse(code = 404, message = "사용자 없음"),
 			@ApiResponse(code = 500, message = "서버 오류")
 	})
-	//@PreAuthorize("hasAnyRole('USER')")
+	@PreAuthorize("hasAnyRole('BASIC')")
 	public ResponseEntity<? extends BaseRes> updateCustomQuestion(
 			@ApiIgnore Authentication authentication,
 			@RequestBody @ApiParam(value="사전질문 수정 정보", required = true)CustomQuestionUpdateReq customQuestionUpdateReq) {
@@ -101,7 +101,7 @@ public class QuestionController {
 			@ApiResponse(code = 404, message = "사용자 없음"),
 			@ApiResponse(code = 500, message = "서버 오류")
 	})
-	//@PreAuthorize("hasAnyRole('USER')")
+	@PreAuthorize("hasAnyRole('BASIC')")
 	public ResponseEntity<? extends BaseRes> deleteCustomQuestion(
 			@ApiIgnore Authentication authentication,
 			@ApiParam(value="삭제할 사전질문 id", required = true) @RequestParam Long id) {
@@ -119,7 +119,7 @@ public class QuestionController {
 			@ApiResponse(code = 404, message = "사용자 없음"),
 			@ApiResponse(code = 500, message = "서버 오류")
 	})
-	//@PreAuthorize("hasAnyRole('USER')")
+	@PreAuthorize("hasAnyRole('BASIC')")
 	public ResponseEntity<? extends BaseRes> deleteAllCustomQuestion(
 			@ApiIgnore Authentication authentication,
 			@ApiParam(value="사전질문을 모두 삭제할 방 id", required = true) @RequestParam String meetingroomId) {
@@ -137,7 +137,7 @@ public class QuestionController {
 			@ApiResponse(code=404, message = "사용자 없음"),
 			@ApiResponse(code=500, message = "서버 오류"),
 	})
-	//@PreAuthorize("hasAnyRole('USER')")
+	@PreAuthorize("hasAnyRole('BASIC')")
 	public ResponseEntity<? extends BaseRes> selectedQusetion(
 			@ApiIgnore Authentication authentication,
 			@RequestBody @ApiParam(value="선택된 질문 id", required = true)  QuestionSelectReq questionSelectReq){
@@ -155,7 +155,7 @@ public class QuestionController {
 			@ApiResponse(code=404, message = "사용자 없음"),
 			@ApiResponse(code=500, message = "서버 오류"),
 	})
-	//@PreAuthorize("hasAnyRole('USER')")
+	@PreAuthorize("hasAnyRole('BASIC')")
 	public ResponseEntity<? extends BaseRes>  relationQusetion(
 			@ApiIgnore Authentication authentication,
 			@RequestBody @ApiParam(value="연관 부모, 자식 질문 id", required = true) RelationQuestionUpdateReq relationQuestionUpdateReq){

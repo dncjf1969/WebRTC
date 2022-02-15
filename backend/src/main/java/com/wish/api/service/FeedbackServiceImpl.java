@@ -76,7 +76,16 @@ public class FeedbackServiceImpl implements FeedbackService {
 
 	@Override
 	public List<MeetingCountRes> getMyMeetingCounts(String memberId) {
-		List<MeetingCountRes> res = feedbackRepositorySupport.countById(memberId).get();
+		
+		List<MeetingCountRes> res =null;
+		try {
+			res = feedbackRepositorySupport.countById(memberId).get();
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
+		
+		
 		
 		return res;
 	}
