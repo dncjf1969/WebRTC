@@ -55,45 +55,45 @@ function WaitingRoomModal({ modalClose }) {
   // 방생성 버튼
   const handleCreateRoom = async () => {
     if (name === "") {
-      alert("방제목을 입력해주세요")
+      alert("방제목을 입력해주세요");
     } else if (type === "") {
-      alert("면접 종류를 선택해주세요")
-    } else if (job === "")  {
-      alert("카테고리를 선택해주세요")
+      alert("면접 종류를 선택해주세요");
+    } else if (job === "") {
+      alert("카테고리를 선택해주세요");
     } else if (checked && !password) {
-      alert("비밀번호를 설정해주세요")
+      alert("비밀번호를 설정해주세요");
     } else {
       const data = {
-      job: job,
-      manager: window.localStorage.getItem('id'),
-      memberMax: members,
-      name: name,
-      password: password !== "" ? password : null,
-      type: type,
-    };
-    console.log(data);
+        job: job,
+        manager: window.localStorage.getItem("id"),
+        memberMax: members,
+        name: name,
+        password: password !== "" ? password : null,
+        type: type,
+      };
+      console.log(data);
 
-    // console.log("아이디 버튼 활성화", ID);
-    // 여기는 대기방생성모달로 지금 axios요청 보냄
-    await axios
-      .post(`/room/waiting`, data, {
-        headers: {
-          Authorization: window.localStorage.getItem('jwt'),
-        },
-      })
-      .then((res) => {
-        console.log(res);
-        const token = res.data.token;
-        const roomId = res.data.roomId;
-        window.localStorage.setItem("token", token);
-        window.localStorage.setItem("roomId", roomId);
-        navigate("/waitingroom");
-        return res.data;
-      })
-      .catch((err) => {
-        console.log(err);
-        return err;
-      });
+      // console.log("아이디 버튼 활성화", ID);
+      // 여기는 대기방생성모달로 지금 axios요청 보냄
+      await axios
+        .post(`/room/waiting`, data, {
+          headers: {
+            Authorization: window.localStorage.getItem("jwt"),
+          },
+        })
+        .then((res) => {
+          console.log(res);
+          const token = res.data.token;
+          const roomId = res.data.roomId;
+          window.localStorage.setItem("token", token);
+          window.localStorage.setItem("roomId", roomId);
+          navigate("/waitingroom");
+          return res.data;
+        })
+        .catch((err) => {
+          console.log(err);
+          return err;
+        });
     }
   };
 
@@ -129,6 +129,23 @@ function WaitingRoomModal({ modalClose }) {
             onChange={(e) => setName(e.target.value)}
             value={name}
           />
+          <FormControl sx={{ m: 1, minWidth: 120 }}>
+            <InputLabel id="demo-simple-select-helper-label">
+              면접 종류
+            </InputLabel>
+            <Select
+              labelId="demo-simple-select-helper-label"
+              id="demo-simple-select-helper"
+              value={type}
+              label="Age"
+              onChange={handleTypeChange}
+            >
+              <MenuItem value={"인성"}>인성</MenuItem>
+              <MenuItem value={"직무"}>직무</MenuItem>
+              {/* <MenuItem value={"토론"}>토론</MenuItem>
+              <MenuItem value={"pt"}>pt</MenuItem> */}
+            </Select>
+          </FormControl>
 
           <FormControl sx={{ m: 1, minWidth: 120 }}>
             <InputLabel id="demo-simple-select-helper-label">
@@ -145,24 +162,6 @@ function WaitingRoomModal({ modalClose }) {
               <MenuItem value={"IT"}>IT</MenuItem>
               <MenuItem value={"금융"}>금융</MenuItem>
               <MenuItem value={"영업"}>영업</MenuItem>
-              {/* <MenuItem value={"토론"}>토론</MenuItem>
-              <MenuItem value={"pt"}>pt</MenuItem> */}
-            </Select>
-          </FormControl>
-
-          <FormControl sx={{ m: 1, minWidth: 120 }}>
-            <InputLabel id="demo-simple-select-helper-label">
-              면접 종류
-            </InputLabel>
-            <Select
-              labelId="demo-simple-select-helper-label"
-              id="demo-simple-select-helper"
-              value={type}
-              label="Age"
-              onChange={handleTypeChange}
-            >
-              <MenuItem value={"인성"}>인성</MenuItem>
-              <MenuItem value={"직무"}>직무</MenuItem>
               {/* <MenuItem value={"토론"}>토론</MenuItem>
               <MenuItem value={"pt"}>pt</MenuItem> */}
             </Select>
