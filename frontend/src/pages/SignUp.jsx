@@ -132,7 +132,10 @@ function SignUp() {
   // '/signup' -> 비동기 호출 실시
 
   async function handleIDCheck() {
-    await axios
+    if (ID === "") {
+      alert("아이디를 입력해주세요")
+    } else {
+      await axios
       .get(`/members/check/id?id=${ID}`)
       .then((res) => {
         console.log(res)
@@ -146,12 +149,16 @@ function SignUp() {
         setCheckId(false)
         return err;
       });
+    }
   }
 
   
 
   async function handleNicknameCheck() {
-    await axios
+    if (Nickname === "") {
+      alert("닉네임을 입력해주세요")
+    } else {
+      await axios 
       .get(`/members/check/name?name=${Nickname}`)
       .then((res) => {
         console.log(res)
@@ -165,6 +172,7 @@ function SignUp() {
         setCheckNickname(false)
         return err;
       });
+    }
   }
 
   // validation (same password)

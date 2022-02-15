@@ -54,7 +54,16 @@ function WaitingRoomModal({ modalClose }) {
   let navigate = useNavigate();
   // 방생성 버튼
   const handleCreateRoom = async () => {
-    const data = {
+    if (name === "") {
+      alert("방제목을 입력해주세요")
+    } else if (type === "") {
+      alert("면접 종류를 선택해주세요")
+    } else if (job === "")  {
+      alert("카테고리를 선택해주세요")
+    } else if (checked && !password) {
+      alert("비밀번호를 설정해주세요")
+    } else {
+      const data = {
       job: job,
       manager: window.localStorage.getItem('id'),
       memberMax: members,
@@ -85,7 +94,9 @@ function WaitingRoomModal({ modalClose }) {
         console.log(err);
         return err;
       });
+    }
   };
+
   const handleJobChange = (event) => {
     setJob(event.target.value);
   };
@@ -121,7 +132,7 @@ function WaitingRoomModal({ modalClose }) {
 
           <FormControl sx={{ m: 1, minWidth: 120 }}>
             <InputLabel id="demo-simple-select-helper-label">
-              면접 종류
+              카테고리
             </InputLabel>
             <Select
               labelId="demo-simple-select-helper-label"
