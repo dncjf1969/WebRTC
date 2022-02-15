@@ -217,7 +217,7 @@ function SignUp() {
                 <form onSubmit={handleSubmit}>
                   {/* 캐릭터 선택 */}
                   <SelectCharacter 
-                   setCharacterNumber={ setCharacterNumber}/>
+                   setCharacterNumber={setCharacterNumber}/>
 
                   {/* 아이디 */}
                   <div className="flex flex-wrap -mx-3 mb-4">
