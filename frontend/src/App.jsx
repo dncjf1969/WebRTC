@@ -14,8 +14,7 @@ import Room from "./pages/roomTest2/room";
 import MyPage from "./pages/mypage/Mypage";
 import NotFound from "./pages/Page404";
 import { createTheme } from "@material-ui/core";
-import Test from './pages/roomTest2/Test';
-import Test2 from './pages/roomTest2/Test2';
+
 
 function App() {
   const location = useLocation();
@@ -57,8 +56,7 @@ function App() {
         <Route path="/mypage" element={<MyPage />} />
         <Route path="/404" element={<NotFound />} />
         <Route path="*" element={<Navigate to="/404" replace />} />
-        <Route path="/test" element={<Test />} />
-        <Route path="/test2" element={<Test2 />} />
+     
       </Routes>
     </>
   );
