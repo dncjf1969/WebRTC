@@ -87,7 +87,7 @@ function WaitingRoomModal({ modalClose }) {
         const roomId = res.data.roomId;
         window.localStorage.setItem("token", token);
         window.localStorage.setItem("roomId", roomId);
-        // navigate("/waitingroom");
+        navigate("/waitingroom");
         return res.data;
       })
       .catch((err) => {

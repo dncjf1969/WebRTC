@@ -39,8 +39,10 @@ export function WaitingListSearch() {
         params: {
           keyword: word,
           searchType: search,
-          roomType: roomType,
         },
+        headers: {
+          Authorization: window.localStorage.getItem('jwt'),
+        }, 
       })
       .then((res) => {
         console.log(res)
@@ -52,6 +54,7 @@ export function WaitingListSearch() {
         console.log("id검색 결과", search);
       })
       .catch((err) => {
+        console.log(err.response)
         return err;
       });
   };

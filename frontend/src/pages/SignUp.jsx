@@ -109,7 +109,15 @@ function SignUp() {
   // submit when user click button
   function handleSubmit(event) {
     event.preventDefault();
-    if (checkId && checkNickname) {
+    if (!characterNumber) {
+      alert("캐릭터를 선택해주세요")
+    } else if (!checkId && checkNickname) {
+      alert('아이디 중복을 확인해주세요')
+    } else if (checkId && !checkNickname) {
+      alert('닉네임 중복을 확인해주세요')
+    } else if (!checkId && !checkNickname) {
+      alert('아이디와 닉네임의 중복을 확인해주세요')
+    } else {
       const data = {
         'email': email,
         'id': ID,
@@ -120,12 +128,6 @@ function SignUp() {
       signup(data);
       alert('회원가입 성공!')
       navigate("/login")
-    } else if (!checkId && checkNickname) {
-      alert('아이디 중복을 확인해주세요')
-    } else if (checkId && !checkNickname) {
-      alert('닉네임 중복을 확인해주세요')
-    } else if (!checkId && !checkNickname) {
-      alert('아이디와 닉네임의 중복을 확인해주세요')
     }
   }
   // event.preventDefault() = 기본 클릭 동작 방지하기
