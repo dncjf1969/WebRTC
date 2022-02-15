@@ -1,9 +1,11 @@
 package com.wish.api.service;
 
+import com.querydsl.core.Tuple;
 import com.wish.api.dto.request.FeedbackCreateReq;
 import com.wish.api.dto.response.FeedbackRes;
 import com.wish.common.exception.custom.feedback.CreateFeedbackException;
 import com.wish.common.exception.custom.feedback.DeleteFeedbackException;
+import com.wish.common.exception.custom.feedback.ReadFeedbackException;
 import com.wish.api.dto.response.MeetingCountRes;
 import com.wish.db.entity.Feedback;
 import com.wish.db.repository.FeedbackRepository;
@@ -15,7 +17,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 
 @Service
@@ -57,6 +58,7 @@ public class FeedbackServiceImpl implements FeedbackService {
 			feedback.setQuestion(info.getQuestion());
 			feedback.setComment(info.getComment());
 			feedback.setRate(info.getRate());
+			feedback.setType(info.getType());
 			
 			feedbackRepository.save(feedback);
 		} catch ( CreateFeedbackException e) {
@@ -75,35 +77,7 @@ public class FeedbackServiceImpl implements FeedbackService {
 
 	@Override
 	public List<MeetingCountRes> getMyMeetingCounts(String memberId) {
-		
-		List<MeetingCountRes> res = new ArrayList<MeetingCountRes>();
-		res.add(new MeetingCountRes("인성", (long) 0));
-		res.add(new MeetingCountRes("직무", (long) 0));
-		res.add(new MeetingCountRes("토론", (long) 0));
-		res.add(new MeetingCountRes("PT", (long) 0));
-		
-		try {
-			Optional<List<MeetingCountRes>> data = feedbackRepositorySupport.countById(memberId);
-			if(!data.isPresent()) {
-				return res;
-			}
-			
-			List<MeetingCountRes> list = data.get();
-			
-			for (MeetingCountRes a : list) {
-				for (MeetingCountRes b : res) {
-					if(a.getType().equals(b.getType())) {
-						b.setCount(a.getCount());
-					}
-				}
-			}
-			
-		} catch (Exception e) {
-			// TODO: handle exception
-			e.printStackTrace();
-		}
-		
-		
+		List<MeetingCountRes> res = feedbackRepositorySupport.countById(memberId).get();
 		
 		return res;
 	}
