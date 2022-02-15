@@ -85,7 +85,11 @@ function UpdateUser() {
       // 비동기 호출 함수를 정의합니다.
       console.log(userInfo);
       await axios
-        .put("/members", userInfo)
+        .put("/members", userInfo, {
+          headers: {
+            Authorization: window.localStorage.getItem('jwt'),
+          },
+        })
         .then((res) => {
           alert('회원정보 변경 완료! 다시 로그인 해주세요!')
           window.localStorage.removeItem('id')

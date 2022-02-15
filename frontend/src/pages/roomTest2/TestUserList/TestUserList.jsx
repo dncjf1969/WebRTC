@@ -80,7 +80,11 @@ class TestUserList extends Component {
       },
     };
     await axios
-      .get(`/room/meeting/start?roomId=${roomId}`, headers)
+      .get(`/room/meeting/start?roomId=${roomId}`, {
+        headers: {
+          Authorization: window.localStorage.getItem('jwt'),
+        },
+      })
       .then((res) => {
         console.log(res);
         this.setState({ meetingId: res.data.roomIdMysql });

@@ -19,7 +19,6 @@ function HeroHome() {
           <div className="text-center pb-12 md:pb-12">
             <h1
               className="text-5xl md:text-6xs font-extrabold leading-tighter tracking-tighter"
-
             >
               마이 페이지
             </h1>

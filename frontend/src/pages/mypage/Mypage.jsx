@@ -158,7 +158,7 @@ export default function MyPage() {
       setPT(response.data.filter((info) => info.type === "PT")[0].count);
       // return response;
       console.log(response);
-      console.log("roomInfo: 22222222222222222222222222");
+      console.log("roomInfo: 222222");
     } catch (err) {
       return err.response;
     }
@@ -180,7 +180,7 @@ export default function MyPage() {
       // return response;
       console.log(meetingInfo);
       console.log(response.data);
-      console.log("feedback: 3333333333333333333333333333");
+      console.log("feedback: 333333");
     } catch (err) {
       return err.response;
     }

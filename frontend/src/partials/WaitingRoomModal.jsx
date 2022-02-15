@@ -67,7 +67,7 @@ function WaitingRoomModal({ modalClose }) {
     // console.log("아이디 버튼 활성화", ID);
     // 여기는 대기방생성모달로 지금 axios요청 보냄
     await axios
-      .post(`/room/waiting`, data)
+      .post(`/room/waiting`, data, )
       .then((res) => {
         console.log(res);
         const token = res.data.token;

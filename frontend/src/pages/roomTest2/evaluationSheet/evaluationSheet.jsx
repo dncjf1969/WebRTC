@@ -19,7 +19,6 @@ class EvaluationSheet extends Component {
         let comment = document.getElementById("comment").value;
         document.getElementById("rate").value = "";
         document.getElementById("comment").value = "";
-        // 이부분에서 axios요청 보냄 //
         const data = {  
             "comment": comment,
             "meetingId": this.props.meetingId,
@@ -28,7 +27,11 @@ class EvaluationSheet extends Component {
             "rate": rate
         }
         console.log(data)
-        axios.post('/feedback', data)
+        axios.post('/feedback', data, {
+            headers: {
+              Authorization: window.localStorage.getItem('jwt'),
+            },
+          })
         .then((res)=> console.log(res, '평가 서버로 보냈음'))
         .catch((e) => console.log(e))
 
