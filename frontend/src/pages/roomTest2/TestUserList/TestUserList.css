@@ -1,3 +1,14 @@
 #me {
-  margin: 10ex;
+  margin: 10px;
+  /* background-color: beige; */
+  /* opacity: 0.3; */
+  /* display: in; */
+}
+
+#userbox {
+  background-color: white;
+  border-radius: 5px;
+  box-shadow: black;
+  height: 10%;
+  width: 10%;
 }

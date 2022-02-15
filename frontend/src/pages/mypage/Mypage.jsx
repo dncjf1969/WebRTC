@@ -2,14 +2,14 @@
 import axios from "../../common/http-common";
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-// import Gravatar from "react-gravatar";
+import Gravatar from "react-gravatar";
 
 // style
 import { Container, Button } from "@material-ui/core";
 import EditIcon from "@material-ui/icons/Edit";
 import styled from "styled-components";
 import Box from "@mui/material/Box";
-// import Gravatar from "react-gravatar";
+
 
 // component
 import MyTable from "./Mytable";
@@ -191,7 +191,7 @@ export default function MyPage() {
                   >
                     <Box gridColumn="span 4">
                       {/* <img src="https://placeimg.com/150/230/animals/sepia" /> */}
-                      {/* <Gravatar email={email} size={300} rating="pg" default="monsterid" style={{margin: '5px'}}className="CustomAvatar-image" /> */}
+                      <Gravatar email={email} size={300} rating="pg" default="monsterid" style={{margin: '5px'}}className="CustomAvatar-image" />
                     </Box>
                     <Box gridColumn="span 8">
                       <Title>닉네임</Title>
