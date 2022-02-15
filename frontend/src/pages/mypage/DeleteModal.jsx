@@ -1,33 +1,32 @@
 // basic
-import React, { useState, forwardRef } from 'react';
+import React, { useState, forwardRef } from "react";
 
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
 
-import axios from '../../common/http-common';
+import axios from "../../common/http-common";
 
 // material ui
-import DeleteIcon from '@material-ui/icons/Delete';
-import Button from '@material-ui/core/Button';
-import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
-import DialogTitle from '@material-ui/core/DialogTitle';
+import DeleteIcon from "@material-ui/icons/Delete";
+import Button from "@material-ui/core/Button";
+import Dialog from "@material-ui/core/Dialog";
+import DialogActions from "@material-ui/core/DialogActions";
+import DialogContent from "@material-ui/core/DialogContent";
+import DialogContentText from "@material-ui/core/DialogContentText";
+import DialogTitle from "@material-ui/core/DialogTitle";
 
-import Zoom from '@material-ui/core/Zoom';
+import Zoom from "@material-ui/core/Zoom";
 
 // toast
-import { toast } from 'react-toastify';
+import { toast } from "react-toastify";
 
 // action
-import { deleteToken } from '../../common/JWT-common';
+import { deleteToken } from "../../common/JWT-common";
 
 const Transition = forwardRef(function Transition(props, ref) {
   return <Zoom in ref={ref} {...props} />;
 });
 
-
-export default function DraggableDialog({nickname}) {
+export default function DraggableDialog({ nickname }) {
   const [open, setOpen] = useState(false);
   const navigate = useNavigate();
 
@@ -39,27 +38,26 @@ export default function DraggableDialog({nickname}) {
     setOpen(false);
   };
 
-
-
   const doDeleteUser = () => {
     handleClose();
-      axios.delete(`/members`, {
-        headers:{
-          "Authorization" : window.localStorage.getItem('jwt'),
-        }
+    axios
+      .delete(`/members`, {
+        headers: {
+          Authorization: window.localStorage.getItem("jwt"),
+        },
       })
       .then(() => {
-        toast.success('😥 회원탈퇴가 완료 되었습니다');
+        toast.success("😥 회원탈퇴가 완료 되었습니다");
         deleteToken();
-        navigate.push('/login');
+        navigate.push("/login");
       })
       .catch((error) => {
-        console.log(error)
-        toast.error('😥 회원탈퇴 중 문제가 발생하였습니다');
+        console.log(error);
+        toast.error("😥 회원탈퇴 중 문제가 발생하였습니다");
         deleteToken();
-        navigate.push('/mypage');
-      })
-    };
+        navigate.push("/mypage");
+      });
+  };
 
   return (
     <div>
@@ -78,7 +76,7 @@ export default function DraggableDialog({nickname}) {
         TransitionComponent={Transition}
         aria-labelledby="draggable-dialog-title"
       >
-        <DialogTitle style={{ cursor: 'move' }} id="draggable-dialog-title" />
+        <DialogTitle style={{ cursor: "move" }} id="draggable-dialog-title" />
         <DialogContent>
           <DialogContentText>
             {nickname}님 정말로 탈퇴하시겠습니까?😥😥

@@ -11,7 +11,12 @@
   overflow: hidden;
   color: #4d6a77;
 }
-
+#line1 {
+  box-shadow: inset 0 -6px 0 #a3c8db;
+}
+#line2 {
+  box-shadow: inset 0 -6px 0 #a3dba8;
+}
 #card1:before {
   content: "";
   position: absolute;
@@ -63,7 +68,7 @@
   z-index: -1;
   top: -16px;
   right: -16px;
-  background: #99d37e;
+  background: #acd49a;
   opacity: 0.75;
   height: 32px;
   width: 32px;
