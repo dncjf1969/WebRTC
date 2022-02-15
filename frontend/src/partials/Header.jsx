@@ -23,6 +23,8 @@ function Header() {
 
   function handleLogout() {
     deleteToken();
+    window.localStorage.removeItem("nickname")
+    window.localStorage.removeItem("id")
     navigate("/");
   }
 
