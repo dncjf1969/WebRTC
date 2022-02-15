@@ -10,6 +10,9 @@ import StreamComponent from "./stream/StreamComponent";
 // import DialogExtensionComponent from "./dialog-extension/DialogExtension";
 import ChatComponent from "./chat/ChatComponent";
 import UserVideoComponent from "./UserVideoComponent";
+import StreamComponent2 from "./stream/StreamComponent2";
+import StreamComponent3 from "./stream/StreamComponent3";
+
 
 import OpenViduLayout from "../layout/openvidu-layout";
 import UserModel from "../models/user-model";
@@ -1291,11 +1294,9 @@ class TestComponent extends Component {
           spacing={2}
           title="waitingProfile"
           sx={{
-            height: "650px",
+            height: "850px",
             display: "flex",
             marginTop: "15px",
-
-            // position: "relative",
             // margin: "16px",
             // marginTop: "20px",
             paddingTop: "10px",
@@ -1303,24 +1304,24 @@ class TestComponent extends Component {
             borderRadius: 6,
             backgroundColor: color,
             boxShadow: "0 3px 5px 2px rgba(47, 138, 241, 0.5)",
-            // opacity: 0.7,
           }}
         >
           {this.state.isStart ? (
             <>
               <Grid item xs={3}>
-                <div>
+                <div style={{height:'60%'}}>
                   {this.state.viewers.map((sub, i) => (
                     <div
                       key={i}
                       className="stream-container"
-                      style={{ height: "200px" }}
+                      style={{ height: "50%", marginBottom: "5%", marginTop: "5%" }}
                       id="remoteUsers"
                     >
                       <div>면접관</div>
                       <StreamComponent
                         user={sub}
                         handleNickname={this.nicknameChanged}
+                        style={{height:"50%"}}
                       />
                     </div>
                   ))}
@@ -1328,13 +1329,13 @@ class TestComponent extends Component {
 
                 <div>
                   {this.state.isStart && localUser.viewer && (
-                    <div>
+                    <div style={{height: '40%'}}>
                       <RecommendationQues
                         session={this.state.session}
                         questions={this.state.questions}
                         recoQues={this.state.recoQues}
                         mainStreamManager={this.state.mainStreamManager}
-                        handleChoiceQues={e => this.handleChoiceQues(e)}
+                        handleChoiceQues={(e) => this.handleChoiceQues(e)}
                         preQuesId={this.state.preQuesId}
                         meetingId={this.state.meetingId}
                       />
@@ -1343,41 +1344,49 @@ class TestComponent extends Component {
                 </div>
               </Grid>
               <Grid item xs={6}>
-                {this.state.viewees.map((sub, i) =>
-                  sub !== this.state.mainStreamManager ? (
-                    <div
-                      key={i}
-                      className="stream-container"
-                      style={{ height: "200px" }}
-                      id="remoteUsers"
-                    >
-                      <div>면접자</div>
-                      <StreamComponent user={sub} />
-                    </div>
-                  ) : null
-                )}
+                <div style={{width:'100%', height:'30%'}}>
+                  {this.state.viewees.map((sub, i) =>
+                    sub !== this.state.mainStreamManager ? (
+                      <div
+                        key={i}
+                        className="stream-container"
+                        style={{ float: "left", marginTop:'5%', width:'30%', height:'40%'}}
+                        id="remoteUsers"
+                      >
+                        <div>면접자</div>
+                        <StreamComponent3 user={sub} />
+                      </div>
+                    ) : null
+                  )}
+                </div>
 
-                {this.state.mainStreamManager && (
-                  <div className="stream-container" id="remoteUsers">
-                    <div>선택된화면</div>
-                    <StreamComponent user={this.state.mainStreamManager} />
-                  </div>
-                )}
+                <div style={{width:'100%', height:'70%'}}>
+                  {this.state.mainStreamManager && (
+                    <div className="stream-container" style={{ height: "100%", width:'100%' }} id="remoteUsers">
+                      <div>선택된화면</div>
+                      <StreamComponent2 user={this.state.mainStreamManager} />
+                    </div>
+                  )}
+                </div>
               </Grid>
 
               <Grid item xs={3}>
-                {this.state.isStart && localUser.viewer && (
-                  <EvaluationSheet
-                    viewers={this.state.viewers}
-                    viewee={this.state.mainStreamManager}
-                    session={this.state.session}
-                    evalWaiting={this.state.evalWaiting}
-                    chosenQues={this.state.chosenQues}
-                    curQuesId={this.state.curQuesId}
-                    preQuesId={this.state.preQuesId}
-                    meetingId={this.state.meetingId}
-                  />
-                )}
+                <div>
+                  {this.state.isStart && localUser.viewer && (
+                    <EvaluationSheet
+                      viewers={this.state.viewers}
+                      viewee={this.state.mainStreamManager}
+                      session={this.state.session}
+                      evalWaiting={this.state.evalWaiting}
+                    />
+                  )}
+                </div>
+
+                <div>
+                  {this.state.isStart && localUser.viewer && (
+                    <button onClick={this.handleFinish}>면접끝내기</button>
+                  )}
+                </div>
               </Grid>
             </>
           ) : (

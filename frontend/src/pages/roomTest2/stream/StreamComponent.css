@@ -27,7 +27,7 @@
 }
 
 #nicknameForm {
-    padding: 10px;
+    padding: 1px;
 }
 .fullscreen {
     top: 40px;
@@ -82,11 +82,27 @@ video {
 }
 /* Contains the video element, used to fix video letter-boxing */
 .OT_widget-container {
-    width: 20%;
+    width: 17%;
     height: 20%;
     position: absolute;
     overflow: hidden;
 }
+
+.OT_widget-container3 {
+    width: 12%;
+    height: 15%;
+    position: absolute;
+    overflow: hidden;
+}
+
+
+.OT_widget-container2 {
+    width: 45%;
+    height: 50%;
+    position: absolute;
+    overflow: hidden;
+}
+
 
 #input,
 #label {

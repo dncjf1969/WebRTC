@@ -14,6 +14,7 @@ import {
   Box,
   FormControl,
   FormLabel,
+  FormHelperText,
   RadioGroup,
   FormControlLabel,
   Radio,
@@ -35,24 +36,33 @@ class TestUserList extends Component {
     this.readyTest = this.readyTest.bind(this);
     this.start = this.start.bind(this);
     this.informStart = this.informStart.bind(this);
-
+    this.handleRadioChange = this.handleRadioChange.bind(this);
     this.state = {
       isReady: false,
       userReadyState: [],
       viewerCheck: false,
       meetingId: "",
+      value: "",
+      error: false,
+      helperText: "",
     };
   }
 
-  readyTest() {
-    const Select = document.getElementById("role");
-    if (Select.value !== "") {
-      //signal을 보낸다.
-      //이 signal을 받는 것은 200번째줄부터
-      console.log(this.props);
+  readyTest(e) {
+    e.preventDefault();
+
+    if (this.state.value === '') {
+      this.setState({
+        helperText:'역할을 정해주세요',
+        error: true
+      })
+    } else if (this.state.value !== '') {
+      this.setState({
+        error: false
+      })
       this.props.session
         .signal({
-          data: Select.value, // 보내는 내용
+          data: this.state.value, // 보내는 내용
           to: [], // 누구한데 보낼건지. 비워있으면 모두에게 보내는거고, 만약 세션 아이디 적으면 그 세션한데만 보내진다.
           type: "readyTest", // 시그널 타입.
         })
@@ -60,9 +70,7 @@ class TestUserList extends Component {
         .catch((error) => {
           console.error(error);
         });
-    } else {
-      alert("역할을 정해주세요");
-    }
+    } 
   }
 
   informStart = async (roomId) => {
@@ -81,6 +89,13 @@ class TestUserList extends Component {
       .catch((err) => {
         return err;
       });
+  };
+  handleRadioChange = (event) => {
+    this.setState({
+      value: event.target.value,
+      helperText: false,
+      error: false
+    });
   };
 
   async start() {
@@ -148,6 +163,33 @@ class TestUserList extends Component {
                   </Typography>
                 </CardContent>
                 <CardActions>
+                  {/* <button
+                    onClick={this.readyTest}
+                    class="bg-cyan-500 shadow-lg rounded-xl shadow-cyan-500/30 ..."
+                  >
+                    <h1 className="text-white text-md font-semibold pl-2">
+                      {this.props.ready ? "레디 해제" : "레디"}{" "}
+                    </h1>{" "}
+                  </button> */}
+
+                  <p>{this.props.ishost ? "방장" : null}</p>
+                </CardActions>
+              </Card>
+            </Grid>
+            <Grid>
+              <div className="m-3 flex ">
+              <form onSubmit={this.readyTest}>
+                <FormControl sx={{ m: 3 }} error={this.state.error} variant="standard">
+                  <RadioGroup
+                    aria-labelledby="demo-error-radios"
+                    name="role"
+                    value={this.state.value}
+                    onChange={this.handleRadioChange}
+                  >
+                    <FormControlLabel disabled={this.props.ready} value="true" control={<Radio />} label="면접관" />
+                    <FormControlLabel disabled={this.props.ready} value="false" control={<Radio />} label="면접자" />
+                  </RadioGroup>
+                  <FormHelperText>{this.state.helperText}</FormHelperText>
                   <button
                     onClick={this.readyTest}
                     class="bg-cyan-500 shadow-lg rounded-xl shadow-cyan-500/30 ..."
@@ -156,32 +198,9 @@ class TestUserList extends Component {
                       {this.props.ready ? "레디 해제" : "레디"}{" "}
                     </h1>{" "}
                   </button>
-
-                  <p>{this.props.ishost ? "방장" : null}</p>
-                </CardActions>
-              </Card>
-            </Grid>
-            <Grid>
-              <div className="m-3 flex ">
-                <FormControl>
-                  <FormLabel id="role">Role</FormLabel>
-                  <RadioGroup
-                    aria-labelledby="demo-controlled-radio-buttons-group"
-                    name="controlled-radio-buttons-group"
-                  >
-                    <FormControlLabel
-                      value="면접관"
-                      control={<Radio />}
-                      label="면접관"
-                    />
-                    <FormControlLabel
-                      value="면접자"
-                      control={<Radio />}
-                      label="면접자"
-                    />
-                  </RadioGroup>
                 </FormControl>
-                <label for="role">역할: </label>
+              </form>
+                {/* <label for="role">역할: </label>
                 <select
                   id="role"
                   name="role"
@@ -191,7 +210,7 @@ class TestUserList extends Component {
                   <option value="">선택안함</option>
                   <option value="true">면접관</option>
                   <option value="false">면접자</option>
-                </select>
+                </select> */}
               </div>
               {this.props.ishost && this.props.allReady ? (
                 <button
@@ -200,7 +219,7 @@ class TestUserList extends Component {
                 >
                   <FaPlay className="animate-ping" size={10} color="#fff" />{" "}
                   <h1 className="text-white text-md font-semibold pl-2">
-                    Start Learning Now{" "}
+                    Start{" "}
                   </h1>{" "}
                 </button>
               ) : null}

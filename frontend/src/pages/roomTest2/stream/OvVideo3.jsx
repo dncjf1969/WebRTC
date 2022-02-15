@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import './StreamComponent.css';
 
-export default class OvVideoComponent extends Component {
+export default class OvVideoComponent3 extends Component {
     constructor(props) {
         super(props);
         this.videoRef = React.createRef();

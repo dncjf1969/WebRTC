@@ -91,12 +91,13 @@ const Footer = styled.footer`
 `;
 
 export default function MyPage() {
-  const ID = window.localStorage.getItem("ID");
+  const ID = window.localStorage.getItem("id");
 
   // 유저 정보
   const [nickname, setNickname] = useState("");
   const [email, setEmail] = useState("");
   const [id, setId] = useState("");
+  const [characterURL, setCharacterURL] = useState("");
 
   //방 정보
   const [Personality, setPersonality] = useState();
@@ -112,7 +113,19 @@ export default function MyPage() {
   // 유저 정보
   async function myInfo(userInfo1) {
     try {
-      const response = await axios.get(`/members/me?id=${userInfo1}`);
+      const jwtToken11 = window.localStorage.getItem("jwt");
+      const response = await axios.get('/members/me',
+      {
+        headers:{
+          "Authorization" : jwtToken11,
+        }
+      }
+      );
+
+      let charURL = "https://lab.ssafy.com/s06-webmobile1-sub2/S06P12E201/-/raw/hyun/frontend/design/src/images/";
+
+      setCharacterURL(charURL + response.data.characterNum + ".PNG");
+      console.log(response.data.characterNum);
 
       setId(response.data.userId);
       setNickname(response.data.name);
@@ -128,7 +141,15 @@ export default function MyPage() {
   //방 정보
   async function roomInfo(userInfo2) {
     try {
-      const response = await axios.get(`/feedback/count?memberId=${userInfo2}`);
+      const jwtToken11 = window.localStorage.getItem("jwt");
+      const response = await axios.get(`/feedback/count`,
+      {
+        headers:{
+          "Authorization" : jwtToken11,
+        }
+      }
+      );
+
       setPersonality(
         response.data.filter((info) => info.type === "인성")[0].count
       );
@@ -146,7 +167,14 @@ export default function MyPage() {
   // 피드백 정보
   async function feedback(userInfo3) {
     try {
-      const response = await axios.get(`/feedback?memberId=${userInfo3}`);
+      const jwtToken11 = window.localStorage.getItem("jwt");
+      const response = await axios.get(`/feedback`,
+      {
+        headers:{
+          "Authorization" : jwtToken11,
+        }
+      }
+      );
       setMeetingInfo(response.data);
       setMeetingInfo2(response.data);
       // return response;
@@ -190,8 +218,9 @@ export default function MyPage() {
                     gap={2}
                   >
                     <Box gridColumn="span 4">
+                      <img src={characterURL}></img>
                       {/* <img src="https://placeimg.com/150/230/animals/sepia" /> */}
-                      <Gravatar email={email} size={300} rating="pg" default="monsterid" style={{margin: '5px'}}className="CustomAvatar-image" />
+                      {/* <Gravatar email={email} size={300} rating="pg" default="monsterid" style={{margin: '5px'}}className="CustomAvatar-image" /> */}
                     </Box>
                     <Box gridColumn="span 8">
                       <Title>닉네임</Title>
