@@ -10,6 +10,7 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 
+import lombok.RequiredArgsConstructor;
 import org.apache.http.auth.AUTH;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -47,7 +48,7 @@ import com.wish.db.entity.Member;
 //dofilter
 //destroy
 
-
+//@RequiredArgsConstructor
 public class JwtFilter extends GenericFilterBean{
 
 	@Autowired
@@ -55,7 +56,11 @@ public class JwtFilter extends GenericFilterBean{
 	
 	@Autowired
 	WishUserDetailService wishUserDetailService;
-	
+
+	public JwtFilter(WishUserDetailService wishUserDetailService){
+		this.wishUserDetailService = wishUserDetailService;
+	}
+
 	
 	@Override
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
@@ -67,11 +72,12 @@ public class JwtFilter extends GenericFilterBean{
 		//getHeader를 할 수 있다.
 		HttpServletRequest httpReq = (HttpServletRequest) request;
 		
-		
+
 		//Request의 Header에 있는 jwt 토큰을 가져온다.
 		//Header에는 "Authorization" : "Bearer xdcdsdad.." 이런식으로 담겨 있을 것.
 		String jwtToken = httpReq.getHeader(JwtUtil.HEADER_KEY);
-		
+
+		System.out.println(jwtToken);
 		
 		//jwtToken이 없으면 에러.
 		if(jwtToken==null) {
@@ -100,14 +106,11 @@ public class JwtFilter extends GenericFilterBean{
 		//디코딩된 jwt토큰의 payload에서 멤버 아이디 가져옴.
 		Claim memberId_claim = decodedJwtToken.getClaim("memberId");
 		String memberId = memberId_claim.asString();
-		
-		
+
 		//Authentication 객체를 만든다.
 		//만들어진 auth에는 member 객체와 권한 및 인가를 위한 정보가 담긴 WishUserDetail이 담겨져있다.
 		Authentication auth = getAuthentication(memberId);
 		
-		
-
 		//이 만들어진 auth를 세션 저장소인 securitycontextholder에 저장.
 		//의문1. 세션 저장소인 이곳에 매번 저장을 왜 해야하나??? -> 여기에 저장을 해야 필터를 거치고 컨트롤러에 authentication을 인자로 넘길 수 있어서인가??
 		SecurityContextHolder.getContext().setAuthentication(auth);
@@ -118,6 +121,7 @@ public class JwtFilter extends GenericFilterBean{
 	
 	public Authentication getAuthentication(String memberId) {
 
+		System.out.println(memberId);
 		WishUserDetails userDetails = (WishUserDetails) wishUserDetailService.findByMemberIdAndGetAuthorities(memberId);
 		
 		//아이디, 비밀번호, 권한, 생성한 wishUserDetail을 담아서

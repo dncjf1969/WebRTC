@@ -14,8 +14,8 @@ public class WishUserDetails implements UserDetails{
 	Member member;
 	
 	//권한 뭐인지  방장, 일반사용자
-//	List<GrantedAuthority> roles;
-	List<String> roles;
+	List<GrantedAuthority> roles;
+//	List<String> roles;
 	
 	
 	public WishUserDetails(Member member) {
@@ -26,10 +26,11 @@ public class WishUserDetails implements UserDetails{
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
 		// TODO Auto-generated method stub
-		return null;
+		return this.roles;
 	}
+
 	
-	public void setAuthorities(List<String> roles) {
+	public void setAuthorities(List<GrantedAuthority> roles) {
 		this.roles = roles;
 	}
 
