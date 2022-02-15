@@ -22,7 +22,7 @@ import HeroMypage from "../../partials/HeroMypage";
 
 // 전체 컨테이너
 const Wrapper = styled.div`
-  border: 2px solid teal;
+  border: 2px solid rgba(36, 188, 199, 0.5);
   border-radius: 1.5em;
 `;
 
