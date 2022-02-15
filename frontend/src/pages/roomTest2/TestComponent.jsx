@@ -1447,30 +1447,30 @@ class TestComponent extends Component {
                   />
                 )}
               </Grid>
+              {this.state.isStart && localUser.viewer && (
+                <button onClick={this.handleFinish}>면접끝내기</button>
+              )}
             </>
           ) : (
             <>
               {/* 유저 리스트 */}
               <Grid item xs={8}>
-                {this.state.isStart ? null : (
-                  <TestUserList
-                    session={this.state.session}
-                    subscribers={this.state.subscribers}
-                    myUserName={this.state.myUserName}
-                    ready={this.state.readyState}
-                    viewer={this.state.viewerState}
-                    localUser={localUser}
-                    ishost={this.state.ishost}
-                    hostId={this.state.hostId}
-                    allReady={this.state.allReady}
-                    roomId={this.state.waitingId}
-                    characterNum={this.state.characterNum}
-                  />
-                )}
-                {this.state.isStart ? <h1>START</h1> : null}
+                <TestUserList
+                  session={this.state.session}
+                  subscribers={this.state.subscribers}
+                  myUserName={this.state.myUserName}
+                  ready={this.state.readyState}
+                  viewer={this.state.viewerState}
+                  localUser={localUser}
+                  ishost={this.state.ishost}
+                  hostId={this.state.hostId}
+                  allReady={this.state.allReady}
+                  roomId={this.state.waitingId}
+                  characterNum={this.state.characterNum}
+                />
+                <button>나가기</button>
               </Grid>
               {/* 채팅 */}
-
               <Grid item xs={4}>
                 {localUser !== undefined &&
                   localUser.getStreamManager() !== undefined && (
@@ -1501,10 +1501,6 @@ class TestComponent extends Component {
             </>
           )}
         </Grid>
-        {this.state.isStart ? <h1>START</h1> : null}
-        {this.state.isStart && localUser.viewer && (
-          <button onClick={this.handleFinish}>면접끝내기</button>
-        )}
         {/* 피드백 */}
         {/* 면접자용 */}
           <div>
