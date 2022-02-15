@@ -22,8 +22,8 @@ import HeroMypage from "../../partials/HeroMypage";
 
 // 전체 컨테이너
 const Wrapper = styled.div`
-  border: 5px solid teal;
-  border-radius: 2em;
+  border: 2px solid teal;
+  border-radius: 1.5em;
 `;
 
 // 중간 컨테이너
@@ -42,8 +42,8 @@ const Title = styled.div`
   margin-bottom: 5px;
   margin-top: 10px;
   font-weight: bold;
-  font-size: 1.5rem;
-  border-bottom: 5px solid rgba(251, 209, 75, 0.5);
+  font-size: 1.2rem;
+  border-bottom: 2px solid rgba(36, 188, 199, 0.5);
 `;
 
 // 내용
@@ -224,28 +224,28 @@ export default function MyPage() {
                     </Box>
                     <Box gridColumn="span 8">
                       <Title>닉네임</Title>
-                      <ContentContainer>
-                        <h3>{nickname}</h3>
+                      <ContentContainer >
+                        <h4 className="h4 font-extrabold leading-tighter tracking-tighter mb-4">{nickname}</h4>
                         {/* 회원정보수정 버튼은 있지만, 회원정보수정 기능이 실행되지는 않음 */}
-                        <Link to="/updateuser">
-                          <CommonButton
-                            variant="contained"
-                            color="primary"
-                            size="small"
-                            startIcon={<EditIcon />}
-                          >
-                            회원정보수정
-                          </CommonButton>
-                        </Link>
                       </ContentContainer>
-                      <br />
                       <Email>
                         <Title>이메일: </Title>
-                        <div>
+                        <div className="md:text-6xs font-extrabold leading-tighter tracking-tighter mb-4" style={{marginBottom: '40px'}}>
                           <h3>{email}</h3>
                         </div>
                       </Email>
+                      <Link to="/updateuser">
+                        <CommonButton
+                          variant="contained"
+                          color="primary"
+                          size="small"
+                          startIcon={<EditIcon />}
+                        >
+                          회원정보수정
+                        </CommonButton>
+                      </Link>
                     </Box>
+                    
                   </Box>
                 </Box>
 
