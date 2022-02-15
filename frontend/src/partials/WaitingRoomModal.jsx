@@ -35,7 +35,7 @@ function WaitingRoomModal({ modalClose }) {
   // 모달내 비번
   const [password, setPassword] = useState(null);
   const [checked, setChecked] = useState(false);
-
+  useEffect(() => setJob(""), [type]) 
   // 방만들기 모달
   // const [open, setOpen] = useState(false);
 
@@ -58,7 +58,7 @@ function WaitingRoomModal({ modalClose }) {
       alert("방제목을 입력해주세요")
     } else if (type === "") {
       alert("면접 종류를 선택해주세요")
-    } else if (job === "")  {
+    } else if (type === "직무" && job === "")  {
       alert("카테고리를 선택해주세요")
     } else if (checked && !password) {
       alert("비밀번호를 설정해주세요")
@@ -116,7 +116,13 @@ function WaitingRoomModal({ modalClose }) {
   return (
     <>
       <Dialog open={true} onClose={handleClose}>
-        <DialogTitle>방만들기</DialogTitle>
+        <DialogTitle 
+          sx={{
+            fontSize: 20,
+            fontWeight: 'bold',
+            mt: 1,
+          }}
+        >방만들기</DialogTitle>
         <DialogContent>
           <TextField
             autoFocus
@@ -129,26 +135,6 @@ function WaitingRoomModal({ modalClose }) {
             onChange={(e) => setName(e.target.value)}
             value={name}
           />
-
-          <FormControl sx={{ m: 1, minWidth: 120 }}>
-            <InputLabel id="demo-simple-select-helper-label">
-              카테고리
-            </InputLabel>
-            <Select
-              labelId="demo-simple-select-helper-label"
-              id="demo-simple-select-helper"
-              value={job}
-              label="Age"
-              onChange={handleJobChange}
-            >
-              {/* <MenuItem value={"인성"}>인성</MenuItem> */}
-              <MenuItem value={"IT"}>IT</MenuItem>
-              <MenuItem value={"금융"}>금융</MenuItem>
-              <MenuItem value={"영업"}>영업</MenuItem>
-              {/* <MenuItem value={"토론"}>토론</MenuItem>
-              <MenuItem value={"pt"}>pt</MenuItem> */}
-            </Select>
-          </FormControl>
 
           <FormControl sx={{ m: 1, minWidth: 120 }}>
             <InputLabel id="demo-simple-select-helper-label">
@@ -167,6 +153,27 @@ function WaitingRoomModal({ modalClose }) {
               <MenuItem value={"pt"}>pt</MenuItem> */}
             </Select>
           </FormControl>
+          {type === "직무" && 
+          <FormControl sx={{ m: 1, minWidth: 120 }}>
+            <InputLabel id="demo-simple-select-helper-label">
+              카테고리
+            </InputLabel>
+            <Select
+              labelId="demo-simple-select-helper-label"
+              id="demo-simple-select-helper"
+              value={job}
+              label="Age"
+              onChange={handleJobChange}
+            >
+              {/* <MenuItem value={"인성"}>인성</MenuItem> */}
+              <MenuItem value={"IT"}>IT</MenuItem>
+              <MenuItem value={"금융"}>금융</MenuItem>
+              <MenuItem value={"영업"}>영업</MenuItem>
+              {/* <MenuItem value={"토론"}>토론</MenuItem>
+              <MenuItem value={"pt"}>pt</MenuItem> */}
+            </Select>
+          </FormControl>}
+          
 
           <Box sx={{ width: 300 }}>
             <Typography id="input-slider" gutterBottom>
