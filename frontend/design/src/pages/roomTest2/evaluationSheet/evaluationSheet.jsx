@@ -68,19 +68,18 @@ class EvaluationSheet extends Component {
 
         const tempStyle2={
             display:"inline-block",
-            width:"800px",
-            height:"100px",
-            marginLeft:"200px",
+            width:"350px",
+            height:"700px",
+            marginLeft:"5px",
             backgroundColor : 'white',
-            border: '1px solid black',
-            marginLeft:"250px",
-            marginTop:"50px",
+            border: '3px solid black',
+            marginTop:"10%",
         }
         const tempStyle3={
             display:"inline-block",
-            width:"500px",
+            width:"200px",
             height:"100px",
-            marginLeft:"200px",
+            marginLeft:"5px",
             backgroundColor : 'white',
             border: '1px solid black',
         }
@@ -92,10 +91,10 @@ class EvaluationSheet extends Component {
         }
 
         const tempStyle5={
-            width:"700px",
-            marginLeft:"10px",
-            marginTop:"10px",
-            fontSize: "17pt",
+            width:"200px",
+            height:"100px",
+            marginTop:"5px",
+            fontSize: "30pt",
         }
         
         const tempStyle6={
