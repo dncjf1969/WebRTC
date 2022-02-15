@@ -122,7 +122,7 @@ export default function MyPage() {
       }
       );
 
-      let charURL = "https://lab.ssafy.com/s06-webmobile1-sub2/S06P12E201/-/raw/hyun/frontend/design/src/images/";
+      let charURL = "https://lab.ssafy.com/s06-webmobile1-sub2/S06P12E201/-/raw/hyun/frontend/src/images/";
 
       setCharacterURL(charURL + response.data.characterNum + ".PNG");
       console.log(response.data.characterNum);
