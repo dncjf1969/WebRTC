@@ -210,6 +210,7 @@ class TestComponent extends Component {
     console.log("state다");
     console.log(this.state);
     console.log(localUser);
+    this.handleExitBtn = this.handleExitBtn.bind(this);
     this.handleCloseFeedback = this.handleCloseFeedback.bind(this);
     this.getRecoQues = this.getRecoQues.bind(this);
     this.nextViewee = this.nextViewee.bind(this);
@@ -504,7 +505,7 @@ class TestComponent extends Component {
             const nextManager = this.state.ishost ? "" : this.state.id;
             this.setState({ ishost: true });
             myAxios.put(
-              `/room/waiting/exit?memberId=${data.destroyedUserId}&nextManger=${nextManager}&roomId=${this.state.waitingId}`,
+              `/room/waiting/exit?nextManger=${nextManager}&roomId=${this.state.waitingId}`,
               {
                 headers: {
                   Authorization: window.localStorage.getItem('jwt'),
@@ -898,28 +899,28 @@ class TestComponent extends Component {
 
   leaveSession() {
     const mySession = this.state.session;
-    axios
-      .get(this.OPENVIDU_SERVER_URL + "/openvidu/api/sessions", {
-        headers: {
-          Authorization:
-            "Basic " + btoa("OPENVIDUAPP:" + this.OPENVIDU_SERVER_SECRET),
-        },
-      })
-      .then((response) => {
-        console.log(response);
-        if (response.data.numberOfElements === 1) {
-          // 0인지 1인지 실험필요
-          myAxios
-            .delete(`/room/waiting?roomId=${this.state.waitingId}`, {
-              headers: {
-                Authorization: window.localStorage.getItem('jwt'),
-              },
-            })
-            .then(() => console.log("DB에서 방삭제됨"))
-            .catch((e) => console.log(e));
-        }
-      })
-      .catch(() => {});
+    // axios
+    //   .get(this.OPENVIDU_SERVER_URL + "/openvidu/api/sessions", {
+    //     headers: {
+    //       Authorization:
+    //         "Basic " + btoa("OPENVIDUAPP:" + this.OPENVIDU_SERVER_SECRET),
+    //     },
+    //   })
+    //   .then((response) => {
+    //     console.log(response);
+    //     if (response.data.numberOfElements === 1) {
+    //       // 0인지 1인지 실험필요
+    //       myAxios
+    //         .delete(`/room/waiting?roomId=${this.state.waitingId}`, {
+    //           headers: {
+    //             Authorization: window.localStorage.getItem('jwt'),
+    //           },
+    //         })
+    //         .then(() => console.log("DB에서 방삭제됨"))
+    //         .catch((e) => console.log(e));
+    //     }
+    //   })
+    //   .catch(() => {});
 
     // Empty all properties...
     this.OV = null;
@@ -1329,6 +1330,14 @@ class TestComponent extends Component {
     })
     .then((res) => console.log('면접끝 서버로 요청보냄', res))
     .catch((e) => console.log(e))
+
+    myAxios.delete(`/room/waiting?roomId=${this.state.waitingId}`, {
+      headers: {
+        Authorization: window.localStorage.getItem('jwt'),
+      },
+    })
+    .then((res) => console.log('방폭파시킴', res))
+    .catch((e) => console.log(e))
   }
 
   handleCloseFeedback() {
@@ -1337,6 +1346,31 @@ class TestComponent extends Component {
     window.localStorage.removeItem("roomId")
     window.localStorage.removeItem("token")
     window.location.reload()
+  }
+
+  handleExitBtn() {
+    axios
+      .get(this.OPENVIDU_SERVER_URL + "/openvidu/api/sessions", {
+        headers: {
+          Authorization:
+            "Basic " + btoa("OPENVIDUAPP:" + this.OPENVIDU_SERVER_SECRET),
+        },
+      })
+      .then((response) => {
+        console.log(response);
+        if (response.data.numberOfElements === 1) {
+          // 나혼자 남았으면 방 폭파
+          myAxios
+            .delete(`/room/waiting?roomId=${this.state.waitingId}`, {
+              headers: {
+                Authorization: window.localStorage.getItem('jwt'),
+              },
+            })
+            .then(() => console.log("DB에서 방삭제됨"))
+            .catch((e) => console.log(e));
+        }
+      })
+      .catch(() => {});
   }
 
   render() {
@@ -1468,7 +1502,7 @@ class TestComponent extends Component {
                   roomId={this.state.waitingId}
                   characterNum={this.state.characterNum}
                 />
-                <button>나가기</button>
+                <button onClick={this.handleExitBtn}>나가기</button>
               </Grid>
               {/* 채팅 */}
               <Grid item xs={4}>
