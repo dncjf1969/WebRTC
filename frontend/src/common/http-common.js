@@ -1,9 +1,10 @@
-import axios from 'axios';
+import axios from "axios";
 
 export default axios.create({
-  baseURL: 'https://i6e201.p.ssafy.io:8443', // default URL
+  baseURL: "https://i6e201.p.ssafy.io:8443", // default URL
   header: {
-    Authorization: '',
+    Authorization: "",
   },
 });
 
+// api와 통신하는 코드를 이곳으로 몰아넣음 (보수성 향상)

@@ -22,6 +22,7 @@ public class MemberSignupReq {
 	
 	@ApiModelProperty(name="이메일", example="hong123@gmail.com")
 	String email;
-	
+
+	@ApiModelProperty(name="캐릭터 번호", example="0~4")
 	int characterNumber;
 }

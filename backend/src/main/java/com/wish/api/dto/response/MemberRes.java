@@ -27,7 +27,9 @@ public class MemberRes{
 
 	@ApiModelProperty(name="가입날짜")
 	Date signUpDate;
-	
+
+	@ApiModelProperty(name="캐릭터 번호")
+	int characterNum;
 	
 	public static MemberRes of(Member member) {
 		MemberRes res = new MemberRes();
@@ -35,6 +37,7 @@ public class MemberRes{
 		res.setName(member.getName());
 		res.setEmail(member.getEmail());
 		res.setSignUpDate(member.getSignUpDate());
+		res.setCharacterNum(member.getCharacterNumber());
 		return res;
 	}
 }

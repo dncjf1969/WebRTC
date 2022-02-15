@@ -65,7 +65,7 @@ public class MemberServiceImpl implements MemberService {
 			member.setCharacterNumber(memberSignupInfo.getCharacterNumber());
 			
 			//role 테이블에 회원 아이디와 권한 추가.
-			roleService.createRole(memberSignupInfo.getId(), "BASIC");
+			roleService.createRole(memberSignupInfo.getId(), "ROLE_BASIC");
 			
 			memberRepository.save(member);
 			

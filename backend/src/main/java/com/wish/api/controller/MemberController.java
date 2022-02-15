@@ -96,7 +96,7 @@ public class MemberController {
 			@ApiResponse(code = 404, message = "사용자 없음"),
 			@ApiResponse(code = 500, message = "서버 오류")
 	})
-	@PreAuthorize("hasAnyRole('USER')")
+	@PreAuthorize("hasAnyRole('BASIC')")
 	public ResponseEntity<? extends BaseRes> updateMember(@ApiIgnore Authentication authentication,
 			@RequestBody @ApiParam(value="회원수정 정보", required = true) MemberUpdateReq updateInfo) {
 
@@ -113,7 +113,7 @@ public class MemberController {
 			@ApiResponse(code = 404, message = "사용자 없음"),
 			@ApiResponse(code = 500, message = "서버 오류")
 	})
-	@PreAuthorize("hasAnyRole('USER')")
+	@PreAuthorize("hasRole('BASIC')")
 	public ResponseEntity<? extends BaseRes> deleteMember(
 			@ApiIgnore Authentication authentication) {
 		
@@ -150,10 +150,10 @@ public class MemberController {
         @ApiResponse(code = 404, message = "사용자 없음"),
         @ApiResponse(code = 500, message = "서버 오류")
     })
-//	@PreAuthorize("hasAnyRole('USER')")
+	@PreAuthorize("hasRole('BASIC')")
 	public ResponseEntity<MemberRes> getUserInfo(
-		//@ApiIgnore Authentication authentication,
-		@ApiParam(value="마이페이지를 볼 회원 id", required = true)String id
+		@ApiIgnore Authentication authentication
+		//@ApiParam(value="마이페이지를 볼 회원 id", required = true)String id
 		) {
 
 		/**
@@ -161,14 +161,16 @@ public class MemberController {
 		 * 액세스 토큰이 없이 요청하는 경우, 403 에러({"error": "Forbidden", "message": "Access Denied"}) 발생.
 		 */
 		
-		//String memberId = authentication.getName();
-		//Member member = memberService.getMemberById(memberId);
+		String memberId = authentication.getName();
+		Member member = memberService.getMemberById(memberId);
 		
 		// 아이디로 회원정보 조회
-		Member member = memberService.getMemberById(id);
+		//Member member = memberService.getMemberById(id);
 
 		if(member == null) throw new NotFoundMemberException();
-		
+
+		System.out.println("success");
+
 		return ResponseEntity.status(200).body(MemberRes.of(member));
 	}
 	

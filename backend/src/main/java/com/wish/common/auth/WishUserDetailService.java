@@ -1,9 +1,12 @@
 package com.wish.common.auth;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -13,19 +16,19 @@ import com.wish.api.service.MemberService;
 import com.wish.db.entity.Member;
 import com.wish.db.entity.Role;
 import com.wish.db.repository.RoleRepositiory;
+import org.springframework.stereotype.Service;
 
 
 /**
  * 현재 액세스 토큰으로 부터 인증된 유저의 상세정보(활성화 여부, 만료, 롤 등) 관련 서비스 정의.
  */
-@Component
+@Service
 public class WishUserDetailService implements UserDetailsService{
 	@Autowired
 	MemberService memberService;
 	
 	@Autowired
 	RoleRepositiory roleRepositiory;
-	
 	
 	@Override
     public UserDetails loadUserByUsername(String memberId) throws UsernameNotFoundException {
@@ -48,10 +51,19 @@ public class WishUserDetailService implements UserDetailsService{
 			
 			//멤버 DB에 있는 권한 정보 가져와서 만든다.
 			List<Role> role = roleRepositiory.findByMemberId(member.getId()).get();
+
 			List<String> roles = new ArrayList<>();
 			for(int a=0; a<role.size(); a++) roles.add(role.get(a).getRole());
-			
-			userDetails.setAuthorities(roles);
+
+			for(int a=0; a<roles.size(); a++) System.out.println(roles.get(a));
+
+			List<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>(roles.size());
+
+			for (String temp_role : roles)
+				authorities.add(new SimpleGrantedAuthority(temp_role));
+
+			userDetails.setAuthorities(authorities);
+
 			return userDetails;
 		}
 		return null;
