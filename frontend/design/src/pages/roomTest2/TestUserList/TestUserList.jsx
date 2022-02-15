@@ -11,8 +11,23 @@ import {
   Grid,
   Select,
   Typography,
+  Box,
+  FormControl,
+  FormLabel,
+  RadioGroup,
+  FormControlLabel,
+  Radio,
 } from "@mui/material";
 import { borderRadius, display } from "@mui/system";
+
+// import thumb from "../public/thumb.svg";
+import { FaReact } from "react-icons/fa";
+import { SiTypescript } from "react-icons/si";
+import { AiOutlineClockCircle } from "react-icons/ai";
+import { VscChecklist } from "react-icons/vsc";
+import { FaPlay } from "react-icons/fa";
+import { MoonIcon } from "@heroicons/react/solid";
+import { SunIcon } from "@heroicons/react/solid";
 
 class TestUserList extends Component {
   constructor(props) {
@@ -95,126 +110,169 @@ class TestUserList extends Component {
   }
 
   render() {
+    // const handleChange = (event) => {
+    //   setValue(event.target.value);
+    // };
     // const myNickName = temp.clientData
     return (
-      <div>
-        <Grid container spacing={2}>
+      <Grid container spacing={2}>
+        <Grid item xs={4}>
           {/* 나 */}
+          <Grid>
+            <Grid item>
+              <Card
+                sx={{
+                  maxWidth: 345,
+                  borderRadius: 4,
+                  display: "flex",
+                  flexDirection: "column",
+                  flexWrap: "wrap",
+                  alignItems: "center",
+                  justifyContent: "space-evenly",
+                  boxShadow: 3, // p: ,
+                }}
+                className="inline-block shadow-cyan-500/30 ring-2 ring-white"
+              >
+                <img
+                  className="inline-block h-15 w-15 rounded-full ring-2 ring-white"
+                  src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
+                  alt=""
+                />
+                <CardContent>
+                  <Typography gutterBottom variant="h5" component="div">
+                    {this.props.myUserName}
+                  </Typography>
+                  <Typography variant="body2" color="text.secondary">
+                    {/* <Button size="small">면접관</Button>
+                  <Button size="small">면접자</Button> */}
+                  </Typography>
+                </CardContent>
+                <CardActions>
+                  <button
+                    onClick={this.readyTest}
+                    class="bg-cyan-500 shadow-lg rounded-xl shadow-cyan-500/30 ..."
+                  >
+                    <h1 className="text-white text-md font-semibold pl-2">
+                      {this.props.ready ? "레디 해제" : "레디"}{" "}
+                    </h1>{" "}
+                  </button>
 
-          <Grid item xs={3} id="me">
+                  <p>{this.props.ishost ? "방장" : null}</p>
+                </CardActions>
+              </Card>
+            </Grid>
+            <Grid>
+              <div className="m-3 flex ">
+                <FormControl>
+                  <FormLabel id="role">Role</FormLabel>
+                  <RadioGroup
+                    aria-labelledby="demo-controlled-radio-buttons-group"
+                    name="controlled-radio-buttons-group"
+                  >
+                    <FormControlLabel
+                      value="면접관"
+                      control={<Radio />}
+                      label="면접관"
+                    />
+                    <FormControlLabel
+                      value="면접자"
+                      control={<Radio />}
+                      label="면접자"
+                    />
+                  </RadioGroup>
+                </FormControl>
+                <label for="role">역할: </label>
+                <select
+                  id="role"
+                  name="role"
+                  required
+                  disabled={this.props.ready ? true : false}
+                >
+                  <option value="">선택안함</option>
+                  <option value="true">면접관</option>
+                  <option value="false">면접자</option>
+                </select>
+              </div>
+              {this.props.ishost && this.props.allReady ? (
+                <button
+                  onClick={this.start}
+                  className="md:m-2 m-auto mt-8 bg-[#5865F2] shadow-md shadow-[#5865f28a]  pt-2 pb-2 pl-6 pr-4 rounded-xl flex flex-row justify-center items-center hover:bg-[#424bb6] ease-linear duration-300"
+                >
+                  <FaPlay className="animate-ping" size={10} color="#fff" />{" "}
+                  <h1 className="text-white text-md font-semibold pl-2">
+                    Start Learning Now{" "}
+                  </h1>{" "}
+                </button>
+              ) : null}
+              {/* <select
+                id="role"
+                name="role"
+                required
+                disabled={this.props.ready ? true : false}
+              >
+                <option value="">선택안함</option>
+                <option value="true">면접관</option>
+                <option value="false">면접자</option>
+              </select> */}
+            </Grid>
+          </Grid>
+        </Grid>
+
+        {/* 다른 유저들 */}
+        <Grid
+          item
+          xs={8}
+          sx={{
+            flexWrap: "wrap",
+            justifyContent: "space-evenly",
+            display: "inline-flex",
+          }}
+          id="others"
+        >
+          {this.props.subscribers.map((userInfo) => (
             <Card
               sx={{
                 maxWidth: 345,
-                borderRadius: 7,
+                borderRadius: 4,
                 display: "flex",
                 flexDirection: "column",
                 flexWrap: "wrap",
                 alignItems: "center",
                 justifyContent: "space-evenly",
-
-                // p: ,
+                boxShadow: 5,
+                margin: 2,
               }}
             >
-              <CardMedia
-                component="img"
-                height="140"
-                image="/static/images/cards/contemplative-reptile.jpg"
-                alt="green iguana"
+              <img
+                className="inline-block h-12 w-12 rounded-full ring-2 ring-white"
+                src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
+                alt=""
               />
               <CardContent>
                 <Typography gutterBottom variant="h5" component="div">
-                  {this.props.myUserName}
+                  {userInfo.nickname}
                 </Typography>
                 <Typography variant="body2" color="text.secondary">
-                  {this.props.ishost && this.props.allReady ? (
-                    <button onClick={this.start}>start</button>
+                  {userInfo.ready ? (
+                    <div>{userInfo.viewer ? "면접관" : "면접자"}</div>
                   ) : null}
-                  <select
-                    id="role"
-                    name="role"
-                    required
-                    disabled={this.props.ready ? true : false}
-                  >
-                    <option value="">선택안함</option>
-                    <option value="true">면접관</option>
-                    <option value="false">면접자</option>
-                  </select>
 
                   {/* <Button size="small">면접관</Button>
                   <Button size="small">면접자</Button> */}
                 </Typography>
               </CardContent>
               <CardActions>
-                <div id="ready0">
-                  {this.props.ready ? "준비 완료!!!" : "준비 중..."}
-                </div>
-                <Button onClick={this.readyTest} sx={{}} size="big">
-                  {this.props.ready ? "레디 해제" : "레디"}
-                </Button>
-
-                <p>{this.props.ishost ? "방장" : null}</p>
-              </CardActions>
-            </Card>
-          </Grid>
-          {/* <div >
-            <Gravatar
-              email="#"
-              size={200}
-              rating="pg"
-              default="monsterid"
-              style={{ margin: "5px" }}
-              className="CustomAvatar-image"
-            />
-          </div>
-          <div id="seat0"> 내 자리 </div>
-          <div id="name0">
-            {" "}
-            {this.props.myUserName} {this.props.ishost ? "방장" : null}{" "}
-          </div>
-          <div>
-            <label for="role">역할: </label>
-            <select
-              id="role"
-              name="role"
-              required
-              disabled={this.props.ready ? true : false}
-            >
-              <option value="">선택안함</option>
-              <option value="true">면접관</option>
-              <option value="false">면접자</option>
-            </select>
-          </div>
-
-          
-          <button onClick={this.readyTest}>
-            {" "}
-            {this.props.ready ? "레디 해제" : "레디"}
-          </button>
-
-          {this.props.ishost && this.props.allReady ? (
-            <button onClick={this.start}>start</button>
-          ) : null} */}
-        </Grid>
-        {/* 다른 유저들 */}
-        <Grid item xs={8} id="others">
-          {this.props.subscribers.map((userInfo) => (
-            <div>
-              <div>
-                <div id="seat1"> {userInfo.nickname}</div>
-                {userInfo.ready ? (
-                  <div>{userInfo.viewer ? "면접관" : "면접자"}</div>
-                ) : null}
                 {userInfo.connectionId === this.props.hostId ? (
                   <div>방장</div>
                 ) : (
                   <div>{userInfo.ready ? "준비 완료!!!" : "준비 중..."}</div>
                 )}
-              </div>
-            </div>
+              </CardActions>
+            </Card>
           ))}
         </Grid>
         {/* </Grid> */}
-      </div>
+      </Grid>
     );
   }
 }

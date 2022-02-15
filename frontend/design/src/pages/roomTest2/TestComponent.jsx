@@ -1250,6 +1250,8 @@ class TestComponent extends Component {
             height: "650px",
             display: "flex",
             marginTop: "15px",
+
+            // position: "relative",
             // margin: "16px",
             // marginTop: "20px",
             paddingTop: "10px",
@@ -1257,6 +1259,7 @@ class TestComponent extends Component {
             borderRadius: 6,
             backgroundColor: color,
             boxShadow: "0 3px 5px 2px rgba(47, 138, 241, 0.5)",
+            // opacity: 0.7,
           }}
         >
           {this.state.isStart ? (
@@ -1296,17 +1299,6 @@ class TestComponent extends Component {
                 </div>
               </Grid>
               <Grid item xs={6}>
-                {/* {localUser !== undefined &&
-                localUser.getStreamManager() !== undefined && (
-                  <div className="stream-container" id="localUser">
-                    <div>내캠</div>
-                    <StreamComponent
-                      user={localUser}
-                      handleNickname={this.nicknameChanged}
-                    />
-                  </div>
-              )} */}
-
                 {this.state.viewees.map((sub, i) =>
                   sub !== this.state.mainStreamManager ? (
                     <div
