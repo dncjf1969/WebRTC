@@ -53,11 +53,13 @@ public class FeedbackController {
         @ApiResponse(code = 404, message = "사용자 없음"),
         @ApiResponse(code = 500, message = "서버 오류")
     })
-//	@PreAuthorize("hasAnyRole('USER')")
+	@PreAuthorize("hasAnyRole('BASIC')")
 	public ResponseEntity<List<FeedbackByRoomRes>> getMyFeedback(
-//			@ApiIgnore Authentication authentication,
-			@ApiParam(value="마이페이지를 볼 회원 id", required = true)String memberId) {
+			@ApiIgnore Authentication authentication
+//			@ApiParam(value="마이페이지를 볼 회원 id", required = true)String memberId) 
+			){
 		
+		String memberId = authentication.getName();
 		// 1. memberId -> List<참여했던 방 ID>
 		List<Long> roomIdList = feedbackService.getMeetingIdList(memberId);
 		// 2. 응답용 객체 생성
@@ -83,12 +85,13 @@ public class FeedbackController {
         @ApiResponse(code = 404, message = "사용자 없음"),
         @ApiResponse(code = 500, message = "서버 오류")
     })
-//	@PreAuthorize("hasAnyRole('USER')")
+	@PreAuthorize("hasAnyRole('BASIC')")
 	public ResponseEntity<List<MeetingCountRes>> getMeetingCount(
-//			@ApiIgnore Authentication authentication,
-			@ApiParam(value="마이페이지를 볼 회원 id", required = true)String memberId) {
+			@ApiIgnore Authentication authentication
+//			@ApiParam(value="마이페이지를 볼 회원 id", required = true)String memberId
+			) {
 		
-//		String memberId = authentication.getName();
+		String memberId = authentication.getName();
 				
 //		List<FeedbackRes> res = feedbackService.getMyFeedback(authentication.getName());
 		List<MeetingCountRes> res = feedbackService.getMyMeetingCounts(memberId);
@@ -104,7 +107,7 @@ public class FeedbackController {
         @ApiResponse(code = 404, message = "사용자 없음"),
         @ApiResponse(code = 500, message = "서버 오류")
     })
-//	@PreAuthorize("hasAnyRole('USER')")
+	@PreAuthorize("hasAnyRole('BASIC')")
 	public ResponseEntity<BaseRes> createFeedback(
 			@ApiIgnore Authentication authentication,
 			@RequestBody @ApiParam(value="피드백 정보")FeedbackCreateReq info) {
@@ -123,7 +126,7 @@ public class FeedbackController {
         @ApiResponse(code = 404, message = "사용자 없음"),
         @ApiResponse(code = 500, message = "서버 오류")
     })
-	@PreAuthorize("hasAnyRole('USER')")
+	@PreAuthorize("hasAnyRole('BASIC')")
 	public ResponseEntity<BaseRes> deleteFeedback(
 			@ApiIgnore Authentication authentication,
 			@RequestParam @ApiParam(value="피드백 Id")Long feedbackId) {
@@ -144,12 +147,13 @@ public class FeedbackController {
         @ApiResponse(code = 404, message = "사용자 없음"),
         @ApiResponse(code = 500, message = "서버 오류")
     })
-//	@PreAuthorize("hasAnyRole('USER')")
+	@PreAuthorize("hasAnyRole('BASIC')")
 	public ResponseEntity<List<FeedbackRes>> getMeetingroomFeedback(
-//			@ApiIgnore Authentication authentication,
-			@ApiParam(value="회원 id", required = true)String memberId,
+			@ApiIgnore Authentication authentication,
+//			@ApiParam(value="회원 id", required = true)String memberId,
 			@ApiParam(value="면접방 id", required = true)Long roomId) {
 		
+		String memberId = authentication.getName();
 		List<FeedbackRes> res = feedbackService.getMyFeedbackByRoom(roomId, memberId);
 			
 		return ResponseEntity.status(200).body(res);
