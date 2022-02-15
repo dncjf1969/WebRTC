@@ -24,7 +24,8 @@ class EvaluationSheet extends Component {
             "meetingId": this.props.meetingId,
             "memberId": this.props.viewee.id,
             "question": this.props.chosenQues,
-            "rate": rate
+            "rate": rate,
+            "type": this.props.type
         }
         console.log(data)
         axios.post('/feedback', data, {

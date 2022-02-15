@@ -90,7 +90,6 @@ var localUser = new UserModel();
 class TestComponent extends Component {
   constructor(props) {
     super(props);
-
     // this.OPENVIDU_SERVER_URL = this.props.openviduServerUrl
     //   ? this.props.openviduServerUrl
     //   : "https://" + "i6e201.p.ssafy.io" + ":4443";
@@ -105,16 +104,20 @@ class TestComponent extends Component {
     //   : "SessionA";
     let sessionName = this.props.roomId;
     let waitingId = this.props.roomId;
-    let userName = this.props.user
-      ? this.props.user
+    let userName = this.props.nickname
+      ? this.props.nickname
       : "OpenVidu_User" + Math.floor(Math.random() * 100);
     let id = this.props.id ? this.props.id : "임시아이디";
-    let jwt = this.props.jwt ? this.props.jwt : null;
     this.remotes = [];
     this.localUserAccessAllowed = false;
     this.state = {
-      jwt: jwt,
-      id: id,
+      roomname: '',
+      memberMax: 0,
+      job: '',
+      type: '',
+      exitPassword: false,
+      characterNum: '',
+      id: '',
       // 방id like key
       mySessionId: sessionName,
       // 방에 들어간 유저 - > nickname
@@ -234,6 +237,38 @@ class TestComponent extends Component {
   }
 
   componentDidMount() {
+    myAxios.get('/members/me',{
+      headers: {
+        Authorization: window.localStorage.getItem('jwt'),
+      },
+    })
+      .then((res) => {
+        console.log(res)
+        this.setState({
+          myUserName: res.data.name,
+          id: res.data.userId,
+          characterNum: res.data.characterNum,
+        })
+      })
+      .catch((e) => console.log(e))
+      
+    myAxios.get(`/room/waiting/info?roomId=${this.props.roomId}`,{
+      headers: {
+        Authorization: window.localStorage.getItem('jwt'),
+      },
+    })
+    .then((res) => {
+      console.log(res)
+      this.setState({
+        exitPassword: res.data.exitPassword,
+        memberMax: res.data.memberMax,
+        roomname: res.data.name,
+        type: res.data.type,
+        job: res.data.job
+      })
+    })
+    .catch((e) => console.log(e))
+
     console.log("마운트됐다");
     const openViduLayoutOptions = {
       maxRatio: 3 / 2, // The narrowest ratio that will be used (default 2x3)
@@ -1405,6 +1440,7 @@ class TestComponent extends Component {
                     curQuesId={this.state.curQuesId}
                     preQuesId={this.state.preQuesId}
                     meetingId={this.state.meetingId}
+                    type={this.state.type}
                   />
                 )}
               </Grid>
