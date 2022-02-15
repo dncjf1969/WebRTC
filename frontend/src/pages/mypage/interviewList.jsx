@@ -30,7 +30,7 @@ const Title = styled.div`
   margin-top: 10px;
   font-weight: bold;
   font-size: 1.5rem;
-  border-bottom: 5px solid rgba(251, 209, 75, 0.5);
+  border-bottom: 2px solid rgba(251, 209, 75, 0.5);
 `;
 
 function ChildModal({ MeetingInfo, info }) {
@@ -124,7 +124,7 @@ export default function NestedModal({ MeetingInfo }) {
           <br />
 
           <div><ChildModal MeetingInfo={MeetingInfo} info={childInfo} /></div>
-          <Button onClick={handleClose}>Close</Button>
+          <Button onClick={handleClose}>닫기</Button>
         </Box>
       </Modal>
     </div>

@@ -43,7 +43,11 @@ export default function DraggableDialog({nickname}) {
 
   const doDeleteUser = () => {
     handleClose();
-      axios.delete(`/members`)
+      axios.delete(`/members`, {
+        headers:{
+          "Authorization" : window.localStorage.getItem('jwt'),
+        }
+      })
       .then(() => {
         toast.success('😥 회원탈퇴가 완료 되었습니다');
         deleteToken();

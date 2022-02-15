@@ -13,6 +13,7 @@ import WaitingList from "./pages/WaitingList";
 import Room from "./pages/roomTest2/room";
 import MyPage from "./pages/mypage/Mypage";
 import NotFound from "./pages/Page404";
+import UpdateUser from "./pages/mypage/updateUser";
 import { createTheme } from "@material-ui/core";
 
 
@@ -48,6 +49,7 @@ function App() {
     <>
       <Routes>
         <Route exact path="/" element={<Home />} />
+        <Route path="/updateuser" element={<UpdateUser />} />
         <Route path="/Login" element={<Login />} />
         <Route path="/signup" element={<SignUp />} />
         <Route path="/reset-password" element={<ResetPassword />} />

@@ -472,7 +472,12 @@ class TestComponent extends Component {
             const nextManager = this.state.ishost ? "" : this.state.id;
             this.setState({ ishost: true });
             myAxios.put(
-              `/room/waiting/exit?memberId=${data.destroyedUserId}&nextManger=${nextManager}&roomId=${this.state.waitingId}`
+              `/room/waiting/exit?memberId=${data.destroyedUserId}&nextManger=${nextManager}&roomId=${this.state.waitingId}`,
+              {
+                headers: {
+                  Authorization: window.localStorage.getItem('jwt'),
+                },
+              }
             );
           }
         });
@@ -527,7 +532,11 @@ class TestComponent extends Component {
                 if (this.state.customQuesCheck === false) {
                   // 사용자가 만든 질문이 아니라면
                   myAxios
-                    .put("/question/past", { questionId: this.state.curQuesId })
+                    .put("/question/past", { questionId: this.state.curQuesId }, {
+                      headers: {
+                        Authorization: window.localStorage.getItem('jwt'),
+                      },
+                    })
                     .then((res) => {
                       console.log(res);
                       console.log("선택질문 count요청보냄");
@@ -541,6 +550,10 @@ class TestComponent extends Component {
                         .put("/question/relation", {
                           childId: this.state.curQuesId,
                           parentId: this.state.preQuesId,
+                        }, {
+                          headers: {
+                            Authorization: window.localStorage.getItem('jwt'),
+                          },
                         })
                         .then((res) => {
                           console.log(res);
@@ -595,7 +608,11 @@ class TestComponent extends Component {
           console.log(this.props.test)
           this.setState({feedbackDialogState: true,})
           if (isViewer === false) { // 면접자들이면 피드백 정보 받기
-            myAxios.get(`/feedback/meeting?memberId=${this.state.id}&roomId=${this.state.meetingId}`)
+            myAxios.get(`/feedback/meeting?memberId=${this.state.id}&roomId=${this.state.meetingId}`, {
+              headers: {
+                Authorization: window.localStorage.getItem('jwt'),
+              },
+            })
             .then((res) => {
               console.log(res)
               this.setState({
@@ -781,7 +798,11 @@ class TestComponent extends Component {
   getRecoQues() {
     myAxios
       .get(
-        `/question?meetingroomId=${this.state.meetingId}&parentId=${this.state.preQuesId}`
+        `/question?meetingroomId=${this.state.meetingId}&parentId=${this.state.preQuesId}`, {
+          headers: {
+            Authorization: window.localStorage.getItem('jwt'),
+          },
+        }
       )
       .then((res) => {
         console.log(res);
@@ -855,7 +876,11 @@ class TestComponent extends Component {
         if (response.data.numberOfElements === 1) {
           // 0인지 1인지 실험필요
           myAxios
-            .delete(`/room/waiting?roomId=${this.state.waitingId}`)
+            .delete(`/room/waiting?roomId=${this.state.waitingId}`, {
+              headers: {
+                Authorization: window.localStorage.getItem('jwt'),
+              },
+            })
             .then(() => console.log("DB에서 방삭제됨"))
             .catch((e) => console.log(e));
         }
@@ -1262,7 +1287,11 @@ class TestComponent extends Component {
       })
       .catch((error) => {});
     // axios 방장이 버튼눌렀으므로 한번만감
-    myAxios.get(`/room/meeting/finish?meetingId=${this.state.meetingId}&roomId=${this.state.waitingId}`)
+    myAxios.get(`/room/meeting/finish?meetingId=${this.state.meetingId}&roomId=${this.state.waitingId}`, {
+      headers: {
+        Authorization: window.localStorage.getItem('jwt'),
+      },
+    })
     .then((res) => console.log('면접끝 서버로 요청보냄', res))
     .catch((e) => console.log(e))
   }
@@ -1294,9 +1323,11 @@ class TestComponent extends Component {
           spacing={2}
           title="waitingProfile"
           sx={{
-            height: "850px",
+            height: "650px",
             display: "flex",
             marginTop: "15px",
+
+            // position: "relative",
             // margin: "16px",
             // marginTop: "20px",
             paddingTop: "10px",
@@ -1304,24 +1335,24 @@ class TestComponent extends Component {
             borderRadius: 6,
             backgroundColor: color,
             boxShadow: "0 3px 5px 2px rgba(47, 138, 241, 0.5)",
+            // opacity: 0.7,
           }}
         >
           {this.state.isStart ? (
             <>
               <Grid item xs={3}>
-                <div style={{height:'60%'}}>
+                <div>
                   {this.state.viewers.map((sub, i) => (
                     <div
                       key={i}
                       className="stream-container"
-                      style={{ height: "50%", marginBottom: "5%", marginTop: "5%" }}
+                      style={{ height: "200px" }}
                       id="remoteUsers"
                     >
                       <div>면접관</div>
                       <StreamComponent
                         user={sub}
                         handleNickname={this.nicknameChanged}
-                        style={{height:"50%"}}
                       />
                     </div>
                   ))}
@@ -1329,13 +1360,13 @@ class TestComponent extends Component {
 
                 <div>
                   {this.state.isStart && localUser.viewer && (
-                    <div style={{height: '40%'}}>
+                    <div>
                       <RecommendationQues
                         session={this.state.session}
                         questions={this.state.questions}
                         recoQues={this.state.recoQues}
                         mainStreamManager={this.state.mainStreamManager}
-                        handleChoiceQues={(e) => this.handleChoiceQues(e)}
+                        handleChoiceQues={e => this.handleChoiceQues(e)}
                         preQuesId={this.state.preQuesId}
                         meetingId={this.state.meetingId}
                       />
@@ -1344,49 +1375,41 @@ class TestComponent extends Component {
                 </div>
               </Grid>
               <Grid item xs={6}>
-                <div style={{width:'100%', height:'30%'}}>
-                  {this.state.viewees.map((sub, i) =>
-                    sub !== this.state.mainStreamManager ? (
-                      <div
-                        key={i}
-                        className="stream-container"
-                        style={{ float: "left", marginTop:'5%', width:'30%', height:'40%'}}
-                        id="remoteUsers"
-                      >
-                        <div>면접자</div>
-                        <StreamComponent3 user={sub} />
-                      </div>
-                    ) : null
-                  )}
-                </div>
-
-                <div style={{width:'100%', height:'70%'}}>
-                  {this.state.mainStreamManager && (
-                    <div className="stream-container" style={{ height: "100%", width:'100%' }} id="remoteUsers">
-                      <div>선택된화면</div>
-                      <StreamComponent2 user={this.state.mainStreamManager} />
+                {this.state.viewees.map((sub, i) =>
+                  sub !== this.state.mainStreamManager ? (
+                    <div
+                      key={i}
+                      className="stream-container"
+                      style={{ height: "200px" }}
+                      id="remoteUsers"
+                    >
+                      <div>면접자</div>
+                      <StreamComponent user={sub} />
                     </div>
-                  )}
-                </div>
+                  ) : null
+                )}
+
+                {this.state.mainStreamManager && (
+                  <div className="stream-container" id="remoteUsers">
+                    <div>선택된화면</div>
+                    <StreamComponent user={this.state.mainStreamManager} />
+                  </div>
+                )}
               </Grid>
 
               <Grid item xs={3}>
-                <div>
-                  {this.state.isStart && localUser.viewer && (
-                    <EvaluationSheet
-                      viewers={this.state.viewers}
-                      viewee={this.state.mainStreamManager}
-                      session={this.state.session}
-                      evalWaiting={this.state.evalWaiting}
-                    />
-                  )}
-                </div>
-
-                <div>
-                  {this.state.isStart && localUser.viewer && (
-                    <button onClick={this.handleFinish}>면접끝내기</button>
-                  )}
-                </div>
+                {this.state.isStart && localUser.viewer && (
+                  <EvaluationSheet
+                    viewers={this.state.viewers}
+                    viewee={this.state.mainStreamManager}
+                    session={this.state.session}
+                    evalWaiting={this.state.evalWaiting}
+                    chosenQues={this.state.chosenQues}
+                    curQuesId={this.state.curQuesId}
+                    preQuesId={this.state.preQuesId}
+                    meetingId={this.state.meetingId}
+                  />
+                )}
               </Grid>
             </>
           ) : (

@@ -16,7 +16,7 @@ export default function MyTable({Personality, Job, Debate, PT}) {
   const useStyles = makeStyles({
     table: {
       minWidth: 500,
-      minHeight: 200,
+      minHeight: 180,
     },
     container: {
       width: '100%',
