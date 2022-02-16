@@ -4,8 +4,8 @@ import React, { Component } from 'react';
 import './App.css';
 import UserVideoComponent from './UserVideoComponent';
 
-const OPENVIDU_SERVER_URL = 'https://' + "i6e201.p.ssafy.io" + ':1443';
-const OPENVIDU_SERVER_SECRET = 'WISH';
+const OPENVIDU_SERVER_URL = 'https://' + "coach84.p.ssafy.io" + ':4443';
+const OPENVIDU_SERVER_SECRET = 'ssafy';
 
 
 class App extends Component {
