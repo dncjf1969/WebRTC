@@ -5,6 +5,8 @@ import Button from "@mui/material/Button";
 import { useState } from "react";
 import styled from "styled-components";
 
+import "./SelectCharacter.css";
+
 const Style = {
   position: "absolute",
   top: "50%",
@@ -68,10 +70,14 @@ function SelectCharacter(props) {
         <Box sx={{ ...Style, width: 400, height:700 }}>
           <Title>캐릭터 선택</Title>
           <ul>
-            <li><img src="https://lab.ssafy.com/s06-webmobile1-sub2/S06P12E201/-/raw/hyun/frontend/src/images/0.PNG"></img><input type="radio" name="charSel" value="0" onClick={(e)=>setCharNumber("0")}></input></li>
-            <li><img src="https://lab.ssafy.com/s06-webmobile1-sub2/S06P12E201/-/raw/hyun/frontend/src/images/1.PNG"></img><input type="radio" name="charSel" value="1" onClick={(e)=>setCharNumber("1")}></input></li>
-            <li><img src="https://lab.ssafy.com/s06-webmobile1-sub2/S06P12E201/-/raw/hyun/frontend/src/images/2.PNG"></img><input type="radio" name="charSel" value="2" onClick={(e)=>setCharNumber("2")}></input></li>
-            <li><img src="https://lab.ssafy.com/s06-webmobile1-sub2/S06P12E201/-/raw/hyun/frontend/src/images/3.PNG"></img><input type="radio" name="charSel" value="3" onClick={(e)=>setCharNumber("3")}></input></li>
+            {charNum === 0 ? <img class="selectedChar" src="https://lab.ssafy.com/s06-webmobile1-sub2/S06P12E201/-/raw/hyun/frontend/src/images/0.PNG" onClick={(e)=>setCharNumber(0)}></img> : <img class="char" id="char0" src="https://lab.ssafy.com/s06-webmobile1-sub2/S06P12E201/-/raw/hyun/frontend/src/images/0.PNG" onClick={(e)=>setCharNumber(0)}></img>}
+            {charNum === 1 ? <img class="selectedChar" src="https://lab.ssafy.com/s06-webmobile1-sub2/S06P12E201/-/raw/hyun/frontend/src/images/1.PNG" onClick={(e)=>setCharNumber(1)}></img> : <img class="char" id="char1" src="https://lab.ssafy.com/s06-webmobile1-sub2/S06P12E201/-/raw/hyun/frontend/src/images/1.PNG" onClick={(e)=>setCharNumber(1)}></img>}
+            {charNum === 2 ? <img class="selectedChar" src="https://lab.ssafy.com/s06-webmobile1-sub2/S06P12E201/-/raw/hyun/frontend/src/images/2.PNG" onClick={(e)=>setCharNumber(2)}></img> : <img class="char" id="char0" src="https://lab.ssafy.com/s06-webmobile1-sub2/S06P12E201/-/raw/hyun/frontend/src/images/2.PNG" onClick={(e)=>setCharNumber(2)}></img>}
+            {charNum === 3 ? <img class="selectedChar" src="https://lab.ssafy.com/s06-webmobile1-sub2/S06P12E201/-/raw/hyun/frontend/src/images/3.PNG" onClick={(e)=>setCharNumber(3)}></img> : <img class="char" id="char0" src="https://lab.ssafy.com/s06-webmobile1-sub2/S06P12E201/-/raw/hyun/frontend/src/images/3.PNG" onClick={(e)=>setCharNumber(3)}></img>}
+            {/* <li><img class="char" id="char0" src="https://lab.ssafy.com/s06-webmobile1-sub2/S06P12E201/-/raw/hyun/frontend/src/images/0.PNG" onClick={(e)=>setCharNumber(0)}></img></li> */}
+            {/* <li></li>
+            <li><img class="char" id="char2" src="https://lab.ssafy.com/s06-webmobile1-sub2/S06P12E201/-/raw/hyun/frontend/src/images/2.PNG" onClick={(e)=>setCharNumber(2)}></img></li>
+            <li><img class="char" id="char3" src="https://lab.ssafy.com/s06-webmobile1-sub2/S06P12E201/-/raw/hyun/frontend/src/images/3.PNG" onClick={(e)=>setCharNumber(3)}></img></li> */}
           </ul>
            <Button onClick={handleClose}>확인</Button>
          </Box>
