@@ -14,14 +14,14 @@
   right: 0;
   bottom: 0;
   margin-right: 3%;
-  height: 50%;
+  height: 80%;
   width: 100%;
   border-radius: 20px;
   box-shadow: 4px 4px 4px #459de6;
 }
 
 .message-wrap {
-  margin-top: 50px;
+  margin-top: 20px;
   height: calc(100% - 90px);
   overflow: auto;
 }
@@ -43,7 +43,6 @@
 .msg-info p {
   font-size: 0.8em;
   color: #000000;
-  font-style: italic;
 }
 
 .msg-content {
@@ -118,13 +117,13 @@ span.triangle {
 #messageInput {
   position: absolute;
   bottom: 5px;
-  width: 100%;
-  background-color: #ffffff;
+  width: 90%;
+
   text-align: center;
   padding: 10px 0px;
   height: 30px;
-  border-bottom-left-radius: 30px;
-  border-bottom-right-radius: 30px;
+
+  box-sizing: unset;
 }
 
 #navInput {

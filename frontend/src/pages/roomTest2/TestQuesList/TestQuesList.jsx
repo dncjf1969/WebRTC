@@ -1,8 +1,9 @@
 import React, { Component } from "react";
 import axios from "../../../common/http-common";
 import "./TestQuesComponent.css";
-import Fab from "@mui/material/Fab";
-import AddIcon from "@mui/icons-material/Add";
+import { IoCloudUploadOutline } from "react-icons/io5";
+import { Fab, Tooltip } from "@material-ui/core";
+import BorderColorIcon from "@mui/icons-material/BorderColor";
 class TestQuesList extends Component {
   constructor(props) {
     super(props);
@@ -57,72 +58,28 @@ class TestQuesList extends Component {
   }
 
   render() {
-    const tempStyle = {
-      display: "inline-block",
-      width: "400px",
-      height: "400px",
-      marginLeft: "5px",
-    };
-
-    const tempStyle2 = {
-      display: "inline-block",
-      width: "300px",
-      height: "200px",
-      marginLeft: "2px",
-      backgroundColor: "white",
-      border: "1px solid black",
-      marginLeft: "2px",
-      marginTop: "10px",
-    };
-    const tempStyle3 = {
-      display: "inline-block",
-      width: "50px",
-      height: "10px",
-      marginLeft: "200px",
-      backgroundColor: "white",
-      border: "1px solid black",
-    };
-
-    const tempStyle4 = {
-      float: "left",
-      width: "100px",
-      height: "100px",
-    };
-
-    const tempStyle5 = {
-      width: "100px",
-      marginLeft: "5px",
-      marginTop: "5px",
-      fontSize: "17pt",
-    };
-
-    const tempStyle6 = {
-      marginLeft: "10px",
-    };
-
-    const tempStyle7 = {
-      fontSize: "30pt",
-    };
-
     const styleChat = { display: this.props.chatDisplay };
     return (
       <div id="chatContainer">
         <div id="chatComponent" style={styleChat}>
-          <span className="font-bold ml-32">사전질문추가</span>
-          {/* <div id="navInput"></div> */}
+          <div className="ml-36   font-bold">질문 추가</div>
           <div className="message-wrap" ref={this.chatScroll}>
             {this.props.questions.map((question) => (
-              <div id={question.questionId} key={question.questionId}>
-                <div>
-                  {question.userName}: {question.content}
+              <div
+                className="grid grid-cols-4"
+                id={question.questionId}
+                key={question.questionId}
+              >
+                <div className="col-span-3 question">
+                  <span className="userName">{question.userName}</span>:{" "}
+                  {question.content}
                 </div>
-                <div>
+                <div className="delete">
                   {question.connectionId ===
                   this.props.localUser.connectionId ? (
                     <button
                       disabled={this.props.ready ? true : false}
                       onClick={this.handleDeleteBtn}
-                      className=""
                     >
                       X
                     </button>
@@ -131,38 +88,25 @@ class TestQuesList extends Component {
               </div>
             ))}
           </div>
-          {/* <div id="messageInput">
+
+          <div id="messageInput">
             <input
-              placeholder=""
-              id="chatInput"
+              placeholder="사전 질문 추가해주세요"
+              id="input1"
               value={this.state.message}
               onChange={this.handleChange}
               onKeyPress={this.handlePressKey}
             />
             <Tooltip title="보내기">
-              <Fab size="small" id="sendButton" onClick={this.sendMessage}>
-                <ChatOutlinedIcon sx={{ color: "white" }} />
+              <Fab
+                size="small"
+                id="sendButton"
+                onClick={this.makeQues}
+                disabled={this.props.ready ? true : false}
+              >
+                <BorderColorIcon sx={{ color: "white" }} />
               </Fab>
             </Tooltip>
-          </div> */}
-
-          <div className="grid grid-cols-3 mt-4">
-            <input
-              id="input1"
-              onKeyDown={this.handleEnter}
-              className="ml-5 col-span-2 border-2 w-full rounded-xl"
-              placeholder="채팅 메세지를 작성해주세요"
-            ></input>
-
-            <Fab
-              onClick={this.makeQues}
-              disabled={this.props.ready ? true : false}
-              size="small"
-              aria-label="add"
-              id="sendButton"
-            >
-              <AddIcon sx={{ color: "white" }} />
-            </Fab>
           </div>
         </div>
       </div>

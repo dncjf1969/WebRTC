@@ -22,7 +22,8 @@
 }
 
 .message-wrap {
-  margin: 20px;
+  margin-top: 25px;
+  margin-left: 35px;
   height: calc(100% - 90px);
   overflow: auto;
 }
@@ -44,7 +45,6 @@
 .msg-info p {
   font-size: 0.8em;
   color: #000000;
-  font-style: italic;
 }
 
 .msg-content {
@@ -119,25 +119,34 @@ span.triangle {
 #messageInput {
   /* position: absolute; */
   bottom: 5px;
-  /* width: 100%; */
-  background-color: #ffffff;
+
   text-align: center;
   /* padding:  */
   margin-right: 10px;
   margin-left: 3px;
-  /* height: 30px; */
-  /* border-bottom-left-radius: 30px;
-  border-bottom-right-radius: 30px; */
 }
 
+#navInput {
+  position: absolute;
+  top: 5px;
+  width: fit-content;
+  width: 100%;
+  background-color: #ffffff;
+  text-align: center;
+  padding: 10px 0px;
+  height: 30px;
+  border-top-left-radius: 30px;
+  border-top-right-radius: 30px;
+  /* border-bottom-; */
+}
 #messageInput input1 {
-  width: 0%;
+  width: 70%;
   height: 100%;
   /* border: none; */
   outline: none;
   font-size: 17px;
-  margin-left: 10%;
-  border: #1976d2;
+  margin-left: -10%;
+  /* margin-bottom: 3; */
 }
 
 #sendButton {
@@ -160,4 +169,22 @@ span.triangle {
 
 .chatComponentLight ::-webkit-scrollbar-thumb {
   background-color: #eeeeee !important;
+}
+
+.question {
+  justify-content: flex-start;
+  overflow-x: auto;
+}
+
+.delete {
+  justify-self: end;
+  justify-self: center;
+
+  margin-right: 40px;
+  font-weight: 400;
+}
+
+.userName {
+  font-weight: 200;
+  margin-right: 10px;
 }
