@@ -7,6 +7,8 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.sql.Date;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.persistence.*;
 
@@ -30,5 +32,8 @@ public class Member{
     Date signUpDate;
     
     int characterNumber;
+    
+    @OneToMany(mappedBy = "member")
+    List<Role> roles = new ArrayList<>();
     
 }
