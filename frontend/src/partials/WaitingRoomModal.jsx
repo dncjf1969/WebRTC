@@ -115,7 +115,7 @@ function WaitingRoomModal({ modalClose }) {
   };
   return (
     <>
-      <Dialog open={true} onClose={handleClose}>
+      <Dialog open={true} onClose={handleClose} >
         <DialogTitle 
           sx={{
             fontSize: 20,
