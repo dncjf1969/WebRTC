@@ -759,6 +759,8 @@ class TestComponent extends Component {
       id: this.state.id,
       image: this.state.characterNum,
     };
+    console.log("커넥트 함수==============");
+    console.log(this.state.session);
     this.state.session
       .connect(token, context)
       .then(() => {
