@@ -23,7 +23,7 @@ function Home() {
         {/* <Newsletter /> */}
       </main>
       {/*  Site footer */}
-      {/* <Footer /> */}
+      <Footer />
     </div>
   );
 }
