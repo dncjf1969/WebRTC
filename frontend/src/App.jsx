@@ -18,6 +18,8 @@ import Enterroom from "./pages/enterRoom";
 
 
 import { createTheme } from "@material-ui/core";
+
+
 function App() {
   const location = useLocation();
   const theme = createTheme({
@@ -60,6 +62,7 @@ function App() {
         <Route path="/mypage" element={<MyPage />} />
         <Route path="/404" element={<NotFound />} />
         <Route path="*" element={<Navigate to="/404" replace />} />
+     
       </Routes>
     </>
   );
