@@ -343,7 +343,9 @@ class TestComponent extends Component {
             .then(() => {
               console.log("정보보냈다");
             })
-            .catch((error) => {});
+            .catch((error) => {
+              console.log(error);
+            });
         });
 
         this.state.session.on("signal:new-user", (event) => {
