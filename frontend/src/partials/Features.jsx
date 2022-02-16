@@ -52,7 +52,7 @@ function Features() {
                 <h5 className=" mt-2 text-left font-medium">CHECK POINT</h5>
                 <p className="py-1 text-left font-light ">
                   <FaCheckCircle className="inline mb-1 mr-2" />
-                  자기소개부터 꼬리질문까지!
+                  <span id="line1">자기소개</span> 꼬리질문까지!
                 </p>
                 <p className="pb text-left font-light ">
                   <FaCheckCircle className="inline mb-1 mr-2" />
@@ -83,7 +83,7 @@ function Features() {
 
                 <p className="py-1 summary text-left font-light">
                   <FaCheckCircle className="inline mb-1 mr-2" />
-                  직무 기초부터 응용까지 !
+                  <span id="line2">직무 기초</span>부터 응용까지 !
                 </p>
                 <p className=" text-left font-light">
                   <FaCheckCircle className="inline mb-1 mr-2" />

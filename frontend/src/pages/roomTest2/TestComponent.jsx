@@ -43,15 +43,15 @@ import {
   createTheme,
 } from "@mui/material";
 // 피드백용
-import PropTypes from 'prop-types';
-import Button from '@mui/material/Button';
-import Dialog from '@mui/material/Dialog';
-import DialogTitle from '@mui/material/DialogTitle';
-import DialogContent from '@mui/material/DialogContent';
-import DialogActions from '@mui/material/DialogActions';
-import IconButton from '@mui/material/IconButton';
-import CloseIcon from '@mui/icons-material/Close';
-import Divider from '@mui/material/Divider';
+import PropTypes from "prop-types";
+import Button from "@mui/material/Button";
+import Dialog from "@mui/material/Dialog";
+import DialogTitle from "@mui/material/DialogTitle";
+import DialogContent from "@mui/material/DialogContent";
+import DialogActions from "@mui/material/DialogActions";
+import IconButton from "@mui/material/IconButton";
+import CloseIcon from "@mui/icons-material/Close";
+import Divider from "@mui/material/Divider";
 //
 import { bgcolor } from "@mui/system";
 import { deepPurple, teal } from "@mui/material/colors";
@@ -59,10 +59,10 @@ import { blue } from "@material-ui/core/colors";
 // ----------------------------------------------------------------------
 //// 피드백용
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
-  '& .MuiDialogContent-root': {
+  "& .MuiDialogContent-root": {
     padding: theme.spacing(2),
   },
-  '& .MuiDialogActions-root': {
+  "& .MuiDialogActions-root": {
     padding: theme.spacing(1),
   },
 }));
@@ -114,13 +114,13 @@ class TestComponent extends Component {
     this.remotes = [];
     this.localUserAccessAllowed = false;
     this.state = {
-      roomname: '',
+      roomname: "",
       memberMax: 0,
-      job: '',
-      type: '',
+      job: "",
+      type: "",
       exitPassword: false,
-      characterNum: '',
-      id: '',
+      characterNum: "",
+      id: "",
       // 방id like key
       mySessionId: sessionName,
       // 방에 들어간 유저 - > nickname
@@ -213,6 +213,7 @@ class TestComponent extends Component {
     console.log("state다");
     console.log(this.state);
     console.log(localUser);
+    this.handleExitBtn = this.handleExitBtn.bind(this);
     this.handleCloseFeedback = this.handleCloseFeedback.bind(this);
     this.getRecoQues = this.getRecoQues.bind(this);
     this.nextViewee = this.nextViewee.bind(this);
@@ -240,37 +241,39 @@ class TestComponent extends Component {
   }
 
   componentDidMount() {
-    myAxios.get('/members/me',{
-      headers: {
-        Authorization: window.localStorage.getItem('jwt'),
-      },
-    })
+    myAxios
+      .get("/members/me", {
+        headers: {
+          Authorization: window.localStorage.getItem("jwt"),
+        },
+      })
       .then((res) => {
-        console.log(res)
+        console.log(res);
         this.setState({
           myUserName: res.data.name,
           id: res.data.userId,
           characterNum: res.data.characterNum,
-        })
+        });
       })
-      .catch((e) => console.log(e))
-      
-    myAxios.get(`/room/waiting/info?roomId=${this.props.roomId}`,{
-      headers: {
-        Authorization: window.localStorage.getItem('jwt'),
-      },
-    })
-    .then((res) => {
-      console.log(res)
-      this.setState({
-        exitPassword: res.data.exitPassword,
-        memberMax: res.data.memberMax,
-        roomname: res.data.name,
-        type: res.data.type,
-        job: res.data.job
+      .catch((e) => console.log(e));
+
+    myAxios
+      .get(`/room/waiting/info?roomId=${this.props.roomId}`, {
+        headers: {
+          Authorization: window.localStorage.getItem("jwt"),
+        },
       })
-    })
-    .catch((e) => console.log(e))
+      .then((res) => {
+        console.log(res);
+        this.setState({
+          exitPassword: res.data.exitPassword,
+          memberMax: res.data.memberMax,
+          roomname: res.data.name,
+          type: res.data.type,
+          job: res.data.job,
+        });
+      })
+      .catch((e) => console.log(e));
 
     console.log("마운트됐다");
     const openViduLayoutOptions = {
@@ -507,10 +510,10 @@ class TestComponent extends Component {
             const nextManager = this.state.ishost ? "" : this.state.id;
             this.setState({ ishost: true });
             myAxios.put(
-              `/room/waiting/exit?memberId=${data.destroyedUserId}&nextManger=${nextManager}&roomId=${this.state.waitingId}`,
+              `/room/waiting/exit?nextManger=${nextManager}&roomId=${this.state.waitingId}`,
               {
                 headers: {
-                  Authorization: window.localStorage.getItem('jwt'),
+                  Authorization: window.localStorage.getItem("jwt"),
                 },
               }
             );
@@ -567,11 +570,15 @@ class TestComponent extends Component {
                 if (this.state.customQuesCheck === false) {
                   // 사용자가 만든 질문이 아니라면
                   myAxios
-                    .put("/question/past", { questionId: this.state.curQuesId }, {
-                      headers: {
-                        Authorization: window.localStorage.getItem('jwt'),
-                      },
-                    })
+                    .put(
+                      "/question/past",
+                      { questionId: this.state.curQuesId },
+                      {
+                        headers: {
+                          Authorization: window.localStorage.getItem("jwt"),
+                        },
+                      }
+                    )
                     .then((res) => {
                       console.log(res);
                       console.log("선택질문 count요청보냄");
@@ -582,14 +589,18 @@ class TestComponent extends Component {
                         this.state.preQuesId
                       );
                       myAxios
-                        .put("/question/relation", {
-                          childId: this.state.curQuesId,
-                          parentId: this.state.preQuesId,
-                        }, {
-                          headers: {
-                            Authorization: window.localStorage.getItem('jwt'),
+                        .put(
+                          "/question/relation",
+                          {
+                            childId: this.state.curQuesId,
+                            parentId: this.state.preQuesId,
                           },
-                        })
+                          {
+                            headers: {
+                              Authorization: window.localStorage.getItem("jwt"),
+                            },
+                          }
+                        )
                         .then((res) => {
                           console.log(res);
                           console.log("연관질문 count요청보냄");
@@ -639,22 +650,27 @@ class TestComponent extends Component {
         // 방장이 면접끝냄
         this.state.session.on("signal:finish", (event) => {
           // alert('면접이 끝났습니다.')
-          const isViewer = this.state.viewerState
-          console.log(this.props.test)
-          this.setState({feedbackDialogState: true,})
-          if (isViewer === false) { // 면접자들이면 피드백 정보 받기
-            myAxios.get(`/feedback/meeting?memberId=${this.state.id}&roomId=${this.state.meetingId}`, {
-              headers: {
-                Authorization: window.localStorage.getItem('jwt'),
-              },
-            })
-            .then((res) => {
-              console.log(res)
-              this.setState({
-                feedbacks: res.data
+          const isViewer = this.state.viewerState;
+          console.log(this.props.test);
+          this.setState({ feedbackDialogState: true });
+          if (isViewer === false) {
+            // 면접자들이면 피드백 정보 받기
+            myAxios
+              .get(
+                `/feedback/meeting?memberId=${this.state.id}&roomId=${this.state.meetingId}`,
+                {
+                  headers: {
+                    Authorization: window.localStorage.getItem("jwt"),
+                  },
+                }
+              )
+              .then((res) => {
+                console.log(res);
+                this.setState({
+                  feedbacks: res.data,
+                });
               })
-            })
-            .catch((e) => console.log(e))
+              .catch((e) => console.log(e));
             // this.initialize()
             // this.props.navigate('/')
             // // 새로고침 안하면 내부적으로 openvidu에서 연결유지됨
@@ -808,7 +824,7 @@ class TestComponent extends Component {
     localUser.setReady(false);
     localUser.setViewer(null);
     localUser.setId(this.state.id);
-    localUser.setImage(this.state.characterNum)
+    localUser.setImage(this.state.characterNum);
     this.subscribeToUserChanged();
     this.subscribeToStreamDestroyed();
     this.sendSignalUserChanged({
@@ -835,9 +851,10 @@ class TestComponent extends Component {
   getRecoQues() {
     myAxios
       .get(
-        `/question?meetingroomId=${this.state.meetingId}&parentId=${this.state.preQuesId}`, {
+        `/question?meetingroomId=${this.state.meetingId}&parentId=${this.state.preQuesId}`,
+        {
           headers: {
-            Authorization: window.localStorage.getItem('jwt'),
+            Authorization: window.localStorage.getItem("jwt"),
           },
         }
       )
@@ -901,28 +918,28 @@ class TestComponent extends Component {
 
   leaveSession() {
     const mySession = this.state.session;
-    axios
-      .get(this.OPENVIDU_SERVER_URL + "/openvidu/api/sessions", {
-        headers: {
-          Authorization:
-            "Basic " + btoa("OPENVIDUAPP:" + this.OPENVIDU_SERVER_SECRET),
-        },
-      })
-      .then((response) => {
-        console.log(response);
-        if (response.data.numberOfElements === 1) {
-          // 0인지 1인지 실험필요
-          myAxios
-            .delete(`/room/waiting?roomId=${this.state.waitingId}`, {
-              headers: {
-                Authorization: window.localStorage.getItem('jwt'),
-              },
-            })
-            .then(() => console.log("DB에서 방삭제됨"))
-            .catch((e) => console.log(e));
-        }
-      })
-      .catch(() => {});
+    // axios
+    //   .get(this.OPENVIDU_SERVER_URL + "/openvidu/api/sessions", {
+    //     headers: {
+    //       Authorization:
+    //         "Basic " + btoa("OPENVIDUAPP:" + this.OPENVIDU_SERVER_SECRET),
+    //     },
+    //   })
+    //   .then((response) => {
+    //     console.log(response);
+    //     if (response.data.numberOfElements === 1) {
+    //       // 0인지 1인지 실험필요
+    //       myAxios
+    //         .delete(`/room/waiting?roomId=${this.state.waitingId}`, {
+    //           headers: {
+    //             Authorization: window.localStorage.getItem('jwt'),
+    //           },
+    //         })
+    //         .then(() => console.log("DB에서 방삭제됨"))
+    //         .catch((e) => console.log(e));
+    //     }
+    //   })
+    //   .catch(() => {});
 
     // Empty all properties...
     this.OV = null;
@@ -996,7 +1013,7 @@ class TestComponent extends Component {
       newUser.setType("remote");
       newUser.setId(JSON.parse(event.stream.connection.data).id);
       newUser.setNickname(JSON.parse(event.stream.connection.data).clientData);
-      newUser.setImage(JSON.parse(event.stream.connection.data).image)
+      newUser.setImage(JSON.parse(event.stream.connection.data).image);
       newUser.setReady(false);
       newUser.setViewer(null);
       this.remotes.push(newUser);
@@ -1325,21 +1342,59 @@ class TestComponent extends Component {
       })
       .catch((error) => {});
     // axios 방장이 버튼눌렀으므로 한번만감
-    myAxios.get(`/room/meeting/finish?meetingId=${this.state.meetingId}&roomId=${this.state.waitingId}`, {
-      headers: {
-        Authorization: window.localStorage.getItem('jwt'),
-      },
-    })
-    .then((res) => console.log('면접끝 서버로 요청보냄', res))
-    .catch((e) => console.log(e))
+    myAxios
+      .get(
+        `/room/meeting/finish?meetingId=${this.state.meetingId}&roomId=${this.state.waitingId}`,
+        {
+          headers: {
+            Authorization: window.localStorage.getItem("jwt"),
+          },
+        }
+      )
+      .then((res) => console.log("면접끝 서버로 요청보냄", res))
+      .catch((e) => console.log(e));
+
+    myAxios
+      .delete(`/room/waiting?roomId=${this.state.waitingId}`, {
+        headers: {
+          Authorization: window.localStorage.getItem("jwt"),
+        },
+      })
+      .then((res) => console.log("방폭파시킴", res))
+      .catch((e) => console.log(e));
   }
 
   handleCloseFeedback() {
-    this.setState({feedbackDialogState:false});
-    this.props.navigate("/")
-    window.localStorage.removeItem("roomId")
-    window.localStorage.removeItem("token")
-    window.location.reload()
+    this.setState({ feedbackDialogState: false });
+    this.props.navigate("/");
+    window.localStorage.removeItem("roomId");
+    window.localStorage.removeItem("token");
+    window.location.reload();
+  }
+
+  handleExitBtn() {
+    axios
+      .get(this.OPENVIDU_SERVER_URL + "/openvidu/api/sessions", {
+        headers: {
+          Authorization:
+            "Basic " + btoa("OPENVIDUAPP:" + this.OPENVIDU_SERVER_SECRET),
+        },
+      })
+      .then((response) => {
+        console.log(response);
+        if (response.data.numberOfElements === 1) {
+          // 나혼자 남았으면 방 폭파
+          myAxios
+            .delete(`/room/waiting?roomId=${this.state.waitingId}`, {
+              headers: {
+                Authorization: window.localStorage.getItem("jwt"),
+              },
+            })
+            .then(() => console.log("DB에서 방삭제됨"))
+            .catch((e) => console.log(e));
+        }
+      })
+      .catch(() => {});
   }
 
   render() {
@@ -1351,9 +1406,9 @@ class TestComponent extends Component {
     return (
       <div
         style={{
-          marginTop: "2%",
+          marginTop: "1%",
           marginLeft: "2%",
-          marginRight: "2%",
+          marginRight: "1%",
         }}
       >
         <Grid
@@ -1361,15 +1416,12 @@ class TestComponent extends Component {
           spacing={2}
           title="waitingProfile"
           sx={{
-            height: "650px",
+            height: "680px",
             display: "flex",
             marginTop: "15px",
 
-            // position: "relative",
-            // margin: "16px",
-            // marginTop: "20px",
             paddingTop: "10px",
-            // paddingBottom: "10px",
+
             borderRadius: 6,
             backgroundColor: color,
             boxShadow: "0 3px 5px 2px rgba(47, 138, 241, 0.5)",
@@ -1404,7 +1456,7 @@ class TestComponent extends Component {
                         questions={this.state.questions}
                         recoQues={this.state.recoQues}
                         mainStreamManager={this.state.mainStreamManager}
-                        handleChoiceQues={e => this.handleChoiceQues(e)}
+                        handleChoiceQues={(e) => this.handleChoiceQues(e)}
                         preQuesId={this.state.preQuesId}
                         meetingId={this.state.meetingId}
                       />
@@ -1450,30 +1502,30 @@ class TestComponent extends Component {
                   />
                 )}
               </Grid>
+              {this.state.isStart && localUser.viewer && (
+                <button onClick={this.handleFinish}>면접끝내기</button>
+              )}
             </>
           ) : (
             <>
               {/* 유저 리스트 */}
               <Grid item xs={8}>
-                {this.state.isStart ? null : (
-                  <TestUserList
-                    session={this.state.session}
-                    subscribers={this.state.subscribers}
-                    myUserName={this.state.myUserName}
-                    ready={this.state.readyState}
-                    viewer={this.state.viewerState}
-                    localUser={localUser}
-                    ishost={this.state.ishost}
-                    hostId={this.state.hostId}
-                    allReady={this.state.allReady}
-                    roomId={this.state.waitingId}
-                    characterNum={this.state.characterNum}
-                  />
-                )}
-                {this.state.isStart ? <h1>START</h1> : null}
+                <TestUserList
+                  session={this.state.session}
+                  subscribers={this.state.subscribers}
+                  myUserName={this.state.myUserName}
+                  ready={this.state.readyState}
+                  viewer={this.state.viewerState}
+                  localUser={localUser}
+                  ishost={this.state.ishost}
+                  hostId={this.state.hostId}
+                  allReady={this.state.allReady}
+                  roomId={this.state.waitingId}
+                  characterNum={this.state.characterNum}
+                />
+                <button onClick={this.handleExitBtn}>나가기</button>
               </Grid>
               {/* 채팅 */}
-
               <Grid item xs={4}>
                 {localUser !== undefined &&
                   localUser.getStreamManager() !== undefined && (
@@ -1510,16 +1562,19 @@ class TestComponent extends Component {
         )}
         {/* 피드백 */}
         {/* 면접자용 */}
-          <div>
-            <BootstrapDialog
-              aria-labelledby="customized-dialog-title"
-              open={this.state.feedbackDialogState && !this.state.viewerState}
+        <div>
+          <BootstrapDialog
+            aria-labelledby="customized-dialog-title"
+            open={this.state.feedbackDialogState && !this.state.viewerState}
+          >
+            <BootstrapDialogTitle
+              id="customized-dialog-title"
+              onClose={this.handleCloseFeedback}
             >
-              <BootstrapDialogTitle id="customized-dialog-title" onClose={this.handleCloseFeedback}>
-                면접이 끝났습니다! 피드백들이에요!
-              </BootstrapDialogTitle>
-              <DialogContent dividers>
-                {this.state.feedbacks.map((feedback) =>
+              면접이 끝났습니다! 피드백들이에요!
+            </BootstrapDialogTitle>
+            <DialogContent dividers>
+              {this.state.feedbacks.map((feedback) => (
                 <div>
                   <Typography gutterBottom>
                     받은질문: {feedback.question}
@@ -1532,37 +1587,40 @@ class TestComponent extends Component {
                   </Typography>
                   <Divider />
                 </div>
-                )}
-              </DialogContent>
-              <DialogActions>
-                <Button autoFocus onClick={this.handleCloseFeedback}>
-                  확인
-                </Button>
-              </DialogActions>
-            </BootstrapDialog>
-          </div>
-          {/* 면접관용 */}
-          <div>
-            <BootstrapDialog
-              aria-labelledby="customized-dialog-title"
-              open={this.state.feedbackDialogState && this.state.viewerState}
+              ))}
+            </DialogContent>
+            <DialogActions>
+              <Button autoFocus onClick={this.handleCloseFeedback}>
+                확인
+              </Button>
+            </DialogActions>
+          </BootstrapDialog>
+        </div>
+        {/* 면접관용 */}
+        <div>
+          <BootstrapDialog
+            aria-labelledby="customized-dialog-title"
+            open={this.state.feedbackDialogState && this.state.viewerState}
+          >
+            <BootstrapDialogTitle
+              id="customized-dialog-title"
+              onClose={this.handleCloseFeedback}
             >
-              <BootstrapDialogTitle id="customized-dialog-title" onClose={this.handleCloseFeedback}>
-                면접이 끝났습니다!
-              </BootstrapDialogTitle>
-              <DialogContent dividers>
-                <Typography gutterBottom> 
-                  면접을 마치셨습니다. 면접관님의 평가는 면접자들에게 큰 도움이 될 것입니다!!!
-                </Typography>
-              </DialogContent>
-              <DialogActions>
-                <Button autoFocus onClick={this.handleCloseFeedback}>
-                  확인
-                </Button>
-              </DialogActions>
-            </BootstrapDialog>
-          </div>
-        
+              면접이 끝났습니다!
+            </BootstrapDialogTitle>
+            <DialogContent dividers>
+              <Typography gutterBottom>
+                면접을 마치셨습니다. 면접관님의 평가는 면접자들에게 큰 도움이 될
+                것입니다!!!
+              </Typography>
+            </DialogContent>
+            <DialogActions>
+              <Button autoFocus onClick={this.handleCloseFeedback}>
+                확인
+              </Button>
+            </DialogActions>
+          </BootstrapDialog>
+        </div>
       </div>
     );
   }

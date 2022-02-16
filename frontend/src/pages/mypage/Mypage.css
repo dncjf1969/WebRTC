@@ -1,0 +1,17 @@
+#blue {
+  /* background-color: #cdebe3; */
+}
+
+#green {
+  background: rgba(218, 221, 221, 0.463);
+  /* opacity: 0.6; */
+  color: rgb(8, 1, 1);
+}
+
+#black {
+  opacity: 0.9; /* 배경 위로 뚜렷하게 보임 */
+}
+
+#table {
+  background: rgba(218, 221, 221, 0.463);
+}

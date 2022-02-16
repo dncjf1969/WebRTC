@@ -53,7 +53,7 @@ function ChildModal({ MeetingInfo, info }) {
   return (
     <React.Fragment>
       {info.list.map((item) => (
-        <Button onClick={(e)=>handleOpen(e, item)}>{item.question}</Button>
+        <Button onClick={(e) => handleOpen(e, item)}>{item.question}</Button>
       ))}
 
       <Modal
@@ -63,7 +63,7 @@ function ChildModal({ MeetingInfo, info }) {
         aria-labelledby="child-modal-title"
         aria-describedby="child-modal-description"
       >
-        <Box sx={{ ...Style, width: 300, height:300 }}>
+        <Box sx={{ ...Style, width: 300, height: 300 }}>
           <Title>피드백 내용</Title>
           <br />
           <h2 id="child-modal-title">comment : {modalInfo}</h2>
@@ -92,23 +92,41 @@ export default function NestedModal({ MeetingInfo }) {
   };
 
   return (
-    <div>
-      {MeetingInfo.map((info) => (
-        <ul key={`section-${info.list[0].id}`}>
-          <li>
-            <ListItem
-              onClick={(e) => handleOpen(e, info)}
-              key={info.list[0].meetingName}
-              component="div"
-              disablePadding
-            >
-              <ListItemButton>
-                <ListItemText primary={info.list[0].meetingName} />
-              </ListItemButton>
-            </ListItem>
-          </li>
-        </ul>
-      ))}
+    <div className="flex flex-row">
+      <div className="basis-1/4">
+        <span className="ml-4"> 날짜 </span>
+        {MeetingInfo.map((info) => (
+          <ul key={`section-${info.list[0].id}`}>
+            <li>
+              <ListItem
+                onClick={(e) => handleOpen(e, info)}
+                key={info.list[0].id}
+                component="div"
+                disablePadding
+              ></ListItem>
+            </li>
+          </ul>
+        ))}
+      </div>
+      <div className="basis-3/4">
+        <span className="ml-4">방제목</span>
+        {MeetingInfo.map((info) => (
+          <ul key={`section-${info.list[0].id}`}>
+            <li>
+              <ListItem
+                onClick={(e) => handleOpen(e, info)}
+                key={info.list[0].meetingName}
+                component="div"
+                disablePadding
+              >
+                <ListItemButton>
+                  <ListItemText primary={info.list[0].meetingName} />
+                </ListItemButton>
+              </ListItem>
+            </li>
+          </ul>
+        ))}
+      </div>
 
       <Modal
         hideBackdrop
@@ -117,13 +135,15 @@ export default function NestedModal({ MeetingInfo }) {
         aria-labelledby="child-modal-title"
         aria-describedby="child-modal-description"
       >
-        <Box sx={{ ...Style, width: 500, height:400 }}>
+        <Box sx={{ ...Style, width: 500, height: 400 }}>
           <div id="child-modal-description">
             <Title>받은 질문 리스트</Title>
           </div>
           <br />
 
-          <div><ChildModal MeetingInfo={MeetingInfo} info={childInfo} /></div>
+          <div>
+            <ChildModal MeetingInfo={MeetingInfo} info={childInfo} />
+          </div>
           <Button onClick={handleClose}>닫기</Button>
         </Box>
       </Modal>

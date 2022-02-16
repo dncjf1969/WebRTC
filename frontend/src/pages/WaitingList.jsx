@@ -41,11 +41,11 @@ export function WaitingListSearch() {
           searchType: search,
         },
         headers: {
-          Authorization: window.localStorage.getItem('jwt'),
-        }, 
+          Authorization: window.localStorage.getItem("jwt"),
+        },
       })
       .then((res) => {
-        console.log(res)
+        console.log(res);
         setRooms(res.data.list);
       })
       .then(() => {
@@ -54,7 +54,7 @@ export function WaitingListSearch() {
         console.log("id검색 결과", search);
       })
       .catch((err) => {
-        console.log(err.response)
+        console.log(err.response);
         return err;
       });
   };
@@ -96,9 +96,9 @@ export function WaitingListSearch() {
           aria-hidden="true"
         >
           <svg
-            width="1360"
-            height="1078"
-            viewBox="0 0 1360 578"
+            width="1260"
+            height="878"
+            viewBox="0 10 1360 13"
             xmlns="http://www.w3.org/2000/svg"
           >
             <defs>
@@ -109,9 +109,9 @@ export function WaitingListSearch() {
                 y2="100%"
                 id="illustration-01"
               >
-                <stop stopColor="#FFF" offset="0%" />
-                <stop stopColor="#EAEAEA" offset="77.402%" />
-                <stop stopColor="#DFDFDF" offset="100%" />
+                {/* <stop stopColor="#FFF" offset="0%" /> */}
+                <stop stopColor="#e7f7fa" offset="10%" />
+                {/* <stop stopColor="#DFDFDF" offset="100%" /> */}
               </linearGradient>
             </defs>
             <g fill="url(#illustration-01)" fillRule="evenodd">

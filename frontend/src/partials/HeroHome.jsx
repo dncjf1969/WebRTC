@@ -86,7 +86,7 @@ function HeroHome() {
                       id="hero-ill-a"
                     >
                       <stop stopColor="#FFF" offset="0%" />
-                      <stop stopColor="#EAEAEA" offset="77.402%" />
+                      <stop stopColor="#e7f7fa" offset="10%" />
                       <stop stopColor="#DFDFDF" offset="100%" />
                     </linearGradient>
                     <linearGradient

@@ -51,15 +51,15 @@ class TestUserList extends Component {
   readyTest(e) {
     e.preventDefault();
 
-    if (this.state.value === '') {
+    if (this.state.value === "") {
       this.setState({
-        helperText:'역할을 정해주세요',
-        error: true
-      })
-    } else if (this.state.value !== '') {
+        helperText: "역할을 정해주세요",
+        error: true,
+      });
+    } else if (this.state.value !== "") {
       this.setState({
-        error: false
-      })
+        error: false,
+      });
       this.props.session
         .signal({
           data: this.state.value, // 보내는 내용
@@ -70,7 +70,7 @@ class TestUserList extends Component {
         .catch((error) => {
           console.error(error);
         });
-    } 
+    }
   }
 
   informStart = async (roomId) => {
@@ -82,7 +82,7 @@ class TestUserList extends Component {
     await axios
       .get(`/room/meeting/start?roomId=${roomId}`, {
         headers: {
-          Authorization: window.localStorage.getItem('jwt'),
+          Authorization: window.localStorage.getItem("jwt"),
         },
       })
       .then((res) => {
@@ -98,7 +98,7 @@ class TestUserList extends Component {
     this.setState({
       value: event.target.value,
       helperText: false,
-      error: false
+      error: false,
     });
   };
 
@@ -182,28 +182,42 @@ class TestUserList extends Component {
             </Grid>
             <Grid>
               <div className="m-3 flex ">
-              <form onSubmit={this.readyTest}>
-                <FormControl sx={{ m: 3 }} error={this.state.error} variant="standard">
-                  <RadioGroup
-                    aria-labelledby="demo-error-radios"
-                    name="role"
-                    value={this.state.value}
-                    onChange={this.handleRadioChange}
+                <form onSubmit={this.readyTest}>
+                  <FormControl
+                    sx={{ m: 3 }}
+                    error={this.state.error}
+                    variant="standard"
                   >
-                    <FormControlLabel disabled={this.props.ready} value="true" control={<Radio />} label="면접관" />
-                    <FormControlLabel disabled={this.props.ready} value="false" control={<Radio />} label="면접자" />
-                  </RadioGroup>
-                  <FormHelperText>{this.state.helperText}</FormHelperText>
-                  <button
-                    onClick={this.readyTest}
-                    class="bg-cyan-500 shadow-lg rounded-xl shadow-cyan-500/30 ..."
-                  >
-                    <h1 className="text-white text-md font-semibold pl-2">
-                      {this.props.ready ? "레디 해제" : "레디"}{" "}
-                    </h1>{" "}
-                  </button>
-                </FormControl>
-              </form>
+                    <RadioGroup
+                      aria-labelledby="demo-error-radios"
+                      name="role"
+                      value={this.state.value}
+                      onChange={this.handleRadioChange}
+                    >
+                      <FormControlLabel
+                        disabled={this.props.ready}
+                        value="true"
+                        control={<Radio />}
+                        label="면접관"
+                      />
+                      <FormControlLabel
+                        disabled={this.props.ready}
+                        value="false"
+                        control={<Radio />}
+                        label="면접자"
+                      />
+                    </RadioGroup>
+                    <FormHelperText>{this.state.helperText}</FormHelperText>
+                    <button
+                      onClick={this.readyTest}
+                      class="bg-cyan-500 shadow-lg rounded-xl shadow-cyan-500/30 ..."
+                    >
+                      <h1 className="text-white text-md font-semibold pl-2">
+                        {this.props.ready ? "레디 해제" : "레디"}{" "}
+                      </h1>{" "}
+                    </button>
+                  </FormControl>
+                </form>
                 {/* <label for="role">역할: </label>
                 <select
                   id="role"
