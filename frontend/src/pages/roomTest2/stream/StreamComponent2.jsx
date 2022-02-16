@@ -65,13 +65,13 @@ export default class StreamComponent2 extends Component {
               <span id="nickname">{this.props.user.getNickname()}</span>
             </div>
         </div>
-
+        
         {this.props.user !== undefined &&
         this.props.user.getStreamManager() !== undefined ? (
           <div className="streamComponent">
             <OvVideoComponent2
-              user={this.props.user}
-              mutedSound={this.state.mutedSound}
+              //user={this.props.user}
+              //mutedSound={this.state.mutedSound}
             />
             <div id="statusIcons">
               {!this.props.user.isVideoActive() ? (

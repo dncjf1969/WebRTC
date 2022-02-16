@@ -4,6 +4,8 @@ import myAxios from "../../common/http-common";
 
 //
 
+import OvVideoComponent2 from "./stream/OvVideo2";
+
 import "./TestComponent.css";
 import { OpenVidu } from "openvidu-browser";
 import StreamComponent from "./stream/StreamComponent";
