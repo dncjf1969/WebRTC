@@ -7,17 +7,17 @@ import myAxios from "../../common/http-common";
 import "./TestComponent.css";
 import { OpenVidu } from "openvidu-browser";
 import StreamComponent from "./stream/StreamComponent";
+import StreamComponent2 from "./stream/StreamComponent2";
+import StreamComponent3 from "./stream/StreamComponent3"
 // import DialogExtensionComponent from "./dialog-extension/DialogExtension";
 import ChatComponent from "./chat/ChatComponent";
 import UserVideoComponent from "./UserVideoComponent";
-import StreamComponent2 from "./stream/StreamComponent2";
-import StreamComponent3 from "./stream/StreamComponent3";
 
 import OpenViduLayout from "../layout/openvidu-layout";
 import UserModel from "../models/user-model";
 import ToolbarComponent from "./toolbar/ToolbarComponent";
 // import styled from "styled-components";
-//
+
 import TestCharacter from "./Testcharacter/Testcharacter";
 import TestUserList from "./TestUserList/TestUserList";
 import TestQuesList from "./TestQuesList/TestQuesList";
@@ -32,7 +32,6 @@ import ArchiveIcon from "@mui/icons-material/Archive";
 import { styled } from "@mui/material/styles";
 import {
   Box,
-  Paper,
   Card,
   Stack,
   Link,
@@ -510,7 +509,7 @@ class TestComponent extends Component {
             const nextManager = this.state.ishost ? "" : this.state.id;
             this.setState({ ishost: true });
             myAxios.put(
-              `/room/waiting/exit?nextManger=${nextManager}&roomId=${this.state.waitingId}`,
+              `/room/waiting/exit?memberId=${data.destroyedUserId}&nextManger=${nextManager}&roomId=${this.state.waitingId}`,
               {
                 headers: {
                   Authorization: window.localStorage.getItem("jwt"),
@@ -1431,18 +1430,19 @@ class TestComponent extends Component {
           {this.state.isStart ? (
             <>
               <Grid item xs={3}>
-                <div>
+                <div style={{height:'60%'}}>
                   {this.state.viewers.map((sub, i) => (
                     <div
                       key={i}
                       className="stream-container"
-                      style={{ height: "200px" }}
+                      style={{ height: "50%", marginBottom: "5%", marginTop: "5%" }}
                       id="remoteUsers"
                     >
                       <div>면접관</div>
                       <StreamComponent
                         user={sub}
                         handleNickname={this.nicknameChanged}
+                        style={{height:"50%"}}
                       />
                     </div>
                   ))}
@@ -1450,7 +1450,7 @@ class TestComponent extends Component {
 
                 <div>
                   {this.state.isStart && localUser.viewer && (
-                    <div>
+                    <div style={{height: '40%'}}>
                       <RecommendationQues
                         session={this.state.session}
                         questions={this.state.questions}
@@ -1465,26 +1465,30 @@ class TestComponent extends Component {
                 </div>
               </Grid>
               <Grid item xs={6}>
-                {this.state.viewees.map((sub, i) =>
-                  sub !== this.state.mainStreamManager ? (
-                    <div
-                      key={i}
-                      className="stream-container"
-                      style={{ height: "200px" }}
-                      id="remoteUsers"
-                    >
-                      <div>면접자</div>
-                      <StreamComponent user={sub} />
-                    </div>
-                  ) : null
-                )}
+                <div style={{width:'100%', height:'25%'}}> 
+                  {this.state.viewees.map((sub, i) =>
+                    sub !== this.state.mainStreamManager ? (
+                      <div
+                        key={i}
+                        className="stream-container"
+                        style={{ float: "left", marginTop:'5%', width:'30%', height:'40%'}}
+                        id="remoteUsers"
+                      >
+                        <div>면접자</div>
+                        <StreamComponent3 user={sub} />
+                      </div>
+                    ) : null
+                  )}
+                </div>
 
-                {this.state.mainStreamManager && (
-                  <div className="stream-container" id="remoteUsers">
-                    <div>선택된화면</div>
-                    <StreamComponent user={this.state.mainStreamManager} />
-                  </div>
-                )}
+                <div style={{width:'100%', height:'60%'}}>
+                  {this.state.mainStreamManager && (
+                    <div className="stream-container" id="remoteUsers">
+                      <div>선택된화면</div>
+                      <StreamComponent2 user={this.state.mainStreamManager} />
+                    </div>
+                  )}
+                </div>
               </Grid>
 
               <Grid item xs={3}>
@@ -1556,10 +1560,6 @@ class TestComponent extends Component {
             </>
           )}
         </Grid>
-        {this.state.isStart ? <h1>START</h1> : null}
-        {/* {this.state.isStart && localUser.viewer && (
-          <button onClick={this.handleFinish}>면접끝내기</button>
-        )}
         {/* 피드백 */}
         {/* 면접자용 */}
         <div>
