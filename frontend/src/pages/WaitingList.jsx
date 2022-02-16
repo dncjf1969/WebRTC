@@ -9,6 +9,7 @@ import SearchIcon from "@mui/icons-material/Search";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import "./WaitingList.css";
 // // 방만들기 dialog
+import { MdVpnKey } from "react-icons/md";
 
 import axios from "../common/http-common";
 import WaitingListCard from "./WaitingListCard";
@@ -193,10 +194,13 @@ export function WaitingListSearch() {
                         <Grid
                           item
                           key={idx}
-                          sx={{ marginLeft: 2, marginRight: 2 }}
+                          sx={{ marginLeft: 3, marginRight: 2, marginTop: 5 }}
                         >
                           <Alarm>
                             <Box>New</Box>
+                          </Alarm>
+                          <Alarm>
+                            <MdVpnKey />
                           </Alarm>
                           <CardActionArea>
                             <Card
@@ -221,11 +225,10 @@ export function WaitingListSearch() {
                           </CardActionArea>
                           <CardDetail>
                             <CategoryName>{room.name}</CategoryName>
-                            <ProductName>{room.job}</ProductName>
-                            <ProductName>{room.manager}</ProductName>
+                            {/* <ProductName>{room.manager}</ProductName> */}
                             {/* <Price>{makeComma(d.price)}원</Price> */}
                             <PriceDetail>
-                              {" "}
+                              {"참가자"} <br />
                               {room.memberCount} / {room.memberMax}
                             </PriceDetail>
                             {/* <MaxPeople>80/{d.maxPeople}명</MaxPeople>
@@ -329,14 +332,15 @@ const MaxPeople = styled.p``;
 const DeadLine = styled.p``;
 
 const PriceDetail = styled.p`
-  font-size: 8px;
+  font-size: 14px;
   color: grey;
 `;
 
 const ProductName = styled.p`
-  font-size: 12px;
+  font-size: 15px;
   font-weight: bold;
-  margin-bottom: 10px;
+  color: gray;
+  margin-bottom: 5px;
 `;
 
 const Price = styled.p`
@@ -347,10 +351,10 @@ const Price = styled.p`
 `;
 
 const CategoryName = styled.p`
-  font-size: 10px;
+  font-size: 20px;
   font-weight: bold;
-  color: grey;
-  padding-bottom: 5px;
+  color: black;
+  margin-bottom: 5px;
 `;
 
 const CardDetail = styled.div`

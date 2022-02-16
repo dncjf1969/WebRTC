@@ -1,5 +1,4 @@
-import axios from "../common/http-common"
-
+import axios from "../common/http-common";
 
 function WaitingListCard({ room }) {
   // room에서 꺼낼수 있는 정보
@@ -19,24 +18,18 @@ function WaitingListCard({ room }) {
     await axios
       .get(`/room/waiting/enter?password=&roomId=${parseInt(room.roomId)}`, {
         headers: {
-          Authorization: window.localStorage.getItem('jwt'),
+          Authorization: window.localStorage.getItem("jwt"),
         },
       })
       .then((res) => {
-        console.log(res)
-        // const token = res.data.token
-        // const roomId = res.data.roomId
-        // console.log(token)
-        // window.localStorage.setItem('token', token);
-        // window.localStorage.setItem('id', id);
+        console.log(res);
 
         return res.data;
       })
       .catch((err) => {
-        console.log(err)
+        console.log(err);
         return err;
       });
-    // window.localStorage.setItem('roomId', room.roomId);
   };
   return (
     <div
@@ -57,7 +50,9 @@ function WaitingListCard({ room }) {
             </div>
             <div class="py-4 px-4 bg-white">
               {/* <h3 class="text-md font-semibold text-gray-600">{data.name}</h3> */}
-              <p class="mt-4 font-semibold text-gray-600 text-lg">{room.name}</p>
+              <p class="mt-4 font-semibold text-gray-600 text-lg">
+                {room.name}
+              </p>
               <p class="mt-4 font-thin">비밀방 유무({room.exitPassword})</p>
               <span class="flex items-center justify-center mt-4 w-full bg-blue-400 hover:bg-blue-500 py-1 rounded">
                 <path
@@ -66,7 +61,9 @@ function WaitingListCard({ room }) {
                   stroke-width="2"
                   d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"
                 />
-                <button onClick={handleEnter} class="font-semibold text-white">참여하기</button>
+                <button onClick={handleEnter} class="font-semibold text-white">
+                  참여하기
+                </button>
               </span>
             </div>
           </div>

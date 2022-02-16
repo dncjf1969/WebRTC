@@ -218,17 +218,6 @@ class TestUserList extends Component {
                     </button>
                   </FormControl>
                 </form>
-                {/* <label for="role">역할: </label>
-                <select
-                  id="role"
-                  name="role"
-                  required
-                  disabled={this.props.ready ? true : false}
-                >
-                  <option value="">선택안함</option>
-                  <option value="true">면접관</option>
-                  <option value="false">면접자</option>
-                </select> */}
               </div>
               {this.props.ishost && this.props.allReady ? (
                 <button
@@ -241,16 +230,6 @@ class TestUserList extends Component {
                   </h1>{" "}
                 </button>
               ) : null}
-              {/* <select
-                id="role"
-                name="role"
-                required
-                disabled={this.props.ready ? true : false}
-              >
-                <option value="">선택안함</option>
-                <option value="true">면접관</option>
-                <option value="false">면접자</option>
-              </select> */}
             </Grid>
           </Grid>
         </Grid>
