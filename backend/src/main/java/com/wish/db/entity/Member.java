@@ -35,5 +35,8 @@ public class Member{
     
     @OneToMany(mappedBy = "member")
     List<Role> roles = new ArrayList<>();
+
+    @OneToMany(mappedBy = "member")
+    List<Feedback> feedbacks = new ArrayList<>();
     
 }

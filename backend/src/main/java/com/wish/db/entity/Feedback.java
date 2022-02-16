@@ -7,6 +7,8 @@ import java.sql.Date;
 import java.sql.Time;
 
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 
 /**
  * 피드백 모델 정의.
@@ -26,5 +28,10 @@ public class Feedback  extends BaseEntity{
     String comment;
     Date date;
     Time time;
+    
+
+	@ManyToOne
+	@JoinColumn(name = "Member_Id") 
+	private Member member;
 
 }
