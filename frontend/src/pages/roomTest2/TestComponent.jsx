@@ -319,6 +319,7 @@ class TestComponent extends Component {
       },
       () => {
         this.subscribeToStreamCreated();
+        console.log(this.state.session);
         this.connectToSession();
         console.log(this.state.session);
         console.log("나의 ishost:", this.state.ishost);
