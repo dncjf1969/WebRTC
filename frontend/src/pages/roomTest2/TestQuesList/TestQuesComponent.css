@@ -13,11 +13,8 @@
   background-color: white;
   position: absolute;
   /* z-index: 99999; */
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  margin-right: 3%;
+  padding: 5%;
+
   height: 300px;
   width: 100%;
   border-radius: 20px;
@@ -25,7 +22,7 @@
 }
 
 .message-wrap {
-  margin-top: 50px;
+  margin: 20px;
   height: calc(100% - 90px);
   overflow: auto;
 }
@@ -120,50 +117,44 @@ span.triangle {
 /* End my messages */
 
 #messageInput {
-  position: absolute;
+  /* position: absolute; */
   bottom: 5px;
-  width: 100%;
+  /* width: 100%; */
   background-color: #ffffff;
   text-align: center;
-  padding: 10px 0px;
-  height: 30px;
-  border-bottom-left-radius: 30px;
-  border-bottom-right-radius: 30px;
+  /* padding:  */
+  margin-right: 10px;
+  margin-left: 3px;
+  /* height: 30px; */
+  /* border-bottom-left-radius: 30px;
+  border-bottom-right-radius: 30px; */
 }
 
-#navInput {
-  position: absolute;
-  top: 5px;
-  width: fit-content;
-  width: 100%;
-  background-color: #ffffff;
-  text-align: center;
-  padding: 10px 0px;
-  height: 30px;
-  border-top-left-radius: 30px;
-  border-top-right-radius: 30px;
-  /* border-bottom-; */
-}
-#messageInput input {
-  width: 70%;
+#messageInput input1 {
+  width: 0%;
   height: 100%;
-  border: none;
+  /* border: none; */
   outline: none;
   font-size: 17px;
-  margin-left: -10%;
+  margin-left: 10%;
+  border: #1976d2;
 }
 
 #sendButton {
   background-color: #1976d2;
-  position: absolute;
-  right: 6%;
+  position: end;
+  bottom: 13px;
+  margin-right: 5px;
+  /* display: ; */
+  /* right: 6%; */
+  /* margin-left: 10px; */
   top: 0;
-  margin: auto;
+  /* margin: auto; */
   border: 1px solid #1976d2;
   box-shadow: 1px;
 }
 #sendButton {
-  margin-left: 3px !important;
+  /* margin-left: 10px !important; */
   margin-bottom: 2px !important;
 }
 

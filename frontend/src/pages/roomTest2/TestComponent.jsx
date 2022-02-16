@@ -238,6 +238,7 @@ class TestComponent extends Component {
   }
 
   componentDidMount() {
+
     myAxios
       .get("/members/me", {
         headers: {
@@ -296,7 +297,12 @@ class TestComponent extends Component {
     window.addEventListener("beforeunload", this.onbeforeunload);
     window.addEventListener("resize", this.updateLayout);
     window.addEventListener("resize", this.checkSize);
-    this.joinSession();
+    
+    this.OV = new OpenVidu();
+    setTimeout(() => {
+      console.log('Works!!!!!!!!!!!!!!!!!');
+      this.joinSession();
+    }, 3000);
   }
 
   componentWillUnmount() {
@@ -311,14 +317,17 @@ class TestComponent extends Component {
   }
 
   joinSession() {
-    this.OV = new OpenVidu();
+    // this.OV = new OpenVidu();
 
+    console.log("initSession 확인 ***********");
+    console.log(this.OV);
     this.setState(
       {
         session: this.OV.initSession(),
       },
       () => {
         this.subscribeToStreamCreated();
+        console.log(this.state.session);
         this.connectToSession();
         console.log(this.state.session);
         console.log("나의 ishost:", this.state.ishost);
@@ -342,7 +351,9 @@ class TestComponent extends Component {
             .then(() => {
               console.log("정보보냈다");
             })
-            .catch((error) => {});
+            .catch((error) => {
+              console.log(error);
+            });
         });
 
         this.state.session.on("signal:new-user", (event) => {
@@ -756,6 +767,8 @@ class TestComponent extends Component {
       id: this.state.id,
       image: this.state.characterNum,
     };
+    console.log("커넥트 함수==============");
+    console.log(this.state.session);
     this.state.session
       .connect(token, context)
       .then(() => {
