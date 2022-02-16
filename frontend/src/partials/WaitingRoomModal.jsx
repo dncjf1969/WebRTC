@@ -35,7 +35,7 @@ function WaitingRoomModal({ modalClose }) {
   // 모달내 비번
   const [password, setPassword] = useState(null);
   const [checked, setChecked] = useState(false);
-
+  useEffect(() => setJob(""), [type]) 
   // 방만들기 모달
   // const [open, setOpen] = useState(false);
 
@@ -57,9 +57,9 @@ function WaitingRoomModal({ modalClose }) {
     if (name === "") {
       alert("방제목을 입력해주세요");
     } else if (type === "") {
-      alert("면접 종류를 선택해주세요");
-    } else if (job === "") {
-      alert("카테고리를 선택해주세요");
+      alert("면접 종류를 선택해주세요")
+    } else if (type === "직무" && job === "")  {
+      alert("카테고리를 선택해주세요")
     } else if (checked && !password) {
       alert("비밀번호를 설정해주세요");
     } else {
@@ -116,7 +116,13 @@ function WaitingRoomModal({ modalClose }) {
   return (
     <>
       <Dialog open={true} onClose={handleClose}>
-        <DialogTitle>방만들기</DialogTitle>
+        <DialogTitle 
+          sx={{
+            fontSize: 20,
+            fontWeight: 'bold',
+            mt: 1,
+          }}
+        >방만들기</DialogTitle>
         <DialogContent>
           <TextField
             autoFocus
@@ -149,6 +155,24 @@ function WaitingRoomModal({ modalClose }) {
 
           <FormControl sx={{ m: 1, minWidth: 120 }}>
             <InputLabel id="demo-simple-select-helper-label">
+              면접 종류
+            </InputLabel>
+            <Select
+              labelId="demo-simple-select-helper-label"
+              id="demo-simple-select-helper"
+              value={type}
+              label="Age"
+              onChange={handleTypeChange}
+            >
+              <MenuItem value={"인성"}>인성</MenuItem>
+              <MenuItem value={"직무"}>직무</MenuItem>
+              {/* <MenuItem value={"토론"}>토론</MenuItem>
+              <MenuItem value={"pt"}>pt</MenuItem> */}
+            </Select>
+          </FormControl>
+          {type === "직무" && 
+          <FormControl sx={{ m: 1, minWidth: 120 }}>
+            <InputLabel id="demo-simple-select-helper-label">
               카테고리
             </InputLabel>
             <Select
@@ -165,7 +189,8 @@ function WaitingRoomModal({ modalClose }) {
               {/* <MenuItem value={"토론"}>토론</MenuItem>
               <MenuItem value={"pt"}>pt</MenuItem> */}
             </Select>
-          </FormControl>
+          </FormControl>}
+          
 
           <Box sx={{ width: 300 }}>
             <Typography id="input-slider" gutterBottom>
