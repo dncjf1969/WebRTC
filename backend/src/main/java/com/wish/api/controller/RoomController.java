@@ -18,6 +18,7 @@ import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import springfox.documentation.annotations.ApiIgnore;
@@ -78,7 +79,7 @@ public class RoomController {
         @ApiResponse(code = 404, message = "???"),
         @ApiResponse(code = 500, message = "서버 에러")
     })
-	//@PreAuthorize("hasAnyRole('USER', 'ADMIN')")
+	@PreAuthorize("hasAnyRole('BASIC')")
 	public ResponseEntity<RoomListRes> searchWaitingRoom(
 			@ApiIgnore Authentication authentication,
 			@PathVariable("roomType") int roomType,
@@ -104,7 +105,7 @@ public class RoomController {
         @ApiResponse(code = 404, message = "???"),
         @ApiResponse(code = 500, message = "서버 에러")
     })
-	//@PreAuthorize("hasAnyRole('USER', 'ADMIN')")
+	@PreAuthorize("hasAnyRole('BASIC')")
 	public ResponseEntity<?> getWaitingRoomInfo(
 			@ApiIgnore Authentication authentication,
 			@RequestParam @ApiParam(value="방 번호") Integer roomId ) {
@@ -113,7 +114,7 @@ public class RoomController {
 		
 		Room room = roomService.getRoom(roomId);
 		
-		return ResponseEntity.status(405).body(BaseRes.of(405, "에러요"));
+		return ResponseEntity.status(200).body(RoomSearchRes.of(room));
 	}
 	
 	
@@ -125,7 +126,7 @@ public class RoomController {
         @ApiResponse(code = 404, message = "사용자 없음"),
         @ApiResponse(code = 500, message = "서버 에러")
     })
-	//@PreAuthorize("hasAnyRole('USER')")
+	@PreAuthorize("hasAnyRole('BASIC')")
 	public ResponseEntity<?> createWaitingRoom(
 			@ApiIgnore Authentication authentication,
 			@RequestBody @ApiParam(value="방 생성 정보", required = true) RoomCreateReq createInfo) {
@@ -147,7 +148,7 @@ public class RoomController {
         @ApiResponse(code = 404, message = "해당 방 없음"),
         @ApiResponse(code = 500, message = "서버 에러")
     })
-	//@PreAuthorize("hasAnyRole('USER')")
+	@PreAuthorize("hasAnyRole('BASIC')")
 	public ResponseEntity<BaseRes> modifyWaitingRoom(
 			@ApiIgnore Authentication authentication,
 			@RequestBody @ApiParam(value="방 설정 정보", required = true) RoomModifyReq modifyInfo){
@@ -172,7 +173,7 @@ public class RoomController {
         @ApiResponse(code = 404, message = "해당 방 없음"),
         @ApiResponse(code = 500, message = "서버 에러")
     })
-	//@PreAuthorize("hasAnyRole('USER')")
+	@PreAuthorize("hasAnyRole('BASIC')")
 	public ResponseEntity<BaseRes> deleteWaitingRoom(
 			@ApiIgnore Authentication authentication,
 			@RequestParam @ApiParam(value="방 id", required = true) int roomId) {
@@ -198,7 +199,7 @@ public class RoomController {
         @ApiResponse(code = 404, message = "존재하지 않는 방 id입니다."),
         @ApiResponse(code = 500, message = "서버 에러")
     })
-	//@PreAuthorize("hasAnyRole('USER')")
+	@PreAuthorize("hasAnyRole('BASIC')")
 	public ResponseEntity<BaseRes> enterWaitingRoom(
 			@ApiIgnore Authentication authentication,
 			@RequestParam @ApiParam(value="방id", required = true) int roomId,
@@ -220,13 +221,14 @@ public class RoomController {
         @ApiResponse(code = 404, message = "???"),
         @ApiResponse(code = 500, message = "서버 에러")
     })
-	//@PreAuthorize("hasAnyRole('USER')")
+	@PreAuthorize("hasAnyRole('BASIC')")
 	public ResponseEntity<BaseRes> exitWaitingRoom(
 			@ApiIgnore Authentication authentication,
 			@RequestParam @ApiParam(value="나가려는 방 id", required = true) int roomId,
-			@RequestParam @ApiParam(value="나가려는 멤버", required = true) String memberId,
+			//@RequestParam @ApiParam(value="나가려는 멤버", required = true) String memberId,
 			@RequestParam @ApiParam(value="다음 방장", allowEmptyValue=true) String nextManager) {
 	
+		String memberId = authentication.getName();
 		//TODO 확인1
 		if(nextManager==null) roomService.exitWaitingRoom(roomId, memberId);
 		else roomService.exitWaitingRoom(roomId, memberId, nextManager);
@@ -244,7 +246,7 @@ public class RoomController {
         @ApiResponse(code = 404, message = "지정한 새 방장이 방에 존재하지 않음"),
         @ApiResponse(code = 500, message = "서버 에러")
     })
-	//@PreAuthorize("hasAnyRole('USER')")
+	@PreAuthorize("hasAnyRole('BASIC')")
 	public ResponseEntity<BaseRes> changeManager(
 			@ApiIgnore Authentication authentication,
 			@RequestBody @ApiParam(value="방id, 바꿀 방장id", required = true) RoomManagerReq managerChangeInfo ) {
@@ -265,13 +267,12 @@ public class RoomController {
         @ApiResponse(code = 404, message = "지정한 새 방장이 방에 존재하지 않음"),
         @ApiResponse(code = 500, message = "서버 에러")
     })
-	//@PreAuthorize("hasAnyRole('USER')")
+	@PreAuthorize("hasAnyRole('BASIC')")
 	public ResponseEntity<RoomMysqlIdRes> startMeeting(
 			@ApiIgnore Authentication authentication,
 			@RequestParam @ApiParam(value="대기방 id", required = true) int roomId) {
 	
-//		Long roomIdmysql = roomService.startMeeting(authentication.getName(), roomId);
-		Long roomIdmysql = roomService.startMeeting("a", roomId);
+		Long roomIdmysql = roomService.startMeeting(authentication.getName(), roomId);
 		
 		return ResponseEntity.status(200).body(RoomMysqlIdRes.of(roomIdmysql));
 	}
@@ -285,14 +286,14 @@ public class RoomController {
         @ApiResponse(code = 404, message = "지정한 새 방장이 방에 존재하지 않음"),
         @ApiResponse(code = 500, message = "서버 에러")
     })
-	//@PreAuthorize("hasAnyRole('USER')")
+	@PreAuthorize("hasAnyRole('BASIC')")
 	public ResponseEntity<BaseRes> finishMeeting(
 			@ApiIgnore Authentication authentication,
 			@RequestParam @ApiParam(value="대기방 id(Redis)", required = true) int roomId,
 			@RequestParam @ApiParam(value="면접방 id(Mysql)", required = true) Long meetingId) {
 	
-//		roomService.finishMeeting(authentication.getName(), roomId, meetingId);
-		roomService.finishMeeting("a", roomId, meetingId);
+		roomService.finishMeeting(authentication.getName(), roomId, meetingId);
+//		roomService.finishMeeting("a", roomId, meetingId);
 		
 		return ResponseEntity.status(200).body(BaseRes.of(200, success));
 	}

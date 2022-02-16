@@ -58,6 +58,7 @@ public class FeedbackServiceImpl implements FeedbackService {
 			feedback.setQuestion(info.getQuestion());
 			feedback.setComment(info.getComment());
 			feedback.setRate(info.getRate());
+			feedback.setType(info.getType());
 			
 			feedbackRepository.save(feedback);
 		} catch ( CreateFeedbackException e) {

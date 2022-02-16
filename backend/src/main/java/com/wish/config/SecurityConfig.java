@@ -75,14 +75,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     	.antMatchers("/swagger-ui/**")
     	.antMatchers("/swagger-resources/**")
     	.antMatchers("/v2/**")
-    	.antMatchers("/question")
     	.antMatchers("/members/login")
     	.antMatchers("/members/signup")
     	.antMatchers("/members/findPW")
 		.antMatchers("/members/check/id")
 		.antMatchers("/members/check/name")
-//		.antMatchers("/feedback")
-//		.antMatchers("/feedback/count")
 		;
     }
 
