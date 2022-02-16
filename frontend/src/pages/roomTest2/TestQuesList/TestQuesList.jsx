@@ -1,6 +1,8 @@
 import React, { Component } from "react";
 import axios from "../../../common/http-common";
 import "./TestQuesComponent.css";
+import Fab from "@mui/material/Fab";
+import AddIcon from "@mui/icons-material/Add";
 class TestQuesList extends Component {
   constructor(props) {
     super(props);
@@ -106,31 +108,61 @@ class TestQuesList extends Component {
     return (
       <div id="chatContainer">
         <div id="chatComponent" style={styleChat}>
-          <div id="navInput"></div>
+          <span className="font-bold ml-32">사전질문추가</span>
+          {/* <div id="navInput"></div> */}
           <div className="message-wrap" ref={this.chatScroll}>
             {this.props.questions.map((question) => (
               <div id={question.questionId} key={question.questionId}>
-                {question.userName}: {question.content}
-                {question.connectionId === this.props.localUser.connectionId ? (
-                  <button
-                    disabled={this.props.ready ? true : false}
-                    onClick={this.handleDeleteBtn}
-                  >
-                    X
-                  </button>
-                ) : null}
+                <div>
+                  {question.userName}: {question.content}
+                </div>
+                <div>
+                  {question.connectionId ===
+                  this.props.localUser.connectionId ? (
+                    <button
+                      disabled={this.props.ready ? true : false}
+                      onClick={this.handleDeleteBtn}
+                      className=""
+                    >
+                      X
+                    </button>
+                  ) : null}
+                </div>
               </div>
             ))}
           </div>
+          {/* <div id="messageInput">
+            <input
+              placeholder=""
+              id="chatInput"
+              value={this.state.message}
+              onChange={this.handleChange}
+              onKeyPress={this.handlePressKey}
+            />
+            <Tooltip title="보내기">
+              <Fab size="small" id="sendButton" onClick={this.sendMessage}>
+                <ChatOutlinedIcon sx={{ color: "white" }} />
+              </Fab>
+            </Tooltip>
+          </div> */}
 
-          <div id="messageInput">
-            <input onKeyDown={this.handleEnter} id="input1"></input>
-            <button
+          <div className="grid grid-cols-3 mt-4">
+            <input
+              id="input1"
+              onKeyDown={this.handleEnter}
+              className="ml-5 col-span-2 border-2 w-full rounded-xl"
+              placeholder="채팅 메세지를 작성해주세요"
+            ></input>
+
+            <Fab
               onClick={this.makeQues}
               disabled={this.props.ready ? true : false}
+              size="small"
+              aria-label="add"
+              id="sendButton"
             >
-              질문 추가
-            </button>
+              <AddIcon sx={{ color: "white" }} />
+            </Fab>
           </div>
         </div>
       </div>
