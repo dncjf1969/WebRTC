@@ -793,6 +793,8 @@ class TestComponent extends Component {
             status: error.status,
           });
         }
+        console.log("에러~~~~~~~~~~~~~~~~~");
+        console.log(error);
         alert("There was an error connecting to the session:", error);
         console.log(
           "There was an error connecting to the session:",
