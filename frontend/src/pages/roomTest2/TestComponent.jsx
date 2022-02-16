@@ -239,6 +239,9 @@ class TestComponent extends Component {
 
   componentDidMount() {
     this.OV = new OpenVidu();
+    setTimeout(function() {
+      console.log('Works!!!!!!!!!!!!!!!!!');
+    }, 500);
 
     myAxios
       .get("/members/me", {
