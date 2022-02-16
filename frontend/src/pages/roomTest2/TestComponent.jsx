@@ -507,7 +507,7 @@ class TestComponent extends Component {
             const nextManager = this.state.ishost ? "" : this.state.id;
             this.setState({ ishost: true });
             myAxios.put(
-              `/room/waiting/exit?nextManger=${nextManager}&roomId=${this.state.waitingId}`,
+              `/room/waiting/exit?memberId=${data.destroyedUserId}&nextManger=${nextManager}&roomId=${this.state.waitingId}`,
               {
                 headers: {
                   Authorization: window.localStorage.getItem("jwt"),
