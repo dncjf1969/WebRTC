@@ -134,26 +134,10 @@ function WaitingRoomModal({ modalClose }) {
             variant="standard"
             onChange={(e) => setName(e.target.value)}
             value={name}
+            sx={{ fontFamily: 'sans-serif' }}
           />
-          <FormControl sx={{ m: 1, minWidth: 120 }}>
-            <InputLabel id="demo-simple-select-helper-label">
-              면접 종류
-            </InputLabel>
-            <Select
-              labelId="demo-simple-select-helper-label"
-              id="demo-simple-select-helper"
-              value={type}
-              label="Age"
-              onChange={handleTypeChange}
-            >
-              <MenuItem value={"인성"}>인성</MenuItem>
-              <MenuItem value={"직무"}>직무</MenuItem>
-              {/* <MenuItem value={"토론"}>토론</MenuItem>
-              <MenuItem value={"pt"}>pt</MenuItem> */}
-            </Select>
-          </FormControl>
 
-          <FormControl sx={{ m: 1, minWidth: 120 }}>
+          <FormControl sx={{ minWidth: 150, mt: '20px', ml: '10px', mr: '30px'}}>
             <InputLabel id="demo-simple-select-helper-label">
               면접 종류
             </InputLabel>
@@ -171,7 +155,7 @@ function WaitingRoomModal({ modalClose }) {
             </Select>
           </FormControl>
           {type === "직무" && 
-          <FormControl sx={{ m: 1, minWidth: 120 }}>
+          <FormControl sx={{ mt: '20px', minWidth: 120 }}>
             <InputLabel id="demo-simple-select-helper-label">
               카테고리
             </InputLabel>
