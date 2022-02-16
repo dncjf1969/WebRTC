@@ -25,7 +25,7 @@ import styled, { keyframes } from "styled-components";
 export function WaitingListSearch() {
   const [rooms, setRooms] = useState([]);
   const [word, setWord] = useState(""); // submit시에 바뀔 변수
-  const [search, setSearch] = useState(-1);
+  const [search, setSearch] = useState(1);
   // const [] state의 기본값 -1
 
   let { roomType } = useParams();
@@ -33,16 +33,17 @@ export function WaitingListSearch() {
   console.log(roomType);
 
   // 검색버튼 누를때 keyword바꾸고 요청
-  const getRooms = async () => {
+  const getRooms = async (searchType1) => {
     await axios
       .get(`/room/waiting/${roomType}`, {
         params: {
           keyword: word,
-          searchType: search,
+          searchType: searchType1,
         },
-        headers: {
-          Authorization: window.localStorage.getItem("jwt"),
-        },
+        headers:{
+          Authorization : window.localStorage.getItem("jwt")
+        }
+
       })
       .then((res) => {
         console.log(res);
@@ -65,7 +66,7 @@ export function WaitingListSearch() {
 
   // 처음 목록 들어갔을 때, 모든 리스트 보여주기
   useEffect(() => {
-    getRooms();
+    getRooms(-1);
   }, []);
 
   const onChange = (e) => {
@@ -74,13 +75,17 @@ export function WaitingListSearch() {
   };
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (word === "") {
-      return;
-    }
+    // if (word === "") {
+    //   return;
+    // }
     console.log(word);
-
-    getRooms();
-    setWord("");
+    if(word===""){
+      getRooms(-1);
+    }
+    else{
+      getRooms(search);
+      setWord("");
+    }
   };
   // select 태그로 바꿔서 보내기
   const onClickSelect = (e) => {
@@ -157,9 +162,8 @@ export function WaitingListSearch() {
                     value={search}
                     className="mt-1 block text-gray-600 w-32 py-2 px-3 border cursor-pointer bg-white focus:outline-none focus:ring-indigo-500 border-none sm:text-sm"
                   >
-                    <option value={-1}>통합검색</option>
-                    <option value={0}>방ID</option>
                     <option value={1}>방제목</option>
+                    <option value={0}>방ID</option>
                   </select>
 
                   <InputBase
@@ -188,7 +192,7 @@ export function WaitingListSearch() {
                       display={"flex"}
                       justifyContent={"center"}
                     >
-                      {rooms.map((room, idx) => (
+                      { (rooms === null || (rooms !==null && rooms.length===0)) ? <div style={{marginTop:"80px"}}>검색결과가 없습니다.</div> : rooms.map((room, idx) => (
                         // <li key={idx}>{d.groupNo}</li>
                         <Grid
                           item
@@ -233,6 +237,7 @@ export function WaitingListSearch() {
                           </CardDetail>
                         </Grid>
                       ))}
+                      
                     </Grid>
                   </ProductList>
                 </Container>
