@@ -238,6 +238,8 @@ class TestComponent extends Component {
   }
 
   componentDidMount() {
+    this.OV = new OpenVidu();
+
     myAxios
       .get("/members/me", {
         headers: {
@@ -311,7 +313,7 @@ class TestComponent extends Component {
   }
 
   joinSession() {
-    this.OV = new OpenVidu();
+    // this.OV = new OpenVidu();
 
     this.setState(
       {
