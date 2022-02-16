@@ -201,7 +201,7 @@ public class MemberServiceImpl implements MemberService {
 		MimeMessageHelper helper = new MimeMessageHelper(message, "utf-8");
 		
 		try {
-			helper.setSubject("[공지] 비밀번호");
+			helper.setSubject("[WISH] 임시 비밀번호입니다.");
 			helper.setText(mailcontent.toString(), true);
 			//message.setText("임시 비밀번호는 " + randomPW + " 입니다.");
 			helper.setFrom("kyung_ho@naver.com");
