@@ -14,6 +14,9 @@ import Room from "./pages/roomTest2/room";
 import MyPage from "./pages/mypage/Mypage";
 import NotFound from "./pages/Page404";
 import UpdateUser from "./pages/mypage/updateUser";
+import Enterroom from "./pages/enterRoom";
+
+
 import { createTheme } from "@material-ui/core";
 function App() {
   const location = useLocation();
@@ -50,6 +53,7 @@ function App() {
         <Route path="/updateuser" element={<UpdateUser />} />
         <Route path="/Login" element={<Login />} />
         <Route path="/signup" element={<SignUp />} />
+        <Route path="/enter" element={<Enterroom />} />
         <Route path="/reset-password" element={<ResetPassword />} />
         <Route path="/waitinglist/:roomType" element={<WaitingList />} />
         <Route path="/waitingroom" element={<Room theme={theme} />} />

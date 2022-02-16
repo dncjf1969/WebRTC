@@ -28,6 +28,9 @@ function Header() {
     navigate("/");
   }
 
+  function handleRoomEnterBtn() {
+    navigate("/enter")
+  }
   return (
     <header
       style={{ fontFamily: "Noto Sans CJK KR" }}
@@ -66,6 +69,14 @@ function Header() {
                         modalClose={modalClose}
                       ></WaitingRoomModal>
                     )}
+                  </li>
+                  <li>
+                    <button
+                      onClick={handleRoomEnterBtn}
+                      className="py-2 px-4 bg-teal-500 text-white font-semibold rounded-lg shadow-md hover:bg-teal-700 focus:outline-none focus:ring-2 focus:ring-teal-600 focus:ring-opacity-75"
+                    >
+                      방 참여
+                    </button>
                   </li>
                   <li className="flex items-center">
                     <Link
