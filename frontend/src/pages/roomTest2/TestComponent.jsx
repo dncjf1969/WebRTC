@@ -315,6 +315,8 @@ class TestComponent extends Component {
   joinSession() {
     // this.OV = new OpenVidu();
 
+    console.log("initSession 확인 ***********");
+    console.log(this.OV);
     this.setState(
       {
         session: this.OV.initSession(),
