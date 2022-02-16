@@ -64,7 +64,7 @@ function Footer() {
                 <p className="text-gray-600 hover:text-gray-900 transition duration-150 ease-in-out">bootstrap</p>
               </li>  
               <li className="mb-2">
-                <p className="text-gray-600 hover:text-gray-900 transition duration-150 ease-in-out">Openvidu</p>
+                <p className="text-gray-600 hover:text-gray-900 transition duration-150 ease-in-out">Tailwind CSS</p>
               </li>  
             </ul>
           </div>
@@ -99,6 +99,9 @@ function Footer() {
             <h6 className="text-gray-800 font-medium mb-2">　</h6>
             <ul className="text-sm">
               <li className="mb-2">
+                <p className="text-gray-600 hover:text-gray-900 transition duration-150 ease-in-out">Openvidu</p>
+              </li>
+              <li className="mb-2">
                 <p className="text-gray-600 hover:text-gray-900 transition duration-150 ease-in-out">jenkins</p>
               </li>
               <li className="mb-2">
@@ -115,7 +118,7 @@ function Footer() {
         </div>
 
         {/* Bottom area */}
-        <div className="md:flex md:items-center md:justify-between py-4 md:py-8 border-t border-gray-200">
+        <div className="md:flex md:items-center md:justify-between py-4 border-t border-gray-200">
 
           {/* Copyrights note */}
           <div className="text-sm text-gray-600 mr-4">Made by <span className="text-blue-600 hover:underline">SSAFY 6th E201</span></div>
