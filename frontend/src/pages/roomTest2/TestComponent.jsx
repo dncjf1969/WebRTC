@@ -85,7 +85,7 @@ const RootStyle = styled("div")(({ theme }) => ({
   },
 }));
 
-var localUser = new UserModel();
+let localUser = new UserModel();
 
 class TestComponent extends Component {
   constructor(props) {
