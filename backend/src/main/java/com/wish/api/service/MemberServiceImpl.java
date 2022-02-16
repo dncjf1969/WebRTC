@@ -18,6 +18,7 @@ import com.wish.common.exception.custom.member.MemberAlreadyExistsException;
 import com.wish.common.exception.custom.member.NotFoundMemberException;
 import com.wish.common.exception.custom.member.UpdateMemberException;
 import com.wish.db.entity.Member;
+import com.wish.db.entity.Role;
 import com.wish.db.repository.MemberRepository;
 import com.wish.db.repository.MemberRepositorySupport;
 
@@ -64,8 +65,11 @@ public class MemberServiceImpl implements MemberService {
 			member.setSignUpDate(member.getSignUpDate());
 			member.setCharacterNumber(memberSignupInfo.getCharacterNumber());
 			
+			
 			//role 테이블에 회원 아이디와 권한 추가.
-			roleService.createRole(memberSignupInfo.getId(), "ROLE_BASIC");
+			Role role = roleService.createRole(memberSignupInfo.getId(), "ROLE_BASIC");
+
+			member.insertRole(role);
 			
 			memberRepository.save(member);
 			

@@ -20,20 +20,12 @@ public class RoleServiceImpl implements RoleService{
 	MemberRepository memberRepository;
  	
 	@Override
-	public void createRole(String memberId, String role) {
+	public Role createRole(String memberId, String role) {
 		
 		Role roleOb = new Role();
-		Member member = memberRepository.findById(memberId).get();
-		roleOb.setMember(member);
 		roleOb.setRole(role);
-
-		System.out.println("-------------------");
-		System.out.println(member.toString());
-		
-		System.out.println(roleOb.toString());
-		System.out.println("-------------------");
-		
-		roleRepositiory.save(roleOb);
+				
+		return roleOb;
 	}
 
 	@Override
