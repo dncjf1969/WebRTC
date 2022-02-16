@@ -27,6 +27,12 @@ public class RoleServiceImpl implements RoleService{
 		roleOb.setMember(member);
 		roleOb.setRole(role);
 
+		System.out.println("-------------------");
+		System.out.println(member.toString());
+		
+		System.out.println(roleOb.toString());
+		System.out.println("-------------------");
+		
 		roleRepositiory.save(roleOb);
 	}
 

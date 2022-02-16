@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 import java.sql.Date;
 import java.util.ArrayList;
@@ -18,6 +19,7 @@ import javax.persistence.*;
 @Entity
 @Getter
 @Setter
+@ToString
 public class Member{
     @Id
 	String id;
