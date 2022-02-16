@@ -210,10 +210,10 @@ class TestUserList extends Component {
                     <FormHelperText>{this.state.helperText}</FormHelperText>
                     <button
                       onClick={this.readyTest}
-                      class="bg-cyan-500 shadow-lg rounded-xl shadow-cyan-500/30 ..."
+                      class=" bg-cyan-500 shadow-lg rounded-xl shadow-cyan-500/30 p-2"
                     >
-                      <h1 className="text-white text-md font-semibold pl-2">
-                        {this.props.ready ? "레디 해제" : "레디"}{" "}
+                      <h1 className="text-white text-md font-semibold">
+                        {this.props.ready ? "Go" : "Ready"}{" "}
                       </h1>{" "}
                     </button>
                   </FormControl>

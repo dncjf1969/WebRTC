@@ -43,7 +43,6 @@
 .msg-info p {
   font-size: 0.8em;
   color: #000000;
-  font-style: italic;
 }
 
 .msg-content {
@@ -125,6 +124,7 @@ span.triangle {
   height: 30px;
   border-bottom-left-radius: 30px;
   border-bottom-right-radius: 30px;
+  box-sizing: unset;
 }
 
 #navInput {
