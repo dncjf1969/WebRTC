@@ -72,11 +72,7 @@ public class MemberServiceImpl implements MemberService {
 			memberRepository.save(member);
 			
 			//role 테이블에 회원 아이디와 권한 추가.
-//			Role role = roleService.createRole(memberSignupInfo.getId(), "ROLE_BASIC");
-			Role role = new Role();
-			role.setMember(member);
-			roleRepositiory.save(role);
-//			member.insertRole(role);
+			roleService.createRole(memberSignupInfo.getId(), "ROLE_BASIC",member);
 			
 			
 		} catch ( CreateMemberException e) {

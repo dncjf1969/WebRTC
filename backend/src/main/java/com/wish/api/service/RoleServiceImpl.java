@@ -20,12 +20,11 @@ public class RoleServiceImpl implements RoleService{
 	MemberRepository memberRepository;
  	
 	@Override
-	public Role createRole(String memberId, String role) {
-		
+	public void createRole(String memberId, String role, Member member) {
 		Role roleOb = new Role();
+		roleOb.setMember(member);
 		roleOb.setRole(role);
-				
-		return roleOb;
+		roleRepositiory.save(roleOb);
 	}
 
 	@Override
