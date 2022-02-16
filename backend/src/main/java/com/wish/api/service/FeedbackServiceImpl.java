@@ -8,9 +8,11 @@ import com.wish.common.exception.custom.feedback.DeleteFeedbackException;
 import com.wish.common.exception.custom.feedback.ReadFeedbackException;
 import com.wish.api.dto.response.MeetingCountRes;
 import com.wish.db.entity.Feedback;
+import com.wish.db.entity.Member;
 import com.wish.db.repository.FeedbackRepository;
 import com.wish.db.repository.FeedbackRepositorySupport;
 import com.wish.db.repository.MeetingRepository;
+import com.wish.db.repository.MemberRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -28,6 +30,8 @@ public class FeedbackServiceImpl implements FeedbackService {
 	FeedbackRepositorySupport feedbackRepositorySupport;
 	@Autowired
 	MeetingRepository meetingRepository;
+	@Autowired
+	MemberRepository memberRepository;
 
 	// 사용자 아이디에 해당하는 피드백 가져오기
 //	@Override
@@ -59,6 +63,9 @@ public class FeedbackServiceImpl implements FeedbackService {
 			feedback.setComment(info.getComment());
 			feedback.setRate(info.getRate());
 			feedback.setType(info.getType());
+			
+			Member member = memberRepository.findById(info.getMemberId()).get();
+			feedback.setMember(member);
 			
 			feedbackRepository.save(feedback);
 		} catch ( CreateFeedbackException e) {
