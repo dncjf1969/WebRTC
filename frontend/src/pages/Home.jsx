@@ -19,13 +19,13 @@ function Home() {
         {/*  Page sections */}
         <HeroHome />
         <FeaturesHome />
-        <FeaturesBlocks />
+        {/* <FeaturesBlocks /> */}
         {/* <Testimonials /> */}
         {/* <Newsletter /> */}
       </main>
 
       {/*  Site footer */}
-      <Footer />
+      {/* <Footer /> */}
     </div>
   );
 }
