@@ -20,7 +20,7 @@ public class Feedback  extends BaseEntity{
     // 스터디 이름, 평가받는 유저 아이디, 질문, 평가점수, 평가내용, 스터디 날짜, 시작시간, 면접 종류
 
     Long meetingId;
-    String memberId;
+//    String memberId;
     String meetingName;
     String question;
     String type;

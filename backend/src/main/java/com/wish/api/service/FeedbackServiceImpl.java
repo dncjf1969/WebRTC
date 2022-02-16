@@ -57,7 +57,7 @@ public class FeedbackServiceImpl implements FeedbackService {
 	public void createFeedback(FeedbackCreateReq info) {
 		try {
 			Feedback feedback = new Feedback();
-			feedback.setMemberId(info.getMemberId());
+//			feedback.setMemberId(info.getMemberId());
 			feedback.setMeetingId(info.getMeetingId());
 			feedback.setQuestion(info.getQuestion());
 			feedback.setComment(info.getComment());

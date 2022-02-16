@@ -38,7 +38,8 @@ public class FeedbackRepositorySupport {
     	List<MeetingCountRes> meetingCount =  jpaQueryFactory
     				.select(Projections.bean(MeetingCountRes.class, qFeedback.type, qFeedback.id.count().as(count)))
     									.from(qFeedback)
-    									.where(qFeedback.memberId.eq(id))
+//    									.where(qFeedback.memberId.eq(id))
+				.where(qFeedback.member.id.eq(id))
     									.groupBy(qFeedback.type)
     									.fetch();
 
@@ -49,7 +50,8 @@ public class FeedbackRepositorySupport {
     	List<Long> list =  jpaQueryFactory
     							.selectDistinct(qFeedback.meetingId)
 								.from(qFeedback)
-								.where(qFeedback.memberId.eq(memberId))
+//								.where(qFeedback.memberId.eq(memberId))
+				.where(qFeedback.member.id.eq(memberId))
 								.fetch();
 
     	return Optional.ofNullable(list);
