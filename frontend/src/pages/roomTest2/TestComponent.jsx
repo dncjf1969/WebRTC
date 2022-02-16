@@ -714,7 +714,7 @@ class TestComponent extends Component {
             status: error.status,
           });
         }
-        alert("There was an error connecting to the session:", error.message);
+        alert("There was an error connecting to the session:", error);
         console.log(
           "There was an error connecting to the session:",
           error.code,
