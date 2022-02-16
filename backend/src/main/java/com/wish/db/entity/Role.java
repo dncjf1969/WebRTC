@@ -15,8 +15,8 @@ public class Role extends BaseEntity{
 //	String memberId;
 	String role;
 	
-	@ManyToOne
-	@JoinColumn(name = "Member_Id") 
+	@ManyToOne(targetEntity = Member.class)
+	@JoinColumn(name = "member_id") 
 	private Member member;
 }
 

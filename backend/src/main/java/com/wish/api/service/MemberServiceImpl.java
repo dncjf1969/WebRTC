@@ -21,6 +21,7 @@ import com.wish.db.entity.Member;
 import com.wish.db.entity.Role;
 import com.wish.db.repository.MemberRepository;
 import com.wish.db.repository.MemberRepositorySupport;
+import com.wish.db.repository.RoleRepositiory;
 
 import java.util.Optional;
 import java.util.Random;
@@ -36,6 +37,9 @@ public class MemberServiceImpl implements MemberService {
 	
 	@Autowired
 	MemberRepositorySupport memberRepositorySupport;
+	
+	@Autowired
+	RoleRepositiory roleRepositiory;
 	
 	@Autowired
 	RoleService roleService;
@@ -64,14 +68,16 @@ public class MemberServiceImpl implements MemberService {
 			member.setEmail(memberSignupInfo.getEmail());
 			member.setSignUpDate(member.getSignUpDate());
 			member.setCharacterNumber(memberSignupInfo.getCharacterNumber());
-			
+
+			memberRepository.save(member);
 			
 			//role 테이블에 회원 아이디와 권한 추가.
-			Role role = roleService.createRole(memberSignupInfo.getId(), "ROLE_BASIC");
-
-			member.insertRole(role);
+//			Role role = roleService.createRole(memberSignupInfo.getId(), "ROLE_BASIC");
+			Role role = new Role();
+			role.setMember(member);
+			roleRepositiory.save(role);
+//			member.insertRole(role);
 			
-			memberRepository.save(member);
 			
 		} catch ( CreateMemberException e) {
 			e.printStackTrace();

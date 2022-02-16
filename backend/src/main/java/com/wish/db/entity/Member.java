@@ -35,12 +35,12 @@ public class Member{
     
     int characterNumber;
     
-    @OneToMany(mappedBy = "member")
-    List<Role> roles = new ArrayList<>();
-    
-    public void insertRole(Role role) {
-    	this.roles.add(role);
-    	role.setMember(this);
-    }
+//    @OneToMany(mappedBy = "member")
+//    List<Role> roles = new ArrayList<>();
+//    
+//    public void insertRole(Role role) {
+//    	this.roles.add(role);
+//    	role.setMember(this);
+//    }
     
 }
