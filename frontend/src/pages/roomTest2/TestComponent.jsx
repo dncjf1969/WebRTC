@@ -111,6 +111,7 @@ class TestComponent extends Component {
     this.remotes = [];
     this.localUserAccessAllowed = false;
     this.state = {
+      OV : undefined,
       roomname: "",
       memberMax: 0,
       job: "",
@@ -298,11 +299,8 @@ class TestComponent extends Component {
     window.addEventListener("resize", this.updateLayout);
     window.addEventListener("resize", this.checkSize);
     
-    this.OV = new OpenVidu();
-    setTimeout(() => {
-      console.log('Works!!!!!!!!!!!!!!!!!');
-      this.joinSession();
-    }, 3000);
+    this.joinSession();
+    
   }
 
   componentWillUnmount() {
@@ -317,13 +315,13 @@ class TestComponent extends Component {
   }
 
   joinSession() {
-    // this.OV = new OpenVidu();
+    let OV = new OpenVidu();
 
     console.log("initSession 확인 ***********");
-    console.log(this.OV);
+    console.log(OV);
     this.setState(
       {
-        session: this.OV.initSession(),
+        session: OV.initSession(),
       },
       () => {
         this.subscribeToStreamCreated();
