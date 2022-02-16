@@ -238,10 +238,6 @@ class TestComponent extends Component {
   }
 
   componentDidMount() {
-    this.OV = new OpenVidu();
-    setTimeout(function() {
-      console.log('Works!!!!!!!!!!!!!!!!!');
-    }, 500);
 
     myAxios
       .get("/members/me", {
@@ -301,7 +297,12 @@ class TestComponent extends Component {
     window.addEventListener("beforeunload", this.onbeforeunload);
     window.addEventListener("resize", this.updateLayout);
     window.addEventListener("resize", this.checkSize);
-    this.joinSession();
+    
+    this.OV = new OpenVidu();
+    setTimeout(() => {
+      console.log('Works!!!!!!!!!!!!!!!!!');
+      this.joinSession();
+    }, 3000);
   }
 
   componentWillUnmount() {
