@@ -92,6 +92,7 @@ function WaitingRoomModal({ modalClose }) {
         })
         .catch((err) => {
           console.log(err);
+          alert("오류가 발생하였습니다.")
           return err;
         });
     }

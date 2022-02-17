@@ -81,8 +81,22 @@ export function WaitingListSearch() {
     getRooms(-1);
   }, []);
 
-  const handleEnter = (room) => {
+  const handleEnter = async (room) => {
     console.log(room)
+    await axios
+      .get(`/room/waiting/enter?password=&roomId=${room.roomId}`, {
+        headers: {
+          Authorization: window.localStorage.getItem("jwt"),
+        },
+      })
+      .then((res) => {
+        console.log(res);
+        return res.data;
+      })
+      .catch((err) => {
+        console.log(err);
+        return err;
+      });
     window.localStorage.setItem("roomId", room.roomId)
     navigate("/waitingroom")
   }

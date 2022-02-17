@@ -59,6 +59,7 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogActions from "@mui/material/DialogActions";
 import IconButton from "@mui/material/IconButton";
 import CloseIcon from "@mui/icons-material/Close";
+import LogoutIcon from '@mui/icons-material/Logout';
 import Divider from "@mui/material/Divider";
 //
 import { bgcolor } from "@mui/system";
@@ -1364,7 +1365,7 @@ class TestComponent extends Component {
       });
     }
   }
-
+            
   handleMainVideoStream(stream) {
     // 내차례면 마이크 켜
     this.setState({
@@ -1448,6 +1449,8 @@ class TestComponent extends Component {
         }
       })
       .catch(() => {});
+    this.props.navigate("/");
+    window.location.reload()
   }
 
 
@@ -1492,7 +1495,7 @@ class TestComponent extends Component {
         /> */}
         <Grid
           container
-          title="waitingProfile"
+          title=""
           sx={{
             height: "700px",
             display: "flex",
@@ -1636,14 +1639,14 @@ class TestComponent extends Component {
             <>
               {/* 유저 리스트 */}
               <Grid item xs={8}>
-                <span style={{marginBottom:'5px', marginLeft:'5px', marginRight:'5px', fontSize:'18px'}}>방제목: {this.state.roomname}</span>
+                <span style={{marginBottom:'5px', marginLeft:'25px', marginRight:'25px', fontSize:'18px'}}>방제목: {this.state.roomname}</span>
                 <Button 
                   onClick={this.handleExitBtn}
-                  variant="contained"
+                  // variant="contained"
                   color="secondary"
                   size="small"
-                  
-                  startIcon={<DeleteIcon />}
+                  startIcon={<LogoutIcon />}
+
                   >
                   나가기
                 </Button>

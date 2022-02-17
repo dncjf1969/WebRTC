@@ -90,7 +90,7 @@ function SignUp() {
   // submit when user click button
   function handleSubmit(event) {
     event.preventDefault();
-    if (!characterNumber) {
+    if (characterNumber === "") {
       alert("캐릭터를 선택해주세요");
     } else if (!checkId && checkNickname) {
       alert("아이디 중복을 확인해주세요");
