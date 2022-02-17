@@ -536,7 +536,7 @@ class TestComponent extends Component {
           });
           // 모든로컬에서 면접자들 똑같은순서로 진행되도록
           viewees.sort((a, b) => (a.connectionId < b.connectionId ? -1 : 1));
-
+          // 면접자가 자기차례면 마이크 켜
           await this.getRecoQues();
           await this.setState({
             isStart: true,
@@ -1311,11 +1311,10 @@ class TestComponent extends Component {
   }
 
   handleMainVideoStream(stream) {
-    if (this.state.mainStreamManager !== stream) {
-      this.setState({
-        mainStreamManager: stream,
-      });
-    }
+    // 내차례면 마이크 켜
+    this.setState({
+      mainStreamManager: stream,
+    });
   }
 
   handleChoiceQues(question) {
