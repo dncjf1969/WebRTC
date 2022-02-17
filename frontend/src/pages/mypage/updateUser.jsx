@@ -189,9 +189,7 @@ function UpdateUser() {
 
               <div className="relative mt-10 h-px bg-gray-300">
                 <div className="absolute left-0 top-0 flex justify-center w-full -mt-2">
-                  <span className="bg-white px-4 text-xs text-gray-500 uppercase">
-                    <SelectCharacter setCharacterNumber={setCharacterNumber} />
-                  </span>
+                  <span className="bg-white px-4 text-xs text-gray-500 uppercase"></span>
                 </div>
               </div>
               <div className="mt-10">
@@ -371,6 +369,11 @@ function UpdateUser() {
                         }}
                         className="text-sm sm:text-base placeholder-gray-500 pl-10 pr-4 rounded-lg border border-gray-400 w-full py-2 focus:outline-none focus:border-blue-400"
                         placeholder="비밀번호를 입력해주세요."
+                      />
+                    </div>
+                    <div className="mt-4">
+                      <SelectCharacter
+                        setCharacterNumber={setCharacterNumber}
                       />
                     </div>
                   </div>

@@ -197,15 +197,6 @@ function SignUp() {
                   회원가입
                 </div>
 
-                <div className="relative mt-10 h-px bg-gray-300">
-                  <div className="absolute left-0 top-0 flex justify-center w-full -mt-2">
-                    <span className="bg-white px-4 text-xs text-gray-500 uppercase">
-                      <SelectCharacter
-                        setCharacterNumber={setCharacterNumber}
-                      />
-                    </span>
-                  </div>
-                </div>
                 <div className="mt-10">
                   <form onSubmit={handleSubmit}>
                     {/* 아이디 작성 */}
@@ -425,6 +416,11 @@ function SignUp() {
                     </div>
 
                     <div className="flex items-center mb-6 mt-4">
+                      <label className="mb-2  text-xs sm:text-sm tracking-wide text-gray-600">
+                        <SelectCharacter
+                          setCharacterNumber={setCharacterNumber}
+                        />
+                      </label>
                       <div className="flex ml-auto">
                         <Link
                           to="/login"
