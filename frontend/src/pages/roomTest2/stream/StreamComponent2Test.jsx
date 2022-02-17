@@ -59,7 +59,7 @@ export default class StreamComponent2 extends Component {
 
   render() {
     return (
-      <div className="OT_widget-container2">
+      <div className="OT_widget-container2" style={{borderRadius:"8px", backgroundColor : "white", width: "330px", height:"600px"}}>
         
         {this.props.user !== undefined &&
         this.props.user.getStreamManager() !== undefined ? (

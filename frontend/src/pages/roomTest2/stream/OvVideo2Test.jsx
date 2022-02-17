@@ -89,7 +89,7 @@ export default class OvVideoComponent2 extends Component {
         //this.state.
     
         // Convenience function to setup a webcam
-        const size = 200;
+        const size = 50;
         const flip = true; // whether to flip the webcam
         this.state.webcam = new tmPose.Webcam(size, size, flip); // width, height, flip
         await this.state.webcam.setup(); // request access to the webcam
@@ -128,23 +128,36 @@ export default class OvVideoComponent2 extends Component {
             
             if(prediction[i].probability.toFixed(2)>0.8)
             {
-                console.log(prediction[i].className);
+
+                console.log(i + "  :  " + prediction[i].className);
                 if(i==0){
                   this.state.msgContainer.innerHTML = `올바른 자세입니다.`;
                   this.state.msgContainer2.innerHTML = `이 자세를 유지해주세요.`;
                 } 
                 else if(i==1) {
-                  this.state.msgContainer.innerHTML = `왼쪽으로 자세가 치우쳤어요!`;
+                  this.state.msgContainer.innerHTML = `오른쪽으로 자세가 치우쳤어요!`;
                   this.state.msgContainer2.innerHTML = `자세를 교정해주세요.`;
                 }
                 else if(i==2) {
-                  this.state.msgContainer.innerHTML = `오른쪽으로 자세가 치우쳤어요!`; 
+                  this.state.msgContainer.innerHTML = `왼쪽으로 자세가 치우쳤어요!`; 
                   this.state.msgContainer2.innerHTML = `자세를 교정해주세요.`;
                 }
-                else if(i==3) this.state.msgContainer.innerHTML = `너무 " + prediction[i].className + "!!`;
-                else if(i==4) this.state.msgContainer.innerHTML = `너무 " + prediction[i].className + "!!`;
-                else if(i==5) this.state.msgContainer.innerHTML = `너무 " + prediction[i].className + "!!`;
-                else if(i==6) this.state.msgContainer.innerHTML = `너무 " + prediction[i].className + "!!`;
+                else if(i==3)
+                {
+                  this.state.msgContainer.innerHTML = `너무 가까워요!`; 
+                  this.state.msgContainer2.innerHTML = `자세를 교정해주세요.`;
+                } 
+                else if(i==4) 
+                {
+                  this.state.msgContainer.innerHTML = `너무 멀어요!`; 
+                  this.state.msgContainer2.innerHTML = `자세를 교정해주세요.`;
+                }
+                else if(i==5)
+                {
+                  this.state.msgContainer.innerHTML = `기대고 있어요!`; 
+                  this.state.msgContainer2.innerHTML = `자세를 교정해주세요.`;
+                } 
+                
                 this.setState({ nowPoseState: i });
             } 
 
@@ -172,11 +185,19 @@ export default class OvVideoComponent2 extends Component {
           <div>
             {/* <button type="button" onClick={this.init}>Start</button> */}
             <div><canvas id="canvas"></canvas></div>
-            <div id="label-container"></div>
+            {/* <div id="label-container"></div> */}
+            <div id="helper1"> 😊 WISH 도우미 </div>
             <div id="msg-container"></div>
             <div id="msg-container2"></div>
             {this.state.nowPoseState == 0 ? <div> <SentimentSatisfiedAltIcon className="icon1" color='primary'></SentimentSatisfiedAltIcon> <SentimentVeryDissatisfiedIcon className="icon1" color="grey"></SentimentVeryDissatisfiedIcon> </div> : <div> <SentimentSatisfiedAltIcon className="icon1" color='grey'></SentimentSatisfiedAltIcon> <SentimentVeryDissatisfiedIcon className="icon1" color="error"></SentimentVeryDissatisfiedIcon></div>}
             
+            <div className='helper2'> 
+            <div style={{marginLeft:"90px"}}> ✔ 오늘의 TIP </div>
+            <div className='helper3'> <input type={"checkbox"}></input>발음에 신경써보세요!</div>
+            <div className='helper3'> <input type={"checkbox"}></input>한번 더 생각하고 답변해봐요!</div>
+            <div className='helper3'> <input type={"checkbox"}></input>미소를 유지하여 긍정적인 인상을 주세요!</div>
+            </div>
+
             {/* {this.state.nowPoseState == 0 ? <div> <ThumbUpIcon color="primary"></ThumbUpIcon> </div> : <div> <ThumbDownIcon color="error"></ThumbDownIcon></div>} */}
           </div>
         );

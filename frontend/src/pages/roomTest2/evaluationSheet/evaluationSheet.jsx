@@ -12,6 +12,7 @@ class EvaluationSheet extends Component {
             question: question,
             rate: undefined,
         };
+
         this.handleNextBtn = this.handleNextBtn.bind(this);
         this.handleEnter = this.handleEnter.bind(this);
         this.setRate = this.setRate(this);
@@ -61,6 +62,8 @@ class EvaluationSheet extends Component {
         this.setState({
             rate : newRate
         })
+        console.log(newRate);
+        console.log(this.state.rate);
     }
 
     handleEnter(event) {
@@ -79,10 +82,11 @@ class EvaluationSheet extends Component {
             display:"inline-block",
             width:"350px",
             height:"200px",
-            marginLeft:"5px",
+            marginLeft:"1px",
             backgroundColor : 'white',
             //border: '1px solid black',
             //marginTop:"10%",
+            borderRadius:"8px",
         }
         const tempStyle3={
             display: "flex",
@@ -130,7 +134,9 @@ class EvaluationSheet extends Component {
                     name="simple-controlled"
                     value={this.state.rate}
                     onChange={(event, newRate) => {
-                        this.setRate(newRate);
+                        console.log(newRate);
+                        this.state.rate = newRate;
+                        
                     }}
                     />
                     </div>

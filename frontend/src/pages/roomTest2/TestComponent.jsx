@@ -1484,7 +1484,7 @@ class TestComponent extends Component {
           container
           title="waitingProfile"
           sx={{
-            height: "650px",
+            height: "700px",
             display: "flex",
             marginTop: "5px",
 
@@ -1494,7 +1494,7 @@ class TestComponent extends Component {
             // backgroundImage: `url(${background})`,
             backgroundColor: color,
             // boxShadow: "0 3px 5px 2px rgba(47, 138, 241, 0.5)",
-            opacity: 0.7,
+            //opacity: 0.7,
           }}
         >
           {this.state.isStart ? (
@@ -1597,11 +1597,6 @@ class TestComponent extends Component {
                   </div>))
 
                   :
-                //   (this.state.isStart && localUser.viewer && this.state.managerLayoutState == 1) ?  
-                //   () : (<div>다른 면접관들이 평가완료할 때까지 기다려주세요!2
-                //   </div>)
-                // )
-                //: 
                 <div> 
                   <div className="stream-container" id="remoteUsers">
                       {/* <div>선택된화면</div> */}
@@ -1609,34 +1604,20 @@ class TestComponent extends Component {
                     </div>
                 </div>
                 }
-
-                  {/* {(this.state.managerLayoutState == 2) ? <div>hello2</div> : <div></div>} */}
-                  
-                 
-                {/* {
-
-                  this.state.isStart && localUser.viewer && this.state.managerLayoutState == 2 ? 
-                  <EvaluationSheet
-                    viewers={this.state.viewers}
-                    viewee={this.state.mainStreamManager}
-                    session={this.state.session}
-                    evalWaiting={this.state.evalWaiting}
-                    chosenQues={this.state.chosenQues}
-                    curQuesId={this.state.curQuesId}
-                    preQuesId={this.state.preQuesId}
-                    meetingId={this.state.meetingId}
-                    type={this.state.type}
-                  /> : <div>nono2</div>
-                } */}
               </div>
               {/* </Grid> */}
               {this.state.isStart && localUser.viewer && (
                 <Button variant="contained" color="success" onClick={this.handleFinish}> 면접끝내기</Button>
               )}
-              {/* {this.state.isStart && 
+              {this.state.isStart && localUser.viewer &&
                 <IconButton color="inherit" className="navButton" id="navMicButton" onClick={this.micStatusChanged}>
                     {localUser !== undefined && localUser.isAudioActive() ? <Mic /> : <MicOff color="secondary" />}
-                </IconButton>} */}
+                </IconButton>}
+              
+              {this.state.isStart && !localUser.viewer &&
+              <IconButton className="vieweeMicIcon" color="inherit" className="navButton" id="navMicButton" onClick={this.micStatusChanged}>
+                  {localUser !== undefined && localUser.isAudioActive() ? <Mic /> : <MicOff color="secondary" />}
+              </IconButton>}
             </>
           ) : (
             <>

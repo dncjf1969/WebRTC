@@ -88,9 +88,10 @@ class RecommendationQues extends Component {
             display:"inline-block",
             width:"350px",
             height:"400px",
-            marginLeft:"5px",
+            marginLeft:"1px",
             backgroundColor : 'white',
             // border: '1px solid black',
+            borderRadius:"8px",
             marginTop:"5%",
         }
         const tempStyle3={
@@ -100,6 +101,7 @@ class RecommendationQues extends Component {
             marginLeft:"200px",
             backgroundColor : 'white',
             border: '1px solid black',
+            borderRadius:"8px",
         }
 
         const tempStyle4={
