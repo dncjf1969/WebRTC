@@ -4,12 +4,12 @@ import Modal from "@mui/material/Modal";
 import Button from "@mui/material/Button";
 import { useState } from "react";
 import styled from "styled-components";
-import Character0 from "../images/0.png"
-import Character1 from "../images/1.png"
-import Character2 from "../images/2.png"
-import Character3 from "../images/3.png"
-import Character4 from "../images/4.png"
-import Character5 from "../images/5.png"
+import Character0 from "../images/00.png"
+import Character1 from "../images/01.png"
+import Character2 from "../images/02.png"
+import Character3 from "../images/03.png"
+import Character4 from "../images/04.png"
+import Character5 from "../images/05.png"
 
 import "./SelectCharacter.css";
 
