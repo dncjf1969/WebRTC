@@ -43,7 +43,7 @@ function SelectCharacter(props) {
   const handleClose = () => {
     setOpen(false);
     console.log(charNum);
-    let charURL = "../images/";
+    let charURL = "https://lab.ssafy.com/s06-webmobile1-sub2/S06P12E201/-/raw/frontend/frontend/src/images/";
     setCharacterURL(charURL + charNum + ".PNG");
     props.setCharacterNumber(charNum);
   };
