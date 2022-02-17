@@ -138,10 +138,13 @@ function WaitingRoomModal({ modalClose }) {
           />
 
           <FormControl sx={{ minWidth: 150, mt: '20px', ml: '10px', mr: '30px'}}>
-            <InputLabel sx={{
+            <InputLabel 
+              id="demo-simple-select-helper-label" 
+              sx={{
                 fontSize: 15,
                 fontWeight: 'bold',
-              }}id="demo-simple-select-helper-label">
+              }}
+            >
               면접 종류
             </InputLabel>
             <Select
@@ -152,25 +155,37 @@ function WaitingRoomModal({ modalClose }) {
               onChange={handleTypeChange}
               sx={{ height: '50px'}}
             >
-              <MenuItem sx={{
-                fontSize: 15,
-                fontWeight: 'bold',
-              }}value={"인성"}>인성</MenuItem>
-              <MenuItem sx={{
-                fontSize: 15,
-                fontWeight: 'bold',
-              }}value={"직무"}>직무</MenuItem>
+              <MenuItem 
+                value={"인성"}
+                sx={{
+                  fontSize: 15,
+                  fontWeight: 'bold',
+                }}
+              >
+                인성
+              </MenuItem>
+              <MenuItem 
+                value={"직무"}
+                sx={{
+                  fontSize: 15,
+                  fontWeight: 'bold',
+                }}
+              >
+                직무
+              </MenuItem>
               {/* <MenuItem value={"토론"}>토론</MenuItem>
               <MenuItem value={"pt"}>pt</MenuItem> */}
             </Select>
           </FormControl>
           {type === "직무" && 
           <FormControl sx={{ minWidth: 150, mt: '20px', ml: '10px', mr: '30px'}}>
-            <InputLabel id="demo-simple-select-helper-label" sx={{
-            fontSize: 15,
-            fontWeight: 'bold',
-          }}>
-              카테고리
+            <InputLabel 
+              id="demo-simple-select-helper-label" 
+              sx={{
+                fontSize: 15,
+                fontWeight: 'bold',
+              }}>
+                카테고리
             </InputLabel>
             <Select
               labelId="demo-simple-select-helper-label"
@@ -191,10 +206,14 @@ function WaitingRoomModal({ modalClose }) {
           
 
           <Box sx={{ width: 300, mt: 3, ml: 1}}>
-            <Typography sx={{
+            <Typography 
+              id="input-slider" 
+              gutterBottom
+              sx={{
                 fontSize: 15,
                 fontWeight: 'bold',
-              }} id="input-slider" gutterBottom >
+              }}
+            >
               인원
             </Typography>
             <Slider
@@ -209,12 +228,16 @@ function WaitingRoomModal({ modalClose }) {
               max={6}
             />
           </Box>
-          <Typography sx={{
-                fontSize: 15,
-                fontWeight: 'bold',
-                mt: 2,
-                ml: 1
-              }} id="switch" gutterBottom>
+          <Typography 
+            sx={{
+              fontSize: 15,
+              fontWeight: 'bold',
+              mt: 2,
+              ml: 1
+            }}
+            id="switch" 
+            gutterBottom
+          >
             비밀번호 설정
           </Typography>
           <Switch
@@ -239,10 +262,12 @@ function WaitingRoomModal({ modalClose }) {
             />
           ) : null}
         </DialogContent>
-        <DialogActions sx={{
-              mr: '10px',
-              mb: '10px'
-            }}>
+        <DialogActions 
+          sx={{
+            mr: '10px',
+            mb: '10px'
+          }}
+        >
           <Button 
             size="large"
             sx={{

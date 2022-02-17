@@ -41,3 +41,4 @@ out/
 frontend/node_modules/
 frontend/design/node_modules/
 /node_modules
+frontend/dist/

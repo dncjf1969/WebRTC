@@ -87,7 +87,7 @@ const RootStyle = styled("div")(({ theme }) => ({
   },
 }));
 
-var localUser = new UserModel();
+let localUser = new UserModel();
 
 class TestComponent extends Component {
   constructor(props) {
@@ -240,6 +240,7 @@ class TestComponent extends Component {
   }
 
   componentDidMount() {
+
     myAxios
       .get("/members/me", {
         headers: {
@@ -298,7 +299,12 @@ class TestComponent extends Component {
     window.addEventListener("beforeunload", this.onbeforeunload);
     window.addEventListener("resize", this.updateLayout);
     window.addEventListener("resize", this.checkSize);
-    this.joinSession();
+    
+    this.OV = new OpenVidu();
+    setTimeout(() => {
+      console.log('Works!!!!!!!!!!!!!!!!!');
+      this.joinSession();
+    }, 3000);
   }
 
   componentWillUnmount() {
@@ -313,14 +319,17 @@ class TestComponent extends Component {
   }
 
   joinSession() {
-    this.OV = new OpenVidu();
+    // this.OV = new OpenVidu();
 
+    console.log("initSession 확인 ***********");
+    console.log(this.OV);
     this.setState(
       {
         session: this.OV.initSession(),
       },
       () => {
         this.subscribeToStreamCreated();
+        console.log(this.state.session);
         this.connectToSession();
         console.log(this.state.session);
         console.log("나의 ishost:", this.state.ishost);
@@ -344,7 +353,9 @@ class TestComponent extends Component {
             .then(() => {
               console.log("정보보냈다");
             })
-            .catch((error) => {});
+            .catch((error) => {
+              console.log(error);
+            });
         });
 
         this.state.session.on("signal:new-user", (event) => {
@@ -401,7 +412,7 @@ class TestComponent extends Component {
           console.log(event);
           console.log(event.target.remoteConnections);
           //시그널을 보낸 세션 아이디
-          var xx = event.from.connectionId;
+          let xx = event.from.connectionId;
           if (xx === localUser.connectionId) {
             this.readyStatusChanged();
             this.setState({ readyState: !this.state.readyState });
@@ -442,11 +453,11 @@ class TestComponent extends Component {
 
         this.state.session.on("signal:makeQues", (event) => {
           //시그널을 보낸 세션 아이디
-          var xx = event.from.connectionId;
+          let xx = event.from.connectionId;
           console.log(xx + "가 질문 만들겠대.");
           console.log(event);
-          var zz = "";
-          for (var i = 0; i < this.state.nowUser.length; i++) {
+          let zz = "";
+          for (let i = 0; i < this.state.nowUser.length; i++) {
             if (this.state.nowUser[i].sessionID === xx) {
               zz = this.state.nowUser[i].userName;
               break;
@@ -758,6 +769,8 @@ class TestComponent extends Component {
       id: this.state.id,
       image: this.state.characterNum,
     };
+    console.log("커넥트 함수==============");
+    console.log(this.state.session);
     this.state.session
       .connect(token, context)
       .then(() => {
@@ -782,7 +795,7 @@ class TestComponent extends Component {
             status: error.status,
           });
         }
-        alert("There was an error connecting to the session:", error.message);
+        alert("There was an error connecting to the session:", error);
         console.log(
           "There was an error connecting to the session:",
           error.code,
@@ -792,12 +805,12 @@ class TestComponent extends Component {
   }
 
   async connectWebCam() {
-    var devices = await this.OV.getDevices();
-    var videoDevices = devices.filter((device) => device.kind === "videoinput");
+    let devices = await this.OV.getDevices();
+    let videoDevices = devices.filter((device) => device.kind === "videoinput");
 
     let publisher = this.OV.initPublisher(undefined, {
       audioSource: undefined,
-      videoSource: videoDevices[0].deviceId,
+      videoSource: undefined,
       publishAudio: localUser.isAudioActive(),
       publishVideo: localUser.isVideoActive(),
       resolution: "640x480",
@@ -893,7 +906,7 @@ class TestComponent extends Component {
   }
 
   updateSubscribers() {
-    var subscribers = this.remotes;
+    let subscribers = this.remotes;
     this.setState(
       {
         subscribers: subscribers,
@@ -999,7 +1012,7 @@ class TestComponent extends Component {
     this.state.session.on("streamCreated", (event) => {
       console.log(event);
       const subscriber = this.state.session.subscribe(event.stream, undefined);
-      // var subscribers = this.state.subscribers;
+      // let subscribers = this.state.subscribers;
       subscriber.on("streamPlaying", (e) => {
         this.checkSomeoneShareScreen();
         subscriber.videos[0].video.parentElement.classList.remove(
@@ -1150,19 +1163,19 @@ class TestComponent extends Component {
   async switchCamera() {
     try {
       const devices = await this.OV.getDevices();
-      var videoDevices = devices.filter(
+      let videoDevices = devices.filter(
         (device) => device.kind === "videoinput"
       );
 
       if (videoDevices && videoDevices.length > 1) {
-        var newVideoDevice = videoDevices.filter(
+        let newVideoDevice = videoDevices.filter(
           (device) => device.deviceId !== this.state.currentVideoDevice.deviceId
         );
 
         if (newVideoDevice.length > 0) {
           // Creating a new publisher with specific videoSource
           // In mobile devices the default and first camera is the front one
-          var newPublisher = this.OV.initPublisher(undefined, {
+          let newPublisher = this.OV.initPublisher(undefined, {
             audioSource: undefined,
             videoSource: newVideoDevice[0].deviceId,
             publishAudio: localUser.isAudioActive(),
@@ -1645,7 +1658,7 @@ class TestComponent extends Component {
   createSession(sessionId) {
     return new Promise((resolve, reject) => {
       console.log(this.OPENVIDU_SERVER_URL + "/openvidu/api/sessions");
-      var data = JSON.stringify({ customSessionId: sessionId });
+      let data = JSON.stringify({ customSessionId: sessionId });
       axios
         .post(this.OPENVIDU_SERVER_URL + "/openvidu/api/sessions", data, {
           headers: {
@@ -1659,7 +1672,7 @@ class TestComponent extends Component {
           resolve(response.data.id);
         })
         .catch((response) => {
-          var error = Object.assign({}, response);
+          let error = Object.assign({}, response);
           if (error.response && error.response.status === 409) {
             resolve(sessionId);
           } else {
@@ -1689,7 +1702,7 @@ class TestComponent extends Component {
 
   createToken(sessionId) {
     return new Promise((resolve, reject) => {
-      var data = JSON.stringify({});
+      let data = JSON.stringify({});
       axios
         .post(
           this.OPENVIDU_SERVER_URL +
