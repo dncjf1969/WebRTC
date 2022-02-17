@@ -9,6 +9,7 @@ import { Container, Button } from "@material-ui/core";
 import EditIcon from "@material-ui/icons/Edit";
 import styled from "styled-components";
 import Box from "@mui/material/Box";
+import { AiOutlineMonitor } from "react-icons/ai";
 
 // component
 import MyTable from "./Mytable";
@@ -256,16 +257,19 @@ export default function MyPage() {
               {/* 마이페이지 박스 */}
               <div className="flex flex-row mx-64">
                 {/* 유저정보 */}
-                <div className="flex-col flex content-center justify-around flex-wrap basis-1/4 p-5 border-2 border-stone-100 rounded-lg mr-4">
-                  <div className="ml-10">
+                <div className="flex-col grid grid-col flex justify-items-center content-center justify-around flex-wrap basis-1/4 p-5 border-2 border-stone-100 rounded-lg mr-4">
+                  <div className="">
                     <img
                       className="inline-block h-15 w-15 rounded-full ring-2 ring-white"
                       src={characterURL}
                       alt=""
                     />
                   </div>
-                  <div className="ml-2 mt-2 font-bold">닉네임 : {nickname}</div>
-                  <div className="ml-2 mb-2 font-bold">{email}</div>
+                  <p className="font-light text-sm">안녕하세요!</p>
+                  <div className=" font-medium">
+                    <span className="font-semibold">{nickname}</span>님
+                  </div>
+                  <div className="ml-2 mb-2 font-medium">{email}</div>
                   <div className="flex content-center justify-around flex-row ml-2">
                     <Link to="/updateuser">
                       <button className="py-2 px-2 bg-teal-500 text-white font-bold rounded-lg shadow-md hover:bg-teal-700 focus:outline-none focus:ring-2 focus:ring-teal-600 focus:ring-opacity-75">
@@ -278,8 +282,15 @@ export default function MyPage() {
                 {/* 나의 면접 횟수 */}
                 <div id="green" className=" p-3 basis-3/4 m6 rounded-lg">
                   <Record>
-                    <Title>
-                      <h1 id="black">역검 응시</h1>
+                    <Title className="grid grid-cols-2">
+                      <div className="mt-1">
+                        <AiOutlineMonitor />
+                      </div>
+
+                      <span id="black" className="ml-2 ">
+                        {" "}
+                        역검 응시
+                      </span>
                     </Title>
                     <MyTable
                       Personality={Personality}
