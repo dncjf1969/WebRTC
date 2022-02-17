@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import axios from "axios";
 import myAxios from "../../common/http-common";
 import background from "../../images/background.jpg";
-
+import DeleteIcon from "@material-ui/icons/Delete";
 //
 
 import OvVideoComponent2 from "./stream/OvVideo2";
@@ -61,6 +61,18 @@ import { bgcolor } from "@mui/system";
 import { deepPurple, teal } from "@mui/material/colors";
 import { blue } from "@material-ui/core/colors";
 // ----------------------------------------------------------------------
+
+
+
+// 제목
+const Title = styled.div`
+  display: inline-box;
+  margin-bottom: 5px;
+  margin-top: 10px;
+  font-weight: bold;
+  font-size: 1.2rem;
+`;
+
 //// 피드백용
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
   "& .MuiDialogContent-root": {
@@ -1422,6 +1434,7 @@ class TestComponent extends Component {
   }
 
   render() {
+    console.log(this.state)
     const mySessionId = this.state.mySessionId;
     const localUser = this.state.localUser;
     const color = blue[100];
@@ -1618,7 +1631,16 @@ class TestComponent extends Component {
             <>
               {/* 유저 리스트 */}
               <Grid item xs={8}>
-                <div style={{marginBottom:'15px'}}>방제목</div>
+                <span style={{marginBottom:'15px', marginRight:'15px'}}><h1>방제목: {this.state.roomname}</h1></span>
+                <Button 
+                  onClick={this.handleExitBtn}
+                  variant="contained"
+                  color="secondary"
+                  size="small"
+                  startIcon={<DeleteIcon />}
+                  >
+                  나가기
+                </Button>
 
                 <div style={{height: '600px'}}>
                   <TestUserList
@@ -1633,10 +1655,11 @@ class TestComponent extends Component {
                     allReady={this.state.allReady}
                     roomId={this.state.waitingId}
                     characterNum={this.state.characterNum}
+                    
                   
                   />
                 </div>
-                <button onClick={this.handleExitBtn}>나가기</button>
+                {/* <button onClick={this.handleExitBtn}>나가기</button> */}
                 
               </Grid>
               {/* 채팅 */}
