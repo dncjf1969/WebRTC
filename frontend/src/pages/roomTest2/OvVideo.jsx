@@ -1,7 +1,3 @@
-/* eslint-disable react/jsx-boolean-value */
-/* eslint-disable jsx-a11y/media-has-caption */
-/* eslint-disable react/destructuring-assignment */
-/* eslint-disable react/sort-comp */
 import React, { Component } from 'react';
 
 export default class OpenViduVideoComponent extends Component {
