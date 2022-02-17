@@ -1,7 +1,7 @@
 #header {
     color: #ffffff;
     height: 40px;
-    background-color: #37388a;
+    /* background-color: #37388a; */
     padding: 0 14px 0 0;
     position: absolute;
     top: 0;
@@ -9,6 +9,7 @@
     z-index: 999999;
     min-width: 400px !important;
   }
+
   .toolbar{
     padding: 0 !important;
   }
