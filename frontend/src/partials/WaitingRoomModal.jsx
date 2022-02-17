@@ -231,7 +231,7 @@ function WaitingRoomModal({ modalClose }) {
               max={6}
             />
           </Box>
-          <Typography 
+          {/* <Typography 
             sx={{
               fontSize: 15,
               fontWeight: 'bold',
@@ -242,12 +242,12 @@ function WaitingRoomModal({ modalClose }) {
             gutterBottom
           >
             비밀번호 설정
-          </Typography>
-          <Switch
+          </Typography> */}
+          {/* <Switch
             checked={checked}
             onChange={handleChange}
             inputProps={{ "aria-label": "controlled" }}
-          />
+          /> */}
           {checked ? (
             <TextField
               margin="dense"

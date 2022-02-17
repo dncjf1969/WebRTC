@@ -587,8 +587,8 @@ class TestComponent extends Component {
           // 모든로컬에서 면접자들 똑같은순서로 진행되도록
           viewees.sort((a, b) => (a.connectionId < b.connectionId ? -1 : 1));
           // 면접자가 자기차례면 마이크 켜
-          await this.getRecoQues();
-          await this.setState({
+          this.getRecoQues();
+          this.setState({
             isStart: true,
             allUsers: allUsers,
             viewees: viewees,
@@ -663,11 +663,11 @@ class TestComponent extends Component {
               // 전체가
               this.setState({ evalnum: 0, evalWaiting: false });
               this.setState({ chosenQues: "" });
+              this.nextViewee();
             } else {
               // 아직 평가 진행중이라면
               this.setState({ evalnum: evalnum });
             }
-            this.nextViewee();
           });
         });
 
@@ -1574,8 +1574,8 @@ class TestComponent extends Component {
                 {/* TODO */}
                 {/* <button onClick={this.setManagerLayoutState}>추천질문</button> */}
                 
-                {this.state.viewerState == true ?  ( 
-                  this.state.isStart && this.state.managerLayoutState == 1 && localUser.viewer ?
+                {this.state.viewerState === true ?  ( 
+                  this.state.isStart && localUser.viewer ?
                     (<div>
                     <div style={{height: '40%'}}>
                       <RecommendationQues
@@ -1589,16 +1589,16 @@ class TestComponent extends Component {
                         evalWaiting={this.state.evalWaiting}
                       />
                       <EvaluationSheet
-                    viewers={this.state.viewers}
-                    viewee={this.state.mainStreamManager}
-                    session={this.state.session}
-                    evalWaiting={this.state.evalWaiting}
-                    chosenQues={this.state.chosenQues}
-                    curQuesId={this.state.curQuesId}
-                    preQuesId={this.state.preQuesId}
-                    meetingId={this.state.meetingId}
-                    type={this.state.type}
-                  />
+                        viewers={this.state.viewers}
+                        viewee={this.state.mainStreamManager}
+                        session={this.state.session}
+                        evalWaiting={this.state.evalWaiting}
+                        chosenQues={this.state.chosenQues}
+                        curQuesId={this.state.curQuesId}
+                        preQuesId={this.state.preQuesId}
+                        meetingId={this.state.meetingId}
+                        type={this.state.type}
+                      />
                     </div>
                   </div>)
                   : (<div>다른 면접관들이 평가완료할 때까지 기다려주세요!
