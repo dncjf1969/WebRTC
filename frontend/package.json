@@ -1,11 +1,7 @@
 {
-  "name": "simple-light-react",
+  "name": "my-project",
   "version": "0.1.0",
-  "scripts": {
-    "start": "vite",
-    "build": "vite build",
-    "preview": "vite preview"
-  },
+  "private": true,
   "dependencies": {
     "@ant-design/icons": "latest",
     "@emotion/react": "^11.7.1",
@@ -64,12 +60,33 @@
     "@teachablemachine/pose": "^0.8.4",
     "@tensorflow/tfjs": "^3.13.0"
   },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject"
+  },
+  "eslintConfig": {
+    "extends": [
+      "react-app",
+      "react-app/jest"
+    ]
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
   "devDependencies": {
-    "@vitejs/plugin-react": "^1.0.7",
     "autoprefixer": "^10.4.2",
-    "postcss": "^8.4.5",
-    "sass": "^1.49.0",
-    "tailwindcss": "^3.0.15",
-    "vite": "^2.7.2"
+    "postcss": "^8.4.6",
+    "tailwindcss": "^3.0.23"
   }
 }

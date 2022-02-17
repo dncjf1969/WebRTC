@@ -210,25 +210,14 @@ class TestUserList extends Component {
                     <FormHelperText>{this.state.helperText}</FormHelperText>
                     <button
                       onClick={this.readyTest}
-                      class="bg-cyan-500 shadow-lg rounded-xl shadow-cyan-500/30 ..."
+                      class=" bg-cyan-500 shadow-lg rounded-xl shadow-cyan-500/30 p-2"
                     >
-                      <h1 className="text-white text-md font-semibold pl-2">
-                        {this.props.ready ? "레디 해제" : "레디"}{" "}
+                      <h1 className="text-white text-md font-semibold">
+                        {this.props.ready ? "Go" : "Ready"}{" "}
                       </h1>{" "}
                     </button>
                   </FormControl>
                 </form>
-                {/* <label for="role">역할: </label>
-                <select
-                  id="role"
-                  name="role"
-                  required
-                  disabled={this.props.ready ? true : false}
-                >
-                  <option value="">선택안함</option>
-                  <option value="true">면접관</option>
-                  <option value="false">면접자</option>
-                </select> */}
               </div>
               {this.props.ishost && this.props.allReady ? (
                 <button
@@ -241,16 +230,6 @@ class TestUserList extends Component {
                   </h1>{" "}
                 </button>
               ) : null}
-              {/* <select
-                id="role"
-                name="role"
-                required
-                disabled={this.props.ready ? true : false}
-              >
-                <option value="">선택안함</option>
-                <option value="true">면접관</option>
-                <option value="false">면접자</option>
-              </select> */}
             </Grid>
           </Grid>
         </Grid>

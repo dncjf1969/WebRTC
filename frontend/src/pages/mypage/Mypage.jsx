@@ -242,9 +242,9 @@ export default function MyPage() {
                       alt=""
                     />
                   </div>
-                  <div className="ml-2 mt-2">닉네임 : {nickname}</div>
-                  <div className="ml-2 mb-2 ">{email}</div>
-                  <div className="flex flex-row ml-2">
+                  <div className="ml-2 mt-2 font-bold">닉네임 : {nickname}</div>
+                  <div className="ml-2 mb-2 font-bold">{email}</div>
+                  <div className="flex content-center justify-around flex-row ml-2">
                     <Link to="/updateuser">
                       <button className="py-2 px-2 bg-teal-500 text-white font-bold rounded-lg shadow-md hover:bg-teal-700 focus:outline-none focus:ring-2 focus:ring-teal-600 focus:ring-opacity-75">
                         <EditIcon />

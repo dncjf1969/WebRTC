@@ -134,27 +134,17 @@ function WaitingRoomModal({ modalClose }) {
             variant="standard"
             onChange={(e) => setName(e.target.value)}
             value={name}
+            sx={{ fontFamily: 'sans-serif' }}
           />
-          <FormControl sx={{ m: 1, minWidth: 120 }}>
-            <InputLabel id="demo-simple-select-helper-label">
-              면접 종류
-            </InputLabel>
-            <Select
-              labelId="demo-simple-select-helper-label"
-              id="demo-simple-select-helper"
-              value={type}
-              label="Age"
-              onChange={handleTypeChange}
-            >
-              <MenuItem value={"인성"}>인성</MenuItem>
-              <MenuItem value={"직무"}>직무</MenuItem>
-              {/* <MenuItem value={"토론"}>토론</MenuItem>
-              <MenuItem value={"pt"}>pt</MenuItem> */}
-            </Select>
-          </FormControl>
 
-          <FormControl sx={{ m: 1, minWidth: 120 }}>
-            <InputLabel id="demo-simple-select-helper-label">
+          <FormControl sx={{ minWidth: 150, mt: '20px', ml: '10px', mr: '30px'}}>
+            <InputLabel 
+              id="demo-simple-select-helper-label" 
+              sx={{
+                fontSize: 15,
+                fontWeight: 'bold',
+              }}
+            >
               면접 종류
             </InputLabel>
             <Select
@@ -163,17 +153,39 @@ function WaitingRoomModal({ modalClose }) {
               value={type}
               label="Age"
               onChange={handleTypeChange}
+              sx={{ height: '50px'}}
             >
-              <MenuItem value={"인성"}>인성</MenuItem>
-              <MenuItem value={"직무"}>직무</MenuItem>
+              <MenuItem 
+                value={"인성"}
+                sx={{
+                  fontSize: 15,
+                  fontWeight: 'bold',
+                }}
+              >
+                인성
+              </MenuItem>
+              <MenuItem 
+                value={"직무"}
+                sx={{
+                  fontSize: 15,
+                  fontWeight: 'bold',
+                }}
+              >
+                직무
+              </MenuItem>
               {/* <MenuItem value={"토론"}>토론</MenuItem>
               <MenuItem value={"pt"}>pt</MenuItem> */}
             </Select>
           </FormControl>
           {type === "직무" && 
-          <FormControl sx={{ m: 1, minWidth: 120 }}>
-            <InputLabel id="demo-simple-select-helper-label">
-              카테고리
+          <FormControl sx={{ minWidth: 150, mt: '20px', ml: '10px', mr: '30px'}}>
+            <InputLabel 
+              id="demo-simple-select-helper-label" 
+              sx={{
+                fontSize: 15,
+                fontWeight: 'bold',
+              }}>
+                카테고리
             </InputLabel>
             <Select
               labelId="demo-simple-select-helper-label"
@@ -181,6 +193,7 @@ function WaitingRoomModal({ modalClose }) {
               value={job}
               label="Age"
               onChange={handleJobChange}
+              sx={{ height: '50px'}}
             >
               {/* <MenuItem value={"인성"}>인성</MenuItem> */}
               <MenuItem value={"IT"}>IT</MenuItem>
@@ -192,11 +205,19 @@ function WaitingRoomModal({ modalClose }) {
           </FormControl>}
           
 
-          <Box sx={{ width: 300 }}>
-            <Typography id="input-slider" gutterBottom>
+          <Box sx={{ width: 300, mt: 3, ml: 1}}>
+            <Typography 
+              id="input-slider" 
+              gutterBottom
+              sx={{
+                fontSize: 15,
+                fontWeight: 'bold',
+              }}
+            >
               인원
             </Typography>
             <Slider
+              mt
               aria-label="Members"
               defaultValue={4}
               getAriaValueText={valuetext}
@@ -207,7 +228,16 @@ function WaitingRoomModal({ modalClose }) {
               max={6}
             />
           </Box>
-          <Typography id="switch" gutterBottom>
+          <Typography 
+            sx={{
+              fontSize: 15,
+              fontWeight: 'bold',
+              mt: 2,
+              ml: 1
+            }}
+            id="switch" 
+            gutterBottom
+          >
             비밀번호 설정
           </Typography>
           <Switch
@@ -225,11 +255,27 @@ function WaitingRoomModal({ modalClose }) {
               variant="standard"
               onChange={(e) => setPassword(e.target.value)}
               value={password}
+              sx={{
+                fontWeight: 'bold',
+                mt: '0px'
+              }}
             />
           ) : null}
         </DialogContent>
-        <DialogActions>
-          <Button onClick={handleClose}>취소</Button>
+        <DialogActions 
+          sx={{
+            mr: '10px',
+            mb: '10px'
+          }}
+        >
+          <Button 
+            size="large"
+            sx={{
+              fontWeight: 500,
+              borderRadius: 3,
+            }}
+            onClick={handleClose}>취소</Button>
+
           <Button
             size="large"
             variant="contained"
