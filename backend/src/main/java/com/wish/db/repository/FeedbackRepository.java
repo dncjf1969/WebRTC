@@ -22,7 +22,7 @@ public interface FeedbackRepository extends JpaRepository<Feedback, Long> {
 	
 //	 @Query("select o from Order o join o.lineItems item where item.product.id = :productId")
 //	  List<Order> findByProductId(@Param("productId") Long productId);
-	 @Query(value = "select f from Feedback"
+	 @Query(value = "select f from feedback"
 //	 		+ "left join f.meeting_id meeting "
 //	 		+ "left join f.member_id member"
 //	 		+ "where meeting.meeting_id = :meeting_id "
