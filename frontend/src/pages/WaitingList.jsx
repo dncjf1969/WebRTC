@@ -5,6 +5,9 @@ import InputBase from "@mui/material/InputBase";
 import Divider from "@mui/material/Divider";
 import IconButton from "@mui/material/IconButton";
 import SearchIcon from "@mui/icons-material/Search";
+import LockIcon from '@mui/icons-material/Lock';
+import Icon from '@mui/material/Icon';
+
 // Gri
 import { Link, useNavigate, useParams } from "react-router-dom";
 import "./WaitingList.css";
@@ -230,22 +233,28 @@ export function WaitingListSearch() {
                                 component="img"
                                 height="auto"
                                 width="100px"
-                                image="img/Hoodie.png"
-                                alt="Product Image"
-
+                                image="https://lab.ssafy.com/s06-webmobile1-sub2/S06P12E201/-/raw/frontend/frontend/src/images/0.PNG"
+                                alt="Room Image"
                               />
                             </Card>
                           </CardActionArea>
                           <CardDetail>
-                            <CategoryName>{room.name}</CategoryName>
+                            <CategoryName>
+                              {room.exitPassword ? 
+                                <Icon>
+                                  <LockIcon>
+                                  </LockIcon>
+                                </Icon> 
+                              : null}
+                              {room.name}
+                            </CategoryName>
                             {/* <ProductName>{room.manager}</ProductName> */}
                             {/* <Price>{makeComma(d.price)}원</Price> */}
                             <PriceDetail>
-                              {"참가자"} <br />
-                              {room.memberCount} / {room.memberMax}
+                              {"방장"} {room.manager} <br />
+                              {"참여자"} {room.memberCount} / {room.memberMax} <br />
+                              {room.type === "직무" ? room.job : null }
                             </PriceDetail>
-                            {/* <MaxPeople>80/{d.maxPeople}명</MaxPeople>
-                <DeadLine>마감 {d.deadline}일 전</DeadLine> */}
                           </CardDetail>
                         </Grid>
                       ))}
