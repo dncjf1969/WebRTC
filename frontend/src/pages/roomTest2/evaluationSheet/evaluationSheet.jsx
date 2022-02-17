@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import axios from '../../../common/http-common'
+import Rating from '@mui/material/Rating';
+import { Button } from '@material-ui/core';
 
 class EvaluationSheet extends Component {
     constructor(props) {
@@ -8,23 +10,25 @@ class EvaluationSheet extends Component {
         // this.handleQuesInput =this.handleQuesInput.bind(this);
         this.state = {
             question: question,
+            rate: undefined,
         };
         this.handleNextBtn = this.handleNextBtn.bind(this);
         this.handleEnter = this.handleEnter.bind(this);
+        this.setRate = this.setRate(this);
     }
 
     
     handleNextBtn(event) {
-        let rate = document.getElementById("rate").value;
+        //let rate = document.getElementById("rate").value;
         let comment = document.getElementById("comment").value;
-        document.getElementById("rate").value = "";
+        //document.getElementById("rate").value = "";
         document.getElementById("comment").value = "";
         const data = {  
             "comment": comment,
             "meetingId": this.props.meetingId,
             "memberId": this.props.viewee.id,
             "question": this.props.chosenQues,
-            "rate": rate,
+            "rate": this.state.rate,
             "type": this.props.type
         }
         console.log(data)
@@ -50,6 +54,13 @@ class EvaluationSheet extends Component {
                 .catch(error => {
                 console.error(error);
                 });
+    }
+
+
+    setRate(newRate){
+        this.setState({
+            rate : newRate
+        })
     }
 
     handleEnter(event) {
@@ -111,10 +122,28 @@ class EvaluationSheet extends Component {
                     <div style={tempStyle3}>평가지</div>
                   </div> */}             
                   {/* <input onKeyDown={this.handleEnter} onChange={e => this.setState({question: e.target.value})} id="question" style={tempStyle6} placeholder="질문선택" value={this.state.question}></input> */}
-                  <div>선택된 질문: {this.props.chosenQues}</div>
-                  <input onKeyDown={this.handleEnter} id="rate" style={tempStyle3} placeholder="평점"></input>
-                  <input onKeyDown={this.handleEnter} id="comment" style={tempStyle3} placeholder="코멘트"></input>
-                  <button onClick={this.handleNextBtn} disabled={this.props.evalWaiting?true:false}>NEXT</button>
+                  <div style={{ marginLeft:"10px", marginTop:"5px"}}>선택된 질문: {this.props.chosenQues}</div>
+                  {/* <Typography component="legend">Controlled</Typography> */}
+                    <div style={{marginTop:"15px"}}><div style={{float:"left", marginLeft:"10px"}}>평점</div> 
+                    <div style={{float:"right", marginRight:"180px"}}> 
+                    <Rating
+                    name="simple-controlled"
+                    value={this.state.rate}
+                    onChange={(event, newRate) => {
+                        this.setRate(newRate);
+                    }}
+                    />
+                    </div>
+                        <div style={{float:"left", marginLeft:"10px", width: "300px"}}>
+                        <input onKeyDown={this.handleEnter} id="comment" style={tempStyle3} placeholder="코멘트"></input>
+                        </div>
+                    </div>
+                  {/* <input onKeyDown={this.handleEnter} id="rate" style={tempStyle3} placeholder="평점"></input> */}
+                    
+                    <div style={{float:"left", marginLeft:"10px", marginTop:"20px"}}>
+                  <Button variant="contained" color="success" onClick={this.handleNextBtn} disabled={this.props.evalWaiting?true:false}>NEXT</Button>
+                  {/* <button onClick={this.handleNextBtn} disabled={this.props.evalWaiting?true:false}>NEXT</button> */}
+                  </div>
                 </div>
                 }
             </div>);

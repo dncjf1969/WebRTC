@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import axios from '../../../common/http-common'
 import { Button } from '@mui/material';
-
+import AddCircleIcon from '@mui/icons-material/AddCircle';
+ 
 class RecommendationQues extends Component {
     constructor(props) {
         super(props);
@@ -131,15 +132,23 @@ class RecommendationQues extends Component {
             <div>
             {this.props.evalWaiting ? <div>다른 면접관들이 평가완료할 때까지 기다려주세요!</div> :
             <div style={tempStyle2}>
-                <div>면접자 : {this.props.mainStreamManager.nickname}</div>
+                <div style={{float:"left", marginLeft:"10px", marginTop:"5px"}}>면접자 : {this.props.mainStreamManager.nickname}</div>
                 <div>
-                    <Button variant="contained" onClick={this.handleReloadBtn}>질문새로받기</Button>
-                    {this.props.recoQues.map((question) =>
-                    <div style={{tempStyle6}} id={question.id} key={question.id}>
-                        {question.content}
-                        <Button variant="contained" onClick={e => this.handleChoiceRecommenedQues(question)}> 선택</Button>
-                         {/* <button onClick={e => this.handleChoiceRecommenedQues(question)}>선택</button> */}
+                    <div style={{float:"left", marginLeft:"10px", marginTop:"5px", width:"300px"}}>
+                    <Button variant="contained" color="success" onClick={this.handleReloadBtn}>질문새로받기</Button>
                     </div>
+                    {this.props.recoQues.map((question) =>
+                    <div style={{float:"left", marginLeft:"10px", marginTop:"20px"}}>
+                    <div id={question.id} key={question.id}>
+                        {question.content}
+                        <div style={{float:"right", marginLeft:"10px", cursor:"pointer"}}>
+                        <AddCircleIcon color="primary" onClick={e => this.handleChoiceRecommenedQues(question)}></AddCircleIcon>
+                        {/* <Button variant="contained" color="success" > 선택</Button> */}
+                         {/* <button onClick={e => this.handleChoiceRecommenedQues(question)}>선택</button> */}
+                         </div>
+                    </div>
+                    </div>
+                    
                     )}
                     <div>
                         {questions.map((question) => 
@@ -149,7 +158,9 @@ class RecommendationQues extends Component {
                         </div>
                         )}
                     </div>
+                    <div style={{float:"left", marginLeft:"10px", marginTop:"20px"}}>
                     <input type="text" placeholder="질문 직접 입력" onKeyDown={this.handleEnter} />
+                    </div>
                 </div>
             </div>}
             </div>);
