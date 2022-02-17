@@ -67,24 +67,23 @@ class EvaluationSheet extends Component {
         const tempStyle2={
             display:"inline-block",
             width:"350px",
-            height:"700px",
+            height:"200px",
             marginLeft:"5px",
             backgroundColor : 'white',
-            border: '3px solid black',
-            marginTop:"10%",
+            //border: '1px solid black',
+            //marginTop:"10%",
         }
         const tempStyle3={
-            display:"inline-block",
-            width:"200px",
-            height:"100px",
-            marginLeft:"5px",
-            backgroundColor : 'white',
-
+            display: "flex",
+            justifyContent: "center",
+            width: "60%",
+            marginTop: "20px",
         }    
+
         const tempStyle1={
             display:"inline-block",
-            width:"300px",
-            height:"600px",
+            width:"260px",
+            height:"500px",
             marginLeft:"5px",
             backgroundColor : 'Cornsilk',
             border: '1px solid black',
@@ -105,10 +104,12 @@ class EvaluationSheet extends Component {
    
        
         return (
-            <div style={tempStyle1}>
+            <div>
                 {this.props.evalWaiting ? <div>다른 면접관들이 평가완료할 때까지 기다려주세요!</div> :
-                <div>
-                  <div style={tempStyle2}>평가지</div>
+                <div style={tempStyle2}>
+                  {/* <div style={tempStyle2}>
+                    <div style={tempStyle3}>평가지</div>
+                  </div> */}             
                   {/* <input onKeyDown={this.handleEnter} onChange={e => this.setState({question: e.target.value})} id="question" style={tempStyle6} placeholder="질문선택" value={this.state.question}></input> */}
                   <div>선택된 질문: {this.props.chosenQues}</div>
                   <input onKeyDown={this.handleEnter} id="rate" style={tempStyle3} placeholder="평점"></input>

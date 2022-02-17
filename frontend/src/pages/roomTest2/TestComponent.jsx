@@ -210,6 +210,7 @@ class TestComponent extends Component {
       customQuesCheck: false,
       feedbacks: [],
       feedbackDialogState: false,
+      managerLayoutState: 1,
     };
     console.log("state다");
     console.log(this.state);
@@ -239,6 +240,7 @@ class TestComponent extends Component {
     this.handleChoiceQues = this.handleChoiceQues.bind(this);
     this.handleFinish = this.handleFinish.bind(this);
     this.initialize = this.initialize.bind(this);
+    this.setManagerLayoutState = this.setManagerLayoutState.bind(this);
   }
 
   componentDidMount() {
@@ -1411,6 +1413,15 @@ class TestComponent extends Component {
       .catch(() => {});
   }
 
+
+  setManagerLayoutState(){
+    if(this.state.managerLayoutState==1) this.setState({ managerLayoutState: 2 });
+    else if(this.state.managerLayoutState==2) this.setState({ managerLayoutState: 1 });
+    console.log(this.state.managerLayoutState);
+    console.log(this.state.isStart);
+    console.log(this.state.localUser.viewer);
+  }
+
   render() {
     const mySessionId = this.state.mySessionId;
     const localUser = this.state.localUser;
@@ -1463,7 +1474,7 @@ class TestComponent extends Component {
                   ))}
                 </div>
 
-                <div>
+                {/* <div>
                   {this.state.isStart && localUser.viewer && (
                     <div style={{height: '40%'}}>
                       <RecommendationQues
@@ -1477,10 +1488,10 @@ class TestComponent extends Component {
                       />
                     </div>
                   )}
-                </div>
+                </div> */}
               </Grid>
               <Grid item xs={6}>
-                <div style={{width:'100%', height:'25%'}}> 
+                <div style={{width: "600px", height:'25%'}}> 
                   {this.state.viewees.map((sub, i) =>
                     sub !== this.state.mainStreamManager ? (
                       <div
@@ -1506,8 +1517,49 @@ class TestComponent extends Component {
                 </div>
               </Grid>
 
-              <Grid item xs={3}>
-                {this.state.isStart && localUser.viewer && (
+              {/* <Grid item xs={3}> */}
+              <div id="whale">
+                {/* TODO */}
+                <button onClick={this.setManagerLayoutState}>추천질문</button>
+                
+                  {(this.state.managerLayoutState == 2) ? <div>hello2</div> : <div></div>}
+                  
+                  {/* <div>
+                  {this.state.isStart && this.state.managerLayoutState == 1 && localUser.viewer && (
+                    <div style={{height: '40%'}}>
+                      <RecommendationQues
+                        session={this.state.session}
+                        questions={this.state.questions}
+                        recoQues={this.state.recoQues}
+                        mainStreamManager={this.state.mainStreamManager}
+                        handleChoiceQues={(e) => this.handleChoiceQues(e)}
+                        preQuesId={this.state.preQuesId}
+                        meetingId={this.state.meetingId}
+                      />
+                    </div>
+                  )}
+                  </div> */}
+                  
+                  {this.state.isStart && this.state.managerLayoutState == 1 && localUser.viewer ?
+                    <div>
+                    <div style={{height: '40%'}}>
+                      <RecommendationQues
+                        session={this.state.session}
+                        questions={this.state.questions}
+                        recoQues={this.state.recoQues}
+                        mainStreamManager={this.state.mainStreamManager}
+                        handleChoiceQues={(e) => this.handleChoiceQues(e)}
+                        preQuesId={this.state.preQuesId}
+                        meetingId={this.state.meetingId}
+                        evalWaiting={this.state.evalWaiting}
+                      />
+                    </div>
+                  </div>
+                  : <div>다른 면접관들이 평가완료할 때까지 기다려주세요!
+                  </div>
+                }
+                {
+                  this.state.isStart && localUser.viewer && this.state.managerLayoutState == 1 ?  
                   <EvaluationSheet
                     viewers={this.state.viewers}
                     viewee={this.state.mainStreamManager}
@@ -1518,9 +1570,26 @@ class TestComponent extends Component {
                     preQuesId={this.state.preQuesId}
                     meetingId={this.state.meetingId}
                     type={this.state.type}
-                  />
-                )}
-              </Grid>
+                  /> : <div>다른 면접관들이 평가완료할 때까지 기다려주세요!2
+                  </div>
+                }
+                {/* {
+
+                  this.state.isStart && localUser.viewer && this.state.managerLayoutState == 2 ? 
+                  <EvaluationSheet
+                    viewers={this.state.viewers}
+                    viewee={this.state.mainStreamManager}
+                    session={this.state.session}
+                    evalWaiting={this.state.evalWaiting}
+                    chosenQues={this.state.chosenQues}
+                    curQuesId={this.state.curQuesId}
+                    preQuesId={this.state.preQuesId}
+                    meetingId={this.state.meetingId}
+                    type={this.state.type}
+                  /> : <div>nono2</div>
+                } */}
+              </div>
+              {/* </Grid> */}
               {this.state.isStart && localUser.viewer && (
                 <button onClick={this.handleFinish}>면접끝내기</button>
               )}
