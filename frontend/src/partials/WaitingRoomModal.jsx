@@ -115,7 +115,7 @@ function WaitingRoomModal({ modalClose }) {
   };
   return (
     <>
-      <Dialog open={true} onClose={handleClose}>
+      <Dialog open={true} onClose={handleClose} >
         <DialogTitle 
           sx={{
             fontSize: 20,
@@ -275,7 +275,6 @@ function WaitingRoomModal({ modalClose }) {
               borderRadius: 3,
             }}
             onClick={handleClose}>취소</Button>
-
           <Button
             size="large"
             variant="contained"

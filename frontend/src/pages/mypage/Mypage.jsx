@@ -306,9 +306,11 @@ export default function MyPage() {
                   />
                 </div>
               </div>
-              <Footer className="mr-96 ">
-                <DeleteModal nickname={nickname} />
-              </Footer>
+              <div>
+                <Footer className="mr-96 ">
+                  <DeleteModal nickname={nickname} />
+                </Footer>
+              </div>
             </div>
           </div>
         </div>
