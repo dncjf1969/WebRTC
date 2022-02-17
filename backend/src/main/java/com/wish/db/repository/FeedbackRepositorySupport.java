@@ -76,11 +76,11 @@ public class FeedbackRepositorySupport {
 	    	List<Feedback> list =  jpaQueryFactory
 					.select(qFeedback)
 					.from(qFeedback)
-					.leftJoin(qFeedback.meetingRoom, qMeetingRoom)
-					.on(qMeetingRoom.id.eq(meetingId))
-					.leftJoin(qFeedback.member, qMember)
-					.on(qMember.id.eq(memberId))
-					.where(qFeedback.meetingRoom.id.eq(meetingId))
+//					.leftJoin(qFeedback.meetingRoom, qMeetingRoom)
+//					.on(qMeetingRoom.id.eq(meetingId))
+//					.leftJoin(qFeedback.member, qMember)
+//					.on(qMember.id.eq(memberId))
+					.where(qFeedback.meetingRoom.id.eq(meetingId), qFeedback.member.id.eq(memberId))
 									.fetch();
 				
 				return Optional.ofNullable(list);
