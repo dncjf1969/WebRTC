@@ -13,7 +13,7 @@ import Enterroom from "./pages/enterRoom";
 
 import React, { useEffect } from "react";
 import { Routes, Route, useLocation, Navigate } from "react-router-dom";
-
+import background from "../src/images/background.jpg";
 import { createTheme } from "@material-ui/core";
 import AOS from "aos";
 
@@ -55,7 +55,11 @@ function App() {
         <Route path="/enter" element={<Enterroom />} />
         <Route path="/reset-password" element={<ResetPassword />} />
         <Route path="/waitinglist/:roomType" element={<WaitingList />} />
-        <Route path="/waitingroom" element={<Room theme={theme} />} />
+        <Route
+          path="/waitingroom"
+          style={{ backgroundImage: `url(${background})` }}
+          element={<Room theme={theme} />}
+        />
         <Route path="/mypage" element={<MyPage />} />
         <Route path="/404" element={<NotFound />} />
         <Route path="*" element={<Navigate to="/404" replace />} />

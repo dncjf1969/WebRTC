@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import axios from "axios";
 import myAxios from "../../common/http-common";
+import background from "../../images/background.jpg";
 
 //
 
@@ -10,7 +11,7 @@ import "./TestComponent.css";
 import { OpenVidu } from "openvidu-browser";
 import StreamComponent from "./stream/StreamComponent";
 import StreamComponent2 from "./stream/StreamComponent2";
-import StreamComponent3 from "./stream/StreamComponent3"
+import StreamComponent3 from "./stream/StreamComponent3";
 // import DialogExtensionComponent from "./dialog-extension/DialogExtension";
 import ChatComponent from "./chat/ChatComponent";
 import UserVideoComponent from "./UserVideoComponent";
@@ -19,8 +20,8 @@ import OpenViduLayout from "../layout/openvidu-layout";
 import UserModel from "../models/user-model";
 import ToolbarComponent from "./toolbar/ToolbarComponent";
 // import styled from "styled-components";
-import Mic from '@material-ui/icons/Mic';
-import MicOff from '@material-ui/icons/MicOff';
+import Mic from "@material-ui/icons/Mic";
+import MicOff from "@material-ui/icons/MicOff";
 
 import TestCharacter from "./Testcharacter/Testcharacter";
 import TestUserList from "./TestUserList/TestUserList";
@@ -246,7 +247,6 @@ class TestComponent extends Component {
   }
 
   componentDidMount() {
-
     myAxios
       .get("/members/me", {
         headers: {
@@ -305,7 +305,7 @@ class TestComponent extends Component {
     window.addEventListener("beforeunload", this.onbeforeunload);
     window.addEventListener("resize", this.updateLayout);
     window.addEventListener("resize", this.checkSize);
-    
+
     this.OV = new OpenVidu();
     this.joinSession();
   }
@@ -1052,32 +1052,32 @@ class TestComponent extends Component {
   }
 
   subscribeToUserChanged() {
-    this.state.session.on('signal:userChanged', (event) => {
-        let remoteUsers = this.state.subscribers;
-        remoteUsers.forEach((user) => {
-            if (user.getConnectionId() === event.from.connectionId) {
-                const data = JSON.parse(event.data);
-                console.log('EVENTO REMOTE: ', event.data);
-                if (data.isAudioActive !== undefined) {
-                    user.setAudioActive(data.isAudioActive);
-                }
-                if (data.isVideoActive !== undefined) {
-                    user.setVideoActive(data.isVideoActive);
-                }
-                if (data.nickname !== undefined) {
-                    user.setNickname(data.nickname);
-                }
-                if (data.isScreenShareActive !== undefined) {
-                    user.setScreenShareActive(data.isScreenShareActive);
-                }
-            }
-        });
-        this.setState(
-            {
-                subscribers: remoteUsers,
-            },
-            () => this.checkSomeoneShareScreen(),
-        );
+    this.state.session.on("signal:userChanged", (event) => {
+      let remoteUsers = this.state.subscribers;
+      remoteUsers.forEach((user) => {
+        if (user.getConnectionId() === event.from.connectionId) {
+          const data = JSON.parse(event.data);
+          console.log("EVENTO REMOTE: ", event.data);
+          if (data.isAudioActive !== undefined) {
+            user.setAudioActive(data.isAudioActive);
+          }
+          if (data.isVideoActive !== undefined) {
+            user.setVideoActive(data.isVideoActive);
+          }
+          if (data.nickname !== undefined) {
+            user.setNickname(data.nickname);
+          }
+          if (data.isScreenShareActive !== undefined) {
+            user.setScreenShareActive(data.isScreenShareActive);
+          }
+        }
+      });
+      this.setState(
+        {
+          subscribers: remoteUsers,
+        },
+        () => this.checkSomeoneShareScreen()
+      );
     });
   }
 
@@ -1411,10 +1411,11 @@ class TestComponent extends Component {
       .catch(() => {});
   }
 
-
-  setManagerLayoutState(){
-    if(this.state.managerLayoutState==1) this.setState({ managerLayoutState: 2 });
-    else if(this.state.managerLayoutState==2) this.setState({ managerLayoutState: 1 });
+  setManagerLayoutState() {
+    if (this.state.managerLayoutState == 1)
+      this.setState({ managerLayoutState: 2 });
+    else if (this.state.managerLayoutState == 2)
+      this.setState({ managerLayoutState: 1 });
     console.log(this.state.managerLayoutState);
     console.log(this.state.isStart);
     console.log(this.state.localUser.viewer);
@@ -1428,11 +1429,14 @@ class TestComponent extends Component {
     const mainStreamManager = this.state.mainStreamManager;
     return (
       <div
-        style={{
-          marginTop: "1%",
-          marginLeft: "2%",
-          marginRight: "1%",
-        }}
+        style={
+          {
+            // marginTop: "1%",
+            // marginLeft: "2%",
+            // marginRight: "1%",
+            // backgroundImage: `url(${background})`,
+          }
+        }
       >
         {/* <ToolbarComponent
           sessionId={mySessionId}
@@ -1453,34 +1457,36 @@ class TestComponent extends Component {
           spacing={2}
           title="waitingProfile"
           sx={{
-            height: "680px",
+            height: "739px",
             display: "flex",
-            marginTop: "15px",
 
-            paddingTop: "10px",
-
-            borderRadius: 6,
+            backgroundImage: `url(${background})`,
+            // borderRadius: 6,
             backgroundColor: color,
-            boxShadow: "0 3px 5px 2px rgba(47, 138, 241, 0.5)",
+            // boxShadow: "0 3px 5px 2px rgba(47, 138, 241, 0.5)",
             // opacity: 0.7,
           }}
         >
           {this.state.isStart ? (
             <>
               <Grid item xs={3}>
-                <div style={{height:'60%'}}>
+                <div style={{ height: "60%" }}>
                   {this.state.viewers.map((sub, i) => (
                     <div
                       key={i}
                       className="stream-container"
-                      style={{ height: "50%", marginBottom: "5%", marginTop: "5%" }}
+                      style={{
+                        height: "50%",
+                        marginBottom: "5%",
+                        marginTop: "5%",
+                      }}
                       id="remoteUsers"
                     >
                       <div>면접관</div>
                       <StreamComponent
                         user={sub}
                         handleNickname={this.nicknameChanged}
-                        style={{height:"50%"}}
+                        style={{ height: "50%" }}
                       />
                     </div>
                   ))}
@@ -1503,13 +1509,18 @@ class TestComponent extends Component {
                 </div> */}
               </Grid>
               <Grid item xs={6}>
-                <div style={{width: "600px", height:'25%'}}> 
+                <div style={{ width: "600px", height: "25%" }}>
                   {this.state.viewees.map((sub, i) =>
                     sub !== this.state.mainStreamManager ? (
                       <div
                         key={i}
                         className="stream-container"
-                        style={{ float: "left", marginTop:'5%', width:'30%', height:'40%'}}
+                        style={{
+                          float: "left",
+                          marginTop: "5%",
+                          width: "30%",
+                          height: "40%",
+                        }}
                         id="remoteUsers"
                       >
                         <div>면접자</div>
@@ -1519,7 +1530,7 @@ class TestComponent extends Component {
                   )}
                 </div>
 
-                <div style={{width:'100%', height:'60%'}}>
+                <div style={{ width: "100%", height: "60%" }}>
                   {this.state.mainStreamManager && (
                     <div className="stream-container" id="remoteUsers">
                       <div>선택된화면</div>
@@ -1533,10 +1544,14 @@ class TestComponent extends Component {
               <div id="whale">
                 {/* TODO */}
                 <button onClick={this.setManagerLayoutState}>추천질문</button>
-                
-                  {(this.state.managerLayoutState == 2) ? <div>hello2</div> : <div></div>}
-                  
-                  {/* <div>
+
+                {this.state.managerLayoutState == 2 ? (
+                  <div>hello2</div>
+                ) : (
+                  <div></div>
+                )}
+
+                {/* <div>
                   {this.state.isStart && this.state.managerLayoutState == 1 && localUser.viewer && (
                     <div style={{height: '40%'}}>
                       <RecommendationQues
@@ -1551,10 +1566,12 @@ class TestComponent extends Component {
                     </div>
                   )}
                   </div> */}
-                  
-                  {this.state.isStart && this.state.managerLayoutState == 1 && localUser.viewer ?
-                    <div>
-                    <div style={{height: '40%'}}>
+
+                {this.state.isStart &&
+                this.state.managerLayoutState == 1 &&
+                localUser.viewer ? (
+                  <div>
+                    <div style={{ height: "40%" }}>
                       <RecommendationQues
                         session={this.state.session}
                         questions={this.state.questions}
@@ -1567,11 +1584,12 @@ class TestComponent extends Component {
                       />
                     </div>
                   </div>
-                  : <div>다른 면접관들이 평가완료할 때까지 기다려주세요!
-                  </div>
-                }
-                {
-                  this.state.isStart && localUser.viewer && this.state.managerLayoutState == 1 ?  
+                ) : (
+                  <div>다른 면접관들이 평가완료할 때까지 기다려주세요!</div>
+                )}
+                {this.state.isStart &&
+                localUser.viewer &&
+                this.state.managerLayoutState == 1 ? (
                   <EvaluationSheet
                     viewers={this.state.viewers}
                     viewee={this.state.mainStreamManager}
@@ -1582,9 +1600,10 @@ class TestComponent extends Component {
                     preQuesId={this.state.preQuesId}
                     meetingId={this.state.meetingId}
                     type={this.state.type}
-                  /> : <div>다른 면접관들이 평가완료할 때까지 기다려주세요!2
-                  </div>
-                }
+                  />
+                ) : (
+                  <div>다른 면접관들이 평가완료할 때까지 기다려주세요!2</div>
+                )}
                 {/* {
 
                   this.state.isStart && localUser.viewer && this.state.managerLayoutState == 2 ? 
@@ -1605,10 +1624,20 @@ class TestComponent extends Component {
               {this.state.isStart && localUser.viewer && (
                 <button onClick={this.handleFinish}>면접끝내기</button>
               )}
-              {this.state.isStart && 
-                <IconButton color="inherit" className="navButton" id="navMicButton" onClick={this.micStatusChanged}>
-                    {localUser !== undefined && localUser.isAudioActive() ? <Mic /> : <MicOff color="secondary" />}
-                </IconButton>}
+              {this.state.isStart && (
+                <IconButton
+                  color="inherit"
+                  className="navButton"
+                  id="navMicButton"
+                  onClick={this.micStatusChanged}
+                >
+                  {localUser !== undefined && localUser.isAudioActive() ? (
+                    <Mic />
+                  ) : (
+                    <MicOff color="secondary" />
+                  )}
+                </IconButton>
+              )}
             </>
           ) : (
             <>
@@ -1628,7 +1657,6 @@ class TestComponent extends Component {
                   characterNum={this.state.characterNum}
                 />
                 <button onClick={this.handleExitBtn}>나가기</button>
-                
               </Grid>
               {/* 채팅 */}
               <Grid item xs={4}>
