@@ -26,8 +26,8 @@ public interface FeedbackRepository extends JpaRepository<Feedback, Long> {
 	 		+ "from Feedback f "
 	 		+ "left join f.meetingId meeting "
 	 		+ "left join f.memberId member "
-	 		+ "where meeting.meetingId = :meetingId "
-	 		+ "where member.memberId = :memberId"
+	 		+ "where meeting.meeting_id = :meetingId "
+	 		+ "where member.member_id = :memberId"
 	 		, nativeQuery = true)
 	 Optional<List<Feedback>> findByMeetingIdAndMemberId(@Param("meetingId") Long meetingId, @Param("memberId")String memberId);
 	
