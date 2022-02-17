@@ -1,7 +1,8 @@
 import React, { Component } from "react";
 import axios from "axios";
 import myAxios from "../../common/http-common";
-
+import background from "../../images/background.jpg";
+import DeleteIcon from "@material-ui/icons/Delete";
 //
 
 import OvVideoComponent2 from "./stream/OvVideo2";
@@ -67,6 +68,18 @@ import Character1 from "../../images/1.PNG"
 import Character2 from "../../images/2.PNG"
 import Character3 from "../../images/3.PNG"
 // ----------------------------------------------------------------------
+
+
+
+// 제목
+const Title = styled.div`
+  display: inline-box;
+  margin-bottom: 5px;
+  margin-top: 10px;
+  font-weight: bold;
+  font-size: 1.2rem;
+`;
+
 //// 피드백용
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
   "& .MuiDialogContent-root": {
@@ -1446,6 +1459,7 @@ class TestComponent extends Component {
   }
 
   render() {
+    console.log(this.state)
     const mySessionId = this.state.mySessionId;
     const localUser = this.state.localUser;
     const color = blue[100];
@@ -1454,9 +1468,11 @@ class TestComponent extends Component {
     return (
       <div
         style={{
-          marginTop: "1%",
+          marginTop: "2%",
           marginLeft: "2%",
-          marginRight: "1%",
+          marginRight: "2%",
+          marginBottom: '2%',
+          // backgroundImage: `url(${background})`,
         }}
       >
         {/* <ToolbarComponent
@@ -1477,16 +1493,17 @@ class TestComponent extends Component {
           container
           title="waitingProfile"
           sx={{
-            height: "680px",
+            height: "650px",
             display: "flex",
             marginTop: "5px",
 
-            paddingTop: "5px",
-
+            paddingTop: "15px",
+            backgroundImage: `url(${background})`,
             borderRadius: 6,
+            // backgroundImage: `url(${background})`,
             backgroundColor: color,
-            boxShadow: "0 3px 5px 2px rgba(47, 138, 241, 0.5)",
-            // opacity: 0.7,
+            // boxShadow: "0 3px 5px 2px rgba(47, 138, 241, 0.5)",
+            opacity: 0.7,
           }}
         >
           {this.state.isStart ? (
@@ -1634,20 +1651,35 @@ class TestComponent extends Component {
             <>
               {/* 유저 리스트 */}
               <Grid item xs={8}>
-                <TestUserList
-                  session={this.state.session}
-                  subscribers={this.state.subscribers}
-                  myUserName={this.state.myUserName}
-                  ready={this.state.readyState}
-                  viewer={this.state.viewerState}
-                  localUser={localUser}
-                  ishost={this.state.ishost}
-                  hostId={this.state.hostId}
-                  allReady={this.state.allReady}
-                  roomId={this.state.waitingId}
-                  characterNum={this.state.characterNum}
-                />
-                <button onClick={this.handleExitBtn}>나가기</button>
+                <span style={{marginBottom:'15px', marginRight:'15px'}}><h1>방제목: {this.state.roomname}</h1></span>
+                <Button 
+                  onClick={this.handleExitBtn}
+                  variant="contained"
+                  color="secondary"
+                  size="small"
+                  startIcon={<DeleteIcon />}
+                  >
+                  나가기
+                </Button>
+
+                <div style={{height: '600px'}}>
+                  <TestUserList
+                    session={this.state.session}
+                    subscribers={this.state.subscribers}
+                    myUserName={this.state.myUserName}
+                    ready={this.state.readyState}
+                    viewer={this.state.viewerState}
+                    localUser={localUser}
+                    ishost={this.state.ishost}
+                    hostId={this.state.hostId}
+                    allReady={this.state.allReady}
+                    roomId={this.state.waitingId}
+                    characterNum={this.state.characterNum}
+                    
+                  
+                  />
+                </div>
+                {/* <button onClick={this.handleExitBtn}>나가기</button> */}
                 
               </Grid>
               {/* 채팅 */}
@@ -1657,6 +1689,7 @@ class TestComponent extends Component {
                     <div
                       style={{
                         chatDisplay,
+                        marginTop: '50px'
                       }}
                     >
                       <TestQuesList

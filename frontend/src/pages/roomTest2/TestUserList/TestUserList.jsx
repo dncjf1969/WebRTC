@@ -136,11 +136,12 @@ class TestUserList extends Component {
       <Grid container spacing={2}>
         <Grid item xs={4}>
           {/* 나 */}
-          <Grid>
+          <Grid >
             <Grid item>
               <Card
                 sx={{
-                  maxWidth: 345,
+                  marginTop:'20px',
+                  height: '400px',
                   borderRadius: 4,
                   display: "flex",
                   flexDirection: "column",
@@ -180,10 +181,11 @@ class TestUserList extends Component {
               </Card>
             </Grid>
             <Grid>
-              <div className="m-3 flex ">
+              {/* 내가 선택하는 면접관, 면접자 */}
+              <div className="m-3 flex" style={{height:'100px', width:'250px'}}>
                 <form onSubmit={this.readyTest}>
                   <FormControl
-                    sx={{ m: 3 }}
+                    sx={{ m: 1}}
                     error={this.state.error}
                     variant="standard"
                   >
@@ -209,7 +211,7 @@ class TestUserList extends Component {
                     <FormHelperText>{this.state.helperText}</FormHelperText>
                     <button
                       onClick={this.readyTest}
-                      class=" bg-cyan-500 shadow-lg rounded-xl shadow-cyan-500/30 p-2"
+                      class=" bg-cyan-500 shadow-lg rounded-xl shadow-cyan-500/30 p-3"
                     >
                       <h1 className="text-white text-md font-semibold">
                         {this.props.ready ? "Go" : "Ready"}{" "}
@@ -238,9 +240,11 @@ class TestUserList extends Component {
           item
           xs={8}
           sx={{
-            flexWrap: "wrap",
-            justifyContent: "space-evenly",
-            display: "inline-flex",
+            // flexWrap: "wrap",
+            // justifyContent: "space-evenly",
+            // display: "inline-flex",
+            marginLeft:''
+
           }}
           id="others"
         >
@@ -248,15 +252,17 @@ class TestUserList extends Component {
             
             <Card
               sx={{
-                maxWidth: 345,
-                borderRadius: 4,
+                Width: '100px',
+                height: '37%',
+                borderRadius: 12,
                 display: "flex",
                 flexDirection: "column",
                 flexWrap: "wrap",
                 alignItems: "center",
                 justifyContent: "space-evenly",
-                boxShadow: 5,
+                boxShadow: 3,
                 margin: 2,
+                float: "left",
               }}
             >
               <img
@@ -264,8 +270,9 @@ class TestUserList extends Component {
                 src={userInfo.image}
                 alt=""
               />
-              <CardContent>
-                <Typography gutterBottom variant="h5" component="div">
+              {/* 나말고 다른 참가자 카드에 있는 이름 */}
+              <div style={{height:'', width:'280px', marginLeft:'10px'}}>
+                <Typography gutterBottom variant="h4" component="div">
                   {userInfo.nickname}
                 </Typography>
                 <Typography variant="body2" color="text.secondary">
@@ -276,14 +283,15 @@ class TestUserList extends Component {
                   {/* <Button size="small">면접관</Button>
                   <Button size="small">면접자</Button> */}
                 </Typography>
-              </CardContent>
-              <CardActions>
+              </div>
+              {/* 나말고 다른 참가자 카드에 있는 준비중 or 방장 */}
+              <div style={{height:'', width:'280px', marginLeft:'10px', marginBottom:'5px'}}>
                 {userInfo.connectionId === this.props.hostId ? (
                   <div>방장</div>
                 ) : (
                   <div>{userInfo.ready ? "준비 완료!!!" : "준비 중..."}</div>
                 )}
-              </CardActions>
+              </div>
             </Card>
           ))}
         </Grid>
