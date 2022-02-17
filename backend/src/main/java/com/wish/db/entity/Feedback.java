@@ -34,7 +34,7 @@ public class Feedback  extends BaseEntity{
 	private MeetingRoom meetingRoom;
 
 	@ManyToOne
-	@JoinColumn(name = "Member_Id") 
+	@JoinColumn(name = "member_id") 
 	private Member member;    
 
 

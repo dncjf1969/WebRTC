@@ -24,12 +24,12 @@ public interface FeedbackRepository extends JpaRepository<Feedback, Long> {
 //	  List<Order> findByProductId(@Param("productId") Long productId);
 	 @Query(value = "select f "
 	 		+ "from Feedback f "
-	 		+ "left join f.meetingId meeting "
-	 		+ "left join f.memberId member "
-	 		+ "where meeting.meeting_id = :meetingId "
-	 		+ "and member.member_id = :memberId"
+	 		+ "left join f.meeting_id meeting "
+	 		+ "left join f.member_id member "
+	 		+ "where meeting.meeting_id = :meeting_id "
+	 		+ "and member.member_id = :member_id"
 	 		, nativeQuery = true)
-	 Optional<List<Feedback>> findByMeetingIdAndMemberId(@Param("meetingId") Long meetingId, @Param("memberId")String memberId);
+	 Optional<List<Feedback>> findByMeetingIdAndMemberId(@Param("meeting_id") Long meeting_id, @Param("member_id")String member_id);
 	
 	Optional<List<Long>> countByMemberId(String id);
 	
