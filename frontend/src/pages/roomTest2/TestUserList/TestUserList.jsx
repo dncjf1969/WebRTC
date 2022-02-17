@@ -74,11 +74,6 @@ class TestUserList extends Component {
   }
 
   informStart = async (roomId) => {
-    const headers = {
-      headers: {
-        Authorization: this.props.jwt,
-      },
-    };
     await axios
       .get(`/room/meeting/start?roomId=${roomId}`, {
         headers: {
@@ -91,6 +86,7 @@ class TestUserList extends Component {
         return res;
       })
       .catch((err) => {
+        console.log(err)
         return err;
       });
   };

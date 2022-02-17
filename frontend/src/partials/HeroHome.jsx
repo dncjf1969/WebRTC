@@ -25,7 +25,7 @@ function HeroHome() {
               <span className="bg-clip-text text-transparent font-extrabold bg-gradient-to-r from-blue-500 to-teal-200">
                 WISH
               </span>
-              가 당신의
+              가 당신의{" "}
               <span className="bg-clip-text text-transparent bg-gradient-to-r from-blue-500 to-teal-200">
                 소망
               </span>

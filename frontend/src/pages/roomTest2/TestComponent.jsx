@@ -19,6 +19,8 @@ import OpenViduLayout from "../layout/openvidu-layout";
 import UserModel from "../models/user-model";
 import ToolbarComponent from "./toolbar/ToolbarComponent";
 // import styled from "styled-components";
+import Mic from '@material-ui/icons/Mic';
+import MicOff from '@material-ui/icons/MicOff';
 
 import TestCharacter from "./Testcharacter/Testcharacter";
 import TestUserList from "./TestUserList/TestUserList";
@@ -305,10 +307,7 @@ class TestComponent extends Component {
     window.addEventListener("resize", this.checkSize);
     
     this.OV = new OpenVidu();
-    setTimeout(() => {
-      console.log('Works!!!!!!!!!!!!!!!!!');
-      this.joinSession();
-    }, 3000);
+    this.joinSession();
   }
 
   componentWillUnmount() {
@@ -551,7 +550,7 @@ class TestComponent extends Component {
           });
           // 모든로컬에서 면접자들 똑같은순서로 진행되도록
           viewees.sort((a, b) => (a.connectionId < b.connectionId ? -1 : 1));
-
+          // 면접자가 자기차례면 마이크 켜
           await this.getRecoQues();
           await this.setState({
             isStart: true,
@@ -1053,33 +1052,33 @@ class TestComponent extends Component {
   }
 
   subscribeToUserChanged() {
-    // this.state.session.on('signal:userChanged', (event) => {
-    //     let remoteUsers = this.state.subscribers;
-    //     remoteUsers.forEach((user) => {
-    //         if (user.getConnectionId() === event.from.connectionId) {
-    //             const data = JSON.parse(event.data);
-    //             console.log('EVENTO REMOTE: ', event.data);
-    //             if (data.isAudioActive !== undefined) {
-    //                 user.setAudioActive(data.isAudioActive);
-    //             }
-    //             if (data.isVideoActive !== undefined) {
-    //                 user.setVideoActive(data.isVideoActive);
-    //             }
-    //             if (data.nickname !== undefined) {
-    //                 user.setNickname(data.nickname);
-    //             }
-    //             if (data.isScreenShareActive !== undefined) {
-    //                 user.setScreenShareActive(data.isScreenShareActive);
-    //             }
-    //         }
-    //     });
-    //     this.setState(
-    //         {
-    //             subscribers: remoteUsers,
-    //         },
-    //         () => this.checkSomeoneShareScreen(),
-    //     );
-    // });
+    this.state.session.on('signal:userChanged', (event) => {
+        let remoteUsers = this.state.subscribers;
+        remoteUsers.forEach((user) => {
+            if (user.getConnectionId() === event.from.connectionId) {
+                const data = JSON.parse(event.data);
+                console.log('EVENTO REMOTE: ', event.data);
+                if (data.isAudioActive !== undefined) {
+                    user.setAudioActive(data.isAudioActive);
+                }
+                if (data.isVideoActive !== undefined) {
+                    user.setVideoActive(data.isVideoActive);
+                }
+                if (data.nickname !== undefined) {
+                    user.setNickname(data.nickname);
+                }
+                if (data.isScreenShareActive !== undefined) {
+                    user.setScreenShareActive(data.isScreenShareActive);
+                }
+            }
+        });
+        this.setState(
+            {
+                subscribers: remoteUsers,
+            },
+            () => this.checkSomeoneShareScreen(),
+        );
+    });
   }
 
   updateLayout() {
@@ -1328,11 +1327,10 @@ class TestComponent extends Component {
   }
 
   handleMainVideoStream(stream) {
-    if (this.state.mainStreamManager !== stream) {
-      this.setState({
-        mainStreamManager: stream,
-      });
-    }
+    // 내차례면 마이크 켜
+    this.setState({
+      mainStreamManager: stream,
+    });
   }
 
   handleChoiceQues(question) {
@@ -1436,6 +1434,20 @@ class TestComponent extends Component {
           marginRight: "1%",
         }}
       >
+        {/* <ToolbarComponent
+          sessionId={mySessionId}
+          user={localUser}
+          isStart={this.state.isStart}
+          showNotification={this.state.messageReceived}
+          camStatusChanged={this.camStatusChanged}
+          micStatusChanged={this.micStatusChanged}
+          screenShare={this.screenShare}
+          stopScreenShare={this.stopScreenShare}
+          toggleFullscreen={this.toggleFullscreen}
+          switchCamera={this.switchCamera}
+          leaveSession={this.leaveSession}
+          toggleChat={this.toggleChat}
+        /> */}
         <Grid
           container
           spacing={2}
@@ -1593,6 +1605,10 @@ class TestComponent extends Component {
               {this.state.isStart && localUser.viewer && (
                 <button onClick={this.handleFinish}>면접끝내기</button>
               )}
+              {this.state.isStart && 
+                <IconButton color="inherit" className="navButton" id="navMicButton" onClick={this.micStatusChanged}>
+                    {localUser !== undefined && localUser.isAudioActive() ? <Mic /> : <MicOff color="secondary" />}
+                </IconButton>}
             </>
           ) : (
             <>
@@ -1612,6 +1628,7 @@ class TestComponent extends Component {
                   characterNum={this.state.characterNum}
                 />
                 <button onClick={this.handleExitBtn}>나가기</button>
+                
               </Grid>
               {/* 채팅 */}
               <Grid item xs={4}>

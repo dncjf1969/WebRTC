@@ -52,7 +52,7 @@ function Footer() {
                 <p className="text-gray-600 hover:text-gray-900 transition duration-150 ease-in-out">React.js</p>
               </li>
               <li className="mb-2">
-                <p className="text-gray-600 hover:text-gray-900 transition duration-150 ease-in-out">vite</p>
+                <p className="text-gray-600 hover:text-gray-900 transition duration-150 ease-in-out">CRA</p>
               </li>
               <li className="mb-2">
                 <p className="text-gray-600 hover:text-gray-900 transition duration-150 ease-in-out">MUI</p>

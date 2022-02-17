@@ -134,6 +134,7 @@ export default function NestedModal({ MeetingInfo }) {
         onClose={handleClose}
         aria-labelledby="child-modal-title"
         aria-describedby="child-modal-description"
+        
       >
         <Box sx={{ ...Style, width: 500, height: 400, border:2, borderRadius: 2 }}>
           <div id="child-modal-description">
