@@ -26,7 +26,6 @@ function Features() {
               희망하는 면접스터디 유형을 선택해주세요🧐
             </p>
           </div>
-
           {/* Items */}
           <div className="max-w-sm mx-auto grid gap-6 md:grid-cols-2 items-start md:max-w-2xl lg:max-w-none">
             {/* 1st item */}
@@ -52,11 +51,11 @@ function Features() {
                 <h5 className=" mt-2 text-left font-medium">CHECK POINT</h5>
                 <p className="py-1 text-left font-light ">
                   <FaCheckCircle className="inline mb-1 mr-2" />
-                  <span id="line1">자기소개</span> 꼬리질문까지!
+                  <span id="line1">자기소개</span>부터 꼬리질문까지!
                 </p>
                 <p className="pb text-left font-light ">
                   <FaCheckCircle className="inline mb-1 mr-2" />
-                  갑질 면접관이 되고 싶다면? 😁
+                  면접 마스터가 되고 싶다면?
                 </p>
               </div>
             </Link>
@@ -87,7 +86,7 @@ function Features() {
                 </p>
                 <p className=" text-left font-light">
                   <FaCheckCircle className="inline mb-1 mr-2" />
-                  내가 CS 좀 친다 하면 여기로 🤥
+                  직무 지식을 함께 나누어볼까요?
                 </p>
               </div>
             </Link>

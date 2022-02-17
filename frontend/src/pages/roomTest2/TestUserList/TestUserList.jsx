@@ -30,6 +30,7 @@ import { FaPlay } from "react-icons/fa";
 import { MoonIcon } from "@heroicons/react/solid";
 import { SunIcon } from "@heroicons/react/solid";
 
+
 class TestUserList extends Component {
   constructor(props) {
     super(props);
@@ -37,6 +38,7 @@ class TestUserList extends Component {
     this.start = this.start.bind(this);
     this.informStart = this.informStart.bind(this);
     this.handleRadioChange = this.handleRadioChange.bind(this);
+
     this.state = {
       isReady: false,
       userReadyState: [],
@@ -50,7 +52,6 @@ class TestUserList extends Component {
 
   readyTest(e) {
     e.preventDefault();
-
     if (this.state.value === "") {
       this.setState({
         helperText: "역할을 정해주세요",
@@ -90,6 +91,8 @@ class TestUserList extends Component {
         return err;
       });
   };
+
+
   handleRadioChange = (event) => {
     this.setState({
       value: event.target.value,
@@ -123,7 +126,7 @@ class TestUserList extends Component {
       console.log("아직 레디안한사람있음");
     }
   }
-
+ 
   render() {
     // const handleChange = (event) => {
     //   setValue(event.target.value);
@@ -150,7 +153,7 @@ class TestUserList extends Component {
               >
                 <img
                   className="inline-block h-15 w-15 rounded-full ring-2 ring-white"
-                  src={`https://lab.ssafy.com/s06-webmobile1-sub2/S06P12E201/-/raw/frontend/frontend/src/images/${this.props.characterNum}.PNG`}
+                  src={this.props.characterNum}
                   alt=""
                 />
                 <CardContent>
@@ -242,6 +245,7 @@ class TestUserList extends Component {
           id="others"
         >
           {this.props.subscribers.map((userInfo) => (
+            
             <Card
               sx={{
                 maxWidth: 345,
@@ -257,7 +261,7 @@ class TestUserList extends Component {
             >
               <img
                 className="inline-block h-12 w-12 rounded-full ring-2 ring-white"
-                src={`https://lab.ssafy.com/s06-webmobile1-sub2/S06P12E201/-/raw/frontend/frontend/src/images/${userInfo.image}.PNG`}
+                src={userInfo.image}
                 alt=""
               />
               <CardContent>

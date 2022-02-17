@@ -5,11 +5,15 @@ import InputBase from "@mui/material/InputBase";
 import Divider from "@mui/material/Divider";
 import IconButton from "@mui/material/IconButton";
 import SearchIcon from "@mui/icons-material/Search";
+import LockIcon from '@mui/icons-material/Lock';
+import Icon from '@mui/material/Icon';
+
 // Gri
 import { Link, useNavigate, useParams } from "react-router-dom";
 import "./WaitingList.css";
 // // 방만들기 dialog
 import { MdVpnKey } from "react-icons/md";
+import Image from "../images/메인2.svg";
 
 import axios from "../common/http-common";
 import WaitingListCard from "./WaitingListCard";
@@ -27,6 +31,7 @@ export function WaitingListSearch() {
   const [rooms, setRooms] = useState([]);
   const [word, setWord] = useState(""); // submit시에 바뀔 변수
   const [search, setSearch] = useState(1);
+  const navigate = useNavigate();
   // const [] state의 기본값 -1
 
   let { roomType } = useParams();
@@ -69,6 +74,12 @@ export function WaitingListSearch() {
   useEffect(() => {
     getRooms(-1);
   }, []);
+
+  const handleEnter = (room) => {
+    console.log(room)
+    window.localStorage.setItem("roomId", room.roomId)
+    navigate("/waitingroom")
+  }
 
   const onChange = (e) => {
     setWord(e.target.value);
@@ -217,26 +228,34 @@ export function WaitingListSearch() {
                                 backgroundColor: "whitesmoke",
                                 transition: "all .25s linear",
                               }}
+                              onClick={(e) => handleEnter(room)}
                             >
                               <CardMedia
                                 component="img"
                                 height="auto"
                                 width="100px"
-                                image="img/Hoodie.png"
-                                alt="Product Image"
+                                src={Image}
+                                alt="Room Image"
                               />
                             </Card>
                           </CardActionArea>
                           <CardDetail>
-                            <CategoryName>{room.name}</CategoryName>
+                            <CategoryName>
+                              {room.exitPassword ? 
+                                <Icon>
+                                  <LockIcon>
+                                  </LockIcon>
+                                </Icon> 
+                              : null}
+                              {room.name}
+                            </CategoryName>
                             {/* <ProductName>{room.manager}</ProductName> */}
                             {/* <Price>{makeComma(d.price)}원</Price> */}
                             <PriceDetail>
-                              {"참가자"} <br />
-                              {room.memberCount} / {room.memberMax}
+                              {"방장"} {room.manager} <br />
+                              {"참여자"} {room.memberCount} / {room.memberMax} <br />
+                              {room.type === "직무" ? room.job : null }
                             </PriceDetail>
-                            {/* <MaxPeople>80/{d.maxPeople}명</MaxPeople>
-                <DeadLine>마감 {d.deadline}일 전</DeadLine> */}
                           </CardDetail>
                         </Grid>
                       ))}
