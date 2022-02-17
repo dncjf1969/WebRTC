@@ -136,7 +136,7 @@ function HeroHome() {
                 <span className="ml-3">What is WISH? (2 min)</span>
               </button>
             </div>
-
+            
             {/* Modal */}
             <Modal
               id="modal"
@@ -145,12 +145,7 @@ function HeroHome() {
               handleClose={() => setVideoModalOpen(false)}
             >
               <div className="relative pb-9/16">
-                <iframe
-                  className="absolute w-full h-full"
-                  src="https://player.vimeo.com/video/674524235?h=741272f65a&amp;badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479"
-                  title="Video"
-                  allowFullScreen
-                ></iframe>
+                <iframe src="https://player.vimeo.com/video/674524235?h=741272f65a" width="640" height="360" frameborder="0" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe>
               </div>
             </Modal>
           </div>

@@ -33,7 +33,13 @@ export function WaitingListSearch() {
   const [search, setSearch] = useState(1);
   const navigate = useNavigate();
   // const [] state의 기본값 -1
-
+  // useEffect(() => {
+  //   const jwt = window.localStorage.getItem('jwt');
+  //   if (!jwt) {
+  //     navigate('/Login')
+  // }
+  // }, [])
+  
   let { roomType } = useParams();
   roomType = parseInt(roomType);
   console.log(roomType);
