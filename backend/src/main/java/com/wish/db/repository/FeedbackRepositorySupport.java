@@ -80,6 +80,7 @@ public class FeedbackRepositorySupport {
 					.on(qMeetingRoom.id.eq(meetingId))
 					.leftJoin(qFeedback.member, qMember)
 					.on(qMember.id.eq(memberId))
+					.where(qFeedback.meetingRoom.id.eq(meetingId))
 									.fetch();
 				
 				return Optional.ofNullable(list);
