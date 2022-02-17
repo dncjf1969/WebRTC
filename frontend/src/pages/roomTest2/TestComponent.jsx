@@ -71,15 +71,6 @@ import Character3 from "../../images/3.PNG"
 
 
 
-// 제목
-const Title = styled.div`
-  display: inline-box;
-  margin-bottom: 5px;
-  margin-top: 10px;
-  font-weight: bold;
-  font-size: 1.2rem;
-`;
-
 //// 피드백용
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
   "& .MuiDialogContent-root": {
@@ -1651,18 +1642,19 @@ class TestComponent extends Component {
             <>
               {/* 유저 리스트 */}
               <Grid item xs={8}>
-                <span style={{marginBottom:'15px', marginRight:'15px'}}><h1>방제목: {this.state.roomname}</h1></span>
+                <span style={{marginBottom:'5px', marginLeft:'5px', marginRight:'5px', fontSize:'18px'}}>방제목: {this.state.roomname}</span>
                 <Button 
                   onClick={this.handleExitBtn}
                   variant="contained"
                   color="secondary"
                   size="small"
+                  
                   startIcon={<DeleteIcon />}
                   >
                   나가기
                 </Button>
 
-                <div style={{height: '600px'}}>
+                <div style={{height: '600px', marginLeft:'1px'}}>
                   <TestUserList
                     session={this.state.session}
                     subscribers={this.state.subscribers}

@@ -158,7 +158,7 @@ class TestUserList extends Component {
                   alt=""
                 />
                 <CardContent>
-                  <Typography gutterBottom variant="h5" component="div">
+                  <Typography gutterBottom variant="h1" component="div" color='#021691'>
                     {this.props.myUserName}
                   </Typography>
                   <Typography variant="body2" color="text.secondary">
@@ -252,8 +252,8 @@ class TestUserList extends Component {
             
             <Card
               sx={{
-                Width: '100px',
-                height: '37%',
+                Width: '90px',
+                height: '35%',
                 borderRadius: 12,
                 display: "flex",
                 flexDirection: "column",
@@ -271,7 +271,7 @@ class TestUserList extends Component {
                 alt=""
               />
               {/* 나말고 다른 참가자 카드에 있는 이름 */}
-              <div style={{height:'', width:'280px', marginLeft:'10px'}}>
+              <div style={{height:'', width:'270px', marginLeft:'3px'}}>
                 <Typography gutterBottom variant="h4" component="div">
                   {userInfo.nickname}
                 </Typography>
@@ -285,7 +285,7 @@ class TestUserList extends Component {
                 </Typography>
               </div>
               {/* 나말고 다른 참가자 카드에 있는 준비중 or 방장 */}
-              <div style={{height:'', width:'280px', marginLeft:'10px', marginBottom:'5px'}}>
+              <div style={{height:'', width:'270px', marginLeft:'10px', marginBottom:'5px'}}>
                 {userInfo.connectionId === this.props.hostId ? (
                   <div>방장</div>
                 ) : (
