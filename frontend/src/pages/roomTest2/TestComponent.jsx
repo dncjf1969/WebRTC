@@ -1502,7 +1502,7 @@ class TestComponent extends Component {
             // backgroundImage: `url(${background})`,
             backgroundColor: color,
             // boxShadow: "0 3px 5px 2px rgba(47, 138, 241, 0.5)",
-            opacity: 0.7,
+            // opacity: 0.7,
           }}
         >
           {this.state.isStart ? (

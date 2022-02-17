@@ -158,7 +158,7 @@ class TestUserList extends Component {
                   alt=""
                 />
                 <CardContent>
-                  <Typography gutterBottom variant="h1" component="div" color='#021691'>
+                  <Typography className="font-extrabold" gutterBottom variant="h5" component="div" color='#1a1e38'>
                     {this.props.myUserName}
                   </Typography>
                   <Typography variant="body2" color="text.secondary">
@@ -176,7 +176,7 @@ class TestUserList extends Component {
                     </h1>{" "}
                   </button> */}
 
-                  <p>{this.props.ishost ? "방장" : null}</p>
+                  <p className="font-extrabold">{this.props.ishost ? "방장" : null}</p>
                 </CardActions>
               </Card>
             </Grid>
@@ -214,7 +214,7 @@ class TestUserList extends Component {
                       class=" bg-cyan-500 shadow-lg rounded-xl shadow-cyan-500/30 p-3"
                     >
                       <h1 className="text-white text-md font-semibold">
-                        {this.props.ready ? "Go" : "Ready"}{" "}
+                        {this.props.ready ? "레디해제" : "레디"}{" "}
                       </h1>{" "}
                     </button>
                   </FormControl>
@@ -271,11 +271,11 @@ class TestUserList extends Component {
                 alt=""
               />
               {/* 나말고 다른 참가자 카드에 있는 이름 */}
-              <div style={{height:'', width:'270px', marginLeft:'3px'}}>
-                <Typography gutterBottom variant="h4" component="div">
+              <div className="flex justify-center" style={{height:'', width:'270px', marginLeft:'3px'}}>
+                <Typography className="font-extrabold" gutterBottom variant="h6" component="div">
                   {userInfo.nickname}
                 </Typography>
-                <Typography variant="body2" color="text.secondary">
+                <Typography className="font-extrabold" variant="body2" color="text.secondary">
                   {userInfo.ready ? (
                     <div>{userInfo.viewer ? "면접관" : "면접자"}</div>
                   ) : null}
@@ -285,7 +285,7 @@ class TestUserList extends Component {
                 </Typography>
               </div>
               {/* 나말고 다른 참가자 카드에 있는 준비중 or 방장 */}
-              <div style={{height:'', width:'270px', marginLeft:'10px', marginBottom:'5px'}}>
+              <div className="flex justify-center  font-extrabold" style={{height:'', width:'270px', marginLeft:'10px', marginBottom:'5px'}}>
                 {userInfo.connectionId === this.props.hostId ? (
                   <div>방장</div>
                 ) : (
