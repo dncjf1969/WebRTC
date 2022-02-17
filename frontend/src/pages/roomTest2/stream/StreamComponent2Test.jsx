@@ -60,43 +60,11 @@ export default class StreamComponent2 extends Component {
   render() {
     return (
       <div className="OT_widget-container2">
-        <div className="pointer nickname">
-            <div>
-              <span id="nickname">{this.props.user.getNickname()}</span>
-            </div>
-        </div>
         
         {this.props.user !== undefined &&
         this.props.user.getStreamManager() !== undefined ? (
           <div className="streamComponent">
-            { <OvVideoComponent2Test
-              //user={this.props.user}
-              //mutedSound={this.state.mutedSound}
-            />}
-            <div id="statusIcons">
-              {!this.props.user.isVideoActive() ? (
-                <div id="camIcon">
-                  <VideocamOff id="statusCam" />
-                </div>
-              ) : null}
-
-              {!this.props.user.isAudioActive() ? (
-                <div id="micIcon">
-                  <MicOff id="statusMic" />
-                </div>
-              ) : null}
-            </div>
-            <div>
-              {!this.props.user.isLocal() && (
-                <IconButton id="volumeButton" onClick={this.toggleSound}>
-                  {this.state.mutedSound ? (
-                    <VolumeOff color="secondary" />
-                  ) : (
-                    <VolumeUp />
-                  )}
-                </IconButton>
-              )}
-            </div>
+            <OvVideoComponent2Test/>
           </div>
         ) : null}
       </div>
