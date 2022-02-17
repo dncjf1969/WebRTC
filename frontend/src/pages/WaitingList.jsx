@@ -27,6 +27,7 @@ export function WaitingListSearch() {
   const [rooms, setRooms] = useState([]);
   const [word, setWord] = useState(""); // submit시에 바뀔 변수
   const [search, setSearch] = useState(1);
+  const navigate = useNavigate();
   // const [] state의 기본값 -1
 
   let { roomType } = useParams();
@@ -69,6 +70,12 @@ export function WaitingListSearch() {
   useEffect(() => {
     getRooms(-1);
   }, []);
+
+  const handleEnter = (room) => {
+    console.log(room)
+    window.localStorage.setItem("roomId", room.roomId)
+    navigate("/waitingroom")
+  }
 
   const onChange = (e) => {
     setWord(e.target.value);
@@ -217,6 +224,7 @@ export function WaitingListSearch() {
                                 backgroundColor: "whitesmoke",
                                 transition: "all .25s linear",
                               }}
+                              onClick={(e) => handleEnter(room)}
                             >
                               <CardMedia
                                 component="img"
@@ -224,6 +232,7 @@ export function WaitingListSearch() {
                                 width="100px"
                                 image="img/Hoodie.png"
                                 alt="Product Image"
+
                               />
                             </Card>
                           </CardActionArea>
