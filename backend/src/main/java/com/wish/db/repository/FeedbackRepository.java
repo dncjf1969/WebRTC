@@ -25,7 +25,7 @@ public interface FeedbackRepository extends JpaRepository<Feedback, Long> {
 	 @Query(value = "select f "
 	 		+ "from Feedback f "
 	 		+ "left join f.meeting_id meeting "
-	 		+ "left join f.member_id member "
+	 		+ "left join f.member_id member"
 //	 		+ "where meeting.meeting_id = :meeting_id "
 //	 		+ "and member.member_id = :member_id"
 	 		, nativeQuery = true)
