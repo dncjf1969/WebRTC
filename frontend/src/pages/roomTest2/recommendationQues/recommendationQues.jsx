@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import axios from '../../../common/http-common'
 import { Button } from '@mui/material';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
+import logoImg from '../../../images/logo.PNG';
  
 class RecommendationQues extends Component {
     constructor(props) {
@@ -93,6 +94,7 @@ class RecommendationQues extends Component {
             // border: '1px solid black',
             borderRadius:"8px",
             marginTop:"5%",
+            overflow:"scroll",
         }
         const tempStyle3={
             display:"inline-block",
@@ -121,9 +123,9 @@ class RecommendationQues extends Component {
             marginLeft:"3px",
         }
 
-        const tempStyle8={
-            float:"right",
-        }
+        // const tempStyle8={
+        //     float:"right",
+        // }
 
         const tempStyle7={
             fontSize: "30pt",
@@ -132,37 +134,55 @@ class RecommendationQues extends Component {
         const questions = this.props.questions.filter((question) => question.connectionId === this.props.mainStreamManager.connectionId)
         return (
             <div>
-            {this.props.evalWaiting ? <div>다른 면접관들이 평가완료할 때까지 기다려주세요!</div> :
+            {this.props.evalWaiting ? <div style={{flex:"center", backgroundColor:"white", width:"320px", height:"600px", borderRadius:"8px"}}>
+                <div style={{float:"left", marginTop:"30px", marginLeft:"10px", fontSize:"13pt"}}><b>다른 면접관들이 평가완료할 때까지</b></div>
+                <div style={{float:"left", marginLeft:"10px", fontSize:"13pt"}}> <b>기다려주세요! 😃</b></div>
+                <div style={{float:"right",marginRight:"110px", marginTop:"70px", fontSize:"13pt"}}> <b>❗ 면접관 역할 TIP</b></div>
+                <div style={{float:"left", marginTop:"15px", marginLeft:"10px", fontSize:"12pt"}}> <b>면접자가 등록했던 사전 질문을 이용하세요!</b></div>
+                <div style={{float:"left", marginTop:"15px", marginLeft:"10px", fontSize:"12pt"}}> <b>곤란한 질문을 던지고 어떻게 대응하는지 지켜보세요!</b></div>
+                <div style={{float:"left", marginTop:"15px", marginLeft:"10px", fontSize:"12pt"}}> <b>면접 태도, 자세를 점수에 반영하세요!</b></div>
+                <div style={{float:"left", marginTop:"15px", marginLeft:"10px", fontSize:"12pt"}}> </div>
+                <div> <img src={logoImg} style={{ float:"left", marginLeft:"55px", marginTop:"160px", opacity:"70%"}}></img></div>
+                </div> :
             <div style={tempStyle2}>
                 <div style={{float:"left", marginLeft:"10px", marginTop:"5px"}}>면접자 : {this.props.mainStreamManager.nickname}</div>
-                <div>
-                    <div style={{float:"left", marginLeft:"10px", marginTop:"5px", width:"300px"}}>
-                    <Button variant="contained" color="success" onClick={this.handleReloadBtn}>질문새로받기</Button>
+                <div style={{fontSize:"12pt"}}>
+                    <div style={{float:"left", marginLeft:"10px", marginTop:"5px", width:"320px"}}>
+                    <Button variant="contained"  onClick={this.handleReloadBtn}>질문새로받기</Button>
+                    </div>
+                    <div>
+                    <div style={{float:"left", marginLeft:"10px", marginTop:"10px"}}> <b>✍ 추천 질문</b></div>
                     </div>
                     {this.props.recoQues.map((question) =>
-                    <div style={{float:"left", marginLeft:"10px", marginTop:"20px"}}>
+                    <div style={{width: "300px",float:"left", marginLeft:"10px", marginTop:"20px"}}>
                     <div id={question.id} key={question.id}>
-                        {question.content}
+                        <div style={{}}>{question.content}</div>
                         <div style={{float:"right", marginLeft:"10px", cursor:"pointer"}}>
                         <AddCircleIcon color="primary" onClick={e => this.handleChoiceRecommenedQues(question)}></AddCircleIcon>
-                        {/* <Button variant="contained" color="success" > 선택</Button> */}
-                         {/* <button onClick={e => this.handleChoiceRecommenedQues(question)}>선택</button> */}
                          </div>
                     </div>
                     </div>
                     
                     )}
+                    <div style={{float:"left", marginLeft:"10px", marginTop:"20px"}}>
+
+                    <div style={{float:"left", marginTop:"10px"}}> <b>✍ 사전 질문</b></div>
                     <div>
                         {questions.map((question) => 
-                        <div style={{tempStyle8}} id={question.questionId} key={question.questionId}>
+                        <div style={{fontSize:"12pt", width: "300px", float:"left", marginLeft:"10px", marginTop:"20px"}} id={question.questionId} key={question.questionId}>
                             {question.content}
-                            <button onClick={e => this.handleChoiceQues(question.content)}>선택</button>
+                            <div style={{float:"right", marginLeft:"10px", cursor:"pointer"}}>
+                            <AddCircleIcon color="primary" onClick={e => this.handleChoiceRecommenedQues(question)}></AddCircleIcon>
+                            </div>
                         </div>
                         )}
                     </div>
-                    <div style={{float:"left", marginLeft:"10px", marginTop:"20px"}}>
-                    <input type="text" placeholder="질문 직접 입력" onKeyDown={this.handleEnter} />
+                    <div style={{float:"left", marginTop:"30px", width:"320px"}}> <b>✍ 직접 질문</b></div>
+                    <div style={{float:"left", marginTop:"10px", marginBottom:"20px", width:"320px"}}>
+                    <input type="text" size={34} placeholder="질문 직접 입력" onKeyDown={this.handleEnter} />
                     </div>
+                    </div>
+                    
                 </div>
             </div>}
             </div>);

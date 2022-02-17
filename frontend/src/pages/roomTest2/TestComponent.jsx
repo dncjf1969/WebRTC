@@ -5,6 +5,8 @@ import background from "../../images/background.jpg";
 import DeleteIcon from "@material-ui/icons/Delete";
 //
 
+import logoImage from "../../images/logo.PNG";
+
 import OvVideoComponent2 from "./stream/OvVideo2";
 
 import "./TestComponent.css";
@@ -50,7 +52,7 @@ import {
 } from "@mui/material";
 // 피드백용
 import PropTypes from "prop-types";
-import Button from "@mui/material/Button";
+import { Button } from '@material-ui/core';
 import Dialog from "@mui/material/Dialog";
 import DialogTitle from "@mui/material/DialogTitle";
 import DialogContent from "@mui/material/DialogContent";
@@ -1509,6 +1511,8 @@ class TestComponent extends Component {
             <>
               <Grid item xs={3}>
                 <div id="cont1" style={{height:'60%', marginLeft:"15px", marginTop:"20px"}}>
+                <div> <img src={logoImage}></img></div>
+                <div><b> 👨‍⚖️ 면접관</b></div>
                   {this.state.viewers.map((sub, i) => (
                     <div
                       key={i}
@@ -1516,7 +1520,7 @@ class TestComponent extends Component {
                       style={{ height: "50%", marginBottom: "5%", marginTop: "5%" }}
                       id="remoteUsers"
                     >
-                      <div>면접관</div>
+                      {/* {i===0 ? <div><b>면접관</b></div> : null} */}
                       <StreamComponent
                         user={sub}
                         handleNickname={this.nicknameChanged}
@@ -1544,6 +1548,7 @@ class TestComponent extends Component {
               </Grid>
               <Grid item xs={6}>
                 <div style={{width: "600px", height:'25%'}}> 
+                <div style={{marginLeft:"30px"}}><b> 🙍‍♀️ 면접자</b></div>
                   {this.state.viewees.map((sub, i) =>
                     sub !== this.state.mainStreamManager ? (
                       <div
@@ -1552,7 +1557,7 @@ class TestComponent extends Component {
                         style={{ float: "left", marginBottom:'10px', marginLeft:"10px" , marginTop:'5%', width:'30%', height:'40%'}}
                         id="remoteUsers"
                       >
-                        <div>면접자</div>
+                        {/* {i===1 ? <div>면접자</div> : null} */}
                         <StreamComponent3 user={sub} />
                       </div>
                     ) : null
@@ -1601,7 +1606,7 @@ class TestComponent extends Component {
                       />
                     </div>
                   </div>)
-                  : (<div>다른 면접관들이 평가완료할 때까지 기다려주세요!
+                  : (<div>
                   </div>))
 
                   :

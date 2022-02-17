@@ -24,6 +24,8 @@ class EvaluationSheet extends Component {
         let comment = document.getElementById("comment").value;
         //document.getElementById("rate").value = "";
         document.getElementById("comment").value = "";
+        console.log("!!");
+        console.log(this.state.rate);
         const data = {  
             "comment": comment,
             "meetingId": this.props.meetingId,
@@ -91,7 +93,7 @@ class EvaluationSheet extends Component {
         const tempStyle3={
             display: "flex",
             justifyContent: "center",
-            width: "60%",
+            width: "100%",
             marginTop: "20px",
         }    
 
@@ -120,13 +122,13 @@ class EvaluationSheet extends Component {
        
         return (
             <div>
-                {this.props.evalWaiting ? <div>다른 면접관들이 평가완료할 때까지 기다려주세요!</div> :
+                {this.props.evalWaiting ? <div></div> :
                 <div style={tempStyle2}>
                   {/* <div style={tempStyle2}>
                     <div style={tempStyle3}>평가지</div>
                   </div> */}             
                   {/* <input onKeyDown={this.handleEnter} onChange={e => this.setState({question: e.target.value})} id="question" style={tempStyle6} placeholder="질문선택" value={this.state.question}></input> */}
-                  <div style={{ marginLeft:"10px", marginTop:"5px"}}>선택된 질문: {this.props.chosenQues}</div>
+                  <div style={{ marginLeft:"10px", marginTop:"5px"}}><b>선택된 질문: {this.props.chosenQues}</b></div>
                   {/* <Typography component="legend">Controlled</Typography> */}
                     <div style={{marginTop:"15px"}}><div style={{float:"left", marginLeft:"10px"}}>평점</div> 
                     <div style={{float:"right", marginRight:"180px"}}> 
@@ -141,7 +143,7 @@ class EvaluationSheet extends Component {
                     />
                     </div>
                         <div style={{float:"left", marginLeft:"10px", width: "300px"}}>
-                        <input onKeyDown={this.handleEnter} id="comment" style={tempStyle3} placeholder="코멘트"></input>
+                        <input type="text" onKeyDown={this.handleEnter} id="comment" size={34} style={tempStyle3} placeholder="코멘트"></input>
                         </div>
                     </div>
                   {/* <input onKeyDown={this.handleEnter} id="rate" style={tempStyle3} placeholder="평점"></input> */}
