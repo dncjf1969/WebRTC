@@ -8,11 +8,14 @@ import com.wish.common.exception.custom.feedback.DeleteFeedbackException;
 import com.wish.common.exception.custom.feedback.ReadFeedbackException;
 import com.wish.api.dto.response.MeetingCountRes;
 import com.wish.db.entity.Feedback;
+import com.wish.db.entity.MeetingRoom;
 import com.wish.db.entity.Member;
+import com.wish.db.entity.Question;
 import com.wish.db.repository.FeedbackRepository;
 import com.wish.db.repository.FeedbackRepositorySupport;
 import com.wish.db.repository.MeetingRepository;
 import com.wish.db.repository.MemberRepository;
+import com.wish.db.repository.QuestionRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -32,6 +35,8 @@ public class FeedbackServiceImpl implements FeedbackService {
 	MeetingRepository meetingRepository;
 	@Autowired
 	MemberRepository memberRepository;
+	@Autowired
+	QuestionRepository questionRepository;
 
 	// 사용자 아이디에 해당하는 피드백 가져오기
 //	@Override
@@ -58,7 +63,7 @@ public class FeedbackServiceImpl implements FeedbackService {
 		try {
 			Feedback feedback = new Feedback();
 //			feedback.setMemberId(info.getMemberId());
-			feedback.setMeetingId(info.getMeetingId());
+//			feedback.setMeetingId(info.getMeetingId());
 			feedback.setQuestion(info.getQuestion());
 			feedback.setComment(info.getComment());
 			feedback.setRate(info.getRate());
@@ -66,6 +71,9 @@ public class FeedbackServiceImpl implements FeedbackService {
 			
 			Member member = memberRepository.findById(info.getMemberId()).get();
 			feedback.setMember(member);
+			
+			MeetingRoom meetingRoom = meetingRepository.findById(info.getMeetingId()).get();
+			feedback.setMeetingRoom(meetingRoom);
 			
 			feedbackRepository.save(feedback);
 		} catch ( CreateFeedbackException e) {
@@ -98,7 +106,8 @@ public class FeedbackServiceImpl implements FeedbackService {
 
 	@Override
 	public List<FeedbackRes> getMyFeedbackByRoom(Long roomId, String memberId) {
-		List<Feedback> list = feedbackRepository.findByMeetingIdAndMemberId(roomId, memberId).get();
+		List<Feedback> list = feedbackRepository.findByMeetingRoomAndMemberId(roomId, memberId).get();
+//		List<Feedback> list = new ArrayList<Feedback>();
 		List<FeedbackRes> res = new ArrayList<FeedbackRes>();
 
 		// 타입 변환

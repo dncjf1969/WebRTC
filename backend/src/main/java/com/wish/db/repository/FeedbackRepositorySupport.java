@@ -48,7 +48,7 @@ public class FeedbackRepositorySupport {
     
     public Optional<List<Long>> findDistinctByMemberId(String memberId) {
     	List<Long> list =  jpaQueryFactory
-    							.selectDistinct(qFeedback.meetingId)
+    							.selectDistinct(qFeedback.meetingRoom.id)
 								.from(qFeedback)
 //								.where(qFeedback.memberId.eq(memberId))
 				.where(qFeedback.member.id.eq(memberId))

@@ -23,7 +23,7 @@ public class FeedbackRoomNameRes{
 	
 	public static FeedbackRoomNameRes of(Feedback feedback) {
 		FeedbackRoomNameRes res = new FeedbackRoomNameRes();
-		res.setMeetingId(feedback.getMeetingId());
+//		res.setMeetingId(feedback.getMeetingRoom().getId());
 		res.setMeetingName(feedback.getMeetingName());
 		return res;
 	}
