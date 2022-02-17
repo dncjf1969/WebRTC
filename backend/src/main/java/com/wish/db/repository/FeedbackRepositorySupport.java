@@ -65,12 +65,12 @@ public class FeedbackRepositorySupport {
     
 //	 @Query("select o from Order o join o.lineItems item where item.product.id = :productId")
 //	  List<Order> findByProductId(@Param("productId") Long productId);
-	 @Query(value = "select f from feedback as f"
+//	 @Query(value = "select f from feedback as f"
 //	 		+ "left join f.meeting_id meeting "
 //	 		+ "left join f.member_id member"
 //	 		+ "where meeting.meeting_id = :meeting_id "
 //	 		+ "and member.member_id = :member_id"
-	 		, nativeQuery = true)
+//	 		, nativeQuery = true)
 	 public Optional<List<Feedback>> findByMeetingIdAndMemberId(Long meetingId, String memberId){
 
 	    	List<Feedback> list =  jpaQueryFactory
@@ -78,8 +78,8 @@ public class FeedbackRepositorySupport {
 					.from(qFeedback)
 					.leftJoin(qFeedback.meetingRoom, qMeetingRoom)
 					.on(qMeetingRoom.id.eq(meetingId))
-//					.leftJoin(qFeedback.member, qMember)
-//					.on(qMember.id.eq(memberId))
+					.leftJoin(qFeedback.member, qMember)
+					.on(qMember.id.eq(memberId))
 									.fetch();
 				
 				return Optional.ofNullable(list);
