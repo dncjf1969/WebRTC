@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import "./StreamComponent.css";
-import OvVideoComponent2 from "./OvVideo2";
+import OvVideoComponent2Test from "./OvVideo2Test";
 
 import MicOff from "@material-ui/icons/MicOff";
 import VideocamOff from "@material-ui/icons/VideocamOff";
@@ -69,14 +69,10 @@ export default class StreamComponent2 extends Component {
         {this.props.user !== undefined &&
         this.props.user.getStreamManager() !== undefined ? (
           <div className="streamComponent">
-            {/* <OvVideoComponent2
+            { <OvVideoComponent2Test
               //user={this.props.user}
               //mutedSound={this.state.mutedSound}
-            /> */}
-            <OvVideoComponent2
-              user={this.props.user}
-              mutedSound={this.state.mutedSound}
-            />
+            />}
             <div id="statusIcons">
               {!this.props.user.isVideoActive() ? (
                 <div id="camIcon">

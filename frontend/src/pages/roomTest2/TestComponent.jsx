@@ -1,7 +1,8 @@
 import React, { Component } from "react";
 import axios from "axios";
 import myAxios from "../../common/http-common";
-
+import background from "../../images/background.jpg";
+import DeleteIcon from "@material-ui/icons/Delete";
 //
 
 import OvVideoComponent2 from "./stream/OvVideo2";
@@ -11,6 +12,8 @@ import { OpenVidu } from "openvidu-browser";
 import StreamComponent from "./stream/StreamComponent";
 import StreamComponent2 from "./stream/StreamComponent2";
 import StreamComponent3 from "./stream/StreamComponent3"
+
+import StreamComponent2Test from "./stream/StreamComponent2Test";
 // import DialogExtensionComponent from "./dialog-extension/DialogExtension";
 import ChatComponent from "./chat/ChatComponent";
 import UserVideoComponent from "./UserVideoComponent";
@@ -67,6 +70,9 @@ import Character3 from "../../images/3.png"
 import Character4 from "../../images/4.png"
 import Character5 from "../../images/5.png"
 // ----------------------------------------------------------------------
+
+
+
 //// 피드백용
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
   "& .MuiDialogContent-root": {
@@ -1452,6 +1458,7 @@ class TestComponent extends Component {
   }
 
   render() {
+    console.log(this.state)
     const mySessionId = this.state.mySessionId;
     const localUser = this.state.localUser;
     const color = blue[100];
@@ -1460,9 +1467,11 @@ class TestComponent extends Component {
     return (
       <div
         style={{
-          marginTop: "1%",
+          marginTop: "2%",
           marginLeft: "2%",
-          marginRight: "1%",
+          marginRight: "2%",
+          marginBottom: '2%',
+          // backgroundImage: `url(${background})`,
         }}
       >
         {/* <ToolbarComponent
@@ -1481,25 +1490,25 @@ class TestComponent extends Component {
         /> */}
         <Grid
           container
-          spacing={2}
           title="waitingProfile"
           sx={{
-            height: "680px",
+            height: "650px",
             display: "flex",
-            marginTop: "15px",
+            marginTop: "5px",
 
-            paddingTop: "10px",
-
+            paddingTop: "15px",
+            backgroundImage: `url(${background})`,
             borderRadius: 6,
+            // backgroundImage: `url(${background})`,
             backgroundColor: color,
-            boxShadow: "0 3px 5px 2px rgba(47, 138, 241, 0.5)",
-            // opacity: 0.7,
+            // boxShadow: "0 3px 5px 2px rgba(47, 138, 241, 0.5)",
+            opacity: 0.7,
           }}
         >
           {this.state.isStart ? (
             <>
               <Grid item xs={3}>
-                <div style={{height:'60%'}}>
+                <div id="cont1" style={{height:'60%', marginLeft:"15px", marginTop:"20px"}}>
                   {this.state.viewers.map((sub, i) => (
                     <div
                       key={i}
@@ -1540,7 +1549,7 @@ class TestComponent extends Component {
                       <div
                         key={i}
                         className="stream-container"
-                        style={{ float: "left", marginTop:'5%', width:'30%', height:'40%'}}
+                        style={{ float: "left", marginBottom:'10px', marginLeft:"10px" , marginTop:'5%', width:'30%', height:'40%'}}
                         id="remoteUsers"
                       >
                         <div>면접자</div>
@@ -1550,10 +1559,10 @@ class TestComponent extends Component {
                   )}
                 </div>
 
-                <div style={{width:'100%', height:'60%'}}>
+                <div style={{width:'100%'}}>
                   {this.state.mainStreamManager && (
                     <div className="stream-container" id="remoteUsers">
-                      <div>선택된화면</div>
+                      {/* <div>선택된화면</div> */}
                       <StreamComponent2 user={this.state.mainStreamManager} />
                     </div>
                   )}
@@ -1563,28 +1572,11 @@ class TestComponent extends Component {
               {/* <Grid item xs={3}> */}
               <div id="whale">
                 {/* TODO */}
-                <button onClick={this.setManagerLayoutState}>추천질문</button>
+                {/* <button onClick={this.setManagerLayoutState}>추천질문</button> */}
                 
-                  {(this.state.managerLayoutState == 2) ? <div>hello2</div> : <div></div>}
-                  
-                  {/* <div>
-                  {this.state.isStart && this.state.managerLayoutState == 1 && localUser.viewer && (
-                    <div style={{height: '40%'}}>
-                      <RecommendationQues
-                        session={this.state.session}
-                        questions={this.state.questions}
-                        recoQues={this.state.recoQues}
-                        mainStreamManager={this.state.mainStreamManager}
-                        handleChoiceQues={(e) => this.handleChoiceQues(e)}
-                        preQuesId={this.state.preQuesId}
-                        meetingId={this.state.meetingId}
-                      />
-                    </div>
-                  )}
-                  </div> */}
-                  
-                  {this.state.isStart && this.state.managerLayoutState == 1 && localUser.viewer ?
-                    <div>
+                {this.state.viewerState == true ?  ( 
+                  this.state.isStart && this.state.managerLayoutState == 1 && localUser.viewer ?
+                    (<div>
                     <div style={{height: '40%'}}>
                       <RecommendationQues
                         session={this.state.session}
@@ -1596,14 +1588,7 @@ class TestComponent extends Component {
                         meetingId={this.state.meetingId}
                         evalWaiting={this.state.evalWaiting}
                       />
-                    </div>
-                  </div>
-                  : <div>다른 면접관들이 평가완료할 때까지 기다려주세요!
-                  </div>
-                }
-                {
-                  this.state.isStart && localUser.viewer && this.state.managerLayoutState == 1 ?  
-                  <EvaluationSheet
+                      <EvaluationSheet
                     viewers={this.state.viewers}
                     viewee={this.state.mainStreamManager}
                     session={this.state.session}
@@ -1613,9 +1598,29 @@ class TestComponent extends Component {
                     preQuesId={this.state.preQuesId}
                     meetingId={this.state.meetingId}
                     type={this.state.type}
-                  /> : <div>다른 면접관들이 평가완료할 때까지 기다려주세요!2
-                  </div>
+                  />
+                    </div>
+                  </div>)
+                  : (<div>다른 면접관들이 평가완료할 때까지 기다려주세요!
+                  </div>))
+
+                  :
+                //   (this.state.isStart && localUser.viewer && this.state.managerLayoutState == 1) ?  
+                //   () : (<div>다른 면접관들이 평가완료할 때까지 기다려주세요!2
+                //   </div>)
+                // )
+                //: 
+                <div> 
+                  <div className="stream-container" id="remoteUsers">
+                      {/* <div>선택된화면</div> */}
+                      <StreamComponent2Test user={this.state.mainStreamManager} />
+                    </div>
+                </div>
                 }
+
+                  {/* {(this.state.managerLayoutState == 2) ? <div>hello2</div> : <div></div>} */}
+                  
+                 
                 {/* {
 
                   this.state.isStart && localUser.viewer && this.state.managerLayoutState == 2 ? 
@@ -1645,20 +1650,36 @@ class TestComponent extends Component {
             <>
               {/* 유저 리스트 */}
               <Grid item xs={8}>
-                <TestUserList
-                  session={this.state.session}
-                  subscribers={this.state.subscribers}
-                  myUserName={this.state.myUserName}
-                  ready={this.state.readyState}
-                  viewer={this.state.viewerState}
-                  localUser={localUser}
-                  ishost={this.state.ishost}
-                  hostId={this.state.hostId}
-                  allReady={this.state.allReady}
-                  roomId={this.state.waitingId}
-                  characterNum={this.state.characterNum}
-                />
-                <button onClick={this.handleExitBtn}>나가기</button>
+                <span style={{marginBottom:'5px', marginLeft:'5px', marginRight:'5px', fontSize:'18px'}}>방제목: {this.state.roomname}</span>
+                <Button 
+                  onClick={this.handleExitBtn}
+                  variant="contained"
+                  color="secondary"
+                  size="small"
+                  
+                  startIcon={<DeleteIcon />}
+                  >
+                  나가기
+                </Button>
+
+                <div style={{height: '600px', marginLeft:'1px'}}>
+                  <TestUserList
+                    session={this.state.session}
+                    subscribers={this.state.subscribers}
+                    myUserName={this.state.myUserName}
+                    ready={this.state.readyState}
+                    viewer={this.state.viewerState}
+                    localUser={localUser}
+                    ishost={this.state.ishost}
+                    hostId={this.state.hostId}
+                    allReady={this.state.allReady}
+                    roomId={this.state.waitingId}
+                    characterNum={this.state.characterNum}
+                    
+                  
+                  />
+                </div>
+                {/* <button onClick={this.handleExitBtn}>나가기</button> */}
                 
               </Grid>
               {/* 채팅 */}
@@ -1668,6 +1689,7 @@ class TestComponent extends Component {
                     <div
                       style={{
                         chatDisplay,
+                        marginTop: '50px'
                       }}
                     >
                       <TestQuesList
