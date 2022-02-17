@@ -63,7 +63,7 @@ function ChildModal({ MeetingInfo, info }) {
         aria-labelledby="child-modal-title"
         aria-describedby="child-modal-description"
       >
-        <Box sx={{ ...Style, width: 300, height: 300 }}>
+        <Box sx={{ ...Style, width: 300, height: 300, border:2, borderRadius: 2 }}>
           <Title>피드백 내용</Title>
           <br />
           <h2 id="child-modal-title">comment : {modalInfo}</h2>
@@ -135,7 +135,7 @@ export default function NestedModal({ MeetingInfo }) {
         aria-labelledby="child-modal-title"
         aria-describedby="child-modal-description"
       >
-        <Box sx={{ ...Style, width: 500, height: 400 }}>
+        <Box sx={{ ...Style, width: 500, height: 400, border:2, borderRadius: 2 }}>
           <div id="child-modal-description">
             <Title>받은 질문 리스트</Title>
           </div>
