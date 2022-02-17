@@ -1429,9 +1429,10 @@ class TestComponent extends Component {
     return (
       <div
         style={{
-          marginTop: "1%",
-          marginLeft: "2%",
-          marginRight: "1%",
+          // marginTop: "-1%",
+          // marginLeft: "-1%",
+          // marginRight: "-1%",
+          // marginBottom: '-1%'
         }}
       >
         {/* <ToolbarComponent
@@ -1453,15 +1454,15 @@ class TestComponent extends Component {
           spacing={2}
           title="waitingProfile"
           sx={{
-            height: "680px",
+            height: "740px",
             display: "flex",
-            marginTop: "15px",
+            // marginTop: "15px",
 
-            paddingTop: "10px",
+            // paddingTop: "10px",
 
-            borderRadius: 6,
+            // borderRadius: 6,
             backgroundColor: color,
-            boxShadow: "0 3px 5px 2px rgba(47, 138, 241, 0.5)",
+            // boxShadow: "0 3px 5px 2px rgba(47, 138, 241, 0.5)",
             // opacity: 0.7,
           }}
         >
@@ -1614,19 +1615,24 @@ class TestComponent extends Component {
             <>
               {/* 유저 리스트 */}
               <Grid item xs={8}>
-                <TestUserList
-                  session={this.state.session}
-                  subscribers={this.state.subscribers}
-                  myUserName={this.state.myUserName}
-                  ready={this.state.readyState}
-                  viewer={this.state.viewerState}
-                  localUser={localUser}
-                  ishost={this.state.ishost}
-                  hostId={this.state.hostId}
-                  allReady={this.state.allReady}
-                  roomId={this.state.waitingId}
-                  characterNum={this.state.characterNum}
-                />
+                <div style={{marginBottom:'15px'}}>방제목</div>
+
+                <div style={{height: '600px'}}>
+                  <TestUserList
+                    session={this.state.session}
+                    subscribers={this.state.subscribers}
+                    myUserName={this.state.myUserName}
+                    ready={this.state.readyState}
+                    viewer={this.state.viewerState}
+                    localUser={localUser}
+                    ishost={this.state.ishost}
+                    hostId={this.state.hostId}
+                    allReady={this.state.allReady}
+                    roomId={this.state.waitingId}
+                    characterNum={this.state.characterNum}
+                  
+                  />
+                </div>
                 <button onClick={this.handleExitBtn}>나가기</button>
                 
               </Grid>
@@ -1637,6 +1643,7 @@ class TestComponent extends Component {
                     <div
                       style={{
                         chatDisplay,
+                        marginTop: '50px'
                       }}
                     >
                       <TestQuesList
