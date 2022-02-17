@@ -30,7 +30,7 @@ function HeroHome() {
                 소망
               </span>
               을{" "}
-              <p className="bg-clip-text text-transparent bg-gradient-to-r from-blue-500 to-teal-200">
+              <p className="bg-clip-text text-transparent my-4 bg-gradient-to-r from-blue-500 to-teal-200">
                 이루어 드리겠습니다
               </p>
             </h1>

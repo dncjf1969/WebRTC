@@ -19,10 +19,10 @@ function Features() {
         <div className="py-12 md:py-20">
           {/* Section header */}
           <div className="max-w-3xl mx-auto text-center pb-12 md:pb-20">
-            <h2 className="bg-clip-text font-extrabold mb-3 text-transparent bg-gradient-to-r from-blue-500 to-teal-200 h2">
+            <span className="bg-clip-text font-extrabold mb-8 text-transparent bg-gradient-to-r from-blue-500 to-teal-200 text-4xl">
               Get study with us
-            </h2>
-            <p className="text-xl text-gray-600 font-bold">
+            </span>
+            <p className="text-xl text-gray-600 mt-4 font-bold">
               희망하는 면접스터디 유형을 선택해주세요🧐
             </p>
           </div>

@@ -179,114 +179,222 @@ function UpdateUser() {
       <Header />
 
       {/*  Page content */}
-      <main className="flex-grow">
-        <section className="bg-gradient-to-b from-gray-100 to-white">
-          <div className="max-w-6xl mx-auto px-4 sm:px-6">
-            <div className="pt-32 pb-12 md:pt-40 md:pb-20">
-              {/* Page header */}
-              <div className="max-w-3xl mx-auto text-center pb-12 md:pb-20">
-                <h1 className="h1">회원정보 수정</h1>
+      <main classNameName="flex-grow">
+        <section classNameName="">
+          <div className="min-h-screen flex flex-col items-center justify-center">
+            <div className="flex flex-col bg-white px-4 sm:px-6 md:px-8 lg:px-10 py-8 rounded-md w-full max-w-md">
+              <div className="font-bold self-center text-xl sm:text-2xl  mt-16 uppercase text-gray-800">
+                회원정보 수정
               </div>
 
-              {/* Form */}
-              <div className="max-w-sm mx-auto">
+              <div className="relative mt-10 h-px bg-gray-300">
+                <div className="absolute left-0 top-0 flex justify-center w-full -mt-2">
+                  <span className="bg-white px-4 text-xs text-gray-500 uppercase">
+                    <SelectCharacter setCharacterNumber={setCharacterNumber} />
+                  </span>
+                </div>
+              </div>
+              <div className="mt-10">
                 <form onSubmit={handleSubmit}>
-                  {/* 캐릭터 선택 */}
-                  <SelectCharacter setCharacterNumber={setCharacterNumber} />
+                  {/* 닉네임 작성 */}
+                  <div className="flex flex-col mb-3">
+                    <label
+                      for="name"
+                      className="mb-1 text-xs sm:text-sm tracking-wide text-gray-600"
+                    >
+                      새 닉네임:
+                    </label>
+                    <div className="relative">
+                      <div className="inline-flex items-center justify-center absolute left-0 top-0 h-full w-10 text-gray-400">
+                        <svg
+                          viewBox="0 0 24 24"
+                          width="24"
+                          height="24"
+                          stroke="currentColor"
+                          stroke-width="2"
+                          fill="none"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          class="h-5 w-5"
+                        >
+                          <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                          <circle cx="12" cy="7" r="4"></circle>
+                        </svg>
+                      </div>
 
-                  {/* 닉네임 */}
-                  <div className="flex flex-wrap -mx-3 mb-4">
-                    <div className="w-full px-3">
-                      <label
-                        className="block text-gray-800 text-sm font-medium mb-1"
-                        htmlFor="name"
-                      >
-                        새 닉네임 <span className="text-red-600">*</span>
-                      </label>
                       <input
                         id="name"
                         type="text"
-                        style={{ width: "66%", float: "left" }}
                         onChange={handleNickname}
                         value={Nickname}
-                        className="rounded-lg form-input w-full text-gray-800"
-                        placeholder="닉네임 10자 이내로 입력"
-                        required
+                        autoFocus
+                        style={{
+                          width: "66%",
+
+                          float: "left",
+                        }}
+                        className="text-sm sm:text-base placeholder-gray-500 pl-10 pr-4 rounded-lg border border-gray-400 w-full py-2 focus:outline-none focus:border-blue-400"
+                        placeholder="아이디를 입력해주세요."
                       />
                       <button
                         type="button"
-                        style={{ width: "30%", height: "67%", float: "right" }}
+                        style={{
+                          width: "30%",
+                          height: "42px",
+                          float: "right",
+                        }}
                         onClick={handleNicknameCheck}
-                        className="btn-sm text-gray-200 bg-gray-900 hover:bg-gray-800 ml-3 text-white font-semibold rounded-lg"
+                        className="btn text-gray-200 bg-gray-900 hover:bg-gray-800 ml-3 text-white font-semibold rounded-lg"
                       >
                         <span>중복확인</span>
                       </button>
                     </div>
                   </div>
-                  <div className="flex flex-wrap -mx-3 mb-4">
-                    <div className="w-full px-3">
-                      <label
-                        className="rounded-lg block text-gray-800 text-sm font-medium mb-1"
-                        htmlFor="email"
-                      >
-                        새 이메일 <span className="text-red-600">*</span>
-                      </label>
+                  {/* 이메일 작성 */}
+                  <div className="flex flex-col mb-3">
+                    <label
+                      for="email"
+                      className="mb-1 text-xs sm:text-sm tracking-wide text-gray-600"
+                    >
+                      새 이메일:
+                    </label>
+                    <div className="relative">
+                      <div className="inline-flex items-center justify-center absolute left-0 top-0 h-full w-10 text-gray-400">
+                        <svg
+                          viewBox="0 0 24 24"
+                          width="24"
+                          height="24"
+                          stroke="currentColor"
+                          stroke-width="2"
+                          fill="none"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          class="h-5 w-5"
+                        >
+                          <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            stroke-width="2"
+                            d="M16 12a4 4 0 10-8 0 4 4 0 008 0zm0 0v1.5a2.5 2.5 0 005 0V12a9 9 0 10-9 9m4.5-1.206a8.959 8.959 0 01-4.5 1.207"
+                          />
+                        </svg>
+                      </div>
+
                       <input
                         id="email"
                         type="email"
                         onChange={(e) => setEmail(e.target.value)}
                         value={email}
-                        className="rounded-lg form-input w-full text-gray-800"
-                        placeholder="이메일 주소를 입력해주세요"
-                        required
+                        autoFocus
+                        style={{
+                          width: "100%",
+
+                          float: "left",
+                        }}
+                        className="text-sm sm:text-base placeholder-gray-500 pl-10 pr-4 rounded-lg border border-gray-400 w-full py-2 focus:outline-none focus:border-blue-400"
+                        placeholder="이메일을 입력해주세요."
                       />
                     </div>
                   </div>
-                  <div className="flex flex-wrap -mx-3 mb-4">
-                    <div className="w-full px-3">
-                      <label
-                        className="rounded-lg block text-gray-800 text-sm font-medium mb-1"
-                        htmlFor="password"
-                      >
-                        새 비밀번호 <span className="text-red-600">*</span>
-                      </label>
+                  {/* 비밀번호 작성 */}
+                  <div className="flex flex-col mb-3">
+                    <label
+                      for="password"
+                      className="mb-1 text-xs sm:text-sm tracking-wide text-gray-600"
+                    >
+                      새 비밀번호:
+                    </label>
+                    <div className="relative">
+                      <div className="inline-flex items-center justify-center absolute left-0 top-0 h-full w-10 text-gray-400">
+                        <svg
+                          className="h-6 w-6"
+                          fill="none"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          stroke-width="2"
+                          viewBox="0 0 24 24"
+                          stroke="currentColor"
+                        >
+                          <path d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                        </svg>
+                      </div>
+
                       <input
                         id="password"
                         type="password"
                         onChange={(e) => setPassword(e.target.value)}
                         value={password}
-                        className="rounded-lg form-input w-full text-gray-800"
-                        placeholder="비밀번호를 입력해주세요"
-                        required
+                        autoFocus
+                        style={{
+                          width: "100%",
+
+                          float: "left",
+                        }}
+                        className="text-sm sm:text-base placeholder-gray-500 pl-10 pr-4 rounded-lg border border-gray-400 w-full py-2 focus:outline-none focus:border-blue-400"
+                        placeholder="비밀번호를 입력해주세요."
                       />
                     </div>
                   </div>
-                  <div className="flex flex-wrap -mx-3 mb-4">
-                    <div className="w-full px-3">
-                      <label
-                        className="rounded-lg block text-gray-800 text-sm font-medium mb-1"
-                        htmlFor="passwordCheck"
-                      >
-                        비밀번호 확인 <span className="text-red-600">*</span>
-                      </label>
+                  {/* 2차비밀번호 작성 */}
+                  <div className="flex flex-col mb-3">
+                    <label
+                      for="passwordCheck"
+                      className="mb-1 text-xs sm:text-sm tracking-wide text-gray-600"
+                    >
+                      비밀번호 확인:
+                    </label>
+                    <div className="relative">
+                      <div className="inline-flex items-center justify-center absolute left-0 top-0 h-full w-10 text-gray-400">
+                        <svg
+                          className="h-6 w-6"
+                          fill="none"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          stroke-width="2"
+                          viewBox="0 0 24 24"
+                          stroke="currentColor"
+                        >
+                          <path d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                        </svg>
+                      </div>
+
                       <input
                         id="passwordCheck"
                         type="password"
                         onChange={(e) => setRepeatPassword(e.target.value)}
                         value={repeatPassword}
-                        className="rounded-lg form-input w-full text-gray-800"
-                        placeholder="비밀번호를 다시 입력해주세요"
-                        required
+                        autoFocus
+                        style={{
+                          width: "100%",
+
+                          float: "left",
+                        }}
+                        className="text-sm sm:text-base placeholder-gray-500 pl-10 pr-4 rounded-lg border border-gray-400 w-full py-2 focus:outline-none focus:border-blue-400"
+                        placeholder="비밀번호를 입력해주세요."
                       />
                     </div>
                   </div>
-                  <div className="flex flex-wrap -mx-3 mt-6">
-                    <div className="w-full px-3">
-                      <button className="btn text-white bg-blue-500 hover:bg-blue-700 w-full text-white font-semibold rounded-lg">
-                        회원정보 수정
-                      </button>
-                      {/* <DeleteModal nickname={nickname} /> */}
-                    </div>
+
+                  <div className="flex w-full">
+                    <button
+                      type="submit"
+                      className="flex items-center justify-center focus:outline-none text-white text-sm sm:text-base bg-blue-600 hover:bg-blue-700 rounded py-2 w-full transition duration-150 ease-in"
+                    >
+                      <span className="mr-2 uppercase">회원정보 수정</span>
+                      <span>
+                        <svg
+                          className="h-6 w-6"
+                          fill="none"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          stroke-width="2"
+                          viewBox="0 0 24 24"
+                          stroke="currentColor"
+                        >
+                          <path d="M13 9l3 3m0 0l-3 3m3-3H8m13 0a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                      </span>
+                    </button>
                   </div>
                 </form>
               </div>
