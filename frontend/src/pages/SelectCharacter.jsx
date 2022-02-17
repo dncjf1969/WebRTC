@@ -4,6 +4,12 @@ import Modal from "@mui/material/Modal";
 import Button from "@mui/material/Button";
 import { useState } from "react";
 import styled from "styled-components";
+import Character0 from "../images/0.png"
+import Character1 from "../images/1.png"
+import Character2 from "../images/2.png"
+import Character3 from "../images/3.png"
+import Character4 from "../images/4.png"
+import Character5 from "../images/5.png"
 
 import "./SelectCharacter.css";
 
@@ -47,9 +53,30 @@ function SelectCharacter(props) {
   const handleClose = () => {
     setOpen(false);
     console.log(charNum);
-    let charURL =
-      "https://lab.ssafy.com/s06-webmobile1-sub2/S06P12E201/-/raw/frontend/frontend/src/images/";
-    setCharacterURL(charURL + charNum + ".PNG");
+    let temp = ""
+    switch (charNum) {
+      case 0:
+        temp = Character0
+        break
+      case 1:
+        temp = Character1
+        break
+      case 2:
+        temp = Character2
+        break
+      case 3:
+        temp = Character3
+        break
+      case 4:
+        temp = Character4
+        break
+      case 5:
+        temp = Character5
+        break
+      default:
+        temp = ""
+    }
+    setCharacterURL(temp);
     props.setCharacterNumber(charNum);
   };
 
@@ -59,11 +86,13 @@ function SelectCharacter(props) {
 
   return (
     <React.Fragment>
-      <div className="">
+      <div className="flex">
         <Button onClick={(e) => handleOpen(e)} variant={status} size="small">
           캐릭터 선택
         </Button>
-        <img className="" src={characterURL}></img>
+        {charNum !== '' ?
+        <img className="ml-2" src={characterURL} alt='' style={{'height': '30px', 'width': '30px'}}></img>
+        : null}
       </div>
       <Modal
         hideBackdrop
@@ -76,58 +105,108 @@ function SelectCharacter(props) {
           <Title>
             <span className="text-slate-700">나의 캐릭터를 선택해주세요</span>
           </Title>
-          <ul className="cursor-pointer flex flex-auto">
+          <ul className="cursor-pointer flex flex-auto mx-auto">
             {charNum === 0 ? (
               <img
                 class="selectedChar"
                 className="cursor-pointer"
-                src="https://lab.ssafy.com/s06-webmobile1-sub2/S06P12E201/-/raw/frontend/frontend/src/images/0.PNG"
+                src={Character0}
+                style={{'height': '55px', 'width': '55px'}}
                 onClick={(e) => setCharNumber(0)}
+                alt=""
               ></img>
             ) : (
               <img
                 class="char"
-                src="https://lab.ssafy.com/s06-webmobile1-sub2/S06P12E201/-/raw/frontend/frontend/src/images/0.PNG"
+                src={Character0}
+                style={{'height': '55px', 'width': '55px'}}
                 onClick={(e) => setCharNumber(0)}
+                alt=""
               ></img>
             )}
             {charNum === 1 ? (
               <img
                 class="selectedChar"
-                src="https://lab.ssafy.com/s06-webmobile1-sub2/S06P12E201/-/raw/frontend/frontend/src/images/1.PNG"
+                src={Character1}
+                style={{'height': '55px', 'width': '55px'}}
                 onClick={(e) => setCharNumber(1)}
+                alt=""
               ></img>
             ) : (
               <img
                 class="char"
-                src="https://lab.ssafy.com/s06-webmobile1-sub2/S06P12E201/-/raw/frontend/frontend/src/images/1.PNG"
+                src={Character1}
+                style={{'height': '55px', 'width': '55px'}}
                 onClick={(e) => setCharNumber(1)}
+                alt=""
               ></img>
             )}
             {charNum === 2 ? (
               <img
                 class="selectedChar"
-                src="https://lab.ssafy.com/s06-webmobile1-sub2/S06P12E201/-/raw/frontend/frontend/src/images/2.PNG"
+                src={Character2}
+                style={{'height': '55px', 'width': '55px'}}
                 onClick={(e) => setCharNumber(2)}
+                alt=""
               ></img>
             ) : (
               <img
                 class="char"
-                src="https://lab.ssafy.com/s06-webmobile1-sub2/S06P12E201/-/raw/frontend/frontend/src/images/2.PNG"
+                src={Character2}
+                style={{'height': '55px', 'width': '55px'}}
                 onClick={(e) => setCharNumber(2)}
+                alt=""
               ></img>
             )}
             {charNum === 3 ? (
               <img
                 class="selectedChar"
-                src="https://lab.ssafy.com/s06-webmobile1-sub2/S06P12E201/-/raw/frontend/frontend/src/images/3.PNG"
+                src={Character3}
+                style={{'height': '55px', 'width': '55px'}}
                 onClick={(e) => setCharNumber(3)}
+                alt=""
               ></img>
             ) : (
               <img
                 class="char"
-                src="https://lab.ssafy.com/s06-webmobile1-sub2/S06P12E201/-/raw/frontend/frontend/src/images/3.PNG"
+                src={Character3}
+                style={{'height': '55px', 'width': '55px'}}
                 onClick={(e) => setCharNumber(3)}
+                alt=""
+              ></img>
+            )}
+            {charNum === 4 ? (
+              <img
+                class="selectedChar"
+                src={Character4}
+                style={{'height': '55px', 'width': '55px'}}
+                onClick={(e) => setCharNumber(4)}
+                alt=""
+              ></img>
+            ) : (
+              <img
+                class="char"
+                src={Character4}
+                style={{'height': '55px', 'width': '55px'}}
+                onClick={(e) => setCharNumber(4)}
+                alt=""
+              ></img>
+            )}
+            {charNum === 5 ? (
+              <img
+                class="selectedChar"
+                src={Character5}
+                style={{'height': '55px', 'width': '55px'}}
+                onClick={(e) => setCharNumber(5)}
+                alt=""
+              ></img>
+            ) : (
+              <img
+                class="char"
+                src={Character5}
+                style={{'height': '55px', 'width': '55px'}}
+                onClick={(e) => setCharNumber(5)}
+                alt=""
               ></img>
             )}
             {/* <li><img class="char" id="char0" src="https://lab.ssafy.com/s06-webmobile1-sub2/S06P12E201/-/raw/hyun/frontend/src/images/0.PNG" onClick={(e)=>setCharNumber(0)}></img></li> */}

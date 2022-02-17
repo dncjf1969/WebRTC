@@ -23,10 +23,12 @@ import { Grid } from "@mui/material";
 import "./Mypage.css";
 
 // character
-import Character0 from "../../images/0.PNG"
-import Character1 from "../../images/1.PNG"
-import Character2 from "../../images/2.PNG"
-import Character3 from "../../images/3.PNG"
+import Character0 from "../../images/0.png"
+import Character1 from "../../images/1.png"
+import Character2 from "../../images/2.png"
+import Character3 from "../../images/3.png"
+import Character4 from "../../images/4.png"
+import Character5 from "../../images/5.png"
 
 // 전체 컨테이너
 const Wrapper = styled.div`
@@ -139,6 +141,12 @@ export default function MyPage() {
           break
         case 3 :
           setCharacterURL(Character3)
+          break
+        case 4 :
+          setCharacterURL(Character4)
+          break
+        case 5 :
+          setCharacterURL(Character5)
           break
         default:
           setCharacterURL("")

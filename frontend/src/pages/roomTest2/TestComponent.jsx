@@ -60,10 +60,12 @@ import { bgcolor } from "@mui/system";
 import { deepPurple, teal } from "@mui/material/colors";
 import { blue } from "@material-ui/core/colors";
 // character
-import Character0 from "../../images/0.PNG"
-import Character1 from "../../images/1.PNG"
-import Character2 from "../../images/2.PNG"
-import Character3 from "../../images/3.PNG"
+import Character0 from "../../images/0.png"
+import Character1 from "../../images/1.png"
+import Character2 from "../../images/2.png"
+import Character3 from "../../images/3.png"
+import Character4 from "../../images/4.png"
+import Character5 from "../../images/5.png"
 // ----------------------------------------------------------------------
 //// 피드백용
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
@@ -272,6 +274,12 @@ class TestComponent extends Component {
             break
           case 3:
             temp = Character3
+            break
+          case 4:
+            temp = Character4
+            break
+          case 5:
+            temp = Character5
             break
           default:
             temp = ""
