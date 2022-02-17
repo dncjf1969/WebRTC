@@ -95,6 +95,10 @@ public class FeedbackController {
 				
 //		List<FeedbackRes> res = feedbackService.getMyFeedback(authentication.getName());
 		List<MeetingCountRes> res = feedbackService.getMyMeetingCounts(memberId);
+		System.out.println("마이페이지용 카운트 출력");
+		for (MeetingCountRes meetingCountRes : res) {
+			System.out.println(meetingCountRes.toString());
+		}
 
 		return ResponseEntity.status(200).body(res);
 	}
