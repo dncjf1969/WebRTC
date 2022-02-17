@@ -13,6 +13,7 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 import "./WaitingList.css";
 // // 방만들기 dialog
 import { MdVpnKey } from "react-icons/md";
+import Image from "../images/메인2.svg";
 
 import axios from "../common/http-common";
 import WaitingListCard from "./WaitingListCard";
@@ -233,7 +234,7 @@ export function WaitingListSearch() {
                                 component="img"
                                 height="auto"
                                 width="100px"
-                                image="https://lab.ssafy.com/s06-webmobile1-sub2/S06P12E201/-/raw/frontend/frontend/src/images/0.PNG"
+                                src={Image}
                                 alt="Room Image"
                               />
                             </Card>

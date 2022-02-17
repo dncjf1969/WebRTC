@@ -59,6 +59,11 @@ import Divider from "@mui/material/Divider";
 import { bgcolor } from "@mui/system";
 import { deepPurple, teal } from "@mui/material/colors";
 import { blue } from "@material-ui/core/colors";
+// character
+import Character0 from "../../images/0.PNG"
+import Character1 from "../../images/1.PNG"
+import Character2 from "../../images/2.PNG"
+import Character3 from "../../images/3.PNG"
 // ----------------------------------------------------------------------
 //// 피드백용
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
@@ -254,11 +259,28 @@ class TestComponent extends Component {
         },
       })
       .then((res) => {
+        let temp = ""
+        switch (res.data.characterNum) {
+          case 0:
+            temp = Character0
+            break
+          case 1:
+            temp = Character1
+            break
+          case 2:
+            temp = Character2
+            break
+          case 3:
+            temp = Character3
+            break
+          default:
+            temp = ""
+        }
         console.log(res);
         this.setState({
           myUserName: res.data.name,
           id: res.data.userId,
-          characterNum: res.data.characterNum,
+          characterNum: temp,
         });
       })
       .catch((e) => console.log(e));
@@ -1032,6 +1054,7 @@ class TestComponent extends Component {
       newUser.setReady(false);
       newUser.setViewer(null);
       this.remotes.push(newUser);
+      
       if (this.localUserAccessAllowed) {
         this.updateSubscribers();
       }
