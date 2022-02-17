@@ -1,0 +1,15 @@
+.icon1{
+  transform: scale(6);
+  margin-top : 80px;
+  margin-left: 70px;
+  font-size: 100pt;
+  margin-right: 50px;
+}
+
+#msg-container{
+  font-size: 15pt;
+}
+
+#msg-container2{
+  font-size: 15pt;
+}

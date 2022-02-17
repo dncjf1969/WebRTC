@@ -1623,12 +1623,12 @@ class TestComponent extends Component {
               </div>
               {/* </Grid> */}
               {this.state.isStart && localUser.viewer && (
-                <button onClick={this.handleFinish}>면접끝내기</button>
+                <Button variant="contained" color="success" onClick={this.handleFinish}> 면접끝내기</Button>
               )}
-              {this.state.isStart && 
+              {/* {this.state.isStart && 
                 <IconButton color="inherit" className="navButton" id="navMicButton" onClick={this.micStatusChanged}>
                     {localUser !== undefined && localUser.isAudioActive() ? <Mic /> : <MicOff color="secondary" />}
-                </IconButton>}
+                </IconButton>} */}
             </>
           ) : (
             <>

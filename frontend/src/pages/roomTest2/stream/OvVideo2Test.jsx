@@ -2,7 +2,10 @@ import React, { Component } from 'react';
 import './StreamComponent.css';
 import ThumbUpIcon from '@mui/icons-material/ThumbUp';
 import ThumbDownIcon from '@mui/icons-material/ThumbDown';
+import SentimentSatisfiedAltIcon from '@mui/icons-material/SentimentSatisfiedAlt';
+import SentimentVeryDissatisfiedIcon from '@mui/icons-material/SentimentVeryDissatisfied';
 
+import "./OvVideo2Test.css";
 //
 import * as tmPose from '@teachablemachine/pose';
 
@@ -54,6 +57,7 @@ export default class OvVideoComponent2 extends Component {
             labelContainer : undefined,
             ctx : undefined,
             msgContainer : undefined,
+            msgContainer2 : undefined,
             nowPoseState : undefined,
           };
     }
@@ -101,6 +105,7 @@ export default class OvVideoComponent2 extends Component {
         //   this.state.labelContainer.appendChild(document.createElement("div"));
         // }
         this.state.msgContainer = document.getElementById("msg-container");
+        this.state.msgContainer2 = document.getElementById("msg-container2");
         this.state.labelContainer.appendChild(document.createElement("div"));
       }
     
@@ -124,7 +129,22 @@ export default class OvVideoComponent2 extends Component {
             if(prediction[i].probability.toFixed(2)>0.8)
             {
                 console.log(prediction[i].className);
-                this.state.msgContainer.innerHTML = "너무 " + prediction[i].className + "!!";
+                if(i==0){
+                  this.state.msgContainer.innerHTML = `올바른 자세입니다.`;
+                  this.state.msgContainer2.innerHTML = `이 자세를 유지해주세요.`;
+                } 
+                else if(i==1) {
+                  this.state.msgContainer.innerHTML = `왼쪽으로 자세가 치우쳤어요!`;
+                  this.state.msgContainer2.innerHTML = `자세를 교정해주세요.`;
+                }
+                else if(i==2) {
+                  this.state.msgContainer.innerHTML = `오른쪽으로 자세가 치우쳤어요!`; 
+                  this.state.msgContainer2.innerHTML = `자세를 교정해주세요.`;
+                }
+                else if(i==3) this.state.msgContainer.innerHTML = `너무 " + prediction[i].className + "!!`;
+                else if(i==4) this.state.msgContainer.innerHTML = `너무 " + prediction[i].className + "!!`;
+                else if(i==5) this.state.msgContainer.innerHTML = `너무 " + prediction[i].className + "!!`;
+                else if(i==6) this.state.msgContainer.innerHTML = `너무 " + prediction[i].className + "!!`;
                 this.setState({ nowPoseState: i });
             } 
 
@@ -154,7 +174,10 @@ export default class OvVideoComponent2 extends Component {
             <div><canvas id="canvas"></canvas></div>
             <div id="label-container"></div>
             <div id="msg-container"></div>
-            {this.state.nowPoseState == 0 ? <div> <ThumbUpIcon color="primary"></ThumbUpIcon> </div> : <div> <ThumbDownIcon color="error"></ThumbDownIcon></div>}
+            <div id="msg-container2"></div>
+            {this.state.nowPoseState == 0 ? <div> <SentimentSatisfiedAltIcon className="icon1" color='primary'></SentimentSatisfiedAltIcon> <SentimentVeryDissatisfiedIcon className="icon1" color="grey"></SentimentVeryDissatisfiedIcon> </div> : <div> <SentimentSatisfiedAltIcon className="icon1" color='grey'></SentimentSatisfiedAltIcon> <SentimentVeryDissatisfiedIcon className="icon1" color="error"></SentimentVeryDissatisfiedIcon></div>}
+            
+            {/* {this.state.nowPoseState == 0 ? <div> <ThumbUpIcon color="primary"></ThumbUpIcon> </div> : <div> <ThumbDownIcon color="error"></ThumbDownIcon></div>} */}
           </div>
         );
       }
