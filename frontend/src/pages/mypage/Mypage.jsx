@@ -22,6 +22,12 @@ import HeroMypage from "../../partials/HeroMypage";
 import { Grid } from "@mui/material";
 import "./Mypage.css";
 
+// character
+import Character0 from "../../images/0.PNG"
+import Character1 from "../../images/1.PNG"
+import Character2 from "../../images/2.PNG"
+import Character3 from "../../images/3.PNG"
+
 // 전체 컨테이너
 const Wrapper = styled.div`
   border: x solid rgba(36, 188, 199, 0.5);
@@ -116,11 +122,27 @@ export default function MyPage() {
         },
       });
 
-      let charURL =
-        "https://lab.ssafy.com/s06-webmobile1-sub2/S06P12E201/-/raw/frontend/frontend/src/images/";
+      // let charURL =
+      //   "https://lab.ssafy.com/s06-webmobile1-sub2/S06P12E201/-/raw/frontend/frontend/src/images/";
 
-      setCharacterURL(charURL + response.data.characterNum + ".PNG");
-      console.log(response.data.characterNum);
+      // setCharacterURL(charURL + response.data.characterNum + ".PNG");
+      // console.log(response.data.characterNum);
+      switch (response.data.characterNum) {
+        case 0 :
+          setCharacterURL(Character0)
+          break
+        case 1 :
+          setCharacterURL(Character1)
+          break
+        case 2 :
+          setCharacterURL(Character2)
+          break
+        case 3 :
+          setCharacterURL(Character3)
+          break
+        default:
+          setCharacterURL("")
+      }
 
       setId(response.data.userId);
       setNickname(response.data.name);

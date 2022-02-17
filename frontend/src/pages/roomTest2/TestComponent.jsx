@@ -12,6 +12,8 @@ import { OpenVidu } from "openvidu-browser";
 import StreamComponent from "./stream/StreamComponent";
 import StreamComponent2 from "./stream/StreamComponent2";
 import StreamComponent3 from "./stream/StreamComponent3";
+
+import StreamComponent2Test from "./stream/StreamComponent2Test";
 // import DialogExtensionComponent from "./dialog-extension/DialogExtension";
 import ChatComponent from "./chat/ChatComponent";
 import UserVideoComponent from "./UserVideoComponent";
@@ -60,6 +62,11 @@ import Divider from "@mui/material/Divider";
 import { bgcolor } from "@mui/system";
 import { deepPurple, teal } from "@mui/material/colors";
 import { blue } from "@material-ui/core/colors";
+// character
+import Character0 from "../../images/0.PNG";
+import Character1 from "../../images/1.PNG";
+import Character2 from "../../images/2.PNG";
+import Character3 from "../../images/3.PNG";
 // ----------------------------------------------------------------------
 //// 피드백용
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
@@ -254,11 +261,28 @@ class TestComponent extends Component {
         },
       })
       .then((res) => {
+        let temp = "";
+        switch (res.data.characterNum) {
+          case 0:
+            temp = Character0;
+            break;
+          case 1:
+            temp = Character1;
+            break;
+          case 2:
+            temp = Character2;
+            break;
+          case 3:
+            temp = Character3;
+            break;
+          default:
+            temp = "";
+        }
         console.log(res);
         this.setState({
           myUserName: res.data.name,
           id: res.data.userId,
-          characterNum: res.data.characterNum,
+          characterNum: temp,
         });
       })
       .catch((e) => console.log(e));
@@ -1032,6 +1056,7 @@ class TestComponent extends Component {
       newUser.setReady(false);
       newUser.setViewer(null);
       this.remotes.push(newUser);
+
       if (this.localUserAccessAllowed) {
         this.updateSubscribers();
       }
@@ -1454,15 +1479,17 @@ class TestComponent extends Component {
         /> */}
         <Grid
           container
-          spacing={2}
           title="waitingProfile"
           sx={{
             height: "739px",
             display: "flex",
+            marginTop: "5px",
 
-            backgroundImage: `url(${background})`,
-            // borderRadius: 6,
+            paddingTop: "5px",
+
+            borderRadius: 6,
             backgroundColor: color,
+            backgroundImage: `url(${background})`,
             // boxShadow: "0 3px 5px 2px rgba(47, 138, 241, 0.5)",
             // opacity: 0.7,
           }}
@@ -1470,7 +1497,14 @@ class TestComponent extends Component {
           {this.state.isStart ? (
             <>
               <Grid item xs={3}>
-                <div style={{ height: "60%" }}>
+                <div
+                  id="cont1"
+                  style={{
+                    height: "60%",
+                    marginLeft: "15px",
+                    marginTop: "20px",
+                  }}
+                >
                   {this.state.viewers.map((sub, i) => (
                     <div
                       key={i}
@@ -1517,6 +1551,8 @@ class TestComponent extends Component {
                         className="stream-container"
                         style={{
                           float: "left",
+                          marginBottom: "10px",
+                          marginLeft: "10px",
                           marginTop: "5%",
                           width: "30%",
                           height: "40%",
@@ -1530,10 +1566,10 @@ class TestComponent extends Component {
                   )}
                 </div>
 
-                <div style={{ width: "100%", height: "60%" }}>
+                <div style={{ width: "100%" }}>
                   {this.state.mainStreamManager && (
                     <div className="stream-container" id="remoteUsers">
-                      <div>선택된화면</div>
+                      {/* <div>선택된화면</div> */}
                       <StreamComponent2 user={this.state.mainStreamManager} />
                     </div>
                   )}
@@ -1543,67 +1579,58 @@ class TestComponent extends Component {
               {/* <Grid item xs={3}> */}
               <div id="whale">
                 {/* TODO */}
-                <button onClick={this.setManagerLayoutState}>추천질문</button>
+                {/* <button onClick={this.setManagerLayoutState}>추천질문</button> */}
 
-                {this.state.managerLayoutState == 2 ? (
-                  <div>hello2</div>
-                ) : (
-                  <div></div>
-                )}
-
-                {/* <div>
-                  {this.state.isStart && this.state.managerLayoutState == 1 && localUser.viewer && (
-                    <div style={{height: '40%'}}>
-                      <RecommendationQues
-                        session={this.state.session}
-                        questions={this.state.questions}
-                        recoQues={this.state.recoQues}
-                        mainStreamManager={this.state.mainStreamManager}
-                        handleChoiceQues={(e) => this.handleChoiceQues(e)}
-                        preQuesId={this.state.preQuesId}
-                        meetingId={this.state.meetingId}
-                      />
+                {this.state.viewerState == true ? (
+                  this.state.isStart &&
+                  this.state.managerLayoutState == 1 &&
+                  localUser.viewer ? (
+                    <div>
+                      <div style={{ height: "40%" }}>
+                        <RecommendationQues
+                          session={this.state.session}
+                          questions={this.state.questions}
+                          recoQues={this.state.recoQues}
+                          mainStreamManager={this.state.mainStreamManager}
+                          handleChoiceQues={(e) => this.handleChoiceQues(e)}
+                          preQuesId={this.state.preQuesId}
+                          meetingId={this.state.meetingId}
+                          evalWaiting={this.state.evalWaiting}
+                        />
+                        <EvaluationSheet
+                          viewers={this.state.viewers}
+                          viewee={this.state.mainStreamManager}
+                          session={this.state.session}
+                          evalWaiting={this.state.evalWaiting}
+                          chosenQues={this.state.chosenQues}
+                          curQuesId={this.state.curQuesId}
+                          preQuesId={this.state.preQuesId}
+                          meetingId={this.state.meetingId}
+                          type={this.state.type}
+                        />
+                      </div>
                     </div>
-                  )}
-                  </div> */}
-
-                {this.state.isStart &&
-                this.state.managerLayoutState == 1 &&
-                localUser.viewer ? (
+                  ) : (
+                    <div>다른 면접관들이 평가완료할 때까지 기다려주세요!</div>
+                  )
+                ) : (
+                  //   (this.state.isStart && localUser.viewer && this.state.managerLayoutState == 1) ?
+                  //   () : (<div>다른 면접관들이 평가완료할 때까지 기다려주세요!2
+                  //   </div>)
+                  // )
+                  //:
                   <div>
-                    <div style={{ height: "40%" }}>
-                      <RecommendationQues
-                        session={this.state.session}
-                        questions={this.state.questions}
-                        recoQues={this.state.recoQues}
-                        mainStreamManager={this.state.mainStreamManager}
-                        handleChoiceQues={(e) => this.handleChoiceQues(e)}
-                        preQuesId={this.state.preQuesId}
-                        meetingId={this.state.meetingId}
-                        evalWaiting={this.state.evalWaiting}
+                    <div className="stream-container" id="remoteUsers">
+                      {/* <div>선택된화면</div> */}
+                      <StreamComponent2Test
+                        user={this.state.mainStreamManager}
                       />
                     </div>
                   </div>
-                ) : (
-                  <div>다른 면접관들이 평가완료할 때까지 기다려주세요!</div>
                 )}
-                {this.state.isStart &&
-                localUser.viewer &&
-                this.state.managerLayoutState == 1 ? (
-                  <EvaluationSheet
-                    viewers={this.state.viewers}
-                    viewee={this.state.mainStreamManager}
-                    session={this.state.session}
-                    evalWaiting={this.state.evalWaiting}
-                    chosenQues={this.state.chosenQues}
-                    curQuesId={this.state.curQuesId}
-                    preQuesId={this.state.preQuesId}
-                    meetingId={this.state.meetingId}
-                    type={this.state.type}
-                  />
-                ) : (
-                  <div>다른 면접관들이 평가완료할 때까지 기다려주세요!2</div>
-                )}
+
+                {/* {(this.state.managerLayoutState == 2) ? <div>hello2</div> : <div></div>} */}
+
                 {/* {
 
                   this.state.isStart && localUser.viewer && this.state.managerLayoutState == 2 ? 

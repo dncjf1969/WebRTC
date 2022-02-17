@@ -11,7 +11,6 @@ export default function Room() {
   return (
     <div
       style={{
-        backgroundImage: `url(${background})`,
         marginTop: 0,
         marginBottom: 0,
         height: "1000px",
