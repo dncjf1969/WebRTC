@@ -11,8 +11,12 @@ import com.wish.db.entity.QFeedback;
 import java.util.List;
 import java.util.Optional;
 
+import com.wish.db.entity.QMeetingRoom;
+import com.wish.db.entity.QMember;
 import org.hibernate.criterion.Projection;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -23,6 +27,8 @@ public class FeedbackRepositorySupport {
     @Autowired
     private JPAQueryFactory jpaQueryFactory;
     QFeedback qFeedback = QFeedback.feedback;
+	QMeetingRoom qMeetingRoom = QMeetingRoom.meetingRoom;
+	QMember qMember = QMember.member;
 
 //    public Optional<Integer> countById(String id) {
 //    	Member member = jpaQueryFactory.select(qMember).from(qMember)
@@ -56,4 +62,30 @@ public class FeedbackRepositorySupport {
 
     	return Optional.ofNullable(list);
     }
+    
+//	 @Query("select o from Order o join o.lineItems item where item.product.id = :productId")
+//	  List<Order> findByProductId(@Param("productId") Long productId);
+	 @Query(value = "select f from feedback as f"
+//	 		+ "left join f.meeting_id meeting "
+//	 		+ "left join f.member_id member"
+//	 		+ "where meeting.meeting_id = :meeting_id "
+//	 		+ "and member.member_id = :member_id"
+	 		, nativeQuery = true)
+	 public Optional<List<Feedback>> findByMeetingIdAndMemberId(Long meetingId, String memberId){
+		 QMeetingRoom meetingRoom = new QMeetingRoom("meetingRoom");
+		 QMember member = new QMember("member");
+
+	    	List<Feedback> list =  jpaQueryFactory
+					.select(qFeedback)
+					.from(qFeedback)
+					.leftJoin(qFeedback.meetingRoom, meetingRoom)
+					.on(qMeetingRoom.id.eq(meetingId))
+					.leftJoin(qFeedback.member, member)
+					.on(qMember.id.eq(memberId))
+									.fetch();
+				
+				return Optional.ofNullable(list);
+		 
+	 }
+	
 }

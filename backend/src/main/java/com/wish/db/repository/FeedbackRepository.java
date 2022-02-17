@@ -20,16 +20,6 @@ public interface FeedbackRepository extends JpaRepository<Feedback, Long> {
 //	Optional<List<Feedback>> findByMeetingIdAndMemberId(Long meetingId, String memberId);
 //	Optional<List<Feedback>> findByMeetingRoomAndMemberId(Long meetingId, String memberId);
 	
-//	 @Query("select o from Order o join o.lineItems item where item.product.id = :productId")
-//	  List<Order> findByProductId(@Param("productId") Long productId);
-	 @Query(value = "select f from feedback f"
-//	 		+ "left join f.meeting_id meeting "
-//	 		+ "left join f.member_id member"
-//	 		+ "where meeting.meeting_id = :meeting_id "
-//	 		+ "and member.member_id = :member_id"
-	 		, nativeQuery = true)
-	 Optional<List<Feedback>> findByMeetingIdAndMemberId(@Param("meeting_id") Long meeting_id, @Param("member_id")String member_id);
-	
 	Optional<List<Long>> countByMemberId(String id);
 	
 	

@@ -106,7 +106,7 @@ public class FeedbackServiceImpl implements FeedbackService {
 
 	@Override
 	public List<FeedbackRes> getMyFeedbackByRoom(Long roomId, String memberId) {
-		List<Feedback> list = feedbackRepository.findByMeetingIdAndMemberId(roomId, memberId).get();
+		List<Feedback> list = feedbackRepositorySupport.findByMeetingIdAndMemberId(roomId, memberId).get();
 //		List<Feedback> list = new ArrayList<Feedback>();
 		List<FeedbackRes> res = new ArrayList<FeedbackRes>();
 
