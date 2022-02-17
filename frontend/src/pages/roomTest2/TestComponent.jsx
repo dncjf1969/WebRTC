@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import axios from "axios";
 import myAxios from "../../common/http-common";
+import background from "../../images/background.jpg";
 
 //
 
@@ -1429,10 +1430,11 @@ class TestComponent extends Component {
     return (
       <div
         style={{
-          // marginTop: "-1%",
-          // marginLeft: "-1%",
-          // marginRight: "-1%",
-          // marginBottom: '-1%'
+          marginTop: "2%",
+          marginLeft: "2%",
+          marginRight: "2%",
+          marginBottom: '2%',
+          // backgroundImage: `url(${background})`,
         }}
       >
         {/* <ToolbarComponent
@@ -1454,16 +1456,17 @@ class TestComponent extends Component {
           spacing={2}
           title="waitingProfile"
           sx={{
-            height: "740px",
+            height: "650px",
             display: "flex",
-            // marginTop: "15px",
+            marginTop: "15px",
 
-            // paddingTop: "10px",
-
-            // borderRadius: 6,
+            paddingTop: "15px",
+            backgroundImage: `url(${background})`,
+            borderRadius: 6,
+            // backgroundImage: `url(${background})`,
             backgroundColor: color,
             // boxShadow: "0 3px 5px 2px rgba(47, 138, 241, 0.5)",
-            // opacity: 0.7,
+            opacity: 0.7,
           }}
         >
           {this.state.isStart ? (
