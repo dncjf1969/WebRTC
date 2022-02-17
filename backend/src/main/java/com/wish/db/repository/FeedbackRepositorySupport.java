@@ -72,16 +72,14 @@ public class FeedbackRepositorySupport {
 //	 		+ "and member.member_id = :member_id"
 	 		, nativeQuery = true)
 	 public Optional<List<Feedback>> findByMeetingIdAndMemberId(Long meetingId, String memberId){
-		 QMeetingRoom meetingRoom = new QMeetingRoom("meetingRoom");
-		 QMember member = new QMember("member");
 
 	    	List<Feedback> list =  jpaQueryFactory
 					.select(qFeedback)
 					.from(qFeedback)
-					.leftJoin(qFeedback.meetingRoom, meetingRoom)
+					.leftJoin(qFeedback.meetingRoom, qMeetingRoom)
 					.on(qMeetingRoom.id.eq(meetingId))
-					.leftJoin(qFeedback.member, member)
-					.on(qMember.id.eq(memberId))
+//					.leftJoin(qFeedback.member, qMember)
+//					.on(qMember.id.eq(memberId))
 									.fetch();
 				
 				return Optional.ofNullable(list);
