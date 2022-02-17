@@ -303,10 +303,7 @@ class TestComponent extends Component {
     window.addEventListener("resize", this.checkSize);
     
     this.OV = new OpenVidu();
-    setTimeout(() => {
-      console.log('Works!!!!!!!!!!!!!!!!!');
-      this.joinSession();
-    }, 3000);
+    this.joinSession();
   }
 
   componentWillUnmount() {
