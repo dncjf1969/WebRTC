@@ -1,11 +1,8 @@
 import React, { Component } from "react";
-import IconButton from "@material-ui/core/IconButton";
 import Fab from "@material-ui/core/Fab";
-import HighlightOff from "@material-ui/icons/HighlightOff";
-import Send from "@material-ui/icons/Send";
 
 import "./ChatComponent.css";
-import { Tooltip, SnackbarContent } from "@material-ui/core";
+import { Tooltip } from "@material-ui/core";
 import ChatOutlinedIcon from "@mui/icons-material/ChatOutlined";
 export default class ChatComponent extends Component {
   constructor(props) {

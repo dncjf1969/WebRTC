@@ -1,5 +1,4 @@
-import React, { useState, useRef, useEffect } from "react";
-import Transition from "../utils/Transition";
+import React from "react";
 import { FaCheckCircle } from "react-icons/fa";
 // import Work from './card/Kind';
 
@@ -8,7 +7,7 @@ import job from "../images/직무.svg";
 
 // import FeaturesElement from '../images/features-element.png';
 // import Kind from './card/Kind';
-import { Link, useParams } from "react-router-dom";
+import { Link } from "react-router-dom";
 import "./Features.css";
 function Features() {
   return (

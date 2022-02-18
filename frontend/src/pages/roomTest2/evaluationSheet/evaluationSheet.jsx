@@ -97,28 +97,6 @@ class EvaluationSheet extends Component {
             marginTop: "20px",
         }    
 
-        const tempStyle1={
-            display:"inline-block",
-            width:"260px",
-            height:"500px",
-            marginLeft:"5px",
-            backgroundColor : 'Cornsilk',
-            border: '1px solid black',
-            marginTop:"5px",
-        }
-       
-
-        const tempStyle5={
-            width:"200px",
-            height:"100px",
-            marginTop:"5px",
-            fontSize: "30pt",
-            marginLeft:"10px",
-            marginTop:"10px",
-            fontSize: "17pt",
-        }
-        
-   
        
         return (
             <div>
@@ -137,8 +115,7 @@ class EvaluationSheet extends Component {
                     value={this.state.rate}
                     onChange={(event, newRate) => {
                         console.log(newRate);
-                        this.state.rate = newRate;
-                        
+                        this.setState({rate: newRate})
                     }}
                     />
                     </div>

@@ -113,40 +113,23 @@ class TestQuesList extends Component {
           <div className="message-wrap" ref={this.chatScroll}>
             {this.props.questions.map((question) => (
               <div
-                className="grid grid-cols-8"
+                className="grid grid-cols-7"
                 id={question.questionId}
                 key={question.questionId}
               >
-                <div className="col-span-7">{question.content}</div>
-                <div className="col-span-1">
-                  {question.connectionId ===
-                  this.props.localUser.connectionId ? (
-                    <button
-                      disabled={this.props.ready ? true : false}
-                      onClick={this.handleDeleteBtn}
-                      className=""
-                    >
-                      X
-                    </button>
-                  ) : null}
-                </div>
+                <div className="col-span-6">{question.content}</div>
+                {question.connectionId === this.props.localUser.connectionId ? (
+                  <button
+                    disabled={this.props.ready ? true : false}
+                    onClick={this.handleDeleteBtn}
+                    className=""
+                  >
+                    X
+                  </button>
+                ) : null}
               </div>
             ))}
           </div>
-          {/* <div id="messageInput">
-            <input
-              placeholder=""
-              id="chatInput"
-              value={this.state.message}
-              onChange={this.handleChange}
-              onKeyPress={this.handlePressKey}
-            />
-            <Tooltip title="보내기">
-              <Fab size="small" id="sendButton" onClick={this.sendMessage}>
-                <ChatOutlinedIcon sx={{ color: "white" }} />
-              </Fab>
-            </Tooltip>
-          </div> */}
 
           <div className="grid grid-cols-3 mt-4">
             <input

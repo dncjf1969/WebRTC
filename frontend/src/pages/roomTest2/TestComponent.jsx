@@ -2,12 +2,10 @@ import React, { Component } from "react";
 import axios from "axios";
 import myAxios from "../../common/http-common";
 import background from "../../images/background.jpg";
-import DeleteIcon from "@material-ui/icons/Delete";
 //
 
 import logoImage from "../../images/logo.PNG";
 
-import OvVideoComponent2 from "./stream/OvVideo2";
 
 import "./TestComponent.css";
 import { OpenVidu } from "openvidu-browser";
@@ -18,37 +16,23 @@ import StreamComponent3 from "./stream/StreamComponent3"
 import StreamComponent2Test from "./stream/StreamComponent2Test";
 // import DialogExtensionComponent from "./dialog-extension/DialogExtension";
 import ChatComponent from "./chat/ChatComponent";
-import UserVideoComponent from "./UserVideoComponent";
 
 import OpenViduLayout from "../layout/openvidu-layout";
 import UserModel from "../models/user-model";
-import ToolbarComponent from "./toolbar/ToolbarComponent";
 // import styled from "styled-components";
 import Mic from '@material-ui/icons/Mic';
 import MicOff from '@material-ui/icons/MicOff';
 
-import TestCharacter from "./Testcharacter/Testcharacter";
 import TestUserList from "./TestUserList/TestUserList";
 import TestQuesList from "./TestQuesList/TestQuesList";
 import EvaluationSheet from "./evaluationSheet/evaluationSheet";
 import RecommendationQues from "./recommendationQues/recommendationQues";
-// 채팅, 사전채팅 토글
-import BottomNavigationAction from "@mui/material/BottomNavigationAction";
-import RestoreIcon from "@mui/icons-material/Restore";
-import FavoriteIcon from "@mui/icons-material/Favorite";
-import ArchiveIcon from "@mui/icons-material/Archive";
+
 // material
 import { styled } from "@mui/material/styles";
 import {
-  Box,
-  Card,
-  Stack,
-  Link,
   Grid,
-  Container,
   Typography,
-  BottomNavigation,
-  createTheme,
 } from "@mui/material";
 // 피드백용
 import PropTypes from "prop-types";
@@ -58,12 +42,9 @@ import DialogTitle from "@mui/material/DialogTitle";
 import DialogContent from "@mui/material/DialogContent";
 import DialogActions from "@mui/material/DialogActions";
 import IconButton from "@mui/material/IconButton";
-import CloseIcon from "@mui/icons-material/Close";
 import LogoutIcon from '@mui/icons-material/Logout';
 import Divider from "@mui/material/Divider";
 //
-import { bgcolor } from "@mui/system";
-import { deepPurple, teal } from "@mui/material/colors";
 import { blue } from "@material-ui/core/colors";
 // character
 import Character0 from "../../images/00.png"
@@ -99,13 +80,6 @@ BootstrapDialogTitle.propTypes = {
   children: PropTypes.node,
 };
 ////
-
-const RootStyle = styled("div")(({ theme }) => ({
-  [theme.breakpoints.up("300")]: {
-    display: "flex",
-    marginTop: "15px",
-  },
-}));
 
 let localUser = new UserModel();
 
