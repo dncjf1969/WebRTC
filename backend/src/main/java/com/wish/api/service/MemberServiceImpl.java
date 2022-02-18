@@ -18,8 +18,10 @@ import com.wish.common.exception.custom.member.MemberAlreadyExistsException;
 import com.wish.common.exception.custom.member.NotFoundMemberException;
 import com.wish.common.exception.custom.member.UpdateMemberException;
 import com.wish.db.entity.Member;
+import com.wish.db.entity.Role;
 import com.wish.db.repository.MemberRepository;
 import com.wish.db.repository.MemberRepositorySupport;
+import com.wish.db.repository.RoleRepositiory;
 
 import java.util.Optional;
 import java.util.Random;
@@ -35,6 +37,9 @@ public class MemberServiceImpl implements MemberService {
 	
 	@Autowired
 	MemberRepositorySupport memberRepositorySupport;
+	
+	@Autowired
+	RoleRepositiory roleRepositiory;
 	
 	@Autowired
 	RoleService roleService;
@@ -63,11 +68,12 @@ public class MemberServiceImpl implements MemberService {
 			member.setEmail(memberSignupInfo.getEmail());
 			member.setSignUpDate(member.getSignUpDate());
 			member.setCharacterNumber(memberSignupInfo.getCharacterNumber());
+
+			memberRepository.save(member);
 			
 			//role 테이블에 회원 아이디와 권한 추가.
-			roleService.createRole(memberSignupInfo.getId(), "ROLE_BASIC");
+			roleService.createRole(memberSignupInfo.getId(), "ROLE_BASIC",member);
 			
-			memberRepository.save(member);
 			
 		} catch ( CreateMemberException e) {
 			e.printStackTrace();

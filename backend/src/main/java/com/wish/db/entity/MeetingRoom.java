@@ -1,17 +1,15 @@
 package com.wish.db.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.wish.api.dto.Room;
 
 import lombok.Getter;
 import lombok.Setter;
 
-import java.sql.Date;
-import java.sql.Time;
-import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.persistence.Entity;
+import javax.persistence.OneToMany;
 
 /**
  * 면접방 모델 정의.
@@ -41,5 +39,8 @@ public class MeetingRoom extends BaseEntity{
 		
 		return meetingRoom;
 	}
+
+    @OneToMany(mappedBy = "meetingRoom")
+    List<Feedback> feedbacks = new ArrayList<>();
     
 }

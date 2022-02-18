@@ -5,8 +5,11 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 import java.sql.Date;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.persistence.*;
 
@@ -16,6 +19,7 @@ import javax.persistence.*;
 @Entity
 @Getter
 @Setter
+@ToString
 public class Member{
     @Id
 	String id;
@@ -30,5 +34,11 @@ public class Member{
     Date signUpDate;
     
     int characterNumber;
+    
+    @OneToMany(mappedBy = "member")
+    List<Role> roles = new ArrayList<>();
+
+    @OneToMany(mappedBy = "member")
+    List<Feedback> feedbacks = new ArrayList<>();
     
 }

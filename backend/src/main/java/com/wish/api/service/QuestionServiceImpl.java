@@ -28,7 +28,7 @@ public class QuestionServiceImpl implements QuestionService {
     RelationQuestionRepository relationQuestionRepository;
     
     private static final double weightQuestion = 0.4;
-    private static final double weightRelation = 0.6;
+    private static final double weightRelation = 0.8;
 
     public List<Question> readQuestionList(long parentId) {
     	

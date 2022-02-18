@@ -1,7 +1,8 @@
 package com.wish.db.entity;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -11,8 +12,11 @@ import lombok.Setter;
 @Setter
 public class Role extends BaseEntity{
 
-	String memberId;
+//	String memberId;
 	String role;
 	
+	@ManyToOne(targetEntity = Member.class)
+	@JoinColumn(name = "member_id") 
+	private Member member;
 }
 

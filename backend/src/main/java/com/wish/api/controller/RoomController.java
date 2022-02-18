@@ -221,14 +221,14 @@ public class RoomController {
         @ApiResponse(code = 404, message = "???"),
         @ApiResponse(code = 500, message = "서버 에러")
     })
-	@PreAuthorize("hasAnyRole('BASIC')")
+	// @PreAuthorize("hasAnyRole('BASIC')")
 	public ResponseEntity<BaseRes> exitWaitingRoom(
 			@ApiIgnore Authentication authentication,
 			@RequestParam @ApiParam(value="나가려는 방 id", required = true) int roomId,
-			//@RequestParam @ApiParam(value="나가려는 멤버", required = true) String memberId,
+			@RequestParam @ApiParam(value="나가려는 멤버", required = true) String memberId,
 			@RequestParam @ApiParam(value="다음 방장", allowEmptyValue=true) String nextManager) {
 	
-		String memberId = authentication.getName();
+		// String memberId = authentication.getName();
 		//TODO 확인1
 		if(nextManager==null) roomService.exitWaitingRoom(roomId, memberId);
 		else roomService.exitWaitingRoom(roomId, memberId, nextManager);
