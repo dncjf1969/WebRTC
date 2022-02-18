@@ -14,8 +14,6 @@ function Home() {
         {/*  Page sections */}
         <HeroHome />
         <FeaturesHome />
-        {/* <FeaturesBlocks /> */}
-        {/* <Newsletter /> */}
       </main>
       {/*  Site footer */}
       <Footer />
