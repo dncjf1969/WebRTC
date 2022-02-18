@@ -122,33 +122,12 @@ class TestComponent extends Component {
       session: undefined,
       // 메인 카메라 화면사람 지정
       mainStreamManager: undefined,
-      // 나
       publisher: undefined,
       // 나를 제외한 유저들
       subscribers: [],
       started: false,
       readyState: false,
       viewerState: undefined,
-      // gametype: 인성,직무 면접
-      gametype: "pushUp",
-      // 우리한테 필요없음
-      status: "up",
-      // TM에 필요했던거
-      check: false,
-      // 카운트세는거 필요ㄴㄴ
-      count: 0,
-      // TM에 필요했던거
-      webcam: undefined,
-      // TM에 필요했던거
-      model: undefined,
-      // TM에 필요했던거
-      URL: undefined,
-      // [닉네임, 갯수] 배열
-      ranking: new Map(),
-      // 랭킹정하는 배열
-      sortedrank: new Map(),
-      // 최종 등수를 인덱스 순으로 정렬된 데이터
-      rankdata: undefined,
       messages: [],
       chaton: false,
       message: "",
@@ -156,20 +135,12 @@ class TestComponent extends Component {
       ishost: false,
       hostId: undefined,
       // 토론, pt 한다면 추가
-      timer: false,
       // 높은 확률로 jwt토큰인데 여기서 사용안했음
       token: undefined,
       audiostate: false,
       videostate: true,
       // 방제목 결정
-      headerText: "",
       //
-      arrow: false,
-      leaved: false,
-      isRankModalOpen: false,
-      startbuttonstate: true,
-      finalRank: [],
-      isFliped: true,
       localUser: undefined,
       chatDisplay: "block",
       currentVideoDevice: undefined,
@@ -204,9 +175,6 @@ class TestComponent extends Component {
       feedbackDialogState: false,
       managerLayoutState: 1,
     };
-    console.log("state다");
-    console.log(this.state);
-    console.log(localUser);
     this.handleExitBtn = this.handleExitBtn.bind(this);
     this.handleCloseFeedback = this.handleCloseFeedback.bind(this);
     this.getRecoQues = this.getRecoQues.bind(this);
@@ -294,7 +262,6 @@ class TestComponent extends Component {
       })
       .catch((e) => console.log(e));
 
-    console.log("마운트됐다");
     const openViduLayoutOptions = {
       maxRatio: 3 / 2, // The narrowest ratio that will be used (default 2x3)
       minRatio: 9 / 16, // The widest ratio that will be used (default 16x9)
@@ -336,7 +303,6 @@ class TestComponent extends Component {
 
   joinSession() {
     // this.OV = new OpenVidu();
-
     console.log("initSession 확인 ***********");
     console.log(this.OV);
     this.setState(
@@ -345,16 +311,9 @@ class TestComponent extends Component {
       },
       () => {
         this.subscribeToStreamCreated();
-        console.log(this.state.session);
         this.connectToSession();
-        console.log(this.state.session);
-        console.log("나의 ishost:", this.state.ishost);
 
         this.state.session.on("streamCreated", (event) => {
-          console.log("스트림크리에이티드");
-          console.log(event);
-          console.log(this.state.latestUser);
-          console.log(localUser);
           this.setState({ allReady: false });
           this.state.session
             .signal({
@@ -366,9 +325,7 @@ class TestComponent extends Component {
               to: [this.state.latestUser],
               type: "new-user",
             })
-            .then(() => {
-              console.log("정보보냈다");
-            })
+            .then(() => {})
             .catch((error) => {
               console.log(error);
             });
@@ -376,63 +333,40 @@ class TestComponent extends Component {
 
         this.state.session.on("signal:new-user", (event) => {
           console.log(event);
-          console.log("정보받았다");
           const from = event.from.connectionId;
           this.state.subscribers.forEach((element) => {
             if (element.connectionId === from) {
-              console.log(element);
               element.setReady(JSON.parse(event.data).ready);
               element.setViewer(JSON.parse(event.data).viewer);
               this.setState({ subscribers: this.remotes });
             }
           });
-          console.log("지금 내 퀘션", this.state.questions);
           const temp = JSON.parse(event.data).questions;
-          console.log("들어온 퀘션", temp);
           if (this.state.questions.length === 0) {
             this.setState({ questions: temp });
           }
-          console.log("다시 내 퀘션", this.state.questions);
-          console.log(temp === this.state.questions);
         });
 
         this.state.session.on("connectionCreated", (event) => {
-          console.log("!!! conectioncreated");
           console.log(event);
           this.setState({ latestUser: event.connection });
-          console.log(this.state.latestUser);
-          // const temp = JSON.parse(event.target.options.metadata)
-          // console.log(temp.clientData)
-          console.log(event.target.remoteConnections);
-          // event-connection-data는 me
-          // event-target-remoteConnections는 참여자들(나 포함)
-          //this.state.nowUser = event.target.remoteConnections;
-          // 참여자 전체 정보
-          // const temp = event.target.remoteConnections;
-          //this.state.nowUser = [];
-
-          //temp.forEach(element => {
           const temp2 = JSON.parse(event.connection.data);
-          console.log(temp2.clientData);
           // 로컬 유저에 대한 정보
           const temp3 = {
             userName: temp2.clientData,
             sessionID: event.connection.connectionId,
             ready: this.readyState,
           };
-          console.log("event다", event);
           this.state.nowUser.push(temp3);
         });
         // 새유저가 들어왔을 때, 다른사람의 레디 정보가 반영 안됨
         this.state.session.on("signal:readyTest", (event) => {
           console.log(event);
-          console.log(event.target.remoteConnections);
           //시그널을 보낸 세션 아이디
           let xx = event.from.connectionId;
           if (xx === localUser.connectionId) {
             this.readyStatusChanged();
             this.setState({ readyState: !this.state.readyState });
-            console.log("내 레디상태", this.state.readyState);
             if (event.data === "true") {
               localUser.setViewer(true);
               this.setState({ viewerState: true });
@@ -443,8 +377,6 @@ class TestComponent extends Component {
             this.sendSignalUserChanged({ viewerState: localUser.isViewer() });
             this.setState({ localUser: localUser });
           }
-          console.log(xx + "가 레디를 하겠대 or 레디 취소 하겠대.");
-          console.log(this.state.subscribers);
           this.state.subscribers.forEach((element) => {
             if (element.connectionId === xx) {
               console.log(element);
@@ -458,8 +390,6 @@ class TestComponent extends Component {
             }
           });
           const check = (value) => value.ready;
-          // console.log('스타트')
-          // console.log(this.props)
           if (this.state.subscribers.every(check) && this.state.readyState) {
             this.setState({ allReady: true });
           } else {
@@ -470,12 +400,9 @@ class TestComponent extends Component {
         this.state.session.on("signal:makeQues", (event) => {
           //시그널을 보낸 세션 아이디
           let xx = event.from.connectionId;
-          console.log(xx + "가 질문 만들겠대.");
           console.log(event);
-          let zz = "";
           for (let i = 0; i < this.state.nowUser.length; i++) {
             if (this.state.nowUser[i].sessionID === xx) {
-              zz = this.state.nowUser[i].userName;
               break;
             }
           }
@@ -493,7 +420,6 @@ class TestComponent extends Component {
               },
             ],
           });
-          console.log(this.state.questions);
         });
         this.state.session.on("signal:deleteQues", (event) => {
           console.log(event);
@@ -548,7 +474,6 @@ class TestComponent extends Component {
 
         // 게임시작
         this.state.session.on("signal:start", async (event) => {
-          console.log("원래 내 스타트상태", this.state.isStart);
 
           let allUsers = [localUser, ...this.state.subscribers];
           let viewees = [];
@@ -573,11 +498,6 @@ class TestComponent extends Component {
             meetingId: event.data,
             mainStreamManager: viewees[0],
           });
-          console.log("시그널받고 스타트상태", this.state.isStart);
-          console.log("면접관 ", this.state.viewers);
-          console.log("면접자 ", this.state.viewees);
-          console.log("모든유저 ", this.state.allUsers);
-          console.log("미팅아이디", this.state.meetingId);
 
           // 면접관이 평가완료 하고 버튼눌렀을때
           this.state.session.on("signal:next", (event) => {
@@ -606,14 +526,6 @@ class TestComponent extends Component {
                       }
                     )
                     .then((res) => {
-                      console.log(res);
-                      console.log("선택질문 count요청보냄");
-                      console.log(
-                        "childId",
-                        this.state.curQuesId,
-                        "parentId",
-                        this.state.preQuesId
-                      );
                       myAxios
                         .put(
                           "/question/relation",
@@ -629,7 +541,6 @@ class TestComponent extends Component {
                         )
                         .then((res) => {
                           console.log(res);
-                          console.log("연관질문 count요청보냄");
                           this.setState({ preQuesId: this.state.curQuesId });
                         })
                         .catch((e) => console.log(e));
@@ -649,7 +560,7 @@ class TestComponent extends Component {
         });
 
         this.state.session.on("signal:choiceQues", (event) => {
-          console.log(event.data);
+          console.log(event);
           this.setState({ chosenQues: event.data, customQuesCheck: true });
         });
 
@@ -664,7 +575,6 @@ class TestComponent extends Component {
 
         this.state.session.on("signal:choiceRecoQues", (event) => {
           console.log(event.data);
-          console.log(this.state.meetingId);
           const data = JSON.parse(event.data);
           this.setState({
             chosenQues: data.content,
@@ -677,7 +587,6 @@ class TestComponent extends Component {
         this.state.session.on("signal:finish", (event) => {
           // alert('면접이 끝났습니다.')
           const isViewer = this.state.viewerState;
-          console.log(this.props.test);
           this.setState({ feedbackDialogState: true });
           if (isViewer === false) {
             // 면접자들이면 피드백 정보 받기
@@ -711,7 +620,6 @@ class TestComponent extends Component {
   }
 
   nextViewee() {
-    console.log("다음참가자 들어오세요");
     const vieweesNum = this.state.viewees.length - 1;
     let vieweeIdx = this.state.vieweeIdx;
     if (vieweeIdx === vieweesNum) {
@@ -726,11 +634,8 @@ class TestComponent extends Component {
 
   connectToSession() {
     if (this.sessionName !== undefined) {
-      // console.log("token received: 111 ", ovToken);
-      // console.log("proptoken", this.props.token)
       this.getToken()
         .then((token) => {
-          // console.log("token received: ", this.props.token);
           console.log(token);
           this.connect(token);
         })
@@ -745,7 +650,7 @@ class TestComponent extends Component {
             });
           }
           console.log(
-            "There was an error getting the token: 333",
+            "There was an error getting the token",
             this.props.token,
             error.code,
             error.message
@@ -755,7 +660,6 @@ class TestComponent extends Component {
     } else {
       this.getToken()
         .then((token) => {
-          // console.log("token received: ", this.props.token);
           console.log(token);
           this.connect(token);
         })
@@ -769,7 +673,7 @@ class TestComponent extends Component {
             });
           }
           console.log(
-            "There was an error getting the token: 333",
+            "There was an error getting the token",
             this.props.token,
             error.code,
             error.message
@@ -785,20 +689,15 @@ class TestComponent extends Component {
       id: this.state.id,
       image: this.state.characterNum,
     };
-    console.log("커넥트 함수==============");
-    console.log(this.state.session);
     this.state.session
       .connect(token, context)
       .then(() => {
-        console.log("여기사람있어요");
         this.updateHost().then((firstUser) => {
-          console.log("무야호", firstUser);
           const host = firstUser;
           this.setState({ hostId: host });
           if (this.state.session.connection.connectionId === host) {
             this.setState({ ishost: true });
           }
-          console.log("업데이트호스트 후 나의 ishost:", this.state.ishost);
         });
         this.connectWebCam();
       })
@@ -910,7 +809,6 @@ class TestComponent extends Component {
           }
         )
         .then((response) => {
-          console.log("업데이트호스트성공", response);
           console.log(response.data.content);
           let content = response.data.content;
           content.sort((a, b) => a.createdAt - b.createdAt);
@@ -946,29 +844,6 @@ class TestComponent extends Component {
 
   leaveSession() {
     const mySession = this.state.session;
-    // axios
-    //   .get(this.OPENVIDU_SERVER_URL + "/openvidu/api/sessions", {
-    //     headers: {
-    //       Authorization:
-    //         "Basic " + btoa("OPENVIDUAPP:" + this.OPENVIDU_SERVER_SECRET),
-    //     },
-    //   })
-    //   .then((response) => {
-    //     console.log(response);
-    //     if (response.data.numberOfElements === 1) {
-    //       // 0인지 1인지 실험필요
-    //       myAxios
-    //         .delete(`/room/waiting?roomId=${this.state.waitingId}`, {
-    //           headers: {
-    //             Authorization: window.localStorage.getItem('jwt'),
-    //           },
-    //         })
-    //         .then(() => console.log("DB에서 방삭제됨"))
-    //         .catch((e) => console.log(e));
-    //     }
-    //   })
-    //   .catch(() => {});
-
     // Empty all properties...
     this.OV = null;
     this.setState({
@@ -1146,7 +1021,6 @@ class TestComponent extends Component {
       readyState: false,
       viewerState: undefined,
       meetingId: "",
-      isFliped: true,
       chatDisplay: "none",
       questions: [],
       isStart: false,
@@ -1172,9 +1046,6 @@ class TestComponent extends Component {
     this.setState({ subscribers: this.remotes });
     localUser.setReady(false);
     localUser.setViewer(null);
-    // this.setState({subscribers: init})
-
-    console.log(this.state.subscribers);
   }
 
   async switchCamera() {
@@ -1341,17 +1212,14 @@ class TestComponent extends Component {
   }
             
   handleMainVideoStream(stream) {
-    // 내차례면 마이크 켜
     this.setState({
       mainStreamManager: stream,
     });
   }
 
   handleChoiceQues(question) {
-    console.log(question);
     setTimeout(() => {
       this.setState({ chosenQues: question });
-      console.log("핸들초이스퀘스에서 바꾼 스테이트: ", this.state.chosenQues);
     }, 20);
     // this.props(this.setState({chosenQues: event.target.value}))
   }
@@ -1364,10 +1232,7 @@ class TestComponent extends Component {
         to: [],
         type: "finish",
       })
-      .then(() => {
-        console.log("면접 끝");
-        console.log(this.state.session);
-      })
+      .then(() => {})
       .catch((error) => {});
     // axios 방장이 버튼눌렀으므로 한번만감
     myAxios
@@ -1379,7 +1244,7 @@ class TestComponent extends Component {
           },
         }
       )
-      .then((res) => console.log("면접끝 서버로 요청보냄", res))
+      .then((res) => console.log(res))
       .catch((e) => console.log(e));
 
     myAxios
@@ -1388,7 +1253,7 @@ class TestComponent extends Component {
           Authorization: window.localStorage.getItem("jwt"),
         },
       })
-      .then((res) => console.log("방폭파시킴", res))
+      .then((res) => console.log(res))
       .catch((e) => console.log(e));
   }
 
@@ -1418,7 +1283,7 @@ class TestComponent extends Component {
                 Authorization: window.localStorage.getItem("jwt"),
               },
             })
-            .then(() => console.log("DB에서 방삭제됨"))
+            .then((res) => console.log(res))
             .catch((e) => console.log(e));
         }
       })
@@ -1429,20 +1294,14 @@ class TestComponent extends Component {
 
 
   setManagerLayoutState(){
-    if(this.state.managerLayoutState==1) this.setState({ managerLayoutState: 2 });
-    else if(this.state.managerLayoutState==2) this.setState({ managerLayoutState: 1 });
-    console.log(this.state.managerLayoutState);
-    console.log(this.state.isStart);
-    console.log(this.state.localUser.viewer);
+    if(this.state.managerLayoutState == 1) this.setState({ managerLayoutState: 2 });
+    else if(this.state.managerLayoutState == 2) this.setState({ managerLayoutState: 1 });
   }
 
   render() {
-    console.log(this.state)
-    const mySessionId = this.state.mySessionId;
     const localUser = this.state.localUser;
     const color = blue[100];
     let chatDisplay = { display: this.state.chatDisplay };
-    const mainStreamManager = this.state.mainStreamManager;
     return (
       <div
         style={{
@@ -1450,23 +1309,8 @@ class TestComponent extends Component {
           marginLeft: "2%",
           marginRight: "2%",
           marginBottom: '2%',
-          // backgroundImage: `url(${background})`,
         }}
       >
-        {/* <ToolbarComponent
-          sessionId={mySessionId}
-          user={localUser}
-          isStart={this.state.isStart}
-          showNotification={this.state.messageReceived}
-          camStatusChanged={this.camStatusChanged}
-          micStatusChanged={this.micStatusChanged}
-          screenShare={this.screenShare}
-          stopScreenShare={this.stopScreenShare}
-          toggleFullscreen={this.toggleFullscreen}
-          switchCamera={this.switchCamera}
-          leaveSession={this.leaveSession}
-          toggleChat={this.toggleChat}
-        /> */}
         <Grid
           container
           title=""
@@ -1474,14 +1318,10 @@ class TestComponent extends Component {
             height: "700px",
             display: "flex",
             marginTop: "5px",
-
             paddingTop: "15px",
             backgroundImage: `url(${background})`,
             borderRadius: 6,
-            // backgroundImage: `url(${background})`,
             backgroundColor: color,
-            // boxShadow: "0 3px 5px 2px rgba(47, 138, 241, 0.5)",
-            //opacity: 0.7,
           }}
         >
           {this.state.isStart ? (
@@ -1497,7 +1337,6 @@ class TestComponent extends Component {
                       style={{ height: "50%", marginBottom: "5%", marginTop: "5%" }}
                       id="remoteUsers"
                     >
-                      {/* {i===0 ? <div><b>면접관</b></div> : null} */}
                       <StreamComponent
                         user={sub}
                         handleNickname={this.nicknameChanged}
@@ -1506,22 +1345,6 @@ class TestComponent extends Component {
                     </div>
                   ))}
                 </div>
-
-                {/* <div>
-                  {this.state.isStart && localUser.viewer && (
-                    <div style={{height: '40%'}}>
-                      <RecommendationQues
-                        session={this.state.session}
-                        questions={this.state.questions}
-                        recoQues={this.state.recoQues}
-                        mainStreamManager={this.state.mainStreamManager}
-                        handleChoiceQues={(e) => this.handleChoiceQues(e)}
-                        preQuesId={this.state.preQuesId}
-                        meetingId={this.state.meetingId}
-                      />
-                    </div>
-                  )}
-                </div> */}
               </Grid>
               <Grid item xs={6}>
                 <div style={{width: "600px", height:'25%'}}> 
@@ -1534,7 +1357,6 @@ class TestComponent extends Component {
                         style={{ float: "left", marginBottom:'10px', marginLeft:"10px" , marginTop:'5%', width:'30%', height:'40%'}}
                         id="remoteUsers"
                       >
-                        {/* {i===1 ? <div>면접자</div> : null} */}
                         <StreamComponent3 user={sub} />
                       </div>
                     ) : null
@@ -1544,7 +1366,6 @@ class TestComponent extends Component {
                 <div style={{width:'100%'}}>
                   {this.state.mainStreamManager && (
                     <div className="stream-container" id="remoteUsers">
-                      {/* <div>선택된화면</div> */}
                       <StreamComponent2 user={this.state.mainStreamManager} />
                     </div>
                   )}
@@ -1552,10 +1373,7 @@ class TestComponent extends Component {
               </Grid>
 
               {/* <Grid item xs={3}> */}
-              <div id="whale">
-                {/* TODO */}
-                {/* <button onClick={this.setManagerLayoutState}>추천질문</button> */}
-                
+              <div id="whale">     
                 {this.state.viewerState === true ?  ( 
                   this.state.isStart && localUser.viewer ?
                     (<div>
@@ -1620,7 +1438,6 @@ class TestComponent extends Component {
                   color="secondary"
                   size="small"
                   startIcon={<LogoutIcon />}
-
                   >
                   나가기
                 </Button>
@@ -1638,12 +1455,9 @@ class TestComponent extends Component {
                     allReady={this.state.allReady}
                     roomId={this.state.waitingId}
                     characterNum={this.state.characterNum}
-                    
-                  
                   />
                 </div>
-                {/* <button onClick={this.handleExitBtn}>나가기</button> */}
-                
+
               </Grid>
               {/* 채팅 */}
               <Grid item xs={4}>
