@@ -1,7 +1,5 @@
 import React, { Component } from "react";
-import axios from "../../../common/http-common";
 import "./TestQuesComponent.css";
-import { IoCloudUploadOutline } from "react-icons/io5";
 import { Fab, Tooltip } from "@material-ui/core";
 import BorderColorIcon from "@mui/icons-material/BorderColor";
 class TestQuesList extends Component {
@@ -96,6 +94,7 @@ class TestQuesList extends Component {
               value={this.state.message}
               onChange={this.handleChange}
               onKeyPress={this.handlePressKey}
+              disabled={this.props.ready}
             />
             <Tooltip title="보내기">
               <Fab

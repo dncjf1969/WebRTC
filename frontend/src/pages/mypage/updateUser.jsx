@@ -1,42 +1,19 @@
 import { useState, React, useEffect } from "react";
-import { Link } from "react-router-dom";
 // $ npm i react-redux
 // import { useDispatch } from 'react-redux';
 import { useNavigate } from "react-router-dom";
 // $ npm i styled-components
 import styled from "styled-components";
-// $ npm install @material-ui/core
-import { Button } from "@material-ui/core";
 // $ npm i react-material-ui-form-validator
-import { ValidatorForm, TextValidator } from "react-material-ui-form-validator";
+import { ValidatorForm } from "react-material-ui-form-validator";
 // $ npm i @material-ui/core/styles
 import { makeStyles } from "@material-ui/core/styles";
 // import { signup, checkEmail } from '../authSlice';
 import axios from "../../common/http-common";
 import Header from "../../partials/Header";
 import SelectCharacter from "../SelectCharacter";
-import DeleteModal from "./DeleteModal";
-// style
-const Wrapper = styled.div`
-  background-color: Bisque;
-  height: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-`;
 
-const LoginContainer = styled.div`
-  height: 80%;
-  width: 80%;
-  background-color: white;
-  display: flex;
-  justify-content: center;
-  flex-direction: column;
-  align-items: center;
-`;
-const Title = styled.span`
-  font-weight: bold;
-`;
+
 
 const useStyles = makeStyles({
   validator: {
@@ -54,14 +31,12 @@ function UpdateUser() {
     setCheckNickname(false);
   }, [Nickname]);
 
-  const [confirmNumber, setConfirmNumber] = useState("");
   const [password, setPassword] = useState("");
   const [repeatPassword, setRepeatPassword] = useState("");
 
   const [checkNickname, setCheckNickname] = useState(false);
   const [characterNumber, setCharacterNumber] = useState("");
 
-  const classes = useStyles();
   // const dispatch = useDispatch();
   // useState는 리액트 Hook의 하나이며, 상태 관리의 역할을 한다.
   // useState는 항상 2개의 value를 return한다. 첫번째 value는 state이고, 두번째 value는 modifier이다.

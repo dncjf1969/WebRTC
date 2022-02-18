@@ -3,12 +3,10 @@ import { Link } from "react-router-dom";
 // $ npm i react-redux
 // import { useDispatch } from 'react-redux';
 import { useNavigate } from "react-router-dom";
-// $ npm i styled-components
-import styled from "styled-components";
-// $ npm install @material-ui/core
-import { Button } from "@material-ui/core";
+
+
 // $ npm i react-material-ui-form-validator
-import { ValidatorForm, TextValidator } from "react-material-ui-form-validator";
+import { ValidatorForm } from "react-material-ui-form-validator";
 // $ npm i @material-ui/core/styles
 import { makeStyles } from "@material-ui/core/styles";
 // import { signup, checkEmail } from '../authSlice';

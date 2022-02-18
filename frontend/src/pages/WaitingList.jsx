@@ -9,21 +9,17 @@ import LockIcon from '@mui/icons-material/Lock';
 import Icon from '@mui/material/Icon';
 
 // Gri
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import "./WaitingList.css";
 // // 방만들기 dialog
 import { MdVpnKey } from "react-icons/md";
 import Image from "../images/메인2.svg";
-
 import axios from "../common/http-common";
-import WaitingListCard from "./WaitingListCard";
 import {
   Card,
   CardActionArea,
   CardMedia,
   Grid,
-  MenuItem,
-  Select,
 } from "@mui/material";
 import styled, { keyframes } from "styled-components";
 
@@ -291,8 +287,6 @@ export function WaitingListSearch() {
     </>
   );
 }
-const CardImg = styled(CardMedia)``;
-
 const animation = keyframes`
 0% {
   opacity: 1;
@@ -350,48 +344,9 @@ const Alarm = styled.span`
   color: white;
 `;
 
-const TextKOR = styled.h1`
-  font-size: 16px;
-  font-weight: bold;
-  color: grey;
-  text-align: center;
-  margin-top: 3px;
-`;
-
-const TextENG = styled.h1`
-  font-size: 20px;
-  font-weight: bold;
-  text-align: center;
-`;
-
-const Title = styled.div`
-  display: flex;
-  justify-content: center;
-  width: 60%;
-  margin-top: 20px;
-`;
-
-const MaxPeople = styled.p``;
-
-const DeadLine = styled.p``;
-
 const PriceDetail = styled.p`
   font-size: 14px;
   color: grey;
-`;
-
-const ProductName = styled.p`
-  font-size: 15px;
-  font-weight: bold;
-  color: gray;
-  margin-bottom: 5px;
-`;
-
-const Price = styled.p`
-  font-size: 15px;
-  font-weight: bold;
-  font-family: Verdana, Geneva, Tahoma, sans-serif;
-  padding-bottom: 3px;
 `;
 
 const CategoryName = styled.p`
