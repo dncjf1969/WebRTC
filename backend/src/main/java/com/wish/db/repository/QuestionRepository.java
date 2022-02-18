@@ -15,8 +15,8 @@ import java.util.Optional;
 public interface QuestionRepository extends JpaRepository<Question, Long> {
     // 아래와 같이, Query Method 인터페이스(반환값, 메소드명, 인자) 정의를 하면 자동으로 Query Method 구현됨.
 
-    @Query(value = "select * from question limit 2", nativeQuery = true)
-    Optional<List<Question>> findOrderByCountTop2();
+    @Query(value = "select * from question limit 10", nativeQuery = true)
+    Optional<List<Question>> findOrderByCountTop10();
     
     @Query(value = "select * from question where id=?", nativeQuery = true)
     Optional<Question> findById(Long id);

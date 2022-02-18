@@ -33,17 +33,21 @@ public class QuestionServiceImpl implements QuestionService {
     public List<Question> readQuestionList(long parentId) {
     	
     	List<Question> resList = null;
+
+		Random rand = new Random();
+		float weightRandom;
     	try {
         	if(parentId != -1) {    
             	// 기출질문에서 count기준 2개 뽑는다.
-        		resList = questionRepository.findOrderByCountTop2().get();
+        		resList = questionRepository.findOrderByCountTop10().get();
         		// 가중치 곱하기
         		for (Question question : resList) {
-    				question.setCount(question.getCount() + weightQuestion);
+        			weightRandom = (float) ((rand.nextFloat() /2.0)+0.1);
+    				question.setCount((question.getCount() + weightQuestion)*weightRandom);
     			}
 
                 // 연관질문 테이블에서 preQuestionId기준으로 질문 뽑는다.    	
-        		List<RelationQuestion> relationList = relationQuestionRepository.findTop4ByParentIdOrderByCount(parentId).get();
+        		List<RelationQuestion> relationList = relationQuestionRepository.findTop10ByParentIdOrderByCount(parentId).get();
 
         		// Question타입으로 변환해서 resList에 추가
         		for (RelationQuestion relationQuestion : relationList) {
@@ -52,7 +56,10 @@ public class QuestionServiceImpl implements QuestionService {
         					|| resList.get(1).getId() == relationQuestion.getChildId()) continue;
         			Question now = new Question();
         			now.setId(relationQuestion.getChildId());
-        			now.setCount(relationQuestion.getCount() * weightRelation);
+        			
+
+        			weightRandom = (float) ((rand.nextFloat() /2.0)+0.1);
+        			now.setCount((relationQuestion.getCount() * weightRelation)*weightRandom);
         			resList.add(now);
     			}
         		
@@ -79,12 +86,25 @@ public class QuestionServiceImpl implements QuestionService {
         		
         	}else {	// parentId가 없는 경우 : 첫질문
             	// 기출질문에서 count기준 2개 뽑는다.
-        		resList = questionRepository.findOrderByCountTop2().get();
+        		resList = questionRepository.findOrderByCountTop10().get();
+        		
+        		for (Question question : resList) {
+        			weightRandom = (float) ((rand.nextFloat() /2.0)+0.1);
+        			question.setCount((question.getCount() * weightRelation)*weightRandom);
+					
+				}
+        		
+        		// 가중치가 곱해진 count 기준 정렬
+        		Collections.sort(resList, new Comparator<Question>() {
+    				@Override
+    				public int compare(Question o1, Question o2) {
+    					return (int) ((o1.getCount() - o2.getCount())*10);
+    				}
+    			});
         	}
         	
         	// 기출 질문 중 랜덤 1개 선정
         	int size = (int) questionRepository.count() + 1;
-        	Random rand = new Random();
         	int randomId = rand.nextInt(size);
         	
         	while(true) {
