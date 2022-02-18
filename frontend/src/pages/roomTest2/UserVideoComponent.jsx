@@ -9,14 +9,6 @@ const StreamComponent = styled.div`
   flex-direction: row;
 `;
 
-const Nickname = styled.div`
-  text-align: center;
-  position: absolute;
-  width: auto;
-  height: 20px;
-  background-color: rgba(0, 0, 0, 0.5);
-  font-weight: bold;
-`;
 
 export default class UserVideoComponent extends Component {
   getNicknameTag() {

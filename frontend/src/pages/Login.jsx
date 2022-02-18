@@ -5,7 +5,6 @@ import axios from "../common/http-common";
 import { saveToken } from "../common/JWT-common";
 import { useNavigate } from "react-router-dom";
 import Header from "../partials/Header";
-import { TextField } from "@material-ui/core";
 // TextField;
 function Login() {
   // state
@@ -22,7 +21,7 @@ function Login() {
       id: ID,
       password: password,
     };
-    login(data); // LoginSlice에서 가져온 로그인 액션, login(data) 는 createAsyncThunk로 만든것.
+    login(data); 
   }
   async function login(userInfo) {
     try {

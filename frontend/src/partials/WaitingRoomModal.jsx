@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import axios from "../common/http-common";
 
 // // 방만들기 dialog
@@ -8,7 +8,6 @@ import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
-import { lightBlue } from "@mui/material/colors";
 import Button from "@mui/material/Button";
 
 // 방만들기 input select
@@ -92,6 +91,7 @@ function WaitingRoomModal({ modalClose }) {
         })
         .catch((err) => {
           console.log(err);
+          alert("오류가 발생하였습니다.")
           return err;
         });
     }

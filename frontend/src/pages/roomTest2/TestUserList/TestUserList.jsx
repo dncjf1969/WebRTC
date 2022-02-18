@@ -1,34 +1,20 @@
 import React, { Component } from "react";
 import axios from "../../../common/http-common";
 import "./TestUserList.css";
-import Gravatar from "react-gravatar";
 import {
-  Button,
   Card,
   CardActions,
   CardContent,
-  CardMedia,
   Grid,
-  Select,
   Typography,
-  Box,
   FormControl,
-  FormLabel,
   FormHelperText,
   RadioGroup,
   FormControlLabel,
   Radio,
 } from "@mui/material";
-import { borderRadius, display } from "@mui/system";
-
-// import thumb from "../public/thumb.svg";
-import { FaReact } from "react-icons/fa";
-import { SiTypescript } from "react-icons/si";
-import { AiOutlineClockCircle } from "react-icons/ai";
-import { VscChecklist } from "react-icons/vsc";
 import { FaPlay } from "react-icons/fa";
-import { MoonIcon } from "@heroicons/react/solid";
-import { SunIcon } from "@heroicons/react/solid";
+
 
 
 class TestUserList extends Component {
@@ -140,7 +126,8 @@ class TestUserList extends Component {
             <Grid item>
               <Card
                 sx={{
-                  marginTop:'20px',
+                  marginTop:'15px',
+                  marginLeft: '20px',
                   height: '400px',
                   borderRadius: 4,
                   display: "flex",
@@ -148,13 +135,15 @@ class TestUserList extends Component {
                   flexWrap: "wrap",
                   alignItems: "center",
                   justifyContent: "space-evenly",
-                  boxShadow: 3, // p: ,
+                  boxShadow: 3,
+                  width: "250px"
                 }}
                 className="inline-block shadow-cyan-500/30 ring-2 ring-white"
               >
                 <img
                   className="inline-block h-15 w-15 rounded-full ring-2 ring-white"
                   src={this.props.characterNum}
+                  style={{width: "150px", height: "150px"}}
                   alt=""
                 />
                 <CardContent>
@@ -182,7 +171,7 @@ class TestUserList extends Component {
             </Grid>
             <Grid>
               {/* 내가 선택하는 면접관, 면접자 */}
-              <div className="m-3 flex" style={{height:'100px', width:'250px'}}>
+              <div className="m-3 ml-6 flex" style={{height:'65px', width:'250px'}}>
                 <form onSubmit={this.readyTest}>
                   <FormControl
                     sx={{ m: 1}}
@@ -209,24 +198,26 @@ class TestUserList extends Component {
                       />
                     </RadioGroup>
                     <FormHelperText>{this.state.helperText}</FormHelperText>
-                    <button
-                      onClick={this.readyTest}
-                      class=" bg-cyan-500 shadow-lg rounded-xl shadow-cyan-500/30 p-3"
-                    >
-                      <h1 className="text-white text-md font-semibold">
-                        {this.props.ready ? "레디해제" : "레디"}{" "}
-                      </h1>{" "}
-                    </button>
                   </FormControl>
                 </form>
               </div>
+              <button
+                onClick={this.readyTest}
+                class="bg-cyan-500 shadow-lg rounded-xl shadow-cyan-500/30 p-2 ml-4"
+                style={{width:"250px"}}
+              >
+                <h1 className="text-white text-md font-semibold">
+                  {this.props.ready ? "레디해제" : "레디"}{" "}
+                </h1>{" "}
+              </button>
               {this.props.ishost && this.props.allReady ? (
                 <button
                   onClick={this.start}
+                  style={{marginLeft:"17px", width:"250px"}}
                   className="md:m-2 m-auto mt-8 bg-[#5865F2] shadow-md shadow-[#5865f28a]  pt-2 pb-2 pl-6 pr-4 rounded-xl flex flex-row justify-center items-center hover:bg-[#424bb6] ease-linear duration-300"
                 >
                   <FaPlay className="animate-ping" size={10} color="#fff" />{" "}
-                  <h1 className="text-white text-md font-semibold pl-2">
+                  <h1 style={{width:"190px"}} className="text-white text-md font-semibold pl-2">
                     Start{" "}
                   </h1>{" "}
                 </button>

@@ -2,10 +2,8 @@
 import axios from "../../common/http-common";
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import Gravatar from "react-gravatar";
 
 // style
-import { Container, Button } from "@material-ui/core";
 import EditIcon from "@material-ui/icons/Edit";
 import styled from "styled-components";
 import Box from "@mui/material/Box";
@@ -15,11 +13,8 @@ import { AiOutlineMonitor } from "react-icons/ai";
 import MyTable from "./Mytable";
 import DeleteModal from "./DeleteModal";
 import Donut from "./chart/donutchart";
-import Bar from "./chart/barchart";
 import InterviewList from "./interviewList";
 import Header from "../../partials/Header";
-import HeroMypage from "../../partials/HeroMypage";
-import { Grid } from "@mui/material";
 import "./Mypage.css";
 
 // character
@@ -30,16 +25,6 @@ import Character3 from "../../images/03.png"
 import Character4 from "../../images/04.png"
 import Character5 from "../../images/05.png"
 
-// 전체 컨테이너
-const Wrapper = styled.div`
-  border: x solid rgba(36, 188, 199, 0.5);
-  border-radius: 1.5em;
-`;
-
-const Style2 = {
-  margin: 10,
-  padding: 40,
-};
 
 // 제목
 const Title = styled.div`
@@ -50,41 +35,11 @@ const Title = styled.div`
   font-size: 1.2rem;
 `;
 
-// 내용
-const Content = styled.span`
-  font-size: 2rem;
-  display: inline-block;
-`;
 
-const CommonButton = styled(Button)`
-  width: 100%;
-  border-radius: 6px;
-  padding: 0.4em 1em;
-  background: #9fa9d8;
-  color: white;
-
-  &:hover {
-    background: #8090d8;
-    color: white;
-  }
-`;
-
-const ContentContainer = styled.div`
-  display: flex;
-`;
-
-// 이메일
-const Email = styled.div``;
 
 // 기록
 const Record = styled.section``;
 
-// 메세지
-const Message = styled.p`
-  text-align: center;
-  margin-bottom: 40px;
-  font-size: 2rem;
-`;
 
 // footer
 const Footer = styled.footer`
@@ -155,9 +110,6 @@ export default function MyPage() {
       setId(response.data.userId);
       setNickname(response.data.name);
       setEmail(response.data.email);
-      // return response;
-      console.log(response);
-      console.log("myInfo: 1111111111111111111111111");
     } catch (err) {
       return err.response;
     }
@@ -297,7 +249,7 @@ export default function MyPage() {
 
                       <span id="black" className="ml-2 ">
                         {" "}
-                        역검 응시
+                        면접 기록
                       </span>
                     </Title>
                     <MyTable

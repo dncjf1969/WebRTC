@@ -1,9 +1,8 @@
 import React, { Component } from "react";
 import axios from "../../../common/http-common";
 import "./TestQuesComponent.css";
-import { IoCloudUploadOutline } from "react-icons/io5";
-import { Fab, Tooltip } from "@material-ui/core";
-import BorderColorIcon from "@mui/icons-material/BorderColor";
+import Fab from "@mui/material/Fab";
+import AddIcon from "@mui/icons-material/Add";
 class TestQuesList extends Component {
   constructor(props) {
     super(props);
@@ -25,7 +24,7 @@ class TestQuesList extends Component {
           question: temp,
           questionId: String(Date.now()),
         }), // 보내는 내용
-        to: [], // 누구한데 보낼건지. 비워있으면 모두에게 보내는거고, 만약 세션 아이디 적으면 그 세션한데만 보내진다.
+        to: [], // 누구한데 보낼건지. 비워있으면 모두에게 보내는거
         type: "makeQues", // 시그널 타입.
       })
       .then(() => {
@@ -46,7 +45,7 @@ class TestQuesList extends Component {
     this.props.session
       .signal({
         data: event.target.parentElement.id, // 보내는 내용
-        to: [], // 누구한데 보낼건지. 비워있으면 모두에게 보내는거고, 만약 세션 아이디 적으면 그 세션한데만 보내진다.
+        to: [], // 누구한데 보낼건지. 비워있으면 모두에게 보내는거
         type: "deleteQues", // 시그널 타입.
       })
       .then(() => {
@@ -58,55 +57,97 @@ class TestQuesList extends Component {
   }
 
   render() {
+    const tempStyle = {
+      display: "inline-block",
+      width: "400px",
+      height: "400px",
+      marginLeft: "5px",
+    };
+
+    const tempStyle2 = {
+      display: "inline-block",
+      width: "300px",
+      height: "200px",
+      marginLeft: "2px",
+      backgroundColor: "white",
+      border: "1px solid black",
+      marginLeft: "2px",
+      marginTop: "10px",
+    };
+    const tempStyle3 = {
+      display: "inline-block",
+      width: "50px",
+      height: "10px",
+      marginLeft: "200px",
+      backgroundColor: "white",
+      border: "1px solid black",
+    };
+
+    const tempStyle4 = {
+      float: "left",
+      width: "100px",
+      height: "100px",
+    };
+
+    const tempStyle5 = {
+      width: "100px",
+      marginLeft: "5px",
+      marginTop: "5px",
+      fontSize: "17pt",
+    };
+
+    const tempStyle6 = {
+      marginLeft: "10px",
+    };
+
+    const tempStyle7 = {
+      fontSize: "30pt",
+    };
+
     const styleChat = { display: this.props.chatDisplay };
     return (
       <div id="chatContainer">
         <div id="chatComponent" style={styleChat}>
-          <div className="ml-36   font-bold">질문 추가</div>
+          <span className="font-bold ml-32">사전질문추가</span>
+          {/* <div id="navInput"></div> */}
           <div className="message-wrap" ref={this.chatScroll}>
             {this.props.questions.map((question) => (
               <div
-                className="grid grid-cols-4"
+                className="grid grid-cols-7"
                 id={question.questionId}
                 key={question.questionId}
               >
-                <div className="col-span-3 question">
-                  <span className="userName">{question.userName}</span>:{" "}
-                  {question.content}
-                </div>
-                <div className="delete">
-                  {question.connectionId ===
-                  this.props.localUser.connectionId ? (
-                    <button
-                      disabled={this.props.ready ? true : false}
-                      onClick={this.handleDeleteBtn}
-                    >
-                      X
-                    </button>
-                  ) : null}
-                </div>
+                <div className="col-span-6">{question.content}</div>
+                {question.connectionId === this.props.localUser.connectionId ? (
+                  <button
+                    disabled={this.props.ready ? true : false}
+                    onClick={this.handleDeleteBtn}
+                    className=""
+                  >
+                    X
+                  </button>
+                ) : null}
               </div>
             ))}
           </div>
 
-          <div id="messageInput">
+          <div className="grid grid-cols-3 mt-4">
             <input
-              placeholder="사전 질문 추가해주세요"
               id="input1"
-              value={this.state.message}
-              onChange={this.handleChange}
-              onKeyPress={this.handlePressKey}
-            />
-            <Tooltip title="보내기">
-              <Fab
-                size="small"
-                id="sendButton"
-                onClick={this.makeQues}
-                disabled={this.props.ready ? true : false}
-              >
-                <BorderColorIcon sx={{ color: "white" }} />
-              </Fab>
-            </Tooltip>
+              onKeyDown={this.handleEnter}
+              className="ml-5 col-span-2 border-2 w-full rounded-xl"
+              placeholder="채팅 메세지를 작성해주세요"
+            ></input>
+
+            <Fab
+              onClick={this.makeQues}
+              disabled={this.props.ready ? true : false}
+              size="small"
+              aria-label="add"
+              id="sendButton"
+            >
+              <AddIcon sx={{ color: "white" }} />
+            </Fab>
           </div>
         </div>
       </div>

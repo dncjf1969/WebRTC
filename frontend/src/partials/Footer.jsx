@@ -1,5 +1,4 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 
 function Footer() {
   return (
@@ -55,13 +54,13 @@ function Footer() {
                 <p className="text-gray-600 hover:text-gray-900 transition duration-150 ease-in-out">CRA</p>
               </li>
               <li className="mb-2">
-                <p className="text-gray-600 hover:text-gray-900 transition duration-150 ease-in-out">MUI</p>
+                <p className="text-gray-600 hover:text-gray-900 transition duration-150 ease-in-out">Material-UI</p>
               </li>
               <li className="mb-2">
-                <p className="text-gray-600 hover:text-gray-900 transition duration-150 ease-in-out">styled component</p>
+                <p className="text-gray-600 hover:text-gray-900 transition duration-150 ease-in-out">Styled Component</p>
               </li>
               <li className="mb-2">
-                <p className="text-gray-600 hover:text-gray-900 transition duration-150 ease-in-out">Tailwind</p>
+                <p className="text-gray-600 hover:text-gray-900 transition duration-150 ease-in-out">Tailwind CSS</p>
               </li>  
               <li className="mb-2">
                 <p className="text-gray-600 hover:text-gray-900 transition duration-150 ease-in-out">AOS</p>
@@ -74,22 +73,22 @@ function Footer() {
             <h6 className="text-gray-800 font-medium mb-2">　</h6>
             <ul className="text-sm">
               <li className="mb-2">
-                <p className="text-gray-600 hover:text-gray-900 transition duration-150 ease-in-out">Spring</p>
+                <p className="text-gray-600 hover:text-gray-900 transition duration-150 ease-in-out">Spring boot</p>
               </li>
               <li className="mb-2">
-                <p className="text-gray-600 hover:text-gray-900 transition duration-150 ease-in-out">teachable machine</p>
+                <p className="text-gray-600 hover:text-gray-900 transition duration-150 ease-in-out">Teachable Machine</p>
               </li>
               <li className="mb-2">
-                <p className="text-gray-600 hover:text-gray-900 transition duration-150 ease-in-out">Spring security</p>
+                <p className="text-gray-600 hover:text-gray-900 transition duration-150 ease-in-out">Spring Security</p>
               </li>
               <li className="mb-2">
                 <p className="text-gray-600 hover:text-gray-900 transition duration-150 ease-in-out">JPA</p>
               </li>
               <li className="mb-2">
-                <p className="text-gray-600 hover:text-gray-900 transition duration-150 ease-in-out">mysql</p>
+                <p className="text-gray-600 hover:text-gray-900 transition duration-150 ease-in-out">MySQL</p>
               </li>
               <li className="mb-2">
-                <p className="text-gray-600 hover:text-gray-900 transition duration-150 ease-in-out">redis</p>
+                <p className="text-gray-600 hover:text-gray-900 transition duration-150 ease-in-out">Redis</p>
               </li>
             </ul>
           </div>
@@ -99,16 +98,16 @@ function Footer() {
             <h6 className="text-gray-800 font-medium mb-2">　</h6>
             <ul className="text-sm">
               <li className="mb-2">
-                <p className="text-gray-600 hover:text-gray-900 transition duration-150 ease-in-out">jenkins</p>
+                <p className="text-gray-600 hover:text-gray-900 transition duration-150 ease-in-out">Jenkins</p>
               </li>
               <li className="mb-2">
-                <p className="text-gray-600 hover:text-gray-900 transition duration-150 ease-in-out">docker</p>
+                <p className="text-gray-600 hover:text-gray-900 transition duration-150 ease-in-out">Docker</p>
               </li>
               <li className="mb-2">
-                <p className="text-gray-600 hover:text-gray-900 transition duration-150 ease-in-out">nginx</p>
+                <p className="text-gray-600 hover:text-gray-900 transition duration-150 ease-in-out">Nginx</p>
               </li>
               <li className="mb-2">
-                <p className="text-gray-600 hover:text-gray-900 transition duration-150 ease-in-out">amazon EC2</p>
+                <p className="text-gray-600 hover:text-gray-900 transition duration-150 ease-in-out">Amazon EC2</p>
               </li>
             </ul>
           </div>         

@@ -7,7 +7,6 @@ import TableContainer from "@material-ui/core/TableContainer";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
-import { purple } from "@material-ui/core/colors";
 import "./Mypage.css";
 export default function MyTable({ Personality, Job, Debate, PT }) {
   const useStyles = makeStyles({
@@ -37,7 +36,7 @@ export default function MyTable({ Personality, Job, Debate, PT }) {
   const classes = useStyles();
   const rows = [
     createData(
-      "면접 횟수",
+      "답변 횟수",
       <h1>
         <b>{Personality}</b>
       </h1>,
