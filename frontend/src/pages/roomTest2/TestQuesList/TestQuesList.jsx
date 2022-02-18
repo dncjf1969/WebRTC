@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import axios from "../../../common/http-common";
 import "./TestQuesComponent.css";
 import Fab from "@mui/material/Fab";
 import AddIcon from "@mui/icons-material/Add";
@@ -57,53 +56,6 @@ class TestQuesList extends Component {
   }
 
   render() {
-    const tempStyle = {
-      display: "inline-block",
-      width: "400px",
-      height: "400px",
-      marginLeft: "5px",
-    };
-
-    const tempStyle2 = {
-      display: "inline-block",
-      width: "300px",
-      height: "200px",
-      marginLeft: "2px",
-      backgroundColor: "white",
-      border: "1px solid black",
-      marginLeft: "2px",
-      marginTop: "10px",
-    };
-    const tempStyle3 = {
-      display: "inline-block",
-      width: "50px",
-      height: "10px",
-      marginLeft: "200px",
-      backgroundColor: "white",
-      border: "1px solid black",
-    };
-
-    const tempStyle4 = {
-      float: "left",
-      width: "100px",
-      height: "100px",
-    };
-
-    const tempStyle5 = {
-      width: "100px",
-      marginLeft: "5px",
-      marginTop: "5px",
-      fontSize: "17pt",
-    };
-
-    const tempStyle6 = {
-      marginLeft: "10px",
-    };
-
-    const tempStyle7 = {
-      fontSize: "30pt",
-    };
-
     const styleChat = { display: this.props.chatDisplay };
     return (
       <div id="chatContainer">

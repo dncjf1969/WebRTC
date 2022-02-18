@@ -103,7 +103,6 @@ class TestComponent extends Component {
     let userName = this.props.nickname
       ? this.props.nickname
       : "OpenVidu_User" + Math.floor(Math.random() * 100);
-    let id = this.props.id ? this.props.id : "임시아이디";
     this.remotes = [];
     this.localUserAccessAllowed = false;
     this.state = {
@@ -843,7 +842,6 @@ class TestComponent extends Component {
   }
 
   leaveSession() {
-    const mySession = this.state.session;
     // Empty all properties...
     this.OV = null;
     this.setState({
@@ -1294,8 +1292,8 @@ class TestComponent extends Component {
 
 
   setManagerLayoutState(){
-    if(this.state.managerLayoutState == 1) this.setState({ managerLayoutState: 2 });
-    else if(this.state.managerLayoutState == 2) this.setState({ managerLayoutState: 1 });
+    if(this.state.managerLayoutState === 1) this.setState({ managerLayoutState: 2 });
+    else if(this.state.managerLayoutState === 2) this.setState({ managerLayoutState: 1 });
   }
 
   render() {
@@ -1328,7 +1326,7 @@ class TestComponent extends Component {
             <>
               <Grid item xs={3}>
                 <div id="cont1" style={{height:'60%', marginLeft:"15px", marginTop:"20px"}}>
-                <div> <img src={logoImage}></img></div>
+                <div> <img src={logoImage} alt=""></img></div>
                 <div><b> 👨‍⚖️ 면접관</b></div>
                   {this.state.viewers.map((sub, i) => (
                     <div
@@ -1423,7 +1421,7 @@ class TestComponent extends Component {
                 </IconButton>}
               
               {this.state.isStart && !localUser.viewer &&
-              <IconButton className="vieweeMicIcon" color="inherit" className="navButton" id="navMicButton" onClick={this.micStatusChanged}>
+              <IconButton className="vieweeMicIcon navButton" color="inherit" id="navMicButton" onClick={this.micStatusChanged}>
                   {localUser !== undefined && localUser.isAudioActive() ? <Mic /> : <MicOff color="secondary" />}
               </IconButton>}
             </>
