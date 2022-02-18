@@ -3,8 +3,6 @@ import { Link } from "react-router-dom";
 // $ npm i react-redux
 // import { useDispatch } from 'react-redux';
 import { useNavigate } from "react-router-dom";
-
-
 // $ npm i react-material-ui-form-validator
 import { ValidatorForm } from "react-material-ui-form-validator";
 // $ npm i @material-ui/core/styles
@@ -34,7 +32,6 @@ function SignUp() {
     setCheckNickname(false);
   }, [Nickname]);
 
-  const [confirmNumber, setConfirmNumber] = useState("");
   const [password, setPassword] = useState("");
   const [repeatPassword, setRepeatPassword] = useState("");
 
@@ -42,7 +39,6 @@ function SignUp() {
   const [checkNickname, setCheckNickname] = useState(false);
   const [characterNumber, setCharacterNumber] = useState("");
 
-  const classes = useStyles();
   // const dispatch = useDispatch();
   // useState는 리액트 Hook의 하나이며, 상태 관리의 역할을 한다.
   // useState는 항상 2개의 value를 return한다. 첫번째 value는 state이고, 두번째 value는 modifier이다.
@@ -178,8 +174,6 @@ function SignUp() {
     });
   }, [ID, Nickname]);
 
-  //잘 모르겠다.
-  //없어도 잘 돌아가긴 함.
   return (
     <div>
       <Header />

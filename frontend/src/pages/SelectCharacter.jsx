@@ -25,11 +25,7 @@ const Style = {
   boxShadow: 5,
   p: 4,
 };
-// #green {
-//   background: rgba(218, 221, 221, 0.463);
-//   /* opacity: 0.6; */
-//   color: rgb(8, 1, 1);
-// }
+
 const Title = styled.div`
   display: flex;
   justify-content: center;
@@ -40,8 +36,6 @@ const Title = styled.div`
 `;
 
 function SelectCharacter(props) {
-  //  const [modalInfo, setModalInfo] = React.useState();
-  //  const [modalInfo2, setModalInfo2] = React.useState();
   const [open, setOpen] = React.useState(false);
   const [charNum, setCharNum] = React.useState("");
   const [characterURL, setCharacterURL] = useState("");
@@ -209,10 +203,6 @@ function SelectCharacter(props) {
                 alt=""
               ></img>
             )}
-            {/* <li><img class="char" id="char0" src="https://lab.ssafy.com/s06-webmobile1-sub2/S06P12E201/-/raw/hyun/frontend/src/images/0.PNG" onClick={(e)=>setCharNumber(0)}></img></li> */}
-            {/* <li></li>
-            <li><img class="char" id="char2" src="https://lab.ssafy.com/s06-webmobile1-sub2/S06P12E201/-/raw/hyun/frontend/src/images/2.PNG" onClick={(e)=>setCharNumber(2)}></img></li>
-            <li><img class="char" id="char3" src="https://lab.ssafy.com/s06-webmobile1-sub2/S06P12E201/-/raw/hyun/frontend/src/images/3.PNG" onClick={(e)=>setCharNumber(3)}></img></li> */}
           </ul>
           <Button onClick={handleClose}>확인</Button>
         </Box>
