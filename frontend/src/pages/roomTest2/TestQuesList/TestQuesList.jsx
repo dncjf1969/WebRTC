@@ -72,7 +72,6 @@ class TestQuesList extends Component {
                   <span className="userName">{question.userName}</span>:{" "}
                   {question.content}
                 </div>
-                <div className="delete">
                   {question.connectionId ===
                   this.props.localUser.connectionId ? (
                     <button
@@ -82,7 +81,6 @@ class TestQuesList extends Component {
                       X
                     </button>
                   ) : null}
-                </div>
               </div>
             ))}
           </div>

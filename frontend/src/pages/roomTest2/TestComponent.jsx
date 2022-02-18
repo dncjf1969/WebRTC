@@ -81,13 +81,6 @@ BootstrapDialogTitle.propTypes = {
 };
 ////
 
-const RootStyle = styled("div")(({ theme }) => ({
-  [theme.breakpoints.up("300")]: {
-    display: "flex",
-    marginTop: "15px",
-  },
-}));
-
 let localUser = new UserModel();
 
 class TestComponent extends Component {
