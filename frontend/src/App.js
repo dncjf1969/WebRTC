@@ -9,10 +9,8 @@ import MyPage from "./pages/mypage/Mypage";
 import NotFound from "./pages/Page404";
 import UpdateUser from "./pages/mypage/updateUser";
 import Enterroom from "./pages/enterRoom";
-
 import React, { useEffect } from "react";
 import { Routes, Route, useLocation, Navigate } from "react-router-dom";
-
 import { createTheme } from "@material-ui/core";
 import AOS from "aos";
 

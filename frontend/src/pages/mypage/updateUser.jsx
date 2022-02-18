@@ -13,14 +13,6 @@ import axios from "../../common/http-common";
 import Header from "../../partials/Header";
 import SelectCharacter from "../SelectCharacter";
 
-
-
-const useStyles = makeStyles({
-  validator: {
-    fontSize: "1.5em",
-  },
-});
-
 function UpdateUser() {
   // local state
   const [email, setEmail] = useState("");
@@ -261,7 +253,6 @@ function UpdateUser() {
                         autoFocus
                         style={{
                           width: "100%",
-
                           float: "left",
                         }}
                         className="text-sm sm:text-base placeholder-gray-500 pl-10 pr-4 rounded-lg border border-gray-400 w-full py-2 focus:outline-none focus:border-blue-400"
@@ -300,7 +291,6 @@ function UpdateUser() {
                         autoFocus
                         style={{
                           width: "100%",
-
                           float: "left",
                         }}
                         className="text-sm sm:text-base placeholder-gray-500 pl-10 pr-4 rounded-lg border border-gray-400 w-full py-2 focus:outline-none focus:border-blue-400"
@@ -339,7 +329,6 @@ function UpdateUser() {
                         autoFocus
                         style={{
                           width: "100%",
-
                           float: "left",
                         }}
                         className="text-sm sm:text-base placeholder-gray-500 pl-10 pr-4 rounded-lg border border-gray-400 w-full py-2 focus:outline-none focus:border-blue-400"

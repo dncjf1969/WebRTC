@@ -50,7 +50,6 @@ export default function MyTable({ Personality, Job, Debate, PT }) {
         <b>{PT}</b>
       </h1>
     ),
-    // createData('Best Member', 0, 0, 0),
   ];
 
   return (

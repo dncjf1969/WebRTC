@@ -28,13 +28,6 @@ export function WaitingListSearch() {
   const [word, setWord] = useState(""); // submit시에 바뀔 변수
   const [search, setSearch] = useState(1);
   const navigate = useNavigate();
-  // const [] state의 기본값 -1
-  // useEffect(() => {
-  //   const jwt = window.localStorage.getItem('jwt');
-  //   if (!jwt) {
-  //     navigate('/Login')
-  // }
-  // }, [])
   
   let { roomType } = useParams();
   roomType = parseInt(roomType);
