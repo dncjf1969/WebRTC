@@ -23,7 +23,7 @@ class TestQuesList extends Component {
           question: temp,
           questionId: String(Date.now()),
         }), // 보내는 내용
-        to: [], // 누구한데 보낼건지. 비워있으면 모두에게 보내는거고, 만약 세션 아이디 적으면 그 세션한데만 보내진다.
+        to: [], // 누구한데 보낼건지. 비워있으면 모두에게 보내는거
         type: "makeQues", // 시그널 타입.
       })
       .then(() => {
@@ -44,7 +44,7 @@ class TestQuesList extends Component {
     this.props.session
       .signal({
         data: event.target.parentElement.id, // 보내는 내용
-        to: [], // 누구한데 보낼건지. 비워있으면 모두에게 보내는거고, 만약 세션 아이디 적으면 그 세션한데만 보내진다.
+        to: [], // 누구한데 보낼건지. 비워있으면 모두에게 보내는거
         type: "deleteQues", // 시그널 타입.
       })
       .then(() => {
