@@ -742,10 +742,10 @@ class TestComponent extends Component {
     let vieweeIdx = this.state.vieweeIdx;
     if (vieweeIdx === vieweesNum) {
       vieweeIdx = 0;
-      this.getRecoQues();
     } else {
       vieweeIdx++;
     }
+    this.getRecoQues();
     this.handleMainVideoStream(this.state.viewees[vieweeIdx]);
     this.setState({ vieweeIdx: vieweeIdx });
   }
