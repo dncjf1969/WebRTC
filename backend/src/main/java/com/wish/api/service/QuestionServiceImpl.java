@@ -101,6 +101,10 @@ public class QuestionServiceImpl implements QuestionService {
     					return (int) ((o1.getCount() - o2.getCount())*10);
     				}
     			});
+        		
+
+        		// 상위 두개만 남긴다.
+        		resList = resList.subList(0, 2);
         	}
         	
         	// 기출 질문 중 랜덤 1개 선정
