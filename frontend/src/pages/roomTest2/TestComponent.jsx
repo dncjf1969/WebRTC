@@ -1421,7 +1421,7 @@ class TestComponent extends Component {
   handleCloseFeedback() {
     this.setState({ feedbackDialogState: false });
     this.props.navigate("/");
-    window.localStorage.removeItem("roomId");
+    // window.localStorage.removeItem("roomId");
     window.localStorage.removeItem("token");
     window.location.reload();
   }
