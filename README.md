@@ -19,7 +19,52 @@ Want Interview Service in my House
 
 ## 1.3. 주요 서비스 화면
 
-// 리드미 추가분
+1. 메인홈
+
+   ![image-20220219223317588](C:\Users\SSAFY\AppData\Roaming\Typora\typora-user-images\image-20220219223317588.png)
+
+2. 회원가입
+
+   ![image-20220219223356853](C:\Users\SSAFY\AppData\Roaming\Typora\typora-user-images\image-20220219223356853.png)
+
+3. 로그인
+
+   ![image-20220219223422045](C:\Users\SSAFY\AppData\Roaming\Typora\typora-user-images\image-20220219223422045.png)
+
+4. 방 선택![image-20220219223738417](C:\Users\SSAFY\AppData\Roaming\Typora\typora-user-images\image-20220219223738417.png)
+
+5. 대기방 리스트 ![image-20220219223846868](C:\Users\SSAFY\AppData\Roaming\Typora\typora-user-images\image-20220219223846868.png)
+
+   
+
+6. 방 생성
+
+   ![image-20220219223920211](C:\Users\SSAFY\AppData\Roaming\Typora\typora-user-images\image-20220219223920211.png)
+
+7. 대기방 화면![img](https://cdn.discordapp.com/attachments/926106477561790464/944044857066922024/unknown.png)
+
+8. 면접방(면접자 화면-자세교정알림(우측박스))
+
+![img](https://cdn.discordapp.com/attachments/926106477561790464/944046182936772678/unknown.png)
+
+![img](https://cdn.discordapp.com/attachments/926106477561790464/944046603629625424/unknown.png)
+
+9. 면접방(면접관 화면-우측 상단: 질문체크박스)
+
+![img](https://cdn.discordapp.com/attachments/926106477561790464/944044940126720030/unknown.png)
+
+10. 면접방(면접관 화면-우측 하단: 면접자 평가박스)
+
+![img](https://cdn.discordapp.com/attachments/926106477561790464/944045280398032918/unknown.png)
+
+11. 면접이 끝나면 나타나는 모달(11-1:면접자/11-2:면접관)
+
+1. ![img](https://cdn.discordapp.com/attachments/926106477561790464/944045816996319272/unknown.png)
+2. ![img](https://cdn.discordapp.com/attachments/926106477561790464/944045823698821131/unknown.png)
+
+12. 마이페이지(피드백 모달)![image-20220219224119243](C:\Users\SSAFY\AppData\Roaming\Typora\typora-user-images\image-20220219224119243.png)
+
+    
 
 # 2. 주요 기술 스택
 
@@ -47,7 +92,7 @@ Want Interview Service in my House
 
 ## 2.4. ERD
 
-//  readme 추가분
+![image-20220219223116010](C:\Users\SSAFY\AppData\Roaming\Typora\typora-user-images\image-20220219223116010.png)
 
 # 3. 각 팀원 역할
 
