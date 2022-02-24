@@ -1,19 +1,13 @@
 import React from "react";
 import { FaCheckCircle } from "react-icons/fa";
-// import Work from './card/Kind';
-
 import normal from "../images/인성.svg";
 import job from "../images/직무.svg";
-
-// import FeaturesElement from '../images/features-element.png';
-// import Kind from './card/Kind';
 import { Link } from "react-router-dom";
 import "./Features.css";
 function Features() {
   return (
     <section className="relative " data-aos="zoom-y-out" data-aos-delay="150">
       {/* Section background (needs .relative class on parent and next sibling elements) */}
-
       <div className="relative max-w-6xl mx-auto px-4 sm:px-6">
         <div className="py-12 md:py-20">
           {/* Section header */}

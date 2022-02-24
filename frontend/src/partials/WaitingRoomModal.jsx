@@ -21,9 +21,6 @@ import Box from "@mui/material/Box";
 import Slider from "@mui/material/Slider";
 import Typography from "@mui/material/Typography";
 
-//방만들기 비밀번호 스위치
-import Switch from "@mui/material/Switch";
-
 function WaitingRoomModal({ modalClose }) {
   console.log(modalClose);
   // 모달 내 select
@@ -231,23 +228,6 @@ function WaitingRoomModal({ modalClose }) {
               max={6}
             />
           </Box>
-          {/* <Typography 
-            sx={{
-              fontSize: 15,
-              fontWeight: 'bold',
-              mt: 2,
-              ml: 1
-            }}
-            id="switch" 
-            gutterBottom
-          >
-            비밀번호 설정
-          </Typography> */}
-          {/* <Switch
-            checked={checked}
-            onChange={handleChange}
-            inputProps={{ "aria-label": "controlled" }}
-          /> */}
           {checked ? (
             <TextField
               margin="dense"

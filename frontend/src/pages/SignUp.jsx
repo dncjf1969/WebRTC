@@ -5,18 +5,10 @@ import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 // $ npm i react-material-ui-form-validator
 import { ValidatorForm } from "react-material-ui-form-validator";
-// $ npm i @material-ui/core/styles
-import { makeStyles } from "@material-ui/core/styles";
 // import { signup, checkEmail } from '../authSlice';
 import axios from "../common/http-common";
 import Header from "../partials/Header";
 import SelectCharacter from "./SelectCharacter";
-
-const useStyles = makeStyles({
-  validator: {
-    fontSize: "1.5em",
-  },
-});
 
 function SignUp() {
   // local state

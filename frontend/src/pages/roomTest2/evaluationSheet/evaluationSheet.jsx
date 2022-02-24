@@ -12,7 +12,6 @@ class EvaluationSheet extends Component {
             question: question,
             rate: undefined,
         };
-
         this.handleNextBtn = this.handleNextBtn.bind(this);
         this.handleEnter = this.handleEnter.bind(this);
         this.setRate = this.setRate(this);
@@ -79,7 +78,6 @@ class EvaluationSheet extends Component {
     // }
     
     render() {
-
         const tempStyle2={
             display:"inline-block",
             width:"350px",
@@ -97,7 +95,6 @@ class EvaluationSheet extends Component {
             marginTop: "20px",
         }    
 
-       
         return (
             <div>
                 {this.props.evalWaiting ? <div></div> :

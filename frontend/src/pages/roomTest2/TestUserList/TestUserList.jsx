@@ -114,10 +114,6 @@ class TestUserList extends Component {
   }
  
   render() {
-    // const handleChange = (event) => {
-    //   setValue(event.target.value);
-    // };
-    // const myNickName = temp.clientData
     return (
       <Grid container spacing={2}>
         <Grid item xs={4}>
@@ -231,16 +227,11 @@ class TestUserList extends Component {
           item
           xs={8}
           sx={{
-            // flexWrap: "wrap",
-            // justifyContent: "space-evenly",
-            // display: "inline-flex",
             marginLeft:''
-
           }}
           id="others"
         >
           {this.props.subscribers.map((userInfo) => (
-            
             <Card
               sx={{
                 Width: '90px',
@@ -270,9 +261,6 @@ class TestUserList extends Component {
                   {userInfo.ready ? (
                     <div>{userInfo.viewer ? "면접관" : "면접자"}</div>
                   ) : null}
-
-                  {/* <Button size="small">면접관</Button>
-                  <Button size="small">면접자</Button> */}
                 </Typography>
               </div>
               {/* 나말고 다른 참가자 카드에 있는 준비중 or 방장 */}
