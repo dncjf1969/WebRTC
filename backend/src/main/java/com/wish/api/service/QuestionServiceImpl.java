@@ -43,7 +43,7 @@ public class QuestionServiceImpl implements QuestionService {
         		// 가중치 곱하기
         		for (Question question : resList) {
         			weightRandom = (float) ((rand.nextFloat() /2.0)+0.1);
-    				question.setCount((question.getCount() + weightQuestion)*weightRandom);
+    				question.setCount((question.getCount() * weightQuestion)*weightRandom);
     			}
 
                 // 연관질문 테이블에서 preQuestionId기준으로 질문 뽑는다.    	
