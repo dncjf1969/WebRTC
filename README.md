@@ -26,6 +26,8 @@
 
 ![Untitled](README_IMG/Untitled%2010.gif)
 
+</br>
+
 # 2. 주요 기술 스택
 
 ## 2.1. 개발환경
