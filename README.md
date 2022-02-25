@@ -73,15 +73,14 @@ Want Interview Service in my House
 
 | 분류 | 환경 | 버전 | 주소 |
 | --- | --- | --- | --- |
-| Database | MySQL <img src="https://img.shields.io/badge/html5-E34F26?style=for-the-badge&logo=html5&logoColor=white"> | 8.0.x | https://dev.mysql.com/downloads/mysql/ |
-| | Redis <img src="https://img.shields.io/badge/?style=for-the-badge&logo=html5&logoColor=white">
-<svg role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><title>3M</title><path d="M18.903 5.954L17.17 13.03l-1.739-7.076h-5.099v2.613C9.72 6.28 7.56 5.706 5.558 5.674 3.12 5.641.563 6.701.469 9.936h3.373c0-.977.747-1.536 1.588-1.523 1.032-.008 1.508.434 1.533 1.124-.036.597-.387 1.014-1.525 1.014H4.303V12.9h1.03c.584 0 1.399.319 1.431 1.155.04.995-.652 1.435-1.501 1.443-1.517-.053-1.763-1.225-1.763-2.23H0c.015.677-.151 5.091 5.337 5.059 2.629.025 4.464-1.085 5.003-2.613v2.342h3.455v-7.632l1.867 7.634h3.018l1.875-7.626v7.634H24V5.954h-5.097zm-8.561 7.06c-.429-.893-1.034-1.284-1.376-1.407.714-.319 1.09-.751 1.376-1.614v3.021z"/></svg>| 5.0.7 |  |
-| Back | JAVA | Open JDK 1.8.x | |
-|  | Eclipse | - Eclipse IDE 2020-06 R Package-> Eclipse IDE for Enterprise Java Developers | https://www.eclipse.org/downloads/packages/release/2020-06/r |
-|  | STS3(Spring Tools 3) | sts3 | 3.9.14.RELEASE |
+| Database | MySQL <img src="https://img.shields.io/badge/mysql-4479A1?style=for-the-badge&logo=mysql&logoColor=white"> | 8.0.x | https://dev.mysql.com/downloads/mysql/ |
+| | Redis| 5.0.7 |  |
+| Back | JAVA <img src="https://img.shields.io/badge/java-007396?style=for-the-badge&logo=java&logoColor=white">| Open JDK 1.8.x | |
+|  | Eclipse <img src="https://img.shields.io/badge/eclipse-2C2255?style=for-the-badge&logo=Eclipse IDE&logoColor=white">| - Eclipse IDE 2020-06 R Package-> Eclipse IDE for Enterprise Java Developers | https://www.eclipse.org/downloads/packages/release/2020-06/r |
+|  | STS3(Spring Tools 3) <img src="https://img.shields.io/badge/spring-6DB33F?style=for-the-badge&logo=spring&logoColor=white"> | sts3 | 3.9.14.RELEASE |
 |  | lombok | 1.18.22 | https://projectlombok.org/download |
-| Front | React.js | 17.0.2 |  |
-|  | Node.js | 최신 LTS 버전(16.13.2 LTS) | https://nodejs.org/ko/  |
+| Front | React.js <img src="https://img.shields.io/badge/react-61DAFB?style=for-the-badge&logo=react&logoColor=black">| 17.0.2 |  |
+|  | Node.js <img src="https://img.shields.io/badge/node.js-339933?style=for-the-badge&logo=Node.js&logoColor=white">| 최신 LTS 버전(16.13.2 LTS) | https://nodejs.org/ko/  |
 
 ## 2.2. 서비스 아키텍처
 
