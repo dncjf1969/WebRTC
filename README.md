@@ -11,6 +11,8 @@ Want Interview Service in my House
 
 ## 1.3. 주요 서비스 화면
 
+[상세화면](https://lab.ssafy.com/s06-webmobile1-sub2/S06P12E201/-/blob/dev/%EC%83%81%EC%84%B8%20%ED%99%94%EB%A9%B4.md)
+
 ### 1.3.1. 메인페이지
 
 ![Untitled](README_IMG/Untitled.gif)
@@ -20,21 +22,21 @@ Want Interview Service in my House
 ![Untitled](README_IMG/Untitled%201.gif)
 
 
-### 1.3.5. 채팅+사전질문
+### 1.3.3. 채팅+사전질문
 
 ![Untitled](README_IMG/Untitled%204.gif)
 
 
-### 1.3.8. 면접관 면접화면
+### 1.3.4. 면접관 면접화면
 
 ![Untitled](README_IMG/Untitled%207.gif)
 
 
-### 1.3.10. 면접자 자세 평가
+### 1.3.5. 면접자 자세 평가
 
 ![Untitled](README_IMG/Untitled%209.gif)
 
-### 1.3.12. 마이페이지
+### 1.3.6. 마이페이지
 
 ![Untitled](README_IMG/Untitled%2010.gif)
 
