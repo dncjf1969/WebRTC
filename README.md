@@ -73,14 +73,14 @@ Want Interview Service in my House
 
 | 분류 | 환경 | 버전 | 주소 |
 | --- | --- | --- | --- |
-| Database | MySQL <img src="https://img.shields.io/badge/mysql-4479A1?style=for-the-badge&logo=mysql&logoColor=white"> | 8.0.x | https://dev.mysql.com/downloads/mysql/ |
+| Database | <img src="https://img.shields.io/badge/mysql-4479A1?style=for-the-badge&logo=mysql&logoColor=white"> | 8.0.x | https://dev.mysql.com/downloads/mysql/ |
 | | Redis| 5.0.7 |  |
-| Back | JAVA <img src="https://img.shields.io/badge/java-007396?style=for-the-badge&logo=java&logoColor=white">| Open JDK 1.8.x | |
-|  | Eclipse <img src="https://img.shields.io/badge/eclipse-2C2255?style=for-the-badge&logo=Eclipse IDE&logoColor=white">| - Eclipse IDE 2020-06 R Package-> Eclipse IDE for Enterprise Java Developers | https://www.eclipse.org/downloads/packages/release/2020-06/r |
+| Back | <img src="https://img.shields.io/badge/java-007396?style=for-the-badge&logo=java&logoColor=white">| Open JDK 1.8.x | |
+|  | <img src="https://img.shields.io/badge/eclipse-2C2255?style=for-the-badge&logo=Eclipse IDE&logoColor=white">| - Eclipse IDE 2020-06 R Package-> Eclipse IDE for Enterprise Java Developers | https://www.eclipse.org/downloads/packages/release/2020-06/r |
 |  | STS3(Spring Tools 3) <img src="https://img.shields.io/badge/spring-6DB33F?style=for-the-badge&logo=spring&logoColor=white"> | sts3 | 3.9.14.RELEASE |
 |  | lombok | 1.18.22 | https://projectlombok.org/download |
-| Front | React.js <img src="https://img.shields.io/badge/react-61DAFB?style=for-the-badge&logo=react&logoColor=black">| 17.0.2 |  |
-|  | Node.js <img src="https://img.shields.io/badge/node.js-339933?style=for-the-badge&logo=Node.js&logoColor=white">| 최신 LTS 버전(16.13.2 LTS) | https://nodejs.org/ko/  |
+| Front | <img src="https://img.shields.io/badge/react-61DAFB?style=for-the-badge&logo=react&logoColor=black">| 17.0.2 |  |
+|  | <img src="https://img.shields.io/badge/node.js-339933?style=for-the-badge&logo=Node.js&logoColor=white">| 최신 LTS 버전(16.13.2 LTS) | https://nodejs.org/ko/  |
 
 ## 2.2. 서비스 아키텍처
 
