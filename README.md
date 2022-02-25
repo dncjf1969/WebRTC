@@ -1,42 +1,28 @@
 # 1. WISH 서비스 이름 & 소개
 
-## 1.1. 서비스 이름
-
-Want Interview Service in my House
-
-## 1.2. Overview
-
 취준생 여러분들 면접준비는 잘 하고 계신가요? 
 코로나 팬데믹으로 인한 비대면 면접의 시대, 여러분의 면접을 WISH에서 준비해보세요!
+![Untitled](README_IMG/Untitled.gif)
 
-## 1.3. 주요 서비스 화면
+## 1.2. 주요 서비스 화면
 
 [상세화면](https://lab.ssafy.com/s06-webmobile1-sub2/S06P12E201/-/blob/dev/%EC%83%81%EC%84%B8%20%ED%99%94%EB%A9%B4.md)
 
-### 1.3.1. 메인페이지
-
-![Untitled](README_IMG/Untitled.gif)
-
-### 1.3.2. 회원가입~로그인
-
-![Untitled](README_IMG/Untitled%201.gif)
-
-
-### 1.3.3. 채팅+사전질문
+### 1.2.1. 채팅+사전질문
 
 ![Untitled](README_IMG/Untitled%204.gif)
 
 
-### 1.3.4. 면접관 면접화면
+### 1.2.2. 면접관 면접화면
 
 ![Untitled](README_IMG/Untitled%207.gif)
 
 
-### 1.3.5. 면접자 자세 평가
+### 1.2.3. 면접자 자세 평가
 
 ![Untitled](README_IMG/Untitled%209.gif)
 
-### 1.3.6. 마이페이지
+### 1.2.4. 마이페이지
 
 ![Untitled](README_IMG/Untitled%2010.gif)
 
