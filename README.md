@@ -73,8 +73,9 @@ Want Interview Service in my House
 
 | 분류 | 환경 | 버전 | 주소 |
 | --- | --- | --- | --- |
-| Database | MySQL | 8.0.x | https://dev.mysql.com/downloads/mysql/ |
-| Back | JAVA | Open JDK 1.8.x | ‣ |
+| Database | MySQL <img src="https://img.shields.io/badge/html5-E34F26?style=for-the-badge&logo=html5&logoColor=white"> | 8.0.x | https://dev.mysql.com/downloads/mysql/ |
+| | Redis <img src="https://img.shields.io/badge?style=for-the-badge&logo=html5&logoColor=white">| 5.0.7 |  |
+| Back | JAVA | Open JDK 1.8.x | |
 |  | Eclipse | - Eclipse IDE 2020-06 R Package-> Eclipse IDE for Enterprise Java Developers | https://www.eclipse.org/downloads/packages/release/2020-06/r |
 |  | STS3(Spring Tools 3) | sts3 | 3.9.14.RELEASE |
 |  | lombok | 1.18.22 | https://projectlombok.org/download |
