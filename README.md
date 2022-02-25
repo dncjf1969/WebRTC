@@ -52,6 +52,7 @@
 
 ![Untitled](README_IMG/Untitled%201.png)
 
+<br/><br/>
 
 # 3. 각 팀원 역할
 
@@ -118,13 +119,15 @@
     - Teachable Machine을 통해 자세 인식 모델 구현
     - EC2 서버 관리
     - 프론트 개발 및 css 스타일링(대기방, 면접방)
-&nasp;
-&nasp;&nasp;&nasp;
+
+<br/><br/>
 
 
 
 # 4. 기술 특이점
 [>>보러가기<<](https://lab.ssafy.com/s06-webmobile1-sub2/S06P12E201/-/blob/dev/%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98%20%EC%83%81%EC%84%B8.md)
+
+<br/><br/>
 
 # 5. 프로젝트 특장점(차별성)
 
