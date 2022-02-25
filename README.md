@@ -1,11 +1,3 @@
-# README
-
-프로젝트 소개
-
-팀소개
-
-세팅가이드
-
 # 1. WISH 서비스 이름 & 소개
 
 ## 1.1. 서비스 이름
@@ -27,25 +19,11 @@ Want Interview Service in my House
 
 ![Untitled](README_IMG/Untitled%201.gif)
 
-### 1.3.3. 방생성
-
-![Untitled](README_IMG/Untitled%202.gif)
-
-### 1.3.4. 방 참여
-
-![Untitled](README_IMG/Untitled%203.gif)
 
 ### 1.3.5. 채팅+사전질문
 
 ![Untitled](README_IMG/Untitled%204.gif)
 
-### 1.3.6. 준비
-
-![Untitled](README_IMG/Untitled%205.gif)
-
-### 1.3.7. 방장(준비완료-시작)
-
-![Untitled](README_IMG/Untitled%206.gif)
 
 ### 1.3.8. 면접관 면접화면
 
@@ -58,10 +36,6 @@ Want Interview Service in my House
 ### 1.3.10. 면접자 자세 평가
 
 ![Untitled](README_IMG/Untitled%209.gif)
-
-### 1.3.11. 면접자 피드백 확인
-
-![피드백.gif](README_IMG/%ED%94%BC%EB%93%9C%EB%B0%B1.gif)
 
 ### 1.3.12. 마이페이지
 
@@ -90,9 +64,6 @@ Want Interview Service in my House
 
 ![Untitled](README_IMG/Untitled%201.png)
 
-## 2.4. ERD
-
-//  readme 추가분
 
 # 3. 각 팀원 역할
 
@@ -172,6 +143,7 @@ WISH는 보다 다양한 면접질문에 대응할 수 있도록 기출 질문�
 
 질문 추천은 이러한 count를 기반으로 이루어집니다.
 
+
 ### 4.1.1. 연관질문
 
 어떤 순서로 질문을 선택했는지 기록하는 테이블을 ‘연관질문’ 테이블이라고 합니다.
@@ -179,6 +151,7 @@ WISH는 보다 다양한 면접질문에 대응할 수 있도록 기출 질문�
 하나의 질문이 한 번 선택될 때마다 count가 1씩 증가하는 ‘기출질문’테이블과는 달리  연관질문은 ‘선행질문parent’과 ‘후행질문child’이 일치해야 count가 증가하기 때문에 한 번 선택시 **count를 3씩 증가**시킵니다.
 
 또한 기출질문보다 **연관질문에서의 추천이 사용자가 더 선호할 가능성**이 있기 때문에 가중치w를 곱하여 우선순위를 높이고 있습니다.
+
 
 ## 4.2. 바른 자세 알림(Teachable Machine)
 
