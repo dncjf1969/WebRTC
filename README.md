@@ -130,7 +130,8 @@ Want Interview Service in my House
     - Teachable Machine을 통해 자세 인식 모델 구현
     - EC2 서버 관리
     - 프론트 개발 및 css 스타일링(대기방, 면접방)
-
+&nasp;
+&nasp;&nasp;&nasp;
 # 4. 기술 특이점
 
 ## 4.1. 질문 추천 알고리즘
@@ -143,7 +144,7 @@ WISH는 보다 다양한 면접질문에 대응할 수 있도록 기출 질문�
 
 질문 추천은 이러한 count를 기반으로 이루어집니다.
 
-
+&nasp;
 ### 4.1.1. 연관질문
 
 어떤 순서로 질문을 선택했는지 기록하는 테이블을 ‘연관질문’ 테이블이라고 합니다.
@@ -217,5 +218,3 @@ WISH에서는 기출질문 중 상황에 적합한 질문을 추천해드립니�
     - 테스트 계정은 아래와 같이 만들었습니다.
 
 ![Untitled](README_IMG/Untitled%205.png)
-
-![Untitled](README_IMG/Untitled%206.png)
