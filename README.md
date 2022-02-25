@@ -4,25 +4,25 @@
 코로나 팬데믹으로 인한 비대면 면접의 시대, 여러분의 면접을 WISH에서 준비해보세요!
 ![Untitled](README_IMG/Untitled.gif)
 
-## 1.2. 주요 서비스 화면
+## 1.1. 주요 서비스 화면
 
-[상세화면](https://lab.ssafy.com/s06-webmobile1-sub2/S06P12E201/-/blob/dev/%EC%83%81%EC%84%B8%20%ED%99%94%EB%A9%B4.md)
+[>>상세화면 보러가기<<](https://lab.ssafy.com/s06-webmobile1-sub2/S06P12E201/-/blob/dev/%EC%83%81%EC%84%B8%20%ED%99%94%EB%A9%B4.md)
 
-### 1.2.1. 채팅+사전질문
+### 1.1.1. 채팅+사전질문
 
 ![Untitled](README_IMG/Untitled%204.gif)
 
 
-### 1.2.2. 면접관 면접화면
+### 1.1.2. 면접관 면접화면
 
 ![Untitled](README_IMG/Untitled%207.gif)
 
 
-### 1.2.3. 면접자 자세 평가
+### 1.1.3. 면접자 자세 평가
 
 ![Untitled](README_IMG/Untitled%209.gif)
 
-### 1.2.4. 마이페이지
+### 1.1.4. 마이페이지
 
 ![Untitled](README_IMG/Untitled%2010.gif)
 
