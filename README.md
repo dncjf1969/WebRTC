@@ -73,8 +73,7 @@ Want Interview Service in my House
 
 | 분류 | 환경 | 버전 | 주소 |
 | --- | --- | --- | --- |
-| Database | MySQL
-<img src="https://img.shields.io/badge/html5-E34F26?style=for-the-badge&logo=html5&logoColor=white"> | 8.0.x | https://dev.mysql.com/downloads/mysql/ |
+| Database | MySQL | 8.0.x | https://dev.mysql.com/downloads/mysql/ |
 | Back | JAVA | Open JDK 1.8.x | ‣ |
 |  | Eclipse | - Eclipse IDE 2020-06 R Package
 > Eclipse IDE for Enterprise Java Developers | https://www.eclipse.org/downloads/packages/release/2020-06/r |
