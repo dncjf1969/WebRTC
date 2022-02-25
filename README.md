@@ -1,6 +1,6 @@
 ## Index
   - [1. WISH 서비스 이름 & 소개](#1. WISH 서비스 이름 & 소개) 
-  - [2. 주요 기술 스택](# 2.-주요-기술-스택)
+  - [2. 주요 기술 스택](#2-주요-기술-스택)
   - [Contributing](#contributing)
   - [Authors](#authors)
   - [License](#license)
