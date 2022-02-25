@@ -29,9 +29,6 @@ Want Interview Service in my House
 
 ![Untitled](README_IMG/Untitled%207.gif)
 
-### 1.3.9. 추천질문
-
-![Untitled](README_IMG/Untitled%208.gif)
 
 ### 1.3.10. 면접자 자세 평가
 
@@ -132,6 +129,9 @@ Want Interview Service in my House
     - 프론트 개발 및 css 스타일링(대기방, 면접방)
 &nasp;
 &nasp;&nasp;&nasp;
+
+
+
 # 4. 기술 특이점
 
 ## 4.1. 질문 추천 알고리즘
