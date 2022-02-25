@@ -75,13 +75,11 @@ Want Interview Service in my House
 | --- | --- | --- | --- |
 | Database | MySQL | 8.0.x | https://dev.mysql.com/downloads/mysql/ |
 | Back | JAVA | Open JDK 1.8.x | ‣ |
-|  | Eclipse | - Eclipse IDE 2020-06 R Package
-> Eclipse IDE for Enterprise Java Developers | https://www.eclipse.org/downloads/packages/release/2020-06/r |
+|  | Eclipse | - Eclipse IDE 2020-06 R Package-> Eclipse IDE for Enterprise Java Developers | https://www.eclipse.org/downloads/packages/release/2020-06/r |
 |  | STS3(Spring Tools 3) | sts3 | 3.9.14.RELEASE |
 |  | lombok | 1.18.22 | https://projectlombok.org/download |
 | Front | React.js | 17.0.2 |  |
-|  | Node.js | 최신 LTS 버전
-(16.13.2 LTS) | https://nodejs.org/ko/  |
+|  | Node.js | 최신 LTS 버전(16.13.2 LTS) | https://nodejs.org/ko/  |
 
 ## 2.2. 서비스 아키텍처
 
