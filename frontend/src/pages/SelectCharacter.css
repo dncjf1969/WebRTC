@@ -1,0 +1,8 @@
+
+.char{
+  opacity: 50%;
+}
+
+.selectedChar{
+  opacity: 100%;
+}

@@ -18,7 +18,7 @@ buildscript{
         classpath "io.spring.gradle:dependency-management-plugin:${springDependencyMgmtVer}.RELEASE"
         classpath "org.springframework:springloaded:${springLoadedVer}.RELEASE"
         //이클립스인 경우를 위한 QueryDSL 플러그인. IntelliJ는 불필요. [시작]
-        classpath "gradle.plugin.com.ewerk.gradle.plugins:querydsl-plugin:${querydslPluginVer}"
+        // classpath "gradle.plugin.com.ewerk.gradle.plugins:querydsl-plugin:${querydslPluginVer}"
         //[끝] 
         classpath "com.github.node-gradle:gradle-node-plugin:3.1.0"
     }
@@ -28,13 +28,14 @@ plugins {
     id 'java'
     id 'idea'
     id 'org.springframework.boot' version "${springBootVer}"
+    id 'base'
 }
 
 apply plugin: 'io.spring.dependency-management'
 apply plugin: 'eclipse'
 apply plugin: 'com.github.node-gradle.node'
 //이클립스인 경우를 위한 QueryDSL 플러그인. IntelliJ는 불필요.
-apply plugin: 'com.ewerk.gradle.plugins.querydsl'
+// apply plugin: 'com.ewerk.gradle.plugins.querydsl'
 
 
 repositories {
@@ -46,7 +47,7 @@ repositories {
     maven { url "https://build.shibboleth.net/nexus/content/repositories/releases" }
 }
 
-group 'com.ssafy'
+group 'com.wish'
 version '1.0-SNAPSHOT'
 sourceCompatibility = '1.8'
 
@@ -65,12 +66,14 @@ configurations {
     args = ['install']
 }*/
 
+/*
 task webpack(type: NpmTask, dependsOn: 'npmInstall') {
     args = ['run','build']
 }
+*/
 
 // processResources is a Java task. Run the webpack bundling before this task using the 'build' task in the package.json
-processResources.dependsOn 'webpack'
+// processResources.dependsOn 'webpack'
 
 //set build time and inject value to application.properties
 def buildTime() {
@@ -99,28 +102,28 @@ processResources {
 }
 
 //이클립스인 경우를 위한 QueryDSL 설정. IntelliJ는 불필요. [시작]
-def querydslDir = 'src/main/generated'
-querydsl {
-    library = "com.querydsl:querydsl-apt"
-    jpa = true
-    querydslSourcesDir = querydslDir
-}
-
-sourceSets {
-    main {
-        java {
-            srcDirs = ['src/main/java', querydslDir]
-        }
-    }
-}
-
-compileQuerydsl {
-    options.annotationProcessorPath = configurations.querydsl
-}
-
-configurations {
-    querydsl.extendsFrom compileClasspath
-}
+//def querydslDir = 'src/main/generated'
+//querydsl {
+//    library = "com.querydsl:querydsl-apt"
+//    jpa = true
+//    querydslSourcesDir = querydslDir
+//}
+//
+//sourceSets {
+//    main {
+//        java {
+//            srcDirs = ['src/main/java', querydslDir]
+//        }
+//    }
+//}
+//
+//compileQuerydsl {
+//    options.annotationProcessorPath = configurations.querydsl
+//}
+//
+//configurations {
+//    querydsl.extendsFrom compileClasspath
+//}
 //[끝]
 
 dependencies {
@@ -159,7 +162,7 @@ dependencies {
 
     //IntelliJ용
     //IntelliJ에서는 하기 annotationProcessor를 쓰면 별도의 querydsl 플러그인 및 플러그인 설정이 불필요.
-    //annotationProcessor("com.querydsl:querydsl-apt:${querydslVer}:jpa")
+    annotationProcessor("com.querydsl:querydsl-apt:${querydslVer}:jpa")
 
     implementation("com.squareup.retrofit2:retrofit:2.7.1")
     implementation("com.squareup.retrofit2:converter-jackson:2.7.1")
@@ -184,6 +187,28 @@ dependencies {
     annotationProcessor("org.projectlombok:lombok:1.18.20")
 
     testCompile('org.springframework.boot:spring-boot-starter-test')
+    
+    implementation group: 'org.javassist', name: 'javassist', version: '3.15.0-GA'
+
+    //메일
+    implementation 'org.springframework.boot:spring-boot-starter-mail'
+    
+    // OpenVidu
+    // https://mvnrepository.com/artifact/io.openvidu/openvidu-java-client
+	implementation group: 'io.openvidu', name: 'openvidu-java-client', version: '2.20.0'
+
+
+	// redis
+	implementation('org.springframework.boot:spring-boot-starter-data-redis')
+	
+	// https://mvnrepository.com/artifact/redis.clients/jedis
+	//implementation group: 'redis.clients', name: 'jedis', version: '2.8.0'
+	
+}
+
+// 젠킨스 배포용
+bootJar {
+    mainClass = 'com.wish.GroupCallApplication'
 }
 
 test {
